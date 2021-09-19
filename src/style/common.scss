@@ -1,0 +1,1386 @@
+$genshin_white: rgb(236, 229, 216);
+$genshin_dark: rgb(74, 83, 102);
+$genshin_gray: rgb(149, 149, 149);
+
+@font-face {
+  font-family: "genshin-font";
+  src: url(genshin_mini_artifact.ttf);
+}
+
+// 仿原神按键
+
+.btn-genshin {
+  position: relative;
+  background-color: $genshin_white !important;
+  border-radius: 1.5625rem !important;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -0.125rem;
+    left: -0.125rem;
+    display: block;
+    width: calc(100% + .25rem);
+    height: calc(100% + .25rem);
+    border-radius: 1.5625rem;
+  }
+
+  &:hover::before {
+    border: solid 0.1875rem rgb(255, 255, 255);
+  }
+}
+
+.btn-genshin-dark {
+  position: relative;
+  color: $genshin_white !important;
+  background-color: $genshin_dark !important;
+  border-radius: 1.5625rem !important;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -0.125rem;
+    left: -0.125rem;
+    display: block;
+    width: calc(100% + .25rem);
+    height: calc(100% + .25rem);
+    border-radius: 1.5625rem;
+  }
+
+  &:hover::before {
+    border: solid 0.1875rem rgb(255, 230, 178);
+  }
+}
+
+.circleinbox {
+  position: relative;
+  float: left;
+  margin-left: -0.35rem;
+  margin-right: 0.4rem;
+  height: 1.4rem;
+  width: 1.4rem;
+  border-radius: 100rem;
+  background-color: rgb(48, 48, 48);
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 0.8rem;
+    height: 0.8rem;
+    top: 0.3rem;
+    left: 0.3rem;
+    border: solid 0.125rem rgb(245, 195, 50);
+    border-radius: 100rem;
+  }
+}
+
+.squareinbox {
+  position: relative;
+  float: left;
+  margin-top: 0.1rem;
+  margin-left: -0.3rem;
+  margin-right: 0.4rem;
+  height: 1.2rem;
+  width: 1.2rem;
+  background-color: rgb(48, 48, 48);
+  border-radius: .125rem;
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 0.7rem;
+    height: 0.7rem;
+    top: 0.25rem;
+    left: 0.25rem;
+    border: solid 0.125rem rgb(245, 195, 50);
+  }
+}
+
+.xinbox {
+  position: relative;
+  float: left;
+  margin-left: -0.35rem;
+  margin-right: 0.4rem;
+  height: 1.4rem;
+  width: 1.4rem;
+  border-radius: 100rem;
+  background-color: rgb(48, 48, 48);
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 1rem;
+    top: 0.2rem;
+    left: 0.65rem;
+    background-color: rgb(56, 161, 228);
+    border: solid 0.0625rem rgb(56, 161, 228);
+    transform: rotate(45deg);
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 1rem;
+    top: 0.2rem;
+    left: 0.65rem;
+    background-color: rgb(56, 161, 228);
+    border: solid 0.0625rem rgb(56, 161, 228);
+    transform: rotate(135deg);
+  }
+}
+
+// bootstrap样式修改
+
+.modal-content {
+  border: none !important;
+}
+
+.offcanvas-header,
+.modal-header {
+  position: relative;
+  color: $genshin_white;
+  background-color: rgb(69, 77, 92);
+
+  &::after{
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    top: .1875rem;
+    left: .1875rem;
+    height: calc(100% - .375rem);
+    width: calc(100% - .375rem);
+    border: solid 0.1875rem rgb(81, 91, 107);
+  }
+}
+
+.offcanvas-header .btn-close,
+.modal-header .btn-close {
+  position: relative;
+  border-radius: 1.5625rem;
+  margin-right: 0 !important;
+  background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024' fill='%23000'%3e%3cpath d='M510.957251 351.97026 1021.893013 0 669.922752 510.935762 1021.893013 1021.8705 510.957251 669.901263 0.021489 1021.8705 351.99175 510.935762 0.021489 0Z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+  background-color: $genshin_white;
+  &::after {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    top: -0.25rem;
+    left: -0.25rem;
+    height: calc(100% + .5rem);
+    width: calc(100% + .5rem);
+    border: solid 0.4375rem rgb(135, 141, 141);
+    border-radius: 1.5625rem;
+  }
+
+  &:hover::after{
+    border: solid 0.375rem $genshin_white;
+  }
+}
+
+.offcanvas-body {
+  position: relative;
+  background-color: rgb(249, 246, 242);
+}
+
+.modal-body {
+  position: relative;
+  background-color: rgb(249, 246, 242);
+
+  &::after {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    top: .1875rem;
+    left: .1875rem;
+    height: calc(100% - .375rem);
+    width: calc(100% - .375rem);
+    border: solid 0.1875rem rgb(242, 238, 231);
+  }
+}
+
+.modal-footer {
+  padding: 0.5rem 0.75rem !important;
+  background-color: $genshin_white;
+}
+
+// 公共css
+
+#app {
+  font-family: "genshin-font";
+  width: 100%;
+  user-select: none;
+}
+
+.btn:focus {
+  box-shadow: none !important;
+}
+
+#loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2000;
+  background-color: #fff;
+
+  .loading-box {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 2rem;
+    width: 13.6rem;
+    margin-top: -1rem;
+    margin-left: -6.8rem;
+    background-color: #d5d3d3;
+    mask: url(../static/images/elements_logo.png);
+    mask-image: url(../static/images/elements_logo.png);
+    -webkit-mask-image: url(../static/images/elements_logo.png);
+    mask-size: contain;
+    -webkit-mask-size: contain;
+
+    .loading-progress {
+      height: 100%;
+      width: 0;
+      background-color: $genshin_dark;
+      transition: all 0.5s ease;
+    }
+  }
+}
+
+.hide {
+  display: none !important;
+}
+
+.highscore {
+  color: rgb(148, 38, 6);
+}
+
+.navbar {
+  height: 3.5rem;
+  background-color: $genshin_dark;
+  width: 100%;
+  z-index: 10;
+
+  .siteTitle {
+    font-size: 1.2rem;
+    color: $genshin_white;
+    padding-left: .3rem;
+
+    a {
+      color: $genshin_white;
+      text-decoration-line: none;
+      box-shadow: #c38542 -0.6875rem .0625rem 0rem 0rem;
+    }
+  }
+}
+
+.alertBox {
+  pointer-events: none;
+  user-select: none;
+  position: fixed;
+  z-index: 1056;
+  top: 1.25rem;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  transition: all 0.2s ease-in;
+}
+
+.main-container {
+  position: absolute;
+  background-color: #eae2c9;
+  top: 3.5rem;
+  width: 100%;
+  height: calc(100% - 7.25rem);
+  user-select: none;
+}
+
+// box界面css
+
+.demo-container {
+  background-color: $genshin_white;
+  user-select: none;
+  overflow-y: scroll;
+  display: flex;
+  height: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  position: relative;
+  align-content: flex-start;
+  align-items: flex-start;
+  justify-content: center;
+
+  .tips {
+    position: absolute;
+    top: 45%;
+    left: 0;
+    width: 100%;
+    color: $genshin_gray;
+    font-size: 1.5rem;
+    text-align: center;
+    opacity: 0.5;
+
+    span {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  }
+
+  &::-webkit-scrollbar {
+    width: .4rem;
+    height: .0625rem;
+    transition: ease 0.2s all;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    // 滚动条里面小方块
+    border-radius: .625rem;
+    // box-shadow: inset 0 0 0.3125rem rgba(0, 0, 0, 0.2);
+    background: rgb(246,244,243);
+  }
+
+  &::-webkit-scrollbar-track {
+    // 滚动条里面轨道
+    box-shadow: inset 0 0 0.3125rem rgba(0, 0, 0, 0.2);
+    border-radius: .625rem;
+    background: rbg(217,211,205);
+  }
+
+  .filterBoxFill {
+    width: 100%;
+    height: 3rem;
+  }
+
+  .filterBox {
+    position: fixed;
+    top: 4rem;
+    left: -5rem;
+    z-index: 3;
+    color: rgb(102, 112, 122);
+    background-color: #FFF;
+    padding: 0.5rem 1rem;
+    transition: all 0.5s ease;
+
+    .filterMain,
+    .filterPart {
+      cursor: pointer;
+      display: inline-block;
+      position: relative;
+      background-color: $genshin_dark;
+      color: $genshin_white;
+      border-radius: .25rem;
+      font-size: 0.8rem;
+      padding: 0.2rem 0.3rem;
+      margin-left: 0.3rem;
+
+      &::after {
+        content: "×";
+        display: inline-block;
+        text-align: center;
+        height: 0.8rem;
+        width: 0.8rem;
+        line-height: 0.9rem;
+        font-size: 0.8rem;
+        color: rgb(223, 20, 20);
+        background-color: $genshin_white;
+        border-radius: 3rem;
+        margin-left: 0.25rem;
+      }
+    }
+  }
+
+  .filterBoxShow {
+    left: 0;
+  }
+
+  .filterBoxHide {
+    left: -5rem;
+  }
+}
+
+// ArtifactsBox
+
+.isSelect {
+  box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .25) !important;
+
+  &:after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: .1rem solid #ffffff;
+    border-radius: .25rem;
+  }
+}
+
+.ArtifactsBox {
+  margin: .9375rem .625rem;
+  width: 10rem;
+  font-size: 0.8rem;
+  transition: ease 0.2s all;
+  overflow: hidden;
+  border: none !important;
+  background-color: $genshin_white !important;
+
+  &:hover {
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .25) !important;
+  }
+
+  .ArtifactsTitle {
+    position: relative;
+    background-position: 4.5rem 0.6rem, -4.7rem -7.7rem;
+    background-size: 5rem, 19rem;
+    background-repeat: no-repeat;
+    background-blend-mode: normal, color-burn;
+
+    .islock {
+      position: absolute;
+      left: .1875rem;
+      top: .1875rem;
+      background-color: rgba(74, 83, 102, 0.7);
+      border-radius: 0.25rem;
+      padding: 0 .1875rem;
+      text-align: center;
+      height: 0.8rem;
+      line-height: 0.8rem;
+    }
+  }
+
+  .highScoreAward {
+    position: absolute;
+  }
+
+  .card-body {
+    &:first-child {
+      background-color: rgb(195, 133, 66);
+      border-bottom-right-radius: 1.5625rem;
+      color: #fff;
+      padding: .625rem .9375rem;
+
+      .badge {
+        background-color: rgb(57, 68, 79);
+        padding: .1875rem .25rem .1875rem;
+      }
+    }
+
+    &:last-child {
+      background-color: rgb(255, 231, 187);
+      padding: .3125rem .9375rem;
+    }
+  }
+
+  ul li {
+    color: $genshin_dark;
+    background-color: $genshin_white;
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+}
+
+#radarChartBox,
+#radarChartBox2 {
+  margin: .625rem auto;
+  width: 18.125rem;
+  height: 15rem;
+}
+
+#mobileShow {
+  position: absolute;
+  top: .625rem;
+  right: .625rem;
+}
+
+.upgradeCheat {
+  display: inline-block;
+  position: absolute;
+  right: .3125rem;
+}
+
+// footer
+
+footer {
+  position: fixed !important;
+  background-color: #d2cab0;
+  width: 100%;
+  height: 3.75rem;
+  left: 0;
+  bottom: 0;
+}
+
+.buttonBox {
+  display: flex;
+  padding: .8125rem .625rem;
+  justify-content: flex-end;
+}
+
+#filter,
+#sort {
+  height: 2.3125rem;
+  width: 2.3125rem;
+  background-color: $genshin_white;
+  border-radius: 1.5625rem;
+  padding: 0.375rem 0;
+}
+
+.filterList {
+  height: 26.875rem;
+  overflow-y: scroll;
+  background-color: rgb(61, 69, 86) !important;
+  background-image: url(../static/images/genshin-symbol.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position-y: 50%;
+  background-blend-mode: multiply;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  li a {
+    &:hover {
+      color: $genshin_white;
+      background-color: rgba(72, 81, 98, 0.5) !important;
+    }
+
+    color: $genshin_white;
+  }
+}
+
+.sortList {
+  background-color: rgb(61, 69, 86) !important;
+
+  li a {
+    &:hover {
+      color: $genshin_white;
+      background-color: rgba(72, 81, 98, 0.5) !important;
+    }
+
+    color: $genshin_white;
+  }
+}
+
+.dropdown-footer {
+  inset: auto auto 1rem 0 !important;
+}
+
+#start {
+  position: relative;
+  background-color: #ece5d8;
+  border-radius: 1.5625rem;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+#start-drop {
+  background-color: #ece5d8;
+  border-left: solid 0.0625rem rgb(191, 173, 166);
+  border-radius: 1.5625rem;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+#dropdownMenuLink::after {
+  content: "";
+  clear: both;
+}
+
+#score,
+#score-2 {
+  float: right;
+  margin-top: -0.25rem;
+}
+
+.selectBox {
+  width: 10rem;
+  position: fixed;
+  top: .5rem;
+  right: .9375rem;
+  z-index: 20;
+}
+
+// ArtifactShow
+
+.ArtifactShow {
+  position: relative;
+  margin: 0 auto;
+  width: 18.75rem;
+  overflow: hidden;
+
+  .aTitle {
+    height: 1.875rem;
+    color: #fff;
+    line-height: 2.0625rem;
+    padding-left: 1.125rem;
+    background-color: #BC6832;
+  }
+
+  .titleLine {
+    position: absolute;
+    z-index: 2;
+    top: .125rem;
+    right: .125rem;
+    bottom: .125rem;
+    left: .125rem;
+    width: 18.5rem;
+    height: 1.625rem;
+    border: solid 0.125rem rgba(144, 82, 41, 0.7);
+  }
+
+  .aHead {
+    position: relative;
+    color: #fff;
+    overflow: hidden;
+    font-size: .8125rem;
+    height: 8.4375rem;
+    padding: .5625rem 1.125rem;
+    background-image: linear-gradient(to bottom right, #6A5453, #E4AB52);
+    background-image: -webkit-linear-gradient(to bottom right, #6A5453, #E4AB52);
+    background-image: -moz-linear-gradient(to bottom right, #6A5453, #E4AB52);;
+
+    .mainEntry {
+      position: absolute;
+      z-index: 2;
+      top: 3.4375rem;
+      left: 1.125rem;
+      color: rgb(191, 173, 166);
+    }
+
+    .mainEntryValue {
+      position: absolute;
+      z-index: 2;
+      font-size: 1.5rem;
+      top: 4.375rem;
+      left: 1.125rem;
+    }
+
+    .aImg {
+      position: absolute;
+      z-index: 2;
+      right: 1.125rem;
+      top: .3125rem;
+      width: 7.8125rem;
+      height: 7.8125rem;
+
+      img {
+        &:first-child {
+          position: relative;
+          z-index: 2;
+          width: inherit;
+          height: inherit;
+        }
+
+        &:last-child {
+          position: absolute;
+          opacity: 0.1;
+          z-index: 1;
+          width: 12.5rem;
+          height: 12.5rem;
+          top: -2.1875rem;
+          right: -2.1875rem;
+        }
+      }
+    }
+
+    .levelStar {
+      position: absolute;
+      z-index: 2;
+      left: 1.125rem;
+      bottom: .5625rem;
+    }
+  }
+
+  .blurLine {
+    position: absolute;
+    top: 10.0625rem;
+    height: .25rem;
+    width: 100%;
+    background-color: #000;
+    opacity: 0.2;
+  }
+
+  .aContent {
+    height: 9.375rem;
+    font-size: .875rem;
+    padding: .9375rem 1.125rem;
+    background-color: #ECE5D8;
+
+    .badge {
+      font-weight: 400;
+      font-size: .875rem;
+      padding: .125rem .25rem .0625rem;
+      background-color: rgb(57, 68, 79) !important;
+    }
+
+    ul {
+      margin-top: .625rem;
+      list-style-type: none;
+      padding: 0;
+
+      li {
+        margin-bottom: .0625rem;
+        color: rgb(76, 86, 104);
+      }
+    }
+
+    .unlock,
+    .islock {
+      position: relative;
+      top: -0.125rem;
+      float: right;
+      padding-top: .0625rem;
+      height: 1.5rem;
+      width: 1.5rem;
+      text-align: center;
+      border-radius: 0.25rem;
+    }
+
+    .unlock {
+      background-color: #f3efea;
+      border: solid 0.0625rem #9ea1a8;
+    }
+
+    .islock {
+      background-color: $genshin_dark;
+      border: solid .0625rem $genshin_dark;
+    }
+  }
+
+  .aButtonBox {
+    height: 2.5rem;
+    background-color: #a87940;
+    text-align: center;
+    padding: .4375rem 1.875rem;
+    overflow: hidden;
+
+    button {
+      font-size: .9375rem;
+      line-height: .9375rem;
+      background-color: #dea752;
+      color: #303030;
+      width: 4.375rem;
+      border-left: solid 0.0625rem rgb(243, 239, 225);
+      border-right: solid 0.0625rem rgb(243, 239, 225);
+    }
+  }
+
+  .btn-toupgrade {
+    width: 100%;
+    background-color: #ffd673;
+    border-radius: 0;
+  }
+}
+
+#offcanArtifactShow {
+  background-color: rgb(243, 239, 225);
+}
+
+// upgrade界面css
+
+.upColor {
+  color: rgb(254, 203, 49);
+}
+
+.maxBadge {
+  margin-left: 2rem;
+  background-color: rgb(255, 57, 0);
+  padding: 0.05rem 0.2rem;
+  border-radius: 2rem;
+  font-size: 0.8rem;
+}
+
+.btn-back {
+  position: fixed;
+  top: .5rem;
+  right: .9375rem;
+  z-index: 20;
+}
+
+.upFloodlight {
+  position: absolute;
+  left: 0;
+  opacity: 0.3;
+  bottom: 5rem;
+  width: 100%;
+  height: 35%;
+  z-index: 0;
+  background-image: linear-gradient(270deg, #ffffff00, #f1d68480, #f1d684, #ffffff00);
+  background-image: -webkit-linear-gradient(270deg, #ffffff00, #f1d68480, #f1d684, #ffffff00);
+  background-image: -moz-linear-gradient(270deg, #ffffff00, #f1d68480, #f1d684, #ffffff00);
+}
+
+.upgradeMax {
+  position: absolute;
+  width: 12.5rem;
+  z-index: 2;
+  bottom: 2rem;
+  right: 4rem;
+  color: #fff;
+  font-size: 0.9rem;
+  text-align: center;
+  line-height: 4;
+}
+
+.containerUp {
+  position: absolute;
+  background-color: rgb(125, 83, 38);
+  ;
+  top: 3.5rem;
+  width: 100%;
+  height: calc(100% - 3.5rem);
+  user-select: none;
+  overflow: hidden;
+
+  .fog {
+    position: absolute;
+    pointer-events: none;
+    z-index: 0;
+    top: 0;
+    left: -100%;
+    height: 100%;
+    width: 300%;
+    background-image: url(../static/images/fog.png);
+    background-size: 125rem 75rem;
+    filter: sepia(1);
+  }
+}
+
+.starBox {
+  position: relative;
+  z-index: 1;
+}
+
+.entryBox {
+  position: relative;
+  z-index: 2;
+  top: .9375rem;
+  color: #fff;
+  width: 25rem;
+  float: right;
+
+  .mainEntry {
+    padding: .125rem .3125rem;
+    background-image: linear-gradient(90deg, #ffffff00, rgba(0, 0, 0, 0.2), #fff00000);
+    background-image: -webkit-linear-gradient(90deg, #ffffff00, rgba(0, 0, 0, 0.2), #fff00000);
+    background-image: -moz-linear-gradient(90deg, #ffffff00, rgba(0, 0, 0, 0.2), #fff00000);
+    font-size: 1.1rem;
+  }
+
+  .entryLine {
+    margin: .3rem 0;
+    overflow: hidden;
+    border-top: 0.0625rem solid rgba(255, 255, 255, 0.15);
+  }
+
+  .entryList {
+    &:nth-child(2n) {
+      padding: .125rem .3125rem;
+      background-image: linear-gradient(90deg, #ffffff00, rgba(0, 0, 0, 0.12), #fff00000);
+      background-image: -webkit-linear-gradient(90deg, #ffffff00, rgba(0, 0, 0, 0.12), #fff00000);
+      background-image: -moz-linear-gradient(90deg, #ffffff00, rgba(0, 0, 0, 0.12), #fff00000);
+      font-size: 0.9rem;
+    }
+
+    &:nth-child(2n-1) {
+      padding: .125rem .3125rem;
+      background-image: linear-gradient(90deg, #ffffff00, rgba(0, 0, 0, 0.2), #fff00000);
+      background-image: -webkit-linear-gradient(90deg, #ffffff00, rgba(0, 0, 0, 0.2), #fff00000);
+      background-image: -moz-linear-gradient(90deg, #ffffff00, rgba(0, 0, 0, 0.2), #fff00000);
+      font-size: 0.9rem;
+    }
+  }
+}
+
+.upgrade-button-box {
+  position: absolute;
+  z-index: 2;
+  bottom: 1.875rem;
+  right: 3.125rem;
+}
+
+.upgradeArrow {
+  position: absolute;
+  top: 0.8rem;
+  left: 50%;
+  margin-left: 3.5rem;
+  display: inline-block;
+  width: 1rem;
+  height: 0.3rem;
+  margin-bottom: 0.2rem;
+  background-image: linear-gradient(270deg, #ffffff90, rgba(0, 0, 0, 0.2));
+  background-image: -webkit-linear-gradient(270deg, #ffffff90, rgba(0, 0, 0, 0.2));
+  background-image: -moz-linear-gradient(270deg, #ffffff90, rgba(0, 0, 0, 0.2));
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: -0.15rem;
+    right: -0.4rem;
+    width: 0;
+    height: 0;
+    border-top: 0.3rem solid transparent;
+    border-left: 0.4rem solid #ffffff90;
+    border-bottom: 0.3rem solid transparent;
+  }
+}
+
+.upgradeArrowUp {
+  position: absolute;
+  top: 1rem;
+  right: -0.5rem;
+  display: inline-block;
+  width: .4375rem;
+  height: .3125rem;
+  margin-bottom: 0rem;
+  background-image: linear-gradient(270deg, rgb(144, 232, 0.9), rgba(0, 0, 0, 0.2));
+  background-image: -webkit-linear-gradient(270deg, rgb(144, 232, 0.9), rgba(0, 0, 0, 0.2));
+  background-image: -moz-linear-gradient(270deg, rgb(144, 232, 0.9), rgba(0, 0, 0, 0.2));
+  transform: rotate(270deg);
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: -0.15rem;
+    right: -0.4rem;
+    width: 0;
+    height: 0;
+    border-top: 0.3rem solid transparent;
+    border-left: 0.4rem solid rgb(144, 232, 0.9);
+    border-bottom: 0.3rem solid transparent;
+  }
+}
+
+.centerEntry {
+  position: absolute;
+  text-align: center;
+  width: 3rem;
+  left: 50%;
+  margin-left: -1.875rem;
+}
+
+.iconBox {
+  display: inline-block;
+  color: rgb(172, 160, 148);
+  width: 1rem;
+  text-align: center;
+}
+
+.upArtifactBox {
+  position: relative;
+  z-index: 2;
+  bottom: -45%;
+  left: 20%;
+
+  .artiImgBox {
+    position: absolute;
+    z-index: 2;
+    top: 1.875rem;
+    left: 1.875rem;
+    width: 8.75rem;
+    height: 8.75rem;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .flashingCircle {
+    position: absolute;
+    top: 1.25rem;
+    left: 1.25rem;
+    width: 10rem;
+    height: 10rem;
+    background-color: rgba(211, 169, 0, 0.2);
+    border-top-left-radius: 4.5625rem;
+    border-top-right-radius: 5.15rem;
+    border-bottom-left-radius: 4.0625rem;
+    border-bottom-right-radius: 3.875rem;
+    border: solid .125rem #ffffff;
+    box-shadow: 0 0 0.25rem 0.125rem rgb(255, 255, 153);
+  }
+
+  .flashingCircle2 {
+    border-top-left-radius: 5.4625rem;
+    border-top-right-radius: 3.1875rem;
+    border-bottom-left-radius: 5.7rem;
+    border-bottom-right-radius: 4.6875rem;
+  }
+}
+
+.myMask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  .upgradeAlert {
+    position: relative;
+    width: 100%;
+    bottom: -40%;
+    margin-top: 0;
+  }
+
+  .upAlertBtn {
+    position: relative;
+    top: 20rem;
+    text-align: center;
+  }
+
+  .upgradeAlert {
+    .UpAlertHead {
+      position: relative;
+      width: 100%;
+      height: 5rem;
+      background-color: #BC6832E0;
+
+      .upgradeSuccess {
+        position: absolute;
+        top: -6.5rem;
+        left: 50%;
+        margin-left: -16rem;
+        width: 32rem;
+        text-align: center;
+        font-size: 1.3rem;
+        color: #fff;
+      }
+
+      .upgradeMsg {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        font-size: 1.375rem;
+        color: #fff;
+      }
+
+      .upgradeImgBox {
+        overflow: hidden;
+        position: absolute;
+        z-index: 2;
+        top: -3.375rem;
+        left: 50%;
+        margin-left: -2.5rem;
+        background: #fff;
+        width: 5rem;
+        height: 6.125rem;
+        border: solid .125rem #fff;
+        border-radius: .3125rem;
+        box-sizing: border-box;
+        box-shadow: yellow 0rem 0rem 1.25rem .125rem;
+
+        .upgradeImg {
+          height: 5rem;
+          width: 100%;
+          background-color: rgb(195, 133, 66);
+          border-bottom-right-radius: .9375rem;
+
+          img {
+            height: 100%;
+            width: 100%;
+          }
+        }
+
+        .UpLevelStar {
+          position: absolute;
+          top: 4.0625rem;
+          left: -0.375rem;
+          height: .625rem;
+          white-space: nowrap;
+          transform: scale(0.7);
+        }
+
+        .upLevel {
+          text-align: center;
+          font-size: .625rem;
+        }
+      }
+    }
+
+    .UpAlertBody {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      height: 0rem;
+      background: rgba(63, 71, 87, 0.9);
+
+      .UpAlertEntry {
+        float: none;
+        margin: 0 auto;
+        width: 50%;
+
+        .upEntry {
+          position: relative;
+
+          .upgradeArrow {
+            top: 0.55rem;
+          }
+
+          .upgradeArrowUp {
+            top: 0.75rem;
+            right: -0.8rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+// 动画效果
+
+.ani-showAlertBody {
+  animation: showAlertBody 1s ease forwards;
+}
+
+.ani-AlertBoxUp {
+  animation: AlertBoxUp 1s ease forwards;
+}
+
+.ani-AlertBtnShow {
+  animation: AlertBtnShow 1s ease forwards;
+}
+
+.ani-ArtifactShow {
+  animation: ArtifactShow 0.2s ease-in forwards;
+}
+
+.ani-rotate1 {
+  animation: rotate 10s linear infinite;
+}
+
+.ani-rotate2 {
+  animation: rotate2 8s linear infinite;
+}
+
+.ani-upSuccess {
+  animation: upSuccess 1s ease forwards;
+}
+
+.ani-badgeFlash {
+  animation: badgeFlash 2s ease infinite;
+}
+
+.ani-fogMove {
+  animation: fogMove 90s linear infinite;
+}
+
+@keyframes showAlertBody {
+  0% {
+    height: 0;
+  }
+
+  40% {
+    height: 0;
+  }
+
+  100% {
+    height: 12.5rem;
+  }
+}
+
+@keyframes AlertBoxUp {
+  0% {
+    margin-top: 0;
+  }
+
+  40% {
+    margin-top: 0;
+  }
+
+  100% {
+    margin-top: -6.25rem;
+  }
+}
+
+@keyframes AlertBtnShow {
+  0% {
+    visibility: hidden;
+  }
+
+  95% {
+    visibility: hidden;
+  }
+
+  100% {
+    visibility: inherit;
+  }
+}
+
+@keyframes ArtifactShow {
+  0% {
+    transform: scale(1.7);
+    filter: brightness(20);
+    box-shadow: #fff 0rem 0rem 1.25rem 1.25rem;
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+
+  50% {
+    transform: rotate(180deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotate2 {
+  0% {
+    transform: rotate(0);
+  }
+
+  50% {
+    transform: rotate(-180deg);
+  }
+
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes upSuccess {
+  0% {
+    top: -8.5rem;
+  }
+
+  40% {
+    top: -8.5rem;
+  }
+
+  100% {
+    top: -6.5rem;
+  }
+}
+
+@keyframes badgeFlash {
+  0% {
+    filter: brightness(1);
+  }
+
+  50% {
+    filter: brightness(1.5);
+  }
+
+  100% {
+    filter: brightness(1);
+  }
+}
+
+@keyframes fogMove {
+  0% {
+    background-position-x: 0;
+  }
+
+  100% {
+    background-position-x: 125rem;
+  }
+}
+
+// 响应式
+@media screen and (max-width: 30rem) {
+  .ArtifactsBox {
+    width: calc(50% - 1.25rem);
+  }
+
+  .entryBox {
+    padding: 0 .5rem;
+    width: 100% !important;
+  }
+
+  .upgradeArrowUp {
+    right: 0.2rem;
+  }
+
+  .myMask .upgradeAlert .UpAlertBody .UpAlertEntry .upEntry .upgradeArrowUp {
+    right: -0.6rem;
+  }
+
+  .upgrade-button-lg {
+    bottom: .9375rem;
+    right: .9375rem;
+  }
+
+  .UpAlertMainEntry {
+    margin-right: 0.15rem;
+  }
+}
+
+@media screen and (max-width: 56.875rem) {
+  .ArtifactShowBox {
+    display: none;
+  }
+
+  .upArtifactBox {
+    left: 50%;
+    margin-left: -6.25rem;
+  }
+
+  .upgrade-button-box {
+    right: 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  .upgradeMax {
+    bottom: 1rem;
+    right: 1rem;
+  }
+}
+
+@media screen and (min-width: 56.875rem) {
+  #mobileShow {
+    display: none;
+  }
+
+  .navbar .siteTitle {
+    margin-left: 3.125rem;
+  }
+
+  .main-container,
+  .containerUp {
+    padding: 0 6.25rem;
+  }
+
+  .ArtifactShowBox {
+    overflow-y: scroll;
+    position: fixed;
+    padding-top: .9375rem;
+    top: 3.5rem;
+    right: 6.25rem;
+    width: 20rem;
+    height: inherit;
+    background-color: $genshin_white;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .demo-container {
+    margin-left: 0 !important;
+    width: calc(100% - 20rem) !important;
+  }
+
+  footer {
+    padding-left: 3.125rem;
+    padding-right: 3.125rem;
+  }
+}
