@@ -3,12 +3,12 @@
         <div class="aTitle"> {{ artifactName }} </div>
         <div class="titleLine"></div>
         <div class="aHead">
-            {{ toChinese(showdetail.part,"parts") }}
-            <div class="mainEntry"> {{ toChinese(showdetail.mainEntry,"mainEntry") }} </div>
+            {{ this.$artifact.toChinese(showdetail.part,"parts") }}
+            <div class="mainEntry"> {{ this.$artifact.toChinese(showdetail.mainEntry,"mainEntry") }} </div>
             <div class="mainEntryValue">{{ mainEntryValue }}</div>
             <div class="aImg">
-                <img :src="partSrc[showdetail.part]" :alt="showdetail.part">
-                <img :src="symbolSrc" alt="genshin-symbol">
+                <img :src="this.$store.state.partSrc[showdetail.part]" :alt="showdetail.part">
+                <img :src="this.$store.state.symbolSrc" alt="genshin-symbol">
             </div>
             <div class="levelStar">
                 <span v-for="i in 5" :key="i" style="margin-right: 3px;">
@@ -45,9 +45,8 @@
 </template>
 
 <script>
-import { ArtifactsSim } from '@/utils/ArtifactsUpradeSim_module@0.1.9'
-
 export default {
+    name: "artifact-show",
     data(){
         return {
             name: {
@@ -56,14 +55,6 @@ export default {
                 cup: "角斗士的酣醉",
                 hourglass: "角斗士的希冀",
                 hat: "角斗士的凯旋"
-            },
-            symbolSrc: require("../static/images/genshin-symbol.png"),
-            partSrc: {
-                feather: require("../static/images/A-feather.png"),
-                flower: require("../static/images/A-flower.png"),
-                cup: require("../static/images/A-cup.png"),
-                hourglass: require("../static/images/A-hourglass.png"),
-                hat: require("../static/images/A-hat.png")
             }
         }
     },
@@ -95,7 +86,7 @@ export default {
             return this.name[this.showdetail.part];
         },
         mainEntryValue(){
-            return ArtifactsSim.entryValFormat(this.showdetail.mainEntry, this.showdetail.mainEntryValue,"main")
+            return this.$artifact.entryValFormat(this.showdetail.mainEntry, this.showdetail.mainEntryValue,"main")
         }
     },
     methods:{
@@ -111,12 +102,9 @@ export default {
         lockChange(){
             this.$emit("lock",this.index);
         },
-        toChinese(word,type){
-            return ArtifactsSim.toChinese(word,type);
-        },
         showEntryList(entry,value){
-            let resEntry = this.toChinese(entry,"entry"),
-            resValue = ArtifactsSim.entryValFormat(entry,value);
+            let resEntry = this.$artifact.toChinese(entry,"entry"),
+            resValue = this.$artifact.entryValFormat(entry,value);
             return resEntry + "+" + resValue;
         }
     }
@@ -124,5 +112,178 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$genshin_white: rgb(236, 229, 216);
+$genshin_dark: rgb(74, 83, 102);
+$genshin_gray: rgb(149, 149, 149);
 
+
+.ArtifactShow {
+  position: relative;
+  margin: 0 auto;
+  width: 18.75rem;
+  overflow: hidden;
+
+  .aTitle {
+    height: 1.875rem;
+    color: #fff;
+    line-height: 2.0625rem;
+    padding-left: 1.125rem;
+    background-color: #BC6832;
+  }
+
+  .titleLine {
+    position: absolute;
+    z-index: 2;
+    top: .125rem;
+    right: .125rem;
+    bottom: .125rem;
+    left: .125rem;
+    width: 18.5rem;
+    height: 1.625rem;
+    border: solid 0.125rem rgba(144, 82, 41, 0.7);
+  }
+
+  .aHead {
+    position: relative;
+    color: #fff;
+    overflow: hidden;
+    font-size: .8125rem;
+    height: 8.4375rem;
+    padding: .5625rem 1.125rem;
+    background-image: linear-gradient(to bottom right, #6A5453, #E4AB52);
+    background-image: -webkit-linear-gradient(to bottom right, #6A5453, #E4AB52);
+    background-image: -moz-linear-gradient(to bottom right, #6A5453, #E4AB52);;
+
+    .mainEntry {
+      position: absolute;
+      z-index: 2;
+      top: 3.4375rem;
+      left: 1.125rem;
+      color: rgb(191, 173, 166);
+    }
+
+    .mainEntryValue {
+      position: absolute;
+      z-index: 2;
+      font-size: 1.5rem;
+      top: 4.375rem;
+      left: 1.125rem;
+    }
+
+    .aImg {
+      position: absolute;
+      z-index: 2;
+      right: 1.125rem;
+      top: .3125rem;
+      width: 7.8125rem;
+      height: 7.8125rem;
+
+      img {
+        &:first-child {
+          position: relative;
+          z-index: 2;
+          width: inherit;
+          height: inherit;
+        }
+
+        &:last-child {
+          position: absolute;
+          opacity: 0.1;
+          z-index: 1;
+          width: 12.5rem;
+          height: 12.5rem;
+          top: -2.1875rem;
+          right: -2.1875rem;
+        }
+      }
+    }
+
+    .levelStar {
+      position: absolute;
+      z-index: 2;
+      left: 1.125rem;
+      bottom: .5625rem;
+    }
+  }
+
+  .blurLine {
+    position: absolute;
+    top: 10.0625rem;
+    height: .25rem;
+    width: 100%;
+    background-color: #000;
+    opacity: 0.2;
+  }
+
+  .aContent {
+    height: 9.375rem;
+    font-size: .875rem;
+    padding: .9375rem 1.125rem;
+    background-color: #ECE5D8;
+
+    .badge {
+      font-weight: 400;
+      font-size: .875rem;
+      padding: .125rem .25rem .0625rem;
+      background-color: rgb(57, 68, 79) !important;
+    }
+
+    ul {
+      margin-top: .625rem;
+      list-style-type: none;
+      padding: 0;
+
+      li {
+        margin-bottom: .0625rem;
+        color: rgb(76, 86, 104);
+      }
+    }
+
+    .unlock,
+    .islock {
+      position: relative;
+      top: -0.125rem;
+      float: right;
+      padding-top: .0625rem;
+      height: 1.5rem;
+      width: 1.5rem;
+      text-align: center;
+      border-radius: 0.25rem;
+    }
+
+    .unlock {
+      background-color: #f3efea;
+      border: solid 0.0625rem #9ea1a8;
+    }
+
+    .islock {
+      background-color: $genshin_dark;
+      border: solid .0625rem $genshin_dark;
+    }
+  }
+
+  .aButtonBox {
+    height: 2.5rem;
+    background-color: #a87940;
+    text-align: center;
+    padding: .4375rem 1.875rem;
+    overflow: hidden;
+
+    button {
+      font-size: .9375rem;
+      line-height: .9375rem;
+      background-color: #dea752;
+      color: #303030;
+      width: 4.375rem;
+      border-left: solid 0.0625rem rgb(243, 239, 225);
+      border-right: solid 0.0625rem rgb(243, 239, 225);
+    }
+  }
+
+  .btn-toupgrade {
+    width: 100%;
+    background-color: #ffd673;
+    border-radius: 0;
+  }
+}
 </style>

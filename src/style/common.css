@@ -202,12 +202,6 @@
   background-color: #ece5d8;
 }
 
-#app {
-  font-family: "genshin-font";
-  width: 100%;
-  user-select: none;
-}
-
 .btn:focus {
   box-shadow: none !important;
 }
@@ -411,7 +405,7 @@
 }
 
 .ArtifactsBox {
-  margin: .9375rem .625rem;
+  margin: .75rem .625rem;
   width: 10rem;
   font-size: 0.8rem;
   transition: ease 0.2s all;
@@ -591,523 +585,8 @@ footer {
   z-index: 20;
 }
 
-.ArtifactShow {
-  position: relative;
-  margin: 0 auto;
-  width: 18.75rem;
-  overflow: hidden;
-}
-
-.ArtifactShow .aTitle {
-  height: 1.875rem;
-  color: #fff;
-  line-height: 2.0625rem;
-  padding-left: 1.125rem;
-  background-color: #BC6832;
-}
-
-.ArtifactShow .titleLine {
-  position: absolute;
-  z-index: 2;
-  top: .125rem;
-  right: .125rem;
-  bottom: .125rem;
-  left: .125rem;
-  width: 18.5rem;
-  height: 1.625rem;
-  border: solid 0.125rem rgba(144, 82, 41, 0.7);
-}
-
-.ArtifactShow .aHead {
-  position: relative;
-  color: #fff;
-  overflow: hidden;
-  font-size: .8125rem;
-  height: 8.4375rem;
-  padding: .5625rem 1.125rem;
-  background-image: linear-gradient(to bottom right, #6A5453, #E4AB52);
-  background-image: -webkit-linear-gradient(to bottom right, #6A5453, #E4AB52);
-  background-image: -moz-linear-gradient(to bottom right, #6A5453, #E4AB52);
-}
-
-.ArtifactShow .aHead .mainEntry {
-  position: absolute;
-  z-index: 2;
-  top: 3.4375rem;
-  left: 1.125rem;
-  color: #bfada6;
-}
-
-.ArtifactShow .aHead .mainEntryValue {
-  position: absolute;
-  z-index: 2;
-  font-size: 1.5rem;
-  top: 4.375rem;
-  left: 1.125rem;
-}
-
-.ArtifactShow .aHead .aImg {
-  position: absolute;
-  z-index: 2;
-  right: 1.125rem;
-  top: .3125rem;
-  width: 7.8125rem;
-  height: 7.8125rem;
-}
-
-.ArtifactShow .aHead .aImg img:first-child {
-  position: relative;
-  z-index: 2;
-  width: inherit;
-  height: inherit;
-}
-
-.ArtifactShow .aHead .aImg img:last-child {
-  position: absolute;
-  opacity: 0.1;
-  z-index: 1;
-  width: 12.5rem;
-  height: 12.5rem;
-  top: -2.1875rem;
-  right: -2.1875rem;
-}
-
-.ArtifactShow .aHead .levelStar {
-  position: absolute;
-  z-index: 2;
-  left: 1.125rem;
-  bottom: .5625rem;
-}
-
-.ArtifactShow .blurLine {
-  position: absolute;
-  top: 10.0625rem;
-  height: .25rem;
-  width: 100%;
-  background-color: #000;
-  opacity: 0.2;
-}
-
-.ArtifactShow .aContent {
-  height: 9.375rem;
-  font-size: .875rem;
-  padding: .9375rem 1.125rem;
-  background-color: #ECE5D8;
-}
-
-.ArtifactShow .aContent .badge {
-  font-weight: 400;
-  font-size: .875rem;
-  padding: .125rem .25rem .0625rem;
-  background-color: #39444f !important;
-}
-
-.ArtifactShow .aContent ul {
-  margin-top: .625rem;
-  list-style-type: none;
-  padding: 0;
-}
-
-.ArtifactShow .aContent ul li {
-  margin-bottom: .0625rem;
-  color: #4c5668;
-}
-
-.ArtifactShow .aContent .unlock,
-.ArtifactShow .aContent .islock {
-  position: relative;
-  top: -0.125rem;
-  float: right;
-  padding-top: .0625rem;
-  height: 1.5rem;
-  width: 1.5rem;
-  text-align: center;
-  border-radius: 0.25rem;
-}
-
-.ArtifactShow .aContent .unlock {
-  background-color: #f3efea;
-  border: solid 0.0625rem #9ea1a8;
-}
-
-.ArtifactShow .aContent .islock {
-  background-color: #4a5366;
-  border: solid 0.0625rem #4a5366;
-}
-
-.ArtifactShow .aButtonBox {
-  height: 2.5rem;
-  background-color: #a87940;
-  text-align: center;
-  padding: .4375rem 1.875rem;
-  overflow: hidden;
-}
-
-.ArtifactShow .aButtonBox button {
-  font-size: .9375rem;
-  line-height: .9375rem;
-  background-color: #dea752;
-  color: #303030;
-  width: 4.375rem;
-  border-left: solid 0.0625rem #f3efe1;
-  border-right: solid 0.0625rem #f3efe1;
-}
-
-.ArtifactShow .btn-toupgrade {
-  width: 100%;
-  background-color: #ffd673;
-  border-radius: 0;
-}
-
 #offcanArtifactShow {
   background-color: #f3efe1;
-}
-
-.upColor {
-  color: #fecb31;
-}
-
-.maxBadge {
-  margin-left: 2rem;
-  background-color: #ff3900;
-  padding: 0.05rem 0.2rem;
-  border-radius: 2rem;
-  font-size: 0.8rem;
-}
-
-.btn-back {
-  position: fixed;
-  top: .5rem;
-  right: .9375rem;
-  z-index: 20;
-}
-
-.upFloodlight {
-  position: absolute;
-  left: 0;
-  opacity: 0.3;
-  bottom: 5rem;
-  width: 100%;
-  height: 35%;
-  z-index: 0;
-  background-image: linear-gradient(270deg, #ffffff00, #f1d68480, #f1d684, #ffffff00);
-  background-image: -webkit-linear-gradient(270deg, #ffffff00, #f1d68480, #f1d684, #ffffff00);
-  background-image: -moz-linear-gradient(270deg, #ffffff00, #f1d68480, #f1d684, #ffffff00);
-}
-
-.upgradeMax {
-  position: absolute;
-  width: 12.5rem;
-  z-index: 2;
-  bottom: 2rem;
-  right: 4rem;
-  color: #fff;
-  font-size: 0.9rem;
-  text-align: center;
-  line-height: 4;
-}
-
-.containerUp {
-  position: absolute;
-  background-color: #7d5326;
-  top: 3.5rem;
-  width: 100%;
-  height: calc(100% - 3.5rem);
-  user-select: none;
-  overflow: hidden;
-}
-
-.containerUp .fog {
-  position: absolute;
-  pointer-events: none;
-  z-index: 0;
-  top: 0;
-  left: -100%;
-  height: 100%;
-  width: 300%;
-  background-image: url(../static/images/fog.png);
-  background-size: 125rem 75rem;
-  filter: sepia(1);
-}
-
-.starBox {
-  position: relative;
-  z-index: 1;
-}
-
-.entryBox {
-  position: relative;
-  z-index: 2;
-  top: .9375rem;
-  color: #fff;
-  width: 25rem;
-  float: right;
-}
-
-.entryBox .mainEntry {
-  padding: .125rem .3125rem;
-  background-image: linear-gradient(90deg, #ffffff00, rgba(0, 0, 0, 0.2), #fff00000);
-  background-image: -webkit-linear-gradient(90deg, #ffffff00, rgba(0, 0, 0, 0.2), #fff00000);
-  background-image: -moz-linear-gradient(90deg, #ffffff00, rgba(0, 0, 0, 0.2), #fff00000);
-  font-size: 1.1rem;
-}
-
-.entryBox .entryLine {
-  margin: .3rem 0;
-  overflow: hidden;
-  border-top: 0.0625rem solid rgba(255, 255, 255, 0.15);
-}
-
-.entryBox .entryList:nth-child(2n) {
-  padding: .125rem .3125rem;
-  background-image: linear-gradient(90deg, #ffffff00, rgba(0, 0, 0, 0.12), #fff00000);
-  background-image: -webkit-linear-gradient(90deg, #ffffff00, rgba(0, 0, 0, 0.12), #fff00000);
-  background-image: -moz-linear-gradient(90deg, #ffffff00, rgba(0, 0, 0, 0.12), #fff00000);
-  font-size: 0.9rem;
-}
-
-.entryBox .entryList:nth-child(2n-1) {
-  padding: .125rem .3125rem;
-  background-image: linear-gradient(90deg, #ffffff00, rgba(0, 0, 0, 0.2), #fff00000);
-  background-image: -webkit-linear-gradient(90deg, #ffffff00, rgba(0, 0, 0, 0.2), #fff00000);
-  background-image: -moz-linear-gradient(90deg, #ffffff00, rgba(0, 0, 0, 0.2), #fff00000);
-  font-size: 0.9rem;
-}
-
-.upgrade-button-box {
-  position: absolute;
-  z-index: 2;
-  bottom: 1.875rem;
-  right: 3.125rem;
-}
-
-.upgradeArrow {
-  position: absolute;
-  top: 0.8rem;
-  left: 50%;
-  margin-left: 3.5rem;
-  display: inline-block;
-  width: 1rem;
-  height: 0.3rem;
-  margin-bottom: 0.2rem;
-  background-image: linear-gradient(270deg, #ffffff90, rgba(0, 0, 0, 0.2));
-  background-image: -webkit-linear-gradient(270deg, #ffffff90, rgba(0, 0, 0, 0.2));
-  background-image: -moz-linear-gradient(270deg, #ffffff90, rgba(0, 0, 0, 0.2));
-}
-
-.upgradeArrow::after {
-  content: "";
-  position: absolute;
-  top: -0.15rem;
-  right: -0.4rem;
-  width: 0;
-  height: 0;
-  border-top: 0.3rem solid transparent;
-  border-left: 0.4rem solid #ffffff90;
-  border-bottom: 0.3rem solid transparent;
-}
-
-.upgradeArrowUp {
-  position: absolute;
-  top: 1rem;
-  right: -0.5rem;
-  display: inline-block;
-  width: .4375rem;
-  height: .3125rem;
-  margin-bottom: 0rem;
-  background-image: linear-gradient(270deg, #90e801, rgba(0, 0, 0, 0.2));
-  background-image: -webkit-linear-gradient(270deg, #90e801, rgba(0, 0, 0, 0.2));
-  background-image: -moz-linear-gradient(270deg, #90e801, rgba(0, 0, 0, 0.2));
-  transform: rotate(270deg);
-}
-
-.upgradeArrowUp::after {
-  content: "";
-  position: absolute;
-  top: -0.15rem;
-  right: -0.4rem;
-  width: 0;
-  height: 0;
-  border-top: 0.3rem solid transparent;
-  border-left: 0.4rem solid #90e801;
-  border-bottom: 0.3rem solid transparent;
-}
-
-.centerEntry {
-  position: absolute;
-  text-align: center;
-  width: 3rem;
-  left: 50%;
-  margin-left: -1.875rem;
-}
-
-.iconBox {
-  display: inline-block;
-  color: #aca094;
-  width: 1rem;
-  text-align: center;
-}
-
-.upArtifactBox {
-  position: relative;
-  z-index: 2;
-  bottom: -45%;
-  left: 20%;
-}
-
-.upArtifactBox .artiImgBox {
-  position: absolute;
-  z-index: 2;
-  top: 1.875rem;
-  left: 1.875rem;
-  width: 8.75rem;
-  height: 8.75rem;
-}
-
-.upArtifactBox .artiImgBox img {
-  width: 100%;
-  height: 100%;
-}
-
-.upArtifactBox .flashingCircle {
-  position: absolute;
-  top: 1.25rem;
-  left: 1.25rem;
-  width: 10rem;
-  height: 10rem;
-  background-color: rgba(211, 169, 0, 0.2);
-  border-top-left-radius: 4.5625rem;
-  border-top-right-radius: 5.15rem;
-  border-bottom-left-radius: 4.0625rem;
-  border-bottom-right-radius: 3.875rem;
-  border: solid .125rem #ffffff;
-  box-shadow: 0 0 0.25rem 0.125rem #ffff99;
-}
-
-.upArtifactBox .flashingCircle2 {
-  border-top-left-radius: 5.4625rem;
-  border-top-right-radius: 3.1875rem;
-  border-bottom-left-radius: 5.7rem;
-  border-bottom-right-radius: 4.6875rem;
-}
-
-.myMask {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 100;
-  height: 100%;
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.myMask .upgradeAlert {
-  position: relative;
-  width: 100%;
-  bottom: -40%;
-  margin-top: 0;
-}
-
-.myMask .upAlertBtn {
-  position: relative;
-  top: 20rem;
-  text-align: center;
-}
-
-.myMask .upgradeAlert .UpAlertHead {
-  position: relative;
-  width: 100%;
-  height: 5rem;
-  background-color: #BC6832E0;
-}
-
-.myMask .upgradeAlert .UpAlertHead .upgradeSuccess {
-  position: absolute;
-  top: -6.5rem;
-  left: 50%;
-  margin-left: -16rem;
-  width: 32rem;
-  text-align: center;
-  font-size: 1.3rem;
-  color: #fff;
-}
-
-.myMask .upgradeAlert .UpAlertHead .upgradeMsg {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  text-align: center;
-  font-size: 1.375rem;
-  color: #fff;
-}
-
-.myMask .upgradeAlert .UpAlertHead .upgradeImgBox {
-  overflow: hidden;
-  position: absolute;
-  z-index: 2;
-  top: -3.375rem;
-  left: 50%;
-  margin-left: -2.5rem;
-  background: #fff;
-  width: 5rem;
-  height: 6.125rem;
-  border: solid .125rem #fff;
-  border-radius: .3125rem;
-  box-sizing: border-box;
-  box-shadow: yellow 0rem 0rem 1.25rem .125rem;
-}
-
-.myMask .upgradeAlert .UpAlertHead .upgradeImgBox .upgradeImg {
-  height: 5rem;
-  width: 100%;
-  background-color: #c38542;
-  border-bottom-right-radius: .9375rem;
-}
-
-.myMask .upgradeAlert .UpAlertHead .upgradeImgBox .upgradeImg img {
-  height: 100%;
-  width: 100%;
-}
-
-.myMask .upgradeAlert .UpAlertHead .upgradeImgBox .UpLevelStar {
-  position: absolute;
-  top: 4.0625rem;
-  left: -0.375rem;
-  height: .625rem;
-  white-space: nowrap;
-  transform: scale(0.7);
-}
-
-.myMask .upgradeAlert .UpAlertHead .upgradeImgBox .upLevel {
-  text-align: center;
-  font-size: .625rem;
-}
-
-.myMask .upgradeAlert .UpAlertBody {
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  height: 0rem;
-  background: rgba(63, 71, 87, 0.9);
-}
-
-.myMask .upgradeAlert .UpAlertBody .UpAlertEntry {
-  float: none;
-  margin: 0 auto;
-  width: 50%;
-}
-
-.myMask .upgradeAlert .UpAlertBody .UpAlertEntry .upEntry {
-  position: relative;
-}
-
-.myMask .upgradeAlert .UpAlertBody .UpAlertEntry .upEntry .upgradeArrow {
-  top: 0.55rem;
-}
-
-.myMask .upgradeAlert .UpAlertBody .UpAlertEntry .upEntry .upgradeArrowUp {
-  top: 0.75rem;
-  right: -0.8rem;
 }
 
 .ani-showAlertBody {
@@ -1252,76 +731,76 @@ footer {
 
 @media screen and (max-width: 30rem) {
   .ArtifactsBox {
-    width: calc(50% - 1.25rem);
+    width: calc(50% - 1.25rem) !important;
   }
   .entryBox {
     padding: 0 .5rem;
     width: 100% !important;
   }
   .upgradeArrowUp {
-    right: 0.2rem;
+    right: 0.2rem !important;
   }
   .myMask .upgradeAlert .UpAlertBody .UpAlertEntry .upEntry .upgradeArrowUp {
-    right: -0.6rem;
+    right: -0.6rem !important;
   }
   .upgrade-button-lg {
-    bottom: .9375rem;
-    right: .9375rem;
+    bottom: .9375rem !important;
+    right: .9375rem !important;
   }
   .UpAlertMainEntry {
-    margin-right: 0.15rem;
+    margin-right: 0.15rem !important;
   }
 }
 
 @media screen and (max-width: 56.875rem) {
   .ArtifactShowBox {
-    display: none;
+    display: none !important;
   }
   .upArtifactBox {
-    left: 50%;
-    margin-left: -6.25rem;
+    left: 50% !important;
+    margin-left: -6.25rem !important;
   }
   .upgrade-button-box {
-    right: 0;
-    width: 100%;
-    text-align: center;
+    right: 0 !important;
+    width: 100% !important;
+    text-align: center !important;
   }
   .upgradeMax {
-    bottom: 1rem;
-    right: 1rem;
+    bottom: 1rem !important;
+    right: 1rem !important;
   }
 }
 
 @media screen and (min-width: 56.875rem) {
   #mobileShow {
-    display: none;
+    display: none !important;
   }
   .navbar .siteTitle {
-    margin-left: 3.125rem;
+    margin-left: 3.125rem !important;
   }
   .main-container,
   .containerUp {
-    padding: 0 6.25rem;
+    padding: 0 6.25rem !important;
   }
   .ArtifactShowBox {
-    overflow-y: scroll;
-    position: fixed;
-    padding-top: .9375rem;
-    top: 3.5rem;
-    right: 6.25rem;
-    width: 20rem;
-    height: inherit;
-    background-color: #ece5d8;
+    overflow-y: scroll !important;
+    position: fixed !important;
+    padding-top: .9375rem !important;
+    top: 3.5rem !important;
+    right: 6.25rem !important;
+    width: 20rem !important;
+    height: inherit !important;
+    background-color: #ece5d8 !important;
   }
   .ArtifactShowBox::-webkit-scrollbar {
-    display: none;
+    display: none !important;
   }
   .demo-container {
     margin-left: 0 !important;
     width: calc(100% - 20rem) !important;
   }
   footer {
-    padding-left: 3.125rem;
-    padding-right: 3.125rem;
+    padding-left: 3.125rem !important;
+    padding-right: 3.125rem !important;
   }
 }

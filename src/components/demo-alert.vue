@@ -29,6 +29,7 @@
 
 <script>
     export default {
+        name: "demo-alert",
         props: {
             state: {
                 type: String,

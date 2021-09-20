@@ -1,20 +1,21 @@
 {
   "name": "artifact_sim",
-  "version": "0.1.0",
+  "version": "0.1.9",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "report": "vue-cli-service build --report"
   },
   "dependencies": {
     "axios": "^0.21.4",
-    "bootstrap": "^5.1.0",
-    "core-js": "^3.6.5",
-    "echarts": "^5.1.2",
     "vue": "^3.2.4",
+    "vuex": "^4.0.2",
     "vue-router": "^4.0.11",
-    "vuex": "^4.0.2"
+    "core-js": "^3.6.5",
+    "bootstrap": "^5.1.0",
+    "echarts": "^5.1.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
@@ -24,9 +25,9 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.0.0",
-    "sass-resources-loader": "^2.2.4",
     "sass": "^1.41.1",
     "sass-loader": "^7.3.0",
+    "sass-resources-loader": "^2.2.4",
     "style-resources-loader": "^1.4.1",
     "vue-cli-plugin-style-resources-loader": "~0.1.5"
   },

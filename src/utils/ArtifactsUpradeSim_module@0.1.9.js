@@ -1,5 +1,5 @@
 /**
- * ArtifactsUpgradeSim v0.1.9
+ * ArtifactsUpgradeSim v0.1.9 module
  * Copyrigth 2021-2022 DioMao (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_js/graphs/contributors)
  * Licensed under MIT (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_js/blob/main/LICENSE)
  */
@@ -583,7 +583,7 @@ class ArtifactsFunction_class {
      * @param {string} symbol 圣遗物标识
      * @returns 圣遗物在表中的位置(index)
      */
-    searchSymbol(symbol) {
+    artifactIndex(symbol) {
         for (let i = 0; i < this.__AUSList__.length; i++) {
             const item = this.__AUSList__[i];
             if (item.symbol === symbol) {

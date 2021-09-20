@@ -66,10 +66,8 @@
 </template>
 
 <script>
-    // import HelloWorld from "./components/HelloWorld.vue";
-    // import axios from 'axios'
     import 'bootstrap/js/dist/offcanvas'
-    // import {useRouter} from 'vue-router'
+    // import {getCurrentInstance} from "vue";
 
     export default {
         data() {
@@ -80,66 +78,59 @@
         },
         mounted() {
             // 预加载图片(同时控制进度条)
-            // let that = this;
-            // if (simType == "local") {
-            //     that.$nextTick(function () {
-            //         this.isLoad = true;
-            //     });
-            //     // that.loadProgress = 50;
-            //     // setTimeout(()=>{
-            //     //     that.loadProgress = 90;
-            //     // },200)
-            // } else {
-            //     axios.all([this.preLoadImg(), this.preLoadImg2()])
-            //         .then(axios.spread((res, res2) => {
+            this.$axios.all([this.preLoadImg(), this.preLoadImg2()])
+                .then(this.$axios.spread(() => {
 
-            //         })).catch((err => {
-            //             console.log(err);
-            //         }))
-            // }
+                })).catch((err => {
+                    console.log(err);
+                }))
         },
         watch: {
-            // loadProgress(val) {
-            //     let that = this;
-            //     if (val == 90) {
-            //         setTimeout(function () {
-            //             that.loadProgress = 100;
-            //             that.isLoad = true;
-            //         }, 500)
-            //     }
-            // }
+            loadProgress(val) {
+                let that = this;
+                if (val == 90) {
+                    setTimeout(function () {
+                        that.loadProgress = 100;
+                        that.isLoad = true;
+                    }, 500)
+                }
+            }
         },
         methods: {
-        //     preLoadImg() {
-        //         const that = this;
-        //         for (let part of artiConst.val.parts) {
-        //             let name = "A-" + part + ".png"
-        //             errtime = 0;
-        //             let request = axios.get("/img/" + name).
-        //             then(res => {
-        //                 that.loadProgress += 15;
-        //             }).catch((err) => {
-        //                 console.log(err);
-        //                 (errtime < 3) ? (request, errtime++) : (that.loadProgress += 15);
-        //             })
-        //         }
-        //         return true;
-        //     },
-        //     preLoadImg2() {
-        //         const that = this;
-        //         let errtime = 0,
-        //             request = axios.get("/img/genshin-symbol.png")
-        //             .then(res => {
-        //                 that.loadProgress += 15;
-        //                 return true;
-        //             }).catch(err => {
-        //                 console.log(err);
-        //                 (errtime < 3) ? (request, errtime++) : (that.loadProgress += 15);
-        //             })
-        //     }
-           }
+            preLoadImg() {
+                const that = this;
+                for (let part of this.$artiConst.val.parts) {
+                    let errtime = 0;
+                    let request = this.$axios.get(that.$store.state.partSrc[part]).
+                    then(() => {
+                        that.loadProgress += 15;
+                    }).catch((err) => {
+                        console.log(err);
+                        (errtime < 3) ? (request, errtime++) : (that.loadProgress += 15);
+                    })
+                }
+                return true;
+            },
+            preLoadImg2() {
+                const that = this;
+                let errtime = 0,
+                    request = this.$axios.get(that.$store.state.symbolSrc)
+                    .then(() => {
+                        that.loadProgress += 15;
+                        return true;
+                    }).catch(err => {
+                        console.log(err);
+                        (errtime < 3) ? (request, errtime++) : (that.loadProgress += 15);
+                    })
+            }
+        }
     };
 </script>
 
 <style lang="scss">
+#app {
+  font-family: "genshin-font";
+  width: 100%;
+  user-select: none;
+}
 </style>
