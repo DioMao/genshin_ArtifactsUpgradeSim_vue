@@ -1,5 +1,5 @@
 /**
- * ArtifactsUpgradeSim v0.1.9 module
+ * ArtifactsUpgradeSim v0.2.0 module
  * Copyrigth 2021-2022 DioMao (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_js/graphs/contributors)
  * Licensed under MIT (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_js/blob/main/LICENSE)
  */
@@ -11,17 +11,46 @@ class ArtifactConst {
         const mainVal_1 = [7, 14.9, 22.8, 30.8, 38.7, 46.6],
             mainVal_2 = [8.7, 18.6, 28.6, 38.5, 48.4, 58.3];
         this.__ArtifactConstList__ = {
+            /**
+             * 英语翻译参考：
+             * 生之花：Flower of Life
+             * 死之羽：Plume of Death
+             * 时之沙：Sands of Eon
+             * 空之杯：Goblet of Eonothem
+             * 理之冠：Circlet of Logos
+             * 治疗加成：Healing Bonus
+             * 最大生命值：Max HP
+             * 暴击率：CRIT Rate
+             * 暴击伤害：CRIT DMG
+             * 受到治疗加成：Incoming Healing Bonus
+             * 角斗士羽毛：Gladiator's Destiny
+             * 角斗士沙漏：Gladiator's Longing
+             * 角斗士头：Gladiator's Triumphus
+             * 角斗士的留恋：Gladiator's Nostalgia
+             * 角斗士的酣醉：Gladiator's Intoxication
+             * 雷元素伤害加成：Electro DMG Bonus
+             * 岩元素伤害加成：Geo DMG Bonus
+             * 水元素伤害加成：Hydro DMG Bonus
+             * 风元素伤害加成：Anemo DMG Bonus
+             * 火元素伤害加成：Pyro DMG Bouns
+             * 冰元素伤害加成：Cryo DMG Bouns
+             * 物理伤害加成：Physical DMG Bouns
+             * 圣遗物属性：Artifact Details
+             * 冷却缩减：CD Reduction
+             * 护盾强效：Shield Strength
+             */
             // 词缀条目
-            entryList: ["critRate", "critDMG", "ATK", "ATKPer", "def", "defPer", "HP", "HPPer", "energyRecharge", "elementMastery"],
-            entryListCh: ["暴击率", "暴击伤害", "攻击力", "攻击力", "防御力", "防御力", "生命值", "生命值", "元素充能效率", "元素精通"],
+            entryList: ["CRITRate", "CRITDMG", "ATK", "ATKPer", "DEF", "DEFPer", "HP", "HPPer", "energyRecharge", "elementMastery"],
+            entryList_en: ["CRIT Rate", "CRIT DMG", "ATK", "ATK", "DEF", "DEF", "HP", "HP", "Energy Recharge", "Element Mastery"],
+            entryList_zh: ["暴击率", "暴击伤害", "攻击力", "攻击力", "防御力", "防御力", "生命值", "生命值", "元素充能效率", "元素精通"],
             entryProbability: [0.3, 0.3, 0.75, 0.5, 0.75, 0.5, 0.75, 0.5, 0.3, 0.3],
             entryValue: {
-                critRate: [2.7222, 3.1111, 3.5, 3.8889],
-                critDMG: [5.4402, 6.2174, 7, 7.7718],
+                CRITRate: [2.7222, 3.1111, 3.5, 3.8889],
+                CRITDMG: [5.4402, 6.2174, 7, 7.7718],
                 ATK: [13.6111, 15.5556, 17.5, 19.4444],
                 ATKPer: [4.0833, 4.6667, 5.25, 5.8333],
-                def: [16.3333, 18.5, 21, 23.3333],
-                defPer: [5.1031, 5.8321, 6.5611, 7.2901],
+                DEF: [16.3333, 18.5, 21, 23.3333],
+                DEFPer: [5.1031, 5.8321, 6.5611, 7.2901],
                 HP: [209.125, 239, 268.875, 298.75],
                 HPPer: [4.0833, 4.6667, 5.25, 5.8333],
                 energyRecharge: [4.5325, 5.18, 5.8275, 6.475],
@@ -29,16 +58,18 @@ class ArtifactConst {
             },
             extraEnrtyRate: 0.3,
             // 部件列表
-            parts: ["feather", "flower", "hourglass", "hat", "cup"],
-            partsCh: ["死之羽", "生之花", "时之沙", "理之冠", "空之杯"],
+            parts: ["Plume", "Flower", "Sands", "Circlet", "Goblet"],
+            parts_en: ["Plume of Death", "Flower of Life", "Sands of Eon", "Circlet of Logos", "Goblet of Eonothem"],
+            parts_zh: ["死之羽", "生之花", "时之沙", "理之冠", "空之杯"],
             // 部件主词条列表
-            feather: ["ATK"],
-            flower: ["HP"],
-            hourglass: ["ATKPer", "defPer", "HPPer", "elementMastery", "energyRecharge"],
-            hat: ["critRate", "critDMG", "ATKPer", "defPer", "HPPer", "elementMastery", "HPRes"],
-            cup: ["ATKPer", "defPer", "HPPer", "elementMastery", "water", "fire", "thunder", "rock", "wind", "ice", "Physical"],
-            mainEntryList: ["ATK", "HP", "critRate", "energyRecharge", "HPRes", "critDMG", "ATKPer", "defPer", "HPPer", "elementMastery", "water", "fire", "thunder", "rock", "wind", "ice", "Physical"],
-            mainEntryListCh: ["攻击力", "生命值", "暴击率", "元素充能效率", "治疗加成", "暴击伤害", "攻击力", "防御力", "生命值", "元素精通", "水元素伤害加成", "火元素伤害加成", "雷元素伤害加成", "岩元素伤害加成", "风元素伤害加成", "冰元素伤害加成", "物理伤害加成"],
+            Plume: ["ATK"],
+            Flower: ["HP"],
+            Sands: ["ATKPer", "DEFPer", "HPPer", "elementMastery", "energyRecharge"],
+            Circlet: ["CRITRate", "CRITDMG", "ATKPer", "DEFPer", "HPPer", "elementMastery", "Healing"],
+            Goblet: ["ATKPer", "DEFPer", "HPPer", "elementMastery", "Hydro", "Pyro", "Electro", "Geo", "Anemo", "Cryo", "Physical"],
+            mainEntryList: ["ATK", "HP", "CRITRate", "energyRecharge", "Healing", "CRITDMG", "ATKPer", "DEFPer", "HPPer", "elementMastery", "Hydro", "Pyro", "Electro", "Geo", "Anemo", "Cryo", "Physical"],
+            mainEntryList_en: ["ATK","HP","CRIT Rate","Energy Recharge","Healing Bonus", "CRIT DMG", "ATK", "DEF", "HP", "Element Mastery", "Hydro DMG Bonus", "Pyro DMG Bonus", "Electro DMG Bonus", "Geo DMG Bonus", "Anemo DMG Bonus", "Cryo DMG Bonus", "Physical DMG Bonus"],
+            mainEntryList_zh: ["攻击力", "生命值", "暴击率", "元素充能效率", "治疗加成", "暴击伤害", "攻击力", "防御力", "生命值", "元素精通", "水元素伤害加成", "火元素伤害加成", "雷元素伤害加成", "岩元素伤害加成", "风元素伤害加成", "冰元素伤害加成", "物理伤害加成"],
             // 部件主词条概率
             hourglassRate: [0.26, 0.26, 0.26, 0.1, 0.1],
             hatRate: [0.1, 0.1, 0.22, 0.22, 0.22, 0.04, 0.1],
@@ -47,32 +78,32 @@ class ArtifactConst {
             mainEntryValueList: {
                 ATK: [47, 100, 152, 205, 258, 311],
                 HP: [717, 1530, 2342, 3156, 3967, 4780],
-                critRate: [4.7, 9.9, 15.2, 20.5, 25.8, 31.1],
+                CRITRate: [4.7, 9.9, 15.2, 20.5, 25.8, 31.1],
                 energyRecharge: [7.8, 16.5, 25.4, 34.2, 43, 51.8],
-                HPRes: [5.4, 11.5, 17.6, 23.7, 29.8, 35.9],
-                critDMG: [9.3, 19.9, 30.5, 41, 51.6, 62.2],
+                Healing: [5.4, 11.5, 17.6, 23.7, 29.8, 35.9],
+                CRITDMG: [9.3, 19.9, 30.5, 41, 51.6, 62.2],
                 ATKPer: mainVal_1,
-                defPer: mainVal_2,
+                DEFPer: mainVal_2,
                 HPPer: mainVal_1,
                 elementMastery: [28, 60, 91, 123, 155, 187],
-                water: mainVal_1,
-                fire: mainVal_1,
-                thunder: mainVal_1,
-                rock: mainVal_1,
-                wind: mainVal_1,
-                ice: mainVal_1,
+                Hydro: mainVal_1,
+                Pyro: mainVal_1,
+                Electro: mainVal_1,
+                Geo: mainVal_1,
+                Anemo: mainVal_1,
+                Cryo: mainVal_1,
                 Physical: mainVal_2
             },
             // 圣遗物评分选项
             scoreList: ["atk", "crit", "def", "hp", "er", "em"],
-            scoreListCh: ["攻击得分", "双暴得分", "防御得分", "生命得分", "充能得分", "精通得分"],
+            scoreList_zh: ["攻击得分", "双暴得分", "防御得分", "生命得分", "充能得分", "精通得分"],
             scoreStandar: {
-                critRate: 2,
-                critDMG: 1,
+                CRITRate: 2,
+                CRITDMG: 1,
                 ATK: 0.13,
                 ATKPer: 1.345,
-                def: 0.11,
-                defPer: 1.07,
+                DEF: 0.11,
+                DEFPer: 1.07,
                 HP: 0.0087,
                 HPPer: 1.345,
                 energyRecharge: 1.2,
@@ -103,15 +134,26 @@ class ArtifactConst {
 /**
  * ES6 version
  */
+// 定义私有属性
+const VERSION = Symbol("VERSION"),
+    AUSLIST = Symbol("AUSLIST"),
+    DELETEHISTORY = Symbol("DELETEHISTORY"),
+    SUITLIST = Symbol("SUITLIST"),
+    LISTLIMIT = Symbol("LISTLIMIT"),
+    LOCALSTORAGEKEY = Symbol("LOCALSTORAGEKEY"),
+    COUNTLIST = Symbol("COUNTLIST"),
+    LANGUAGE = Symbol("LANGUAGE");
+
 class ArtifactsFunction_class {
     constructor() {
-        this.__version__ = "0.1.9";
-        this.__AUSList__ = [];
-        this.__deleteHistory__ = [];
-        this.__suitList__ = [];
-        this.__maxResults__ = 1000;
-        this.__localStorageKey__ = "AUSLocalList";
-        this.__countList__ = {};
+        this[VERSION] = "0.2.0";
+        this[AUSLIST] = [];
+        this[DELETEHISTORY] = [];
+        this[SUITLIST] = [];
+        this[LISTLIMIT] = 1000;
+        this[LOCALSTORAGEKEY] = "AUSLocalList";
+        this[COUNTLIST] = {};
+        this[LANGUAGE] = "origin";
     }
 
     /**
@@ -123,8 +165,8 @@ class ArtifactsFunction_class {
      * @returns {Object} 对象newArtifacts
      */
     creatArtifact(__part = "", __main = "", __entry = [], __entryRate = []) {
-        if (this.__AUSList__.length >= this.__maxResults__) {
-            console.log(`Warning - The maximum length of the artifacts list is ${this.__maxResults__}.`);
+        if (this[AUSLIST].length >= this[LISTLIMIT]) {
+            console.log(`Warning - The maximum length of the artifacts list is ${this[LISTLIMIT]}.`);
             return false;
         }
         let newArtifacts = {
@@ -195,9 +237,9 @@ class ArtifactsFunction_class {
         // 保存初始状态
         newArtifacts.initEntry = JSON.stringify(newArtifacts.entry);
         // 保存结果
-        this.__AUSList__.push(newArtifacts);
+        this[AUSLIST].push(newArtifacts);
         // console.log(newArtifacts);
-        this.setLocalStorage(this.__localStorageKey__, this.__AUSList__);
+        this.setLocalStorage(this[LOCALSTORAGEKEY], this[AUSLIST]);
         this.changeCount([newArtifacts.part, newArtifacts.mainEntry]);
         return newArtifacts;
     }
@@ -210,8 +252,8 @@ class ArtifactsFunction_class {
      * @returns 升级结果
      */
     upgrade(__index, __entry = "", __upLevel = -1) {
-        if (__index >= this.__AUSList__.length || __index < 0) return false;
-        let currentArtifact = this.__AUSList__[__index],
+        if (__index >= this[AUSLIST].length || __index < 0) return false;
+        let currentArtifact = this[AUSLIST][__index],
             currentEntry = [],
             currentEntryList = [],
             currentEntryRate = [];
@@ -266,7 +308,7 @@ class ArtifactsFunction_class {
         currentArtifact.level += 4;
         // 增加主属性
         currentArtifact.mainEntryValue = artiConst.val.mainEntryValueList[currentArtifact.mainEntry][currentArtifact.level / 4];
-        this.setLocalStorage(this.__localStorageKey__, this.__AUSList__);
+        this.setLocalStorage(this[LOCALSTORAGEKEY], this[AUSLIST]);
         return true;
     }
 
@@ -278,7 +320,7 @@ class ArtifactsFunction_class {
      */
     ArtifactScore(__index, __rule = "default") {
         if (typeof (__index) !== "number" || (typeof (__rule) !== "string" && !Array.isArray(__rule))) return 0;
-        if (__index >= this.__AUSList__.length || __index < 0) {
+        if (__index >= this[AUSLIST].length || __index < 0) {
             return 0;
         }
         let atkScore = 0,
@@ -288,15 +330,15 @@ class ArtifactsFunction_class {
             rechargeScore = 0,
             EMScore = 0,
             totalScore = 0,
-            entryArr = this.__AUSList__[__index].entry;
+            entryArr = this[AUSLIST][__index].entry;
         for (let i = 0; i < entryArr.length; i++) {
             let entryNow = entryArr[i][0],
                 addScore = entryArr[i][1] * artiConst.val.scoreStandar[entryNow];
             if (entryNow === "ATK" || entryNow === "ATKPer") {
                 atkScore += addScore;
-            } else if (entryNow === "critRate" || entryNow === "critDMG") {
+            } else if (entryNow === "CRITRate" || entryNow === "CRITDMG") {
                 critScore += addScore;
-            } else if (entryNow === "def" || entryNow === "defPer") {
+            } else if (entryNow === "DEF" || entryNow === "DEFPer") {
                 defScore += addScore;
             } else if (entryNow === "HP" || entryNow === "HPPer") {
                 HPScore += addScore;
@@ -360,7 +402,7 @@ class ArtifactsFunction_class {
      * @returns 返回操作结果
      */
     reset(__index) {
-        let currentArtifact = this.__AUSList__[__index];
+        let currentArtifact = this[AUSLIST][__index];
         if (currentArtifact.lock) {
             return false;
         } else {
@@ -369,7 +411,7 @@ class ArtifactsFunction_class {
             currentArtifact.upgradeHistory.length = 0;
             currentArtifact.level = 0;
             currentArtifact.mainEntryValue = artiConst.val.mainEntryValueList[currentArtifact.mainEntry][0];
-            this.setLocalStorage(this.__localStorageKey__, this.__AUSList__);
+            this.setLocalStorage(this[LOCALSTORAGEKEY], this[AUSLIST]);
             return true;
         }
     }
@@ -378,10 +420,10 @@ class ArtifactsFunction_class {
      * 重置全部圣遗物状态
      */
     resetAll() {
-        for (let i = 0; i < this.__AUSList__.length; i++) {
+        for (let i = 0; i < this[AUSLIST].length; i++) {
             this.reset(i);
         }
-        this.setLocalStorage(this.__localStorageKey__, this.__AUSList__);
+        this.setLocalStorage(this[LOCALSTORAGEKEY], this[AUSLIST]);
     }
 
     /**
@@ -390,14 +432,14 @@ class ArtifactsFunction_class {
      * @returns 操作结果
      */
     deleteOne(index) {
-        let artifact = this.__AUSList__[index];
+        let artifact = this[AUSLIST][index];
         if (artifact.lock === true) {
             // console.log("%cDelete fail.This Artifact is locked.", "color:rgb(144,82,41)");
             return false;
         } else {
             this.changeCount([artifact.part, artifact.mainEntry], -1);
-            this.__deleteHistory__.push(this.__AUSList__.splice(index, 1)[0]);
-            this.setLocalStorage(this.__localStorageKey__, this.__AUSList__);
+            this[DELETEHISTORY].push(this[AUSLIST].splice(index, 1)[0]);
+            this.setLocalStorage(this[LOCALSTORAGEKEY], this[AUSLIST]);
             return true;
         }
     }
@@ -407,16 +449,16 @@ class ArtifactsFunction_class {
      */
     clearAll() {
         let index = 0;
-        while (index !== this.__AUSList__.length) {
-            let artifact = this.__AUSList__[index];
+        while (index !== this[AUSLIST].length) {
+            let artifact = this[AUSLIST][index];
             if (artifact.lock === false) {
-                this.__AUSList__.splice(index, 1);
+                this[AUSLIST].splice(index, 1);
             } else {
                 index++;
             }
         }
         this.enforceUpdateCount();
-        this.setLocalStorage(this.__localStorageKey__, this.__AUSList__);
+        this.setLocalStorage(this[LOCALSTORAGEKEY], this[AUSLIST]);
     }
 
     /**
@@ -424,14 +466,14 @@ class ArtifactsFunction_class {
      * @returns 结果
      */
     undoDel() {
-        if (this.__deleteHistory__.length === 0) {
+        if (this[DELETEHISTORY].length === 0) {
             console.log("Undo false, history not found.");
             return false;
         }
-        let artifact = this.__deleteHistory__.pop();
-        this.__AUSList__.push(artifact);
+        let artifact = this[DELETEHISTORY].pop();
+        this[AUSLIST].push(artifact);
         this.changeCount([artifact.part, artifact.mainEntry]);
-        this.setLocalStorage(this.__localStorageKey__, this.__AUSList__);
+        this.setLocalStorage(this[LOCALSTORAGEKEY], this[AUSLIST]);
         return true;
     }
 
@@ -443,7 +485,7 @@ class ArtifactsFunction_class {
      */
     changeCount(key, range = 1) {
         if (typeof (key) !== "string" && !Array.isArray(key)) return false;
-        let countList = this.__countList__;
+        let countList = this[COUNTLIST];
         if (typeof (key) === "string") {
             key = [key];
         }
@@ -462,8 +504,8 @@ class ArtifactsFunction_class {
      * 强制刷新countList
      */
     enforceUpdateCount() {
-        this.__countList__ = {}
-        this.__AUSList__.forEach(val => {
+        this[COUNTLIST] = {}
+        this[AUSLIST].forEach(val => {
             this.changeCount([val.part, val.mainEntry]);
         })
     }
@@ -471,16 +513,11 @@ class ArtifactsFunction_class {
     /**
      * 圣遗物上锁/解锁
      * @param {number} index 圣遗物下标
-     * @param {string} method 操作（上锁lock/解锁unlock）
      * @returns 操作结果
      */
-    lock(index, method = "lock") {
-        if (typeof (index) !== 'number' && method !== "lock" && method !== "unlock") return;
-        if (method === "lock") {
-            this.__AUSList__.lock = true;
-        } else {
-            this.__AUSList__.lock = false;
-        }
+    lock(index) {
+        if (typeof (index) !== 'number') return false;
+        this[AUSLIST][index].lock = !this[AUSLIST][index].lock;
         return true;
     }
 
@@ -491,7 +528,7 @@ class ArtifactsFunction_class {
      */
     getCount(key) {
         if (typeof (key) !== "string") return false;
-        let countList = this.__countList__;
+        let countList = this[COUNTLIST];
         if (Object.prototype.hasOwnProperty.call(countList, key)) {
             return countList[key];
         } else {
@@ -507,7 +544,7 @@ class ArtifactsFunction_class {
     sortList(rule = "lvasc") {
         if (typeof (rule) !== "string") return false;
         if (rule === "main") rule = "mainEntry";
-        let list = this.__AUSList__;
+        let list = this[AUSLIST];
         try {
             list.sort((val_a, val_b) => {
                 if (rule === "lvasc" || rule === "lvdesc") {
@@ -571,7 +608,7 @@ class ArtifactsFunction_class {
                     return 0;
                 }
             })
-            this.setLocalStorage(this.__localStorageKey__, list);
+            this.setLocalStorage(this[LOCALSTORAGEKEY], list);
         } catch (error) {
             console.log(error);
             return false;
@@ -584,8 +621,8 @@ class ArtifactsFunction_class {
      * @returns 圣遗物在表中的位置(index)
      */
     artifactIndex(symbol) {
-        for (let i = 0; i < this.__AUSList__.length; i++) {
-            const item = this.__AUSList__[i];
+        for (let i = 0; i < this[AUSLIST].length; i++) {
+            const item = this[AUSLIST][i];
             if (item.symbol === symbol) {
                 return i;
             }
@@ -605,22 +642,22 @@ class ArtifactsFunction_class {
         if (typeof (word) !== "string" || typeof (type) !== "string") return false;
         if (type == "entry") {
             if (artiConst.val.entryList.indexOf(word) !== -1) {
-                return artiConst.val.entryListCh[artiConst.val.entryList.indexOf(word)];
+                return artiConst.val.entryList_zh[artiConst.val.entryList.indexOf(word)];
             }
             return false;
         } else if (type === "parts") {
             if (artiConst.val.parts.indexOf(word) !== -1) {
-                return artiConst.val.partsCh[artiConst.val.parts.indexOf(word)];
+                return artiConst.val.parts_zh[artiConst.val.parts.indexOf(word)];
             }
             return false;
         } else if (type === "mainEntry") {
             if (artiConst.val.mainEntryList.indexOf(word) !== -1) {
-                return artiConst.val.mainEntryListCh[artiConst.val.mainEntryList.indexOf(word)];
+                return artiConst.val.mainEntryList_zh[artiConst.val.mainEntryList.indexOf(word)];
             }
             return false;
         } else if (type === "score") {
             if (artiConst.val.scoreList.indexOf(word) !== -1) {
-                return artiConst.val.scoreListCh[artiConst.val.scoreList.indexOf(word)];
+                return artiConst.val.scoreList_zh[artiConst.val.scoreList.indexOf(word)];
             }
             return false;
         }
@@ -635,7 +672,7 @@ class ArtifactsFunction_class {
      * @returns 处理后的词条数值
      */
     entryValFormat(entry, entryValue, type = "default") {
-        const percentEntry = ["critRate", "critDMG", "ATKPer", "defPer", "HPPer", "energyRecharge"],
+        const percentEntry = ["CRITRate", "CRITDMG", "ATKPer", "DEFPer", "HPPer", "energyRecharge"],
             nonPercentMain = ["ATK", "HP", "elementMastery"];
         if (typeof (entry) !== "string" || typeof (type) !== "string" || (typeof (entryValue) !== "string" && typeof (entryValue) !== "number")) {
             return false;
@@ -690,16 +727,16 @@ class ArtifactsFunction_class {
     randomMainEntry(__part) {
         if (typeof (__part) !== "string") throw new Error("Function randomMainEntry Error!Wrong parameter(Not string).");
         switch (__part) {
-            case "feather":
+            case "Plume":
                 return "ATK";
-            case "flower":
+            case "Flower":
                 return "HP";
-            case "hourglass":
-                return this.randomRate(artiConst.val.hourglass, artiConst.val.hourglassRate);
-            case "hat":
-                return this.randomRate(artiConst.val.hat, artiConst.val.hatRate);
-            case "cup":
-                return this.randomRate(artiConst.val.cup, artiConst.val.cupRate);
+            case "Sands":
+                return this.randomRate(artiConst.val.Sands, artiConst.val.hourglassRate);
+            case "Circlet":
+                return this.randomRate(artiConst.val.Circlet, artiConst.val.hatRate);
+            case "Goblet":
+                return this.randomRate(artiConst.val.Goblet, artiConst.val.cupRate);
             default:
                 console.log("Error! -randomMainEntry-");
                 return false;
@@ -762,7 +799,7 @@ class ArtifactsFunction_class {
             const artifact = this.AUSList[i];
             for (let j = 0; j < artifact.entry.length; j++) {
                 const entry = artifact.entry[j];
-                if (entry[0] === "critRate" || entry[0] === "critDMG") {
+                if (entry[0] === "CRITRate" || entry[0] === "CRITDMG") {
                     while (artifact.level < 20) {
                         this.upgrade(i, entry[0], 3);
                     }
@@ -788,28 +825,70 @@ class ArtifactsFunction_class {
         }
     }
 
+    /**
+     * get扩展（带参获取列表）
+     * @param {string} language 语言
+     * @returns 处理后的结果
+     */
+    getList(language = "origin") {
+        const lan = ["zh", "en"];
+        if(typeof(language) !== "string" || language === "origin") return this[AUSLIST];
+        language = language.toLowerCase();
+        if(lan.indexOf(language) !== -1){
+            let AUSList = JSON.parse(JSON.stringify(this[AUSLIST]));
+            AUSList.forEach(val => {
+                val.mainEntryValue = this.entryValFormat(val.mainEntry, val.mainEntryValue, "main");
+                if (language === "zh") {
+                    val.mainEntry = this.toChinese(val.mainEntry, "mainEntry");
+                    val.part = this.toChinese(val.part, "parts");
+                }else if(language === "en"){
+                    val.mainEntry = artiConst.val.mainEntryList_en[artiConst.val.mainEntryList.indexOf(val.mainEntry)];
+                    val.part = artiConst.val.parts_en[artiConst.val.parts.indexOf(val.part)];
+                }
+                val.entry.forEach(e => {
+                    e[1] = this.entryValFormat(e[0], e[1]);
+                    if (language === "zh") e[0] = this.toChinese(e[0], "entry");
+                    if (language === "en") e[0] = artiConst.val.entryList_en[artiConst.val.entryList.indexOf(e[0])];
+                })
+            })
+            return AUSList;
+        }
+        return this[AUSLIST];
+    }
+
     // 获取版本号
     get version() {
-        return this.__version__;
+        return this[VERSION];
+    }
+
+    get language() {
+        return this[LANGUAGE];
     }
 
     get LSkey() {
-        return this.__localStorageKey__;
+        return this[LOCALSTORAGEKEY];
     }
 
     get AUSList() {
-        return this.__AUSList__;
+        return this[AUSLIST];
+    }
+
+    set language(val) {
+        const lan = ["zh", "en", "origin"];
+        if (typeof (val) === "string") {
+            lan.indexOf(val.toLowerCase()) !== -1 ? this[LANGUAGE] = val : this[LANGUAGE] = "origin";
+        }
     }
 
     set AUSList(val) {
         if (Array.isArray(val)) {
-            if (val.length > this.__maxResults__) {
-                val.length = this.__maxResults__;
-                console.log(`Warning - The maximum length of the artifacts list is ${this.__maxResults__}.`);
+            if (val.length > this[LISTLIMIT]) {
+                val.length = this[LISTLIMIT];
+                console.log(`Warning - The maximum length of the artifacts list is ${this[LISTLIMIT]}.`);
             }
-            this.__AUSList__.length = 0;
-            this.__AUSList__ = val;
-            this.setLocalStorage(this.__localStorageKey__, this.__AUSList__);
+            this[AUSLIST].length = 0;
+            this[AUSLIST] = val;
+            this.setLocalStorage(this[LOCALSTORAGEKEY], this[AUSLIST]);
             console.log("%cSet new Artifacts list success.", "color:rgb(144,82,41)");
         }
     }

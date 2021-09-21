@@ -12,6 +12,7 @@
         <div class="container-fluid demo-container" ref="scrollListener">
             <div class="filterBoxFill" v-show="userSetting.filterMain!=='default'||userSetting.filterPart!=='default'">
             </div>
+            <!-- 筛选提示框 -->
             <div class="filterBox"
                 :class="(userSetting.filterMain!=='default'||userSetting.filterPart!=='default')?'filterBoxShow':'filterBoxHide'">
                 <div style="display:inline-block;">筛选:</div>
@@ -26,6 +27,7 @@
             <div class="tips" v-show="ArtifactsList.length===0">列表里还没有圣遗物。<br><span @click="start">创建</span>一个吧！</div>
             <!-- 上半填充 -->
             <div id="filltop" :style="{height:filltop+'px'}"></div>
+            <!-- 圣遗物列表 -->
             <div v-for="(Artifacts,index) in ArtifactsList" :ref="'artifact-'+'index'" :id="'artifact-'+index"
                 class="ArtifactsBox card rounded shawdow-sm" :class="(Artifacts.symbol===showSymbol?'isSelect':'')"
                 :key="index"
@@ -43,7 +45,7 @@
                         </svg>
                     </div>
                     <div :class="'card-text fs-6 '+(ArtifactRate(index)>=userSetting.highScore?'highscore':'')">
-                        {{ this.$artifact.toChinese(Artifacts.part,"parts") }}</div>
+                        {{ Artifacts.part }}</div>
                     <div class="levelStar">
                         <span v-for="i in 5" :key="i" style="margin-right: 2px;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="#FFCC32"
@@ -54,8 +56,8 @@
                         </span>
                     </div>
                     <div class="card-text" style="color:rgb(223,185,170);">
-                        {{ this.$artifact.toChinese(Artifacts.mainEntry,"mainEntry") }} </div>
-                    <div>{{ this.$artifact.entryValFormat(Artifacts.mainEntry,Artifacts.mainEntryValue,'main') }} <span
+                        {{ Artifacts.mainEntry }} </div>
+                    <div>{{ Artifacts.mainEntryValue }} <span
                             class="badge float-end fw-normal">+{{ Artifacts.level }}</span></div>
                     <a id="mobileShow" data-bs-toggle="offcanvas" href="#offcanArtifactShow"
                         aria-controls="offcanArtifactShow">
@@ -66,14 +68,15 @@
                         </svg>
                     </a>
                 </div>
-                <ul class="list-group list-group-flush" v-show="!userSetting.listBriefMode">
+                <ul class="list-group list-group-flush" v-if="!userSetting.listBriefMode">
                     <li v-for="(entry,index2) in Artifacts.entry" :key="index2" class="list-group-item"
-                        @click="ArtifactUpgrade(index,entry[0])">{{ formatEntry(entry[0],entry[1]) }}
+                        @click="ArtifactUpgrade(index,entry[0])">{{ entry[0]+"+"+entry[1] }}
                         <span class="badge bg-primary upgradeCheat" v-show="Artifacts.level<20">+</span>
                     </li>
                     <li class="list-group-item" v-if="Artifacts.entry.length === 3">——</li>
                 </ul>
-                <div class="card-body" style="text-align:center;" v-show="!userSetting.listBriefMode">
+                <!-- 操作框 -->
+                <div class="card-body buttonBox" style="text-align:center;" v-if="!userSetting.listBriefMode">
                     <button id="upgrade" @click="ArtifactUpgrade(index)" class="btn btn-sm float-start"
                         :disabled="Artifacts.level >= 20">
                         <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="#257ad7"
@@ -101,9 +104,11 @@
                     </button>
                 </div>
             </div>
+            <!-- flex填充 -->
             <div class="ArtifactsBox card rounded" v-for="i in fillCount" :key="i" style="visibility:hidden;"></div>
             <div id="fillbottom" :style="{height:fillbottom+'px'}"></div>
         </div>
+        <!-- 右侧圣遗物展示详情 -->
         <div class="ArtifactShowBox">
             <artifact-show @upgrade="ArtifactUpgrade" @init="initArtifact" @del="deleteArtifact" @lock="lockChange"
                 :showdetail="showDetail" :index="this.$artifact.artifactIndex(showSymbol)" v-if="showSymbol!==''">
@@ -116,6 +121,7 @@
                     data-bs-target="#scoreSet">评分标准</button>
             </div>
         </div>
+        <!-- 手机端圣遗物展示 -->
         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanArtifactShow" aria-labelledby="offcanArtifactShow">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title">圣遗物详情</h5>
@@ -245,6 +251,7 @@
                 </div>
             </div>
         </footer>
+        <!-- 自选圣遗物 -->
         <div class="modal fade" id="cusArtifact" tabindex="-1" data-bs-backdrop="static"
             aria-labelledby="cusArtifactLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -300,6 +307,7 @@
                 </div>
             </div>
         </div>
+        <!-- 设置 -->
         <div class="modal fade" id="userSet" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userSetting"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -323,6 +331,14 @@
                                 <option v-for="quality in 4" :key="quality" :value="quality-1">{{ quality }}</option>
                             </select>
                         </div>
+                        <!-- <div class="mt-3">
+                            <div>语言</div>
+                            <select class="form-select form-select-sm" name="entryQuality" id="entryQuality"
+                                v-model="userSetting.language">
+                                <option value="en">ENGLISH</option>
+                                <option value="zh">简体中文</option>
+                            </select>
+                        </div> -->
                         <button type="button" class="btn btn-genshin-dark btn-sm mt-3"
                             @click="clearStorge">清除本地数据</button>
                         <br>
@@ -336,6 +352,7 @@
                 </div>
             </div>
         </div>
+        <!-- 评分设置 -->
         <div class="modal fade" id="scoreSet" tabindex="-1" aria-labelledby="scoreSetting" aria-hidden="true">
             <div class="modal-dialog modal-sm modal-dialog-centered">
                 <div class="modal-content">
@@ -384,6 +401,7 @@
                 </div>
             </div>
         </div>
+        <!-- 关于信息 -->
         <div class="modal fade" id="about" tabindex="-1" aria-labelledby="about" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -441,6 +459,7 @@
                         strRule: "default",
                         arrRule: [],
                     },
+                    language: "zh", // 语言
                     entryQuality: -1, // 副词条升级品质
                     highScore: 35, // 高分圣遗物标准
                     listBriefMode: true, // 圣遗物列表模式（details/brief）
@@ -463,11 +482,11 @@
         },
         created() {
             this.cusEntryList = {
-                feather: this.$artiConst.val.feather,
-                flower: this.$artiConst.val.flower,
-                hourglass: this.$artiConst.val.hourglass,
-                hat: this.$artiConst.val.hat,
-                cup: this.$artiConst.val.cup
+                Plume: this.$artiConst.val.Plume,
+                Flower: this.$artiConst.val.Flower,
+                Sands: this.$artiConst.val.Sands,
+                Circlet: this.$artiConst.val.Circlet,
+                Goblet: this.$artiConst.val.Goblet
             };
             this.defaultSetting = JSON.stringify(this.userSetting);
             // 初始化自选副词条为最大值
@@ -477,10 +496,6 @@
         },
         mounted() {
             var that = this;
-            // 初始化时列表数据保持一致
-            if (this.ArtifactsList.length === 0 && this.$artifact.AUSList.length !== 0) {
-                this.ArtifactsList = [...this.$artifact.AUSList];
-            }
             if (!window.localStorage) {
                 alert("浏览器不支持localstorage");
                 return false;
@@ -492,6 +507,10 @@
                     // 给设定分配值（读取本地设置）
                     Object.assign(this.userSetting, settingObj);
                 }
+            }
+            // 初始化时列表数据保持一致
+            if (this.ArtifactsList.length === 0 && this.$artifact.AUSList.length !== 0) {
+                this.syncListData();
             }
             // 监听滚动条并记录位置，返回界面时回到记录位置
             setTimeout(() => {
@@ -508,7 +527,7 @@
                 // 获取1rem
                 // let html = document.getElementsByTagName("html"),
                 //     rem = Number.parseFloat(window.getComputedStyle(html[0]).fontSize.slice(0, -2)),
-                    // itemHeight = 0;
+                // itemHeight = 0;
                 // 计算单个item高度
                 // if(this.ArtifactsList.length > 0){
                 //     itemHeight = document.getElementsByClassName("ArtifactsBox")[0].offsetHeight + 1.5 * rem;
@@ -566,6 +585,7 @@
                             .artifactIndex(this.showSymbol)]
                         .mainEntry !== val.filterMain) this.showSymbol = "";
                     this.changeSetting();
+                    // this.syncListData();
                 },
                 deep: true
             }
@@ -688,7 +708,8 @@
             setRadarChart() {
                 if (this.showSymbol === "") return false;
                 let index = this.$artifact.artifactIndex(this.showSymbol),
-                    opArr = this.ArtifactsList[index].entry,
+                    // 获取原始数据
+                    opArr = this.$artifact.getList()[index].entry,
                     opObj = {};
                 for (let i = 0; i < opArr.length; i++) {
                     opObj[opArr[i][0]] = opArr[i][1];
@@ -710,13 +731,13 @@
                             },
                             {
                                 name: '暴击',
-                                max: entryValue['critRate'][entryValue['critRate'].length - 1] * 6,
+                                max: entryValue['CRITRate'][entryValue['CRITRate'].length - 1] * 6,
                                 min: -3.9,
                                 color: "#262626"
                             },
                             {
                                 name: '暴伤',
-                                max: entryValue['critDMG'][entryValue['critDMG'].length - 1] * 6,
+                                max: entryValue['CRITDMG'][entryValue['CRITDMG'].length - 1] * 6,
                                 min: -7.8,
                                 color: "#262626"
                             },
@@ -740,7 +761,7 @@
                             },
                             {
                                 name: '防御力',
-                                max: entryValue['defPer'][entryValue['defPer'].length - 1] * 6,
+                                max: entryValue['DEFPer'][entryValue['DEFPer'].length - 1] * 6,
                                 min: -7.3,
                                 color: "#262626"
                             }
@@ -751,10 +772,10 @@
                         type: "radar",
                         areaStyle: {},
                         data: [{
-                            value: [opObj["ATKPer"] || 0, opObj["critRate"] || 0, opObj[
-                                "critDMG"] || 0, opObj["energyRecharge"] || 0, opObj[
+                            value: [opObj["ATKPer"] || 0, opObj["CRITRate"] || 0, opObj[
+                                "CRITDMG"] || 0, opObj["energyRecharge"] || 0, opObj[
                                 "elementMastery"] || 0, opObj["HPPer"] || 0, opObj[
-                                "defPer"] || 0],
+                                "DEFPer"] || 0],
                         }]
                     }]
                 }
@@ -783,24 +804,24 @@
                 this.$artifact.sortList(sortMethod[index]);
                 this.syncListData();
             },
-            // 展示界面副词条文字处理
-            formatEntry(entry, value) {
-                let resEntry = this.$artifact.toChinese(entry, "entry"),
-                    resValue = this.$artifact.entryValFormat(entry, value);
-                return resEntry + "+" + resValue;
-            },
-            // 修改并保存当前展示圣遗物序号
+            // 修改并保存当前展示圣遗物symbol
             changeShowSymbol(symbol) {
                 this.showSymbol = symbol;
                 this.$store.state.selectHistory = symbol;
             },
             // 同步数据
             syncListData() {
-                this.ArtifactsList = [...this.$artifact.AUSList];
+                if (this.userSetting.language === "en") {
+                    this.ArtifactsList = [...this.$artifact.getList("en")];
+                } else if (this.userSetting.language === "zh") {
+                    this.ArtifactsList = [...this.$artifact.getList("zh")];
+                } else {
+                    this.ArtifactsList = [...this.$artifact.AUSList];
+                }
             },
             // 锁定/解锁
             lockChange(index) {
-                this.$artifact.AUSList[index].lock = !this.$artifact.AUSList[index].lock;
+                this.$artifact.lock(index);
                 this.syncListData();
             },
             // 计算填充数量（flex）
@@ -838,12 +859,322 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     #filltop {
         width: 100%;
     }
 
     #fillbottom {
         width: 100%;
+    }
+
+    // box界面css
+
+    .demo-container {
+        background-color: $genshin_white;
+        user-select: none;
+        overflow-y: scroll;
+        display: flex;
+        height: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        position: relative;
+        align-content: flex-start;
+        align-items: flex-start;
+        justify-content: center;
+
+        .tips {
+            position: absolute;
+            top: 45%;
+            left: 0;
+            width: 100%;
+            color: $genshin_gray;
+            font-size: 1.5rem;
+            text-align: center;
+            opacity: 0.5;
+
+            span {
+                cursor: pointer;
+                text-decoration: underline;
+            }
+        }
+
+        &::-webkit-scrollbar {
+            width: .4rem;
+            height: .0625rem;
+            transition: ease 0.2s all;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            // 滚动条里面小方块
+            border-radius: .625rem;
+            // box-shadow: inset 0 0 0.3125rem rgba(0, 0, 0, 0.2);
+            background: rgb(246, 244, 243);
+        }
+
+        &::-webkit-scrollbar-track {
+            // 滚动条里面轨道
+            box-shadow: inset 0 0 0.3125rem rgba(0, 0, 0, 0.2);
+            border-radius: .625rem;
+            background: rbg(217, 211, 205);
+        }
+
+        .filterBoxFill {
+            width: 100%;
+            height: 3rem;
+        }
+
+        .filterBox {
+            position: fixed;
+            top: 4rem;
+            left: -5rem;
+            z-index: 3;
+            color: rgb(102, 112, 122);
+            background-color: #FFF;
+            padding: 0.5rem 1rem;
+            transition: all 0.5s ease;
+
+            .filterMain,
+            .filterPart {
+                cursor: pointer;
+                display: inline-block;
+                position: relative;
+                background-color: $genshin_dark;
+                color: $genshin_white;
+                border-radius: .25rem;
+                font-size: 0.8rem;
+                padding: 0.2rem 0.3rem;
+                margin-left: 0.3rem;
+
+                &::after {
+                    content: "×";
+                    display: inline-block;
+                    text-align: center;
+                    height: 0.8rem;
+                    width: 0.8rem;
+                    line-height: 0.9rem;
+                    font-size: 0.8rem;
+                    color: rgb(223, 20, 20);
+                    background-color: $genshin_white;
+                    border-radius: 3rem;
+                    margin-left: 0.25rem;
+                }
+            }
+        }
+
+        .filterBoxShow {
+            left: 0;
+        }
+
+        .filterBoxHide {
+            left: -5rem;
+        }
+    }
+
+    // ArtifactsBox
+    .isSelect {
+        box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .25) !important;
+
+        &:after {
+            content: "";
+            position: absolute;
+            pointer-events: none;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: .1rem solid #ffffff;
+            border-radius: .25rem;
+        }
+    }
+
+    .ArtifactsBox {
+        margin: .75rem .625rem;
+        width: 10rem;
+        font-size: 0.8rem;
+        transition: ease 0.2s all;
+        overflow: hidden;
+        border: none !important;
+        background-color: $genshin_white !important;
+
+        &:hover {
+            box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .25) !important;
+        }
+
+        &:active {
+            opacity: 0.8;
+        }
+
+        .ArtifactsTitle {
+            position: relative;
+            background-position: 4.5rem 0.6rem, -4.7rem -7.7rem;
+            background-size: 5rem, 19rem;
+            background-repeat: no-repeat;
+            background-blend-mode: normal, color-burn;
+
+            .islock {
+                position: absolute;
+                left: .1875rem;
+                top: .1875rem;
+                background-color: rgba(74, 83, 102, 0.7);
+                border-radius: 0.25rem;
+                padding: 0 .1875rem;
+                text-align: center;
+                height: 0.8rem;
+                line-height: 0.8rem;
+            }
+        }
+
+        .highScoreAward {
+            position: absolute;
+        }
+
+        .card-body {
+            &:first-child {
+                background-color: rgb(195, 133, 66);
+                border-bottom-right-radius: 1.5625rem;
+                color: #fff;
+                padding: .625rem .9375rem;
+
+                .badge {
+                    background-color: rgb(57, 68, 79);
+                    padding: .1875rem .25rem .1875rem;
+                }
+            }
+        }
+
+        .buttonBox {
+            background-color: rgb(255, 231, 187);
+            padding: .3125rem .9375rem;
+        }
+
+        ul li {
+            color: $genshin_dark;
+            background-color: $genshin_white;
+            font-size: 0.75rem;
+            white-space: nowrap;
+        }
+    }
+
+    #radarChartBox,
+    #radarChartBox2 {
+        margin: .625rem auto;
+        width: 18.125rem;
+        height: 15rem;
+    }
+
+    #mobileShow {
+        position: absolute;
+        top: .625rem;
+        right: .625rem;
+    }
+
+    .upgradeCheat {
+        display: inline-block;
+        position: absolute;
+        right: .3125rem;
+    }
+
+    // footer
+
+    footer {
+        position: fixed !important;
+        background-color: #d2cab0;
+        width: 100%;
+        height: 3.75rem;
+        left: 0;
+        bottom: 0;
+
+        .buttonBox {
+            display: flex;
+            padding: .8125rem .625rem;
+            justify-content: flex-end;
+        }
+    }
+
+
+    #filter,
+    #sort {
+        height: 2.3125rem;
+        width: 2.3125rem;
+        background-color: $genshin_white;
+        border-radius: 1.5625rem;
+        padding: 0.375rem 0;
+    }
+
+    .filterList {
+        height: 26.875rem;
+        overflow-y: scroll;
+        background-color: rgb(61, 69, 86) !important;
+        background-image: url(../static/images/genshin-symbol.png);
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position-y: 50%;
+        background-blend-mode: multiply;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        li a {
+            &:hover {
+                color: $genshin_white;
+                background-color: rgba(72, 81, 98, 0.5) !important;
+            }
+
+            color: $genshin_white;
+        }
+    }
+
+    .sortList {
+        background-color: rgb(61, 69, 86) !important;
+
+        li a {
+            &:hover {
+                color: $genshin_white;
+                background-color: rgba(72, 81, 98, 0.5) !important;
+            }
+
+            color: $genshin_white;
+        }
+    }
+
+    .dropdown-footer {
+        inset: auto auto 1rem 0 !important;
+    }
+
+    #start {
+        position: relative;
+        background-color: #ece5d8;
+        border-radius: 1.5625rem;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    #start-drop {
+        background-color: #ece5d8;
+        border-left: solid 0.0625rem rgb(191, 173, 166);
+        border-radius: 1.5625rem;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+    #dropdownMenuLink::after {
+        content: "";
+        clear: both;
+    }
+
+    #score,
+    #score-2 {
+        float: right;
+        margin-top: -0.25rem;
+    }
+
+    .selectBox {
+        width: 10rem;
+        position: fixed;
+        top: .5rem;
+        right: .9375rem;
+        z-index: 20;
     }
 </style>

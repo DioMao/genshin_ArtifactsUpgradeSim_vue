@@ -6,7 +6,7 @@ import * as echarts from 'echarts'
 import axios from 'axios'
 import { ArtifactsSim,artiConst } from './utils/ArtifactsUpradeSim_module@0.1.9'
 // 全局样式
-import './style/common.scss'
+// import './style/common.scss'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 // 创建实例

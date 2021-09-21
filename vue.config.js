@@ -5,14 +5,17 @@ module.exports = {
   pluginOptions: {
     'style-resources-loader': {
       preProcessor: 'scss',
-      patterns: []
+      patterns: [
+        // 配置全局scss
+        path.resolve(__dirname,"src/style/common.scss")
+      ],
     }
   },
   configureWebpack: () => {
     // 生产环境配置
-    if (process.env.NODE_ENV === "production") {
+    // if (process.env.NODE_ENV === "production") {
 
-    }
+    // }
   },
   // 使用cdn不打包的项目
   chainWebpack: config => {

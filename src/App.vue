@@ -128,9 +128,51 @@
 </script>
 
 <style lang="scss">
-#app {
-  font-family: "genshin-font";
-  width: 100%;
-  user-select: none;
-}
+    @font-face {
+        font-family: "genshin-font";
+        src: url(./style/genshin_mini_artifact.ttf);
+    }
+
+    #app {
+        font-family: "genshin-font";
+        width: 100%;
+        user-select: none;
+    }
+
+    #loading {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2000;
+        background-color: #fff;
+
+        .loading-box {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            height: 2rem;
+            width: 13.6rem;
+            margin-top: -1rem;
+            margin-left: -6.8rem;
+            background-color: rgb(245,245,245);
+            mask: url(./static/images/elements_logo.png);
+            mask-image: url(./static/images/elements_logo.png);
+            -webkit-mask-image: url(./static/images/elements_logo.png);
+            mask-size: contain;
+            -webkit-mask-size: contain;
+
+            .loading-progress {
+                height: 100%;
+                width: 0;
+                background-color: rgb(102,102,102);
+                transition: all 0.5s ease;
+            }
+        }
+    }
+
+    .hide {
+        display: none !important;
+    }
 </style>

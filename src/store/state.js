@@ -5,11 +5,16 @@ export default {
     elementSrc: require("../static/images/elements_logo.png"),
     symbolSrc: require("../static/images/genshin-symbol.png"),
     partSrc: {
-        feather: require("../static/images/A-feather.png"),
-        flower: require("../static/images/A-flower.png"),
-        cup: require("../static/images/A-cup.png"),
-        hourglass: require("../static/images/A-hourglass.png"),
-        hat: require("../static/images/A-hat.png")
+        Plume: require("../static/images/A-Plume.png"),
+        '死之羽': require("../static/images/A-Plume.png"),
+        Flower: require("../static/images/A-Flower.png"),
+        '生之花': require("../static/images/A-Flower.png"),
+        Goblet: require("../static/images/A-Goblet.png"),
+        '空之杯': require("../static/images/A-Goblet.png"),
+        Sands: require("../static/images/A-Sands.png"),
+        '时之沙': require("../static/images/A-Sands.png"),
+        Circlet: require("../static/images/A-Circlet.png"),
+        '理之冠': require("../static/images/A-Circlet.png")
     },
     userSetting: { // 用户设置
         scoreConfig: { // 圣遗物得分设置

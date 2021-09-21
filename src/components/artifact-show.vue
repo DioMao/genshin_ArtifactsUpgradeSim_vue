@@ -3,9 +3,9 @@
         <div class="aTitle"> {{ artifactName }} </div>
         <div class="titleLine"></div>
         <div class="aHead">
-            {{ this.$artifact.toChinese(showdetail.part,"parts") }}
-            <div class="mainEntry"> {{ this.$artifact.toChinese(showdetail.mainEntry,"mainEntry") }} </div>
-            <div class="mainEntryValue">{{ mainEntryValue }}</div>
+            {{ showdetail.part }}
+            <div class="mainEntry"> {{ showdetail.mainEntry }} </div>
+            <div class="mainEntryValue">{{ showdetail.mainEntryValue }}</div>
             <div class="aImg">
                 <img :src="this.$store.state.partSrc[showdetail.part]" :alt="showdetail.part">
                 <img :src="this.$store.state.symbolSrc" alt="genshin-symbol">
@@ -32,7 +32,7 @@
                 </svg>
             </span>
             <ul>
-                <li v-for="entry in showdetail.entry" :key="entry">·{{ showEntryList(entry[0],entry[1]) }}</li>
+                <li v-for="entry in showdetail.entry" :key="entry">·{{ entry[0] + "+" + entry[1] }}</li>
             </ul>
         </div>
         <div class="aButtonBox">
@@ -50,11 +50,16 @@ export default {
     data(){
         return {
             name: {
-                feather: "角斗士的归宿",
-                flower: "角斗士的留恋",
-                cup: "角斗士的酣醉",
-                hourglass: "角斗士的希冀",
-                hat: "角斗士的凯旋"
+                "死之羽": "角斗士的归宿",
+                "生之花": "角斗士的留恋",
+                "空之杯": "角斗士的酣醉",
+                "时之沙": "角斗士的希冀",
+                "理之冠": "角斗士的凯旋",
+                Plume: "Gladiator's Destiny",
+                Flower: "Gladiator's Nostalgia",
+                Goblet: "Gladiator's Intoxication",
+                Sands: "Gladiator's Longing",
+                Circlet: "Gladiator's Triumphus"
             }
         }
     },
@@ -84,9 +89,6 @@ export default {
     computed:{
         artifactName(){
             return this.name[this.showdetail.part];
-        },
-        mainEntryValue(){
-            return this.$artifact.entryValFormat(this.showdetail.mainEntry, this.showdetail.mainEntryValue,"main")
         }
     },
     methods:{
@@ -254,11 +256,19 @@ $genshin_gray: rgb(149, 149, 149);
     .unlock {
       background-color: #f3efea;
       border: solid 0.0625rem #9ea1a8;
+
+      &:active{
+          opacity: 0.8;
+      }
     }
 
     .islock {
       background-color: $genshin_dark;
-      border: solid .0625rem $genshin_dark;
+      border: solid .0625rem #FFF;
+
+      &:active{
+          opacity: 0.8;
+      }
     }
   }
 
