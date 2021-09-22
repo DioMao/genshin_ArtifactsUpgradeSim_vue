@@ -1,21 +1,24 @@
 {
   "name": "artifact_sim",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
+    "local": "vue-cli-service serve --mode local",
+    "dev": "vue-cli-service serve --mode development",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "report": "vue-cli-service build --report"
   },
   "dependencies": {
     "axios": "^0.21.4",
-    "vue": "^3.2.4",
-    "vuex": "^4.0.2",
-    "vue-router": "^4.0.11",
-    "core-js": "^3.6.5",
     "bootstrap": "^5.1.0",
-    "echarts": "^5.1.2"
+    "core-js": "^3.6.5",
+    "echarts": "^5.1.2",
+    "vue": "^3.2.4",
+    "vue-i18n": "^9.1.7",
+    "vue-router": "^4.0.11",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@popperjs/core": "^2.10.1",

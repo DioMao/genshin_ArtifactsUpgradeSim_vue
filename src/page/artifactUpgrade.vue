@@ -29,7 +29,7 @@
         </div>
         <div class="upArtifactBox">
             <div class="artiImgBox">
-                <img :src="state.partSrc[Artifact.part]" :alt="Artifact.part">
+                <img :src="suitUrl">
             </div>
             <div class="flashingCircle ani-rotate1"></div>
             <div class="flashingCircle flashingCircle2 ani-rotate2"></div>
@@ -51,7 +51,7 @@
                     <div class="upgradeSuccess ani-upSuccess">强化完成</div>
                     <div class="upgradeImgBox ani-ArtifactShow">
                         <div class="upgradeImg">
-                            <img :src="state.partSrc[Artifact.part]" :alt="Artifact.part">
+                            <img :src="suitUrl" :alt="Artifact.part">
                         </div>
                         <div class="UpLevelStar">
                             <span v-for="i in 5" :key="i" style="margin-right: 2px;">
@@ -101,9 +101,6 @@
 </template>
 
 <script>
-    import {
-        ArtifactsSim
-    } from '@/utils/ArtifactsUpradeSim_module@0.1.9'
     import demoAlert from '@/components/demo-alert'
     import '@/style/stars.css'
 
@@ -119,7 +116,8 @@
                 ArtifactsList: [],
                 Artifact: {
                     level: 0,
-                    part: "feather",
+                    suit: "none",
+                    part: "Plume",
                     mainEntry: "none",
                     mainEntryValue: 0,
                     entry: [],
@@ -140,16 +138,23 @@
                 }
             }
         },
+        computed: {
+            suitUrl() {
+                let item = this.$artifact.getList()[this.index],
+                    src = require('../assets/images'+"/" + item.suit.replace(/\s+/g,"") + "/" + item.part + ".png");
+                return src;
+            }
+        },
         mounted() {
             // 初始化时列表数据保持一致
-            if (this.ArtifactsList.length == 0 && ArtifactsSim.AUSList.length != 0) {
-                this.ArtifactsList = [...ArtifactsSim.AUSList];
+            if (this.ArtifactsList.length == 0 && this.$artifact.AUSList.length != 0) {
+                this.ArtifactsList = [...this.$artifact.AUSList];
             }
             // 验证圣遗物是否存在，否则跳转回列表（防止url直接访问出错）
-            if (ArtifactsSim.AUSList.length < (parseInt(this.index) + 1)) {
+            if (this.$artifact.AUSList.length < (parseInt(this.index) + 1)) {
                 this.$router.replace("/");
             } else {
-                this.Artifact = ArtifactsSim.AUSList[this.index];
+                this.Artifact = this.$artifact.AUSList[this.index];
             }
         },
         methods: {
@@ -163,12 +168,12 @@
                 // 是否升到满级
                 if (type == "max") {
                     while (this.Artifact.level < 20) {
-                        res = ArtifactsSim.upgrade(this.index, this.upEntry, this.upgradeLv);
+                        res = this.$artifact.upgrade(this.index, this.upEntry, this.upgradeLv);
                     }
                 } else {
-                    res = ArtifactsSim.upgrade(this.index, this.upEntry, this.upgradeLv);
+                    res = this.$artifact.upgrade(this.index, this.upEntry, this.upgradeLv);
                 }
-                this.ArtifactsList = [...ArtifactsSim.AUSList];
+                this.ArtifactsList = [...this.$artifact.AUSList];
                 // 清空数据
                 this.newEntry = JSON.parse("[\"none\"]");
                 this.newEntryValue = JSON.parse("[0]");
@@ -204,7 +209,7 @@
             },
             // 初始化圣遗物
             initArtifact() {
-                let res = ArtifactsSim.reset(this.index);
+                let res = this.$artifact.reset(this.index);
                 if (res) {
                     this.alertControl("重置圣遗物成功~再试试手气吧", 1500);
                 } else {
@@ -213,14 +218,14 @@
             },
             // 主词条展示优化
             mainEntryValue(mainEntry, val) {
-                return ArtifactsSim.entryValFormat(mainEntry, val, "main");
+                return this.$artifact.entryValFormat(mainEntry, val, "main");
             },
             // 词条优化
             showEntryList(entry, value) {
-                return ArtifactsSim.entryValFormat(entry, value);
+                return this.$artifact.entryValFormat(entry, value);
             },
             toChinese(word, type) {
-                return ArtifactsSim.toChinese(word, type);
+                return this.$artifact.toChinese(word, type);
             },
             // 提示框
             alertControl(msg, time = 2000, state = "success") {
@@ -299,7 +304,7 @@
             left: -100%;
             height: 100%;
             width: 300%;
-            background-image: url(../static/images/fog.png);
+            background-image: url(../assets/images/fog.png);
             background-size: 125rem 75rem;
             filter: sepia(1);
         }

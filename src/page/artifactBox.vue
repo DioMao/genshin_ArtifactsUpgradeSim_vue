@@ -3,7 +3,7 @@
         <demo-alert :state="alertFunc.alertState" :show="alertFunc.alertShow">{{ alertFunc.alertMsg }}</demo-alert>
         <div class="selectBox d-flex">
             <select class="form-select" aria-label="Default select example" v-model="userSetting.filterPart">
-                <option selected value="default">显示全部</option>
+                <option selected value="default">{{ $t('msg.filterPartDefault') }}</option>
                 <option :value="part" v-for="part in this.$artiConst.val.parts" :key="part">
                     {{ this.$artifact.toChinese(part,"parts") }}
                 </option>
@@ -15,7 +15,7 @@
             <!-- 筛选提示框 -->
             <div class="filterBox"
                 :class="(userSetting.filterMain!=='default'||userSetting.filterPart!=='default')?'filterBoxShow':'filterBoxHide'">
-                <div style="display:inline-block;">筛选:</div>
+                <div style="display:inline-block;">{{ $t('msg.filter') }}</div>
                 <div class="filterMain" v-show="userSetting.filterMain!=='default'"
                     @click="userSetting.filterMain='default'">
                     {{ (userSetting.filterMain==="ATK" || userSetting.filterMain === "HP")?"固定":"" }}{{ this.$artifact.toChinese(userSetting.filterMain,"mainEntry") }}
@@ -24,7 +24,8 @@
                     @click="userSetting.filterPart='default'">
                     {{ this.$artifact.toChinese(userSetting.filterPart,"parts") }}</div>
             </div>
-            <div class="tips" v-show="ArtifactsList.length===0">列表里还没有圣遗物。<br><span @click="start">创建</span>一个吧！</div>
+            <div class="tips" v-if="ArtifactsList.length===0 && userSetting.language==='zh'">列表里还没有圣遗物。<br><span @click="start">创建</span>一个吧！</div>
+            <div class="tips" v-if="ArtifactsList.length===0 && userSetting.language==='en'">There's no artifact here.<br><span @click="start">Random draw?</span></div>
             <!-- 上半填充 -->
             <div id="filltop" :style="{height:filltop+'px'}"></div>
             <!-- 圣遗物列表 -->
@@ -34,7 +35,7 @@
                 v-show="(userSetting.filterPart==='default' || userSetting.filterPart === Artifacts.part) && (userSetting.filterMain === 'default' || userSetting.filterMain === Artifacts.mainEntry)"
                 @click="changeShowSymbol(Artifacts.symbol)">
                 <div class="card-body ArtifactsTitle"
-                    :style="{backgroundImage:'url('+ state.partSrc[Artifacts.part] + ')'+(Artifacts.symbol===showSymbol?',url('+ state.symbolSrc +')':'')}">
+                    :style="{backgroundImage:'url('+ imgUrl(Artifacts.symbol) + ')'+(Artifacts.symbol===showSymbol?',url('+ state.symbolSrc +')':'')}">
                     <div class="islock" v-if="Artifacts.lock">
                         <svg t="1631861008451" class="icon" viewBox="0 0 1024 1024" version="1.1"
                             xmlns="http://www.w3.org/2000/svg" p-id="4168" width="0.5rem" height="0.5rem"
@@ -44,7 +45,7 @@
                                 p-id="4169"></path>
                         </svg>
                     </div>
-                    <div :class="'card-text fs-6 '+(ArtifactRate(index)>=userSetting.highScore?'highscore':'')">
+                    <div :class="'card-text'+(ArtifactRate(index)>=userSetting.highScore?'highscore':'')" :style="{fontSize:userSetting.language==='zh'?'0.9rem':'0.75rem'}">
                         {{ Artifacts.part }}</div>
                     <div class="levelStar">
                         <span v-for="i in 5" :key="i" style="margin-right: 2px;">
@@ -111,39 +112,39 @@
         <!-- 右侧圣遗物展示详情 -->
         <div class="ArtifactShowBox">
             <artifact-show @upgrade="ArtifactUpgrade" @init="initArtifact" @del="deleteArtifact" @lock="lockChange"
-                :showdetail="showDetail" :index="this.$artifact.artifactIndex(showSymbol)" v-if="showSymbol!==''">
+                :showdetail="showDetail" :index="this.$artifact.artifactIndex(showSymbol)" :language="this.userSetting.language" v-if="showSymbol!==''">
             </artifact-show>
             <div :style="{visibility:(showSymbol!=='')?'visible':'hidden'}">
                 <div id="radarChartBox" ref="radarChartBox"></div>
             </div>
-            <div style="margin: 0 15px;" v-show="showSymbol!==''">副词条评分(beta)：{{ ArtifactScore }}
+            <div style="margin: 0 15px;" v-show="showSymbol!==''">{{ $t('msg.entryScore') }}(beta)：{{ ArtifactScore }}
                 <button id="score" class="btn btn-genshin-dark btn-sm" data-bs-toggle="modal"
-                    data-bs-target="#scoreSet">评分标准</button>
+                    data-bs-target="#scoreSet">{{ $t('msg.scoreSetting') }}</button>
             </div>
         </div>
         <!-- 手机端圣遗物展示 -->
         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanArtifactShow" aria-labelledby="offcanArtifactShow">
             <div class="offcanvas-header">
-                <h5 class="offcanvas-title">圣遗物详情</h5>
+                <h5 class="offcanvas-title">{{ $t('msg.artifactDetail') }}</h5>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
                     aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
                 <div>
                     <artifact-show @upgrade="ArtifactUpgrade" @init="initArtifact" @del="deleteArtifact"
-                        @lock="lockChange" :showdetail="showDetail" :index="this.$artifact.artifactIndex(showSymbol)"
+                        @lock="lockChange" :showdetail="showDetail" :index="this.$artifact.artifactIndex(showSymbol)" :language="this.userSetting.language"
                         v-if="showSymbol!==''">
                     </artifact-show>
                 </div>
-                <div class="mt-3" v-show="showSymbol!==''">副词条评分(beta)：{{ ArtifactScore }}
+                <div class="mt-3" v-show="showSymbol!==''">{{ $t('msg.entryScore') }}(beta)：{{ ArtifactScore }}
                     <button id="score-2" class="btn btn-genshin-dark btn-sm" data-bs-toggle="modal"
-                        data-bs-target="#scoreSet">评分标准</button>
+                        data-bs-target="#scoreSet">{{ $t('msg.scoreSetting') }}</button>
                 </div>
                 <div :style="{visibility:(showSymbol!=='')?'visible':'hidden'}" class="mt-3">
                     <div id="radarChartBox2" ref="radarChartBox2"></div>
                 </div>
                 <button type="button" class="btn btn-genshin-dark mt-3" data-bs-dismiss="offcanvas" aria-label="Close"
-                    style="float: right;"><span class="xinbox"></span>关闭详情</button>
+                    style="float: right;"><span class="xinbox"></span>{{ $t('msg.closeDetail') }}</button>
             </div>
         </div>
         <footer>
@@ -158,7 +159,7 @@
                 </button>
                 <ul class="dropdown-menu filterList" aria-labelledby="filter">
                     <li><a class="dropdown-item" href="#" @click="mainEntryfilter('default')"
-                            :style="{background:(userSetting.filterMain==='default'?'rgb(85,92,107)':'inherit')}">默认<span
+                            :style="{background:(userSetting.filterMain==='default'?'rgb(85,92,107)':'inherit')}">{{ $t('msg.default') }}<span
                                 class="ms-5 float-end">{{ ArtifactsList.length }}</span></a></li>
                     <li v-for="mainEntryF in this.$artiConst.val.mainEntryList" :key="mainEntryF"><a
                             class="dropdown-item" href="#" @click="mainEntryfilter(mainEntryF)"
@@ -174,19 +175,19 @@
                     </svg>
                 </button>
                 <ul class="dropdown-menu sortList" aria-labelledby="sort">
-                    <li><a class="dropdown-item" href="#" @click="sortList(0)">等级升序</a></li>
-                    <li><a class="dropdown-item" href="#" @click="sortList(1)">等级降序</a></li>
-                    <li><a class="dropdown-item" href="#" @click="sortList(2)">按位置排序</a></li>
-                    <li><a class="dropdown-item" href="#" @click="sortList(3)">按主属性排序</a></li>
+                    <li><a class="dropdown-item" href="#" @click="sortList(0)">{{ $t('msg.lvasc') }}</a></li>
+                    <li><a class="dropdown-item" href="#" @click="sortList(1)">{{ $t('msg.lvdesc') }}</a></li>
+                    <li><a class="dropdown-item" href="#" @click="sortList(2)">{{ $t('msg.sortByPart') }}</a></li>
+                    <li><a class="dropdown-item" href="#" @click="sortList(3)">{{ $t('msg.sortByMainEntry') }}</a></li>
                 </ul>
-                <button id="start" @click="start" class="btn btn-genshin"><span class="circleinbox"></span>随机</button>
+                <button id="start" @click="start" class="btn btn-genshin"><span class="circleinbox"></span>{{ $t('msg.random') }}</button>
                 <button class="btn btn-genshin" data-bs-toggle="modal" data-bs-target="#cusArtifact"><span
-                        class="squareinbox"></span>自选</button>
+                        class="squareinbox"></span>{{ $t('msg.custom') }}</button>
 
                 <div class="dropdown" style="display:inline-block;">
                     <a class="btn btn-genshin dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        更多
+                        {{ $t('msg.more') }}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <li>
@@ -196,7 +197,7 @@
                                     <path fill-rule="evenodd"
                                         d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5z" />
                                 </svg>
-                                撤销删除
+                                {{ $t('msg.undoDel') }}
                             </a>
                         </li>
                         <li>
@@ -208,7 +209,7 @@
                                     <path
                                         d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />
                                 </svg>
-                                全部重置
+                                {{ $t('msg.resetAll') }}
                             </a>
                         </li>
                         <li>
@@ -218,7 +219,7 @@
                                     <path
                                         d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
                                 </svg>
-                                清空列表
+                                {{ $t('msg.clearList') }}
                             </a>
                         </li>
                         <li>
@@ -231,7 +232,7 @@
                                     <path
                                         d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
                                 </svg>
-                                设置
+                                {{ $t('msg.settings') }}
                             </a>
                         </li>
                         <li>
@@ -244,7 +245,7 @@
                                     <path
                                         d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
                                 </svg>
-                                关于
+                                {{ $t('msg.about') }}
                             </a>
                         </li>
                     </ul>
@@ -261,13 +262,13 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <label for="cutArtifactPart" class="form-label">位置</label>
+                        <label for="cutArtifactPart" class="form-label">{{ $t('msg.part') }}</label>
                         <select id="cutArtifactPart" class="form-select form-select-sm mb-3" v-model="cusPart"
                             @change="cusEntry.length=0;cusMainEntry=''">
                             <option v-for="part in this.$artiConst.val.parts" :key="part" :value="part">
                                 {{ this.$artifact.toChinese(part,"parts") }}</option>
                         </select>
-                        <label class="form-label" v-show="cusPart!=='default'&&cusPart!==''">主属性</label>
+                        <label class="form-label" v-show="cusPart!=='default'&&cusPart!==''">{{ $t('msg.mainEntry') }}</label>
                         <select class="form-select form-select-sm mb-3" v-if="cusPart!=='default'&&cusPart!==''"
                             v-model="cusMainEntry" @change="cusEntry.length=0">
                             <option v-for="partModal in cusEntryList[cusPart]" :key="partModal" :value="partModal">
@@ -297,12 +298,12 @@
                         <div class="form-check form-switch me-auto">
                             <input class="form-check-input" type="checkbox" id="cusCloseSwitch" v-model="cusCloseSwitch"
                                 checked>
-                            <label class="form-check-label" for="cusCloseSwitch">确认后关闭</label>
+                            <label class="form-check-label" for="cusCloseSwitch">{{ $t('handle.confirmAndClose') }}</label>
                         </div>
                         <button type="button" class="btn btn-genshin-dark" data-bs-dismiss="modal"><span
-                                class="xinbox"></span>关闭</button>
+                                class="xinbox"></span>{{ $t('handle.close') }}</button>
                         <button type="button" class="btn btn-genshin-dark" @click="cusCreatArtifact"
-                            :data-bs-dismiss="cusCloseSwitch?'modal':null"><span class="circleinbox"></span>确认</button>
+                            :data-bs-dismiss="cusCloseSwitch?'modal':null"><span class="circleinbox"></span>{{ $t('handle.confirm') }}</button>
                     </div>
                 </div>
             </div>
@@ -313,7 +314,7 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="userSetting">设置</h5>
+                        <h5 class="modal-title" id="userSetting">{{ $t('msg.settings') }}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -327,27 +328,27 @@
                             </div>
                             <select class="form-select form-select-sm" name="entryQuality" id="entryQuality"
                                 v-model="userSetting.entryQuality">
-                                <option value="-1">随机</option>
+                                <option value="-1">{{ $t('msg.random') }}</option>
                                 <option v-for="quality in 4" :key="quality" :value="quality-1">{{ quality }}</option>
                             </select>
                         </div>
-                        <!-- <div class="mt-3">
-                            <div>语言</div>
+                        <div class="mt-3">
+                            <div>{{ $t('msg.language') }}</div>
                             <select class="form-select form-select-sm" name="entryQuality" id="entryQuality"
                                 v-model="userSetting.language">
                                 <option value="en">ENGLISH</option>
                                 <option value="zh">简体中文</option>
                             </select>
-                        </div> -->
+                        </div>
                         <button type="button" class="btn btn-genshin-dark btn-sm mt-3"
-                            @click="clearStorge">清除本地数据</button>
+                            @click="clearStorge">{{ $t('msg.clearStorage') }}</button>
                         <br>
                         <button type="button" class="btn btn-genshin-dark btn-sm mt-3"
-                            @click="resetSetting">恢复默认设置（含评分设置）</button>
+                            @click="resetSetting">{{ $t('msg.resetSetting') }}</button>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-genshin-dark" data-bs-dismiss="modal"><span
-                                class="circleinbox"></span>确认</button>
+                                class="circleinbox"></span>{{ $t('handle.confirm') }}</button>
                     </div>
                 </div>
             </div>
@@ -381,7 +382,7 @@
                         <div v-show="userSetting.scoreConfig.mode==='string'">
                             <select class="form-select form-select-sm" name="scoreString" id="scoreString"
                                 v-model="userSetting.scoreConfig.strRule">
-                                <option value="default">默认</option>
+                                <option value="default">{{ $t('msg.default') }}</option>
                                 <option v-for="config in this.$artiConst.val.scoreList" :key="config" :value="config">
                                     {{ this.$artifact.toChinese(config,"score") }}</option>
                             </select>
@@ -417,7 +418,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-genshin-dark" data-bs-dismiss="modal"><span
-                                class="circleinbox"></span>确认</button>
+                                class="circleinbox"></span>{{ $t('handle.confirm') }}</button>
                     </div>
                 </div>
             </div>
@@ -584,8 +585,9 @@
                     if (this.showSymbol !== "" && val.filterMain !== "default" && this.ArtifactsList[this.$artifact
                             .artifactIndex(this.showSymbol)]
                         .mainEntry !== val.filterMain) this.showSymbol = "";
+                    this.$i18n.locale = this.userSetting.language;
                     this.changeSetting();
-                    // this.syncListData();
+                    this.syncListData();
                 },
                 deep: true
             }
@@ -823,6 +825,13 @@
             lockChange(index) {
                 this.$artifact.lock(index);
                 this.syncListData();
+            },
+            // 图片动态路径
+            imgUrl(symbol) {
+                let index = this.$artifact.artifactIndex(symbol),
+                    item = this.$artifact.getList()[index],
+                    src = require('../assets/images'+"/" + item.suit.replace(/\s+/g,"") + "/" + item.part + ".png");
+                return src;
             },
             // 计算填充数量（flex）
             getFillCount() {
@@ -1106,7 +1115,7 @@
         height: 26.875rem;
         overflow-y: scroll;
         background-color: rgb(61, 69, 86) !important;
-        background-image: url(../static/images/genshin-symbol.png);
+        background-image: url(../assets/images/genshin-symbol.png);
         background-repeat: no-repeat;
         background-size: contain;
         background-position-y: 50%;

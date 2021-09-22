@@ -11,7 +11,7 @@
         <nav class="navbar navbar-expand-lg navbar-light shadow-sm">
             <div class="container-fluid">
                 <div class="siteTitle position-relative">
-                    <a data-bs-toggle="offcanvas" href="#offcanMenu" aria-controls="offcanMenu">圣遗物强化模拟器</a>
+                    <a data-bs-toggle="offcanvas" href="#offcanMenu" aria-controls="offcanMenu">{{ $t('title') }}</a>
                 </div>
             </div>
         </nav>
@@ -78,7 +78,7 @@
         },
         mounted() {
             // 预加载图片(同时控制进度条)
-            this.$axios.all([this.preLoadImg(), this.preLoadImg2()])
+            this.$axios.all([this.preLoadImg()])
                 .then(this.$axios.spread(() => {
 
                 })).catch((err => {
@@ -99,24 +99,10 @@
         methods: {
             preLoadImg() {
                 const that = this;
-                for (let part of this.$artiConst.val.parts) {
-                    let errtime = 0;
-                    let request = this.$axios.get(that.$store.state.partSrc[part]).
-                    then(() => {
-                        that.loadProgress += 15;
-                    }).catch((err) => {
-                        console.log(err);
-                        (errtime < 3) ? (request, errtime++) : (that.loadProgress += 15);
-                    })
-                }
-                return true;
-            },
-            preLoadImg2() {
-                const that = this;
                 let errtime = 0,
                     request = this.$axios.get(that.$store.state.symbolSrc)
                     .then(() => {
-                        that.loadProgress += 15;
+                        that.loadProgress += 90;
                         return true;
                     }).catch(err => {
                         console.log(err);
@@ -156,17 +142,17 @@
             width: 13.6rem;
             margin-top: -1rem;
             margin-left: -6.8rem;
-            background-color: rgb(245,245,245);
-            mask: url(./static/images/elements_logo.png);
-            mask-image: url(./static/images/elements_logo.png);
-            -webkit-mask-image: url(./static/images/elements_logo.png);
+            background-color: rgb(245, 245, 245);
+            mask: url(./assets/images/elements_logo.png);
+            mask-image: url(./assets/images/elements_logo.png);
+            -webkit-mask-image: url(./assets/images/elements_logo.png);
             mask-size: contain;
             -webkit-mask-size: contain;
 
             .loading-progress {
                 height: 100%;
                 width: 0;
-                background-color: rgb(102,102,102);
+                background-color: rgb(102, 102, 102);
                 transition: all 0.5s ease;
             }
         }
