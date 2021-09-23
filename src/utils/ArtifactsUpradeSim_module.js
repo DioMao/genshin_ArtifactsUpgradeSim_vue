@@ -418,7 +418,8 @@ class ArtifactsFunction_class {
                 initEntry: '',
                 upgradeHistory: [],
                 creationDate: Date.now(),
-                lock: false
+                lock: false,
+                isNew: true
             },
             ArtifactEntry = [],
             ArtifactEntryRate = [];
@@ -551,6 +552,8 @@ class ArtifactsFunction_class {
         }
         // 增加等级
         currentArtifact.level += 4;
+        // 移除新遗物状态
+        currentArtifact.isNew = false;
         // 增加主属性
         currentArtifact.mainEntryValue = artiConst.val.mainEntryValueList[currentArtifact.mainEntry][currentArtifact.level / 4];
         this.setLocalStorage(this[LOCAL_STORAGE_KEY], this[AUS_LIST]);
@@ -830,7 +833,7 @@ class ArtifactsFunction_class {
                 }
                 if (rule === "part" || rule === "mainEntry") {
                     // 排序优先级：先按照part/mainEntry升序，再按照等级降序排列，再按照套装降序
-                    let name_a,name_b,name_a2,name_b2;
+                    let name_a, name_b, name_a2, name_b2;
                     if (rule === "part") {
                         name_a = artiConst.val.parts.indexOf(val_a[rule]);
                         name_b = artiConst.val.parts.indexOf(val_b[rule]);
@@ -842,7 +845,7 @@ class ArtifactsFunction_class {
                         name_b = artiConst.val.mainEntryList.indexOf(val_b[rule]);
                         rule = "part";
                         name_a2 = artiConst.val.parts.indexOf(val_a[rule]),
-                        name_b2 = artiConst.val.parts.indexOf(val_a[rule]);
+                            name_b2 = artiConst.val.parts.indexOf(val_a[rule]);
                     }
                     if (name_a > name_b) {
                         return 1;
@@ -896,6 +899,23 @@ class ArtifactsFunction_class {
         return -1;
     }
 
+    /**
+     * 处理并返回指定symbol的圣遗物数据
+     * @param {string} symbol 圣遗物symbol
+     * @param {string} language 目标语言（默认中文）
+     * @returns 查询结果
+     */
+    getArtifact(symbol, language = "origin") {
+        let index = this.artifactIndex(symbol);
+        if (index === -1) {
+            return false;
+        } else if (language === "origin") {
+            return this[AUS_LIST][index];
+        } else {
+            return this.translate(this[AUS_LIST][index], language);
+        }
+    }
+
     /** 其他函数 **/
 
     /**
@@ -933,6 +953,41 @@ class ArtifactsFunction_class {
             return false;
         }
         return false;
+    }
+
+    /**
+     * 圣遗物翻译&词条处理
+     * @param {object} artifact 待处理的圣遗物数据
+     * @param {string} language 目标语言
+     * @returns 处理后的圣遗物数据
+     */
+    translate(item, language = "zh") {
+        const lan = ["zh", "en"];
+        let artifact = JSON.parse(JSON.stringify(item));
+        if (typeof (language) !== "string" || lan.indexOf(language) === -1) return artifact;
+        try {
+            if (lan.indexOf(language) !== -1 && language !== "origin") {
+                // 主词条数值处理
+                artifact.mainEntryValue = this.entryValFormat(artifact.mainEntry, artifact.mainEntryValue, "main");
+                if (language === "zh") {
+                    artifact.mainEntry = this.toChinese(artifact.mainEntry, "mainEntry");
+                    artifact.part = this.toChinese(artifact.part, "parts");
+                    artifact.suit = this.toChinese(artifact.suit, "suit");
+                } else if (language === "en") {
+                    artifact.mainEntry = artiConst.val.mainEntryList_en[artiConst.val.mainEntryList.indexOf(artifact.mainEntry)];
+                    artifact.part = artiConst.val.parts_en[artiConst.val.parts.indexOf(artifact.part)];
+                }
+                // 副词条数值处理
+                artifact.entry.forEach(e => {
+                    e[1] = this.entryValFormat(e[0], e[1]);
+                    if (language === "zh") e[0] = this.toChinese(e[0], "entry");
+                    if (language === "en") e[0] = artiConst.val.entryList_en[artiConst.val.entryList.indexOf(e[0])];
+                })
+            }
+        } catch (error) {
+            return artifact;
+        }
+        return artifact;
     }
 
     /**
@@ -1107,33 +1162,28 @@ class ArtifactsFunction_class {
     /**
      * get扩展（带参获取列表）
      * @param {string} language 语言
+     * @param {string} filterPart 位置筛选
+     * @param {string} filterMain 主属性筛选
      * @returns 处理后的结果
      */
-    getList(language = "origin") {
-        const lan = ["zh", "en"];
-        if (typeof (language) !== "string" || language === "origin") return this[AUS_LIST];
+    getList(language = "origin", filterPart = "default", filterMain = "default") {
+        const lan = ["zh", "en", "origin"];
+        // 参数验证
+        if (typeof (language) !== "string" || lan.indexOf(language.toLowerCase()) === -1) language = "origin";
+        if (typeof (filterPart) !== "string" || artiConst.val.parts.indexOf(filterPart) === -1) filterPart = "default";
+        if (typeof (filterMain) !== "string" || artiConst.val.mainEntryList.indexOf(filterMain) === -1) filterMain = "default";
         language = language.toLowerCase();
-        if (lan.indexOf(language) !== -1) {
-            let AUSList = JSON.parse(JSON.stringify(this[AUS_LIST]));
-            AUSList.forEach(val => {
-                val.mainEntryValue = this.entryValFormat(val.mainEntry, val.mainEntryValue, "main");
-                if (language === "zh") {
-                    val.mainEntry = this.toChinese(val.mainEntry, "mainEntry");
-                    val.part = this.toChinese(val.part, "parts");
-                    val.suit = this.toChinese(val.suit, "suit");
-                } else if (language === "en") {
-                    val.mainEntry = artiConst.val.mainEntryList_en[artiConst.val.mainEntryList.indexOf(val.mainEntry)];
-                    val.part = artiConst.val.parts_en[artiConst.val.parts.indexOf(val.part)];
-                }
-                val.entry.forEach(e => {
-                    e[1] = this.entryValFormat(e[0], e[1]);
-                    if (language === "zh") e[0] = this.toChinese(e[0], "entry");
-                    if (language === "en") e[0] = artiConst.val.entryList_en[artiConst.val.entryList.indexOf(e[0])];
-                })
-            })
-            return AUSList;
+        let AUSList = [];
+        for (let item of this[AUS_LIST]) {
+            // 筛选符合条件的圣遗物
+            if ((filterPart === 'default' || filterPart === item.part) && (filterMain === 'default' || filterMain === item.mainEntry)) {
+                // 深拷贝单个数据，处理后加入新数组
+                let artifact = JSON.parse(JSON.stringify(item));
+                artifact = this.translate(artifact, language);
+                AUSList.push(artifact);
+            }
         }
-        return this[AUS_LIST];
+        return AUSList;
     }
 
     // 获取版本号

@@ -85,7 +85,15 @@
                     console.log(err);
                 }))
         },
+        computed: {
+            language() {
+                return this.$store.state.language;
+            }
+        },
         watch: {
+            language() {
+                this.$i18n.locale = this.$store.state.language;
+            },
             loadProgress(val) {
                 let that = this;
                 if (val == 90) {

@@ -115,15 +115,17 @@
                 showUpdate: false, // 显示升级结果
                 ArtifactsList: [],
                 Artifact: {
+                    symbol: "",
                     level: 0,
                     suit: "none",
-                    part: "Plume",
+                    part: "none",
                     mainEntry: "none",
                     mainEntryValue: 0,
                     entry: [],
                     initEntry: '',
                     upgradeHistory: [],
-                    creationDate: Date.now()
+                    creationDate: Date.now(),
+                    lock: false
                 },
                 mainValueBefore: 0, // 升级前的主属性
                 isNew: false, // 是否是新词条
@@ -140,8 +142,8 @@
         },
         computed: {
             suitUrl() {
-                let item = this.$artifact.getList()[this.index],
-                    src = require('../assets/images'+"/" + item.suit.replace(/\s+/g,"") + "/" + item.part + ".png");
+                let item = this.$artifact.AUSList[this.index],
+                    src = require('../assets/images' + "/" + item.suit.replace(/\s+/g, "") + "/" + item.part + ".png");
                 return src;
             }
         },

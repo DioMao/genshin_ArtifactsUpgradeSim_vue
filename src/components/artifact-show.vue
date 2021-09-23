@@ -47,7 +47,7 @@
             <button class="btn btn-genshin btn-sm float-start" @click="upgrade" :disable="showdetail.level>=20"> {{ $t('msg.upgrade') }}
             </button>
             <button class="btn btn-genshin btn-sm" @click="init" v-show="showdetail.level>0"> {{ $t('msg.reset') }} </button>
-            <button class="btn btn-genshin btn-sm float-end del" data-bs-dismiss="offcanvas" aria-label="Close" @click="del"> {{ $t('msg.delete') }} </button>
+            <button class="btn btn-genshin btn-sm float-end del" @click="del"> {{ $t('msg.delete') }} </button>
         </div>
         <router-link :to="{path:'/artifact-'+index}" class="btn btn-toupgrade"><span class="circleinbox"></span>{{ $t('msg.toUpgradePage') }}
         </router-link>
@@ -59,7 +59,7 @@
         name: "artifact-show",
         data() {
             return {
-
+                
             }
         },
         props: {
@@ -100,13 +100,12 @@
                 if (this.language === "en" && suitList.indexOf(this.showdetail.suit) !== -1) {
                     return suit[this.showdetail.suit][artifact[this.index].part];
                 } else if (this.language === "zh" && suitList_zh.indexOf(this.showdetail.suit) !== -1) {
-                    return suit_zh[this.showdetail.suit][artifact[this.index].part];
+                    return suit_zh[this.showdetail.suit][this.$artifact.toChinese(artifact[this.index].part,"parts")];
                 }
-                console.log(this.language)
                 return "none";
             },
             suitUrl() {
-                let item = this.$artifact.getList()[this.index],
+                let item = this.$artifact.AUSList[this.index],
                     src = require('../assets/images'+"/" + item.suit.replace(/\s+/g,"") + "/" + item.part + ".png");
                 return src;
             }
