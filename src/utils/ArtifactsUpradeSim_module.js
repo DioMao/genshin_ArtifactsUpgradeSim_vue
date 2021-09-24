@@ -1258,6 +1258,10 @@ console.log("%cArtifactsUpgradeSim is running.Learn more: https://github.com/Dio
         if (storage.ArtifactsSimVersion === undefined) {
             storage.ArtifactsSimVersion = ArtifactsSim.version;
         } else if (storage.ArtifactsSimVersion !== ArtifactsSim.version) {
+            // 清理0.2.0以前的数据
+            if('0.2.0' > storage.ArtifactsSimVersion){
+                localList = "";
+            }
             alert("模拟器版本更新，如果遇到错误，请尝试清除浏览器缓存!");
             storage.ArtifactsSimVersion = ArtifactsSim.version;
         }
