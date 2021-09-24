@@ -889,7 +889,7 @@ class ArtifactsFunction_class {
      * @param {string} symbol 圣遗物标识
      * @returns 圣遗物在表中的位置(index)
      */
-    artifactIndex(symbol) {
+    getIndex(symbol) {
         for (let i = 0; i < this[AUS_LIST].length; i++) {
             const item = this[AUS_LIST][i];
             if (item.symbol === symbol) {
@@ -906,13 +906,28 @@ class ArtifactsFunction_class {
      * @returns 查询结果
      */
     getArtifact(symbol, language = "origin") {
-        let index = this.artifactIndex(symbol);
+        let index = this.getIndex(symbol);
         if (index === -1) {
             return false;
         } else if (language === "origin") {
             return this[AUS_LIST][index];
         } else {
             return this.translate(this[AUS_LIST][index], language);
+        }
+    }
+
+    /**
+     * 移除isNew状态
+     * @param {number} index 圣遗物下标
+     * @returns 操作结果
+     */
+    notNew(index) {
+        try {
+            this[AUS_LIST][index].isNew = false;
+            this.setLocalStorage(this[LOCAL_STORAGE_KEY], this[AUS_LIST]);
+            return true;
+        } catch (error) {
+            return false;
         }
     }
 
@@ -1232,9 +1247,8 @@ console.log("%cArtifactsUpgradeSim is running.Learn more: https://github.com/Dio
 
 /**
  * 模拟器初始化
- * @returns 检查结果
  */
-function initSim() {
+(function() {
     // 加载本地数据
     let storage = window.localStorage;
     let localList = storage[ArtifactsSim.LSkey];
@@ -1268,13 +1282,15 @@ function initSim() {
                 if (!Object.prototype.hasOwnProperty.call(val, "lock")) {
                     val.lock = false;
                 }
+                if (!Object.prototype.hasOwnProperty.call(val, "isNew")) {
+                    val.isNew = false;
+                }
             })
         } catch (error) {
             console.log("%cCannot set count.", "color:rgb(144,82,41)");
         }
     }
-}
-initSim();
+})()
 
 export {
     ArtifactsSim,

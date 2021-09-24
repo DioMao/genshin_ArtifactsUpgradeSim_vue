@@ -11,7 +11,7 @@
         <nav class="navbar navbar-expand-lg navbar-light shadow-sm">
             <div class="container-fluid">
                 <div class="siteTitle position-relative">
-                    <a data-bs-toggle="offcanvas" href="#offcanMenu" aria-controls="offcanMenu">{{ $t('title') }}</a>
+                    <a data-bs-toggle="offcanvas" href="#offcanMenu" aria-controls="offcanMenu">{{ title }}</a>
                 </div>
             </div>
         </nav>
@@ -32,7 +32,7 @@
                     </p>
                     <p style="color: red">1. 自选圣遗物说明</p>
                     <p>
-                        自选圣遗物时，依次选择位置、主词条和副词条。未选择的属性会随机生成。
+                        自选圣遗物时，依次选择套装、位置、主词条和副词条。未选择的属性会随机生成。
                     </p>
                     <p>
                         自选圣遗物时，副词条可以留空，这种情况会生成主属性符合且随机副词条的圣遗物。自选了副词条但不足3条时，模拟器会随机选择符合条件的副词条补至3条，且不会生成第四副词条。
@@ -72,11 +72,13 @@
     export default {
         data() {
             return {
+                title: "",
                 loadProgress: 0,
                 isLoad: false, // 加载界面显示（isLoad表示页面加载是否完成）
             }
         },
         mounted() {
+            this.title = this.$t('title');
             // 预加载图片(同时控制进度条)
             this.$axios.all([this.preLoadImg()])
                 .then(this.$axios.spread(() => {
@@ -92,7 +94,7 @@
         },
         watch: {
             language() {
-                this.$i18n.locale = this.$store.state.language;
+                this.title = this.$t('title');
             },
             loadProgress(val) {
                 let that = this;

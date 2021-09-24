@@ -14,17 +14,22 @@
                     d="M482.7 249.9V106.1c0-37.4-45.3-56.2-71.7-29.7L140.3 347c-16.4 16.4-16.4 43 0 59.4L410.9 677c26.5 26.5 71.7 7.7 71.7-29.7v-155c96.1-0.3 271.5-10.7 271.5 227.7 0 118.1-92.8 216.8-216 239.6 198.1-24.4 326-236 326-361.9 0.1-292.6-309.4-346.3-381.4-347.8z"
                     fill="" p-id="634"></path>
             </svg>
-            返回
+            {{ $t('handle.back') }}
         </button>
         <div class="entryBox">
             <div class="mb-3 ps-2">+{{ Artifact.level }}<span class="maxBadge ani-badgeFlash"
                     v-show="Artifact.level==20">MAX</span></div>
-            <div class="mb-1 mainEntry"><span class="iconBox">✦</span> {{ toChinese(Artifact.mainEntry,"mainEntry") }}
+            <div class="mb-1 mainEntry">
+                <span class="iconBox">✦</span>
+                <span class="ms-1"> {{  $t('term_sp.'+Artifact.mainEntry) }} </span>
                 <span class="float-end"> {{ mainEntryValue(Artifact.mainEntry,Artifact.mainEntryValue) }} </span></div>
             <div class="entryLine"></div>
             <div class="entryList mb-1" v-for="entry in Artifact.entry" :key="entry">
-                <div class=""><span class="iconBox">•</span> {{ toChinese(entry[0],"entry") }} <span
-                        class="float-end">{{ showEntryList(entry[0],entry[1]) }}</span></div>
+                <div class="">
+                    <span class="iconBox">•</span>
+                    <span class="ms-1" :style="{fontSize:($store.state.attr_sm_en.indexOf(entry[0])!==-1&&$i18n.locale==='en')?'0.6rem':'inherit'}">{{ $t('term_sp.'+entry[0]) }}</span>
+                    <span class="float-end">{{ showEntryList(entry[0],entry[1]) }}</span>
+                </div>
             </div>
         </div>
         <div class="upArtifactBox">
@@ -37,18 +42,18 @@
         <div class="upFloodlight"></div>
         <div class="upgrade-button-box">
             <button @click="upgrade('max')" class="btn btn-genshin me-3" v-show="Artifact.level<20"><span
-                    class="squareinbox"></span>&nbsp;&nbsp;&nbsp;&nbsp;升到满级&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                    class="squareinbox"></span>&nbsp;&nbsp;&nbsp;&nbsp;{{ $t('handle.toMaxLv') }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
             <button @click="upgrade" class="btn btn-genshin" v-show="Artifact.level<20"><span
-                    class="circleinbox"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;强化&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                    class="circleinbox"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $t('handle.upgrade') }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
         </div>
-        <div class="upgradeMax" v-show="Artifact.level>=20">已达到当前等级上限<br><button class="btn btn-genshin-dark"
+        <div class="upgradeMax" v-show="Artifact.level>=20">{{ $t('handle.maxLv') }}<br><button class="btn btn-genshin-dark"
                 @click="initArtifact"><span
-                    class="circleinbox"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重置&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                    class="circleinbox"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $t('handle.reset') }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
         </div>
         <div class="myMask" v-show="showUpdate">
             <div class="upgradeAlert ani-AlertBoxUp">
                 <div class="UpAlertHead">
-                    <div class="upgradeSuccess ani-upSuccess">强化完成</div>
+                    <div class="upgradeSuccess ani-upSuccess">{{ $t('handle.upSuccess') }}</div>
                     <div class="upgradeImgBox ani-ArtifactShow">
                         <div class="upgradeImg">
                             <img :src="suitUrl" :alt="Artifact.part">
@@ -66,13 +71,13 @@
                             +{{ Artifact.level }}
                         </div>
                     </div>
-                    <div class="upgradeMsg">升级</div>
+                    <div class="upgradeMsg">{{ $t('handle.LVup') }}</div>
                 </div>
                 <div class="UpAlertBody ani-showAlertBody">
                     <div class="entryBox UpAlertEntry">
                         <div class="mb-1 mainEntry">
                             <span class="iconBox">✦</span>
-                            {{ toChinese(Artifact.mainEntry,"mainEntry") }}
+                            <span class="ms-1"> {{ $t('term_sp.'+ Artifact.mainEntry) }} </span>
                             <span class="centerEntry"> {{ mainEntryValue(Artifact.mainEntry,mainValueBefore) }} </span>
                             <span class="upgradeArrow"></span>
                             <span class="float-end upColor">
@@ -81,7 +86,8 @@
                         </div>
                         <div class="entryList mb-1" v-for="(entry,index) in newEntry" :key="index">
                             <div class="upEntry">
-                                <span class="iconBox">•</span> {{ toChinese(entry,"entry") }}
+                                <span class="iconBox">•</span> 
+                                <span class="ms-1" :style="{fontSize:($store.state.attr_sm_en.indexOf(entry)!==-1&&$i18n.locale==='en')?'0.6rem':'inherit'}"> {{ $t('term_sp.'+ entry) }} </span>
                                 <span class="centerEntry" v-show="(!isNew)||index!=newEntry.length-1">
                                     {{ showEntryList(entry,oldEntryValue[index]) }} </span>
                                 <span class="upgradeArrow" v-show="(!isNew)||index!=newEntry.length-1"></span>
@@ -94,7 +100,7 @@
             </div>
             <div class="upAlertBtn ani-AlertBtnShow">
                 <button class="btn btn-genshin" @click="showUpdate=false"><span
-                        class="circleinbox"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;确认&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                        class="circleinbox"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $t('handle.confirm') }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
             </div>
         </div>
     </div>
@@ -148,6 +154,13 @@
             }
         },
         mounted() {
+            // 读取语言设置
+            if (!window.localStorage) {
+                alert("浏览器不支持localstorage");
+                return false;
+            } else if (localStorage.userSetting !== '') {
+                this.$i18n.locale = JSON.parse(localStorage.userSetting).language;
+            }
             // 初始化时列表数据保持一致
             if (this.ArtifactsList.length == 0 && this.$artifact.AUSList.length != 0) {
                 this.ArtifactsList = [...this.$artifact.AUSList];
@@ -393,15 +406,15 @@
 
     .upgradeArrowUp {
         position: absolute;
-        top: 1rem;
-        right: -0.5rem;
+        top: 1.0625rem;
+        right: -0.4375rem;
         display: inline-block;
         width: .4375rem;
         height: .3125rem;
         margin-bottom: 0rem;
-        background-image: linear-gradient(270deg, rgb(144, 232, 0.9), rgba(0, 0, 0, 0.2));
-        background-image: -webkit-linear-gradient(270deg, rgb(144, 232, 0.9), rgba(0, 0, 0, 0.2));
-        background-image: -moz-linear-gradient(270deg, rgb(144, 232, 0.9), rgba(0, 0, 0, 0.2));
+        background-image: linear-gradient(270deg, rgb(144, 232, 0.9) 65%, rgba(0, 0, 0, 0) 20%);
+        background-image: -webkit-linear-gradient(270deg, rgb(144, 232, 0.9) 65%, rgba(0, 0, 0, 0) 20%);
+        background-image: -moz-linear-gradient(270deg, rgb(144, 232, 0.9) 65%, rgba(0, 0, 0, 0) 20%);
         transform: rotate(270deg);
 
         &::after {
@@ -587,8 +600,8 @@
                         }
 
                         .upgradeArrowUp {
-                            top: 0.75rem;
-                            right: -0.8rem;
+                            top: .8125rem;
+                            right: -0.75rem;
                         }
                     }
                 }

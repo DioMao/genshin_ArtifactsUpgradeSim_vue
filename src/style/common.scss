@@ -211,6 +211,10 @@ $genshin_gray: rgb(149, 149, 149);
 
 // 公共css
 
+.fs-sm {
+  font-size: 0.6rem;
+}
+
 .btn:focus {
   box-shadow: none !important;
 }
@@ -250,15 +254,6 @@ $genshin_gray: rgb(149, 149, 149);
   justify-content: center;
   overflow: hidden;
   transition: all 0.2s ease-in;
-}
-
-.main-container {
-  position: absolute;
-  background-color: #eae2c9;
-  top: 3.5rem;
-  width: 100%;
-  height: calc(100% - 7.25rem);
-  user-select: none;
 }
 
 // ArtifactShow
@@ -493,12 +488,13 @@ $genshin_gray: rgb(149, 149, 149);
   .ArtifactShowBox {
     overflow-y: scroll !important;
     position: fixed !important;
+    z-index: 1;
     padding-top: .9375rem !important;
     top: 3.5rem !important;
     right: 6.25rem !important;
     width: 20rem !important;
     height: inherit !important;
-    background-color: $genshin_white !important;
+    background-color: rgba(255,255,255,0.2);
 
     &::-webkit-scrollbar {
       display: none !important;

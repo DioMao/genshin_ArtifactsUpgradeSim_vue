@@ -17,5 +17,7 @@ export default {
         listBriefMode: true, // 圣遗物列表模式（details/brief）
         filterMain: "default", // 主词条筛选
         filterPart: "default" // 位置筛选
-    }
+    },
+    // 需要改小字体的属性(英语环境下)
+    attr_sm_en: ["energyRecharge", "Healing", "elementMastery", "Hydro", "Pyro", "Electro", "Geo", "Anemo", "Cryo", "Physical"]
 }
