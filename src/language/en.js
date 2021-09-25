@@ -19,7 +19,7 @@ module.exports = {
         mainEntry: 'Attribute',
         default: 'All',
         filterPartDefault: 'All',
-        filter: 'Filter:',
+        filter: 'Filter',
         upgrade: 'Up',
         reset: 'Reset',
         delete: 'Delete',
@@ -55,6 +55,7 @@ module.exports = {
         maxLv: 'Max Level reached',
     },
     term: {
+        artifacts: 'Artifacts',
         default: 'Default',
         Plume: 'Plume of Death',
         Flower: 'Flower of Life',

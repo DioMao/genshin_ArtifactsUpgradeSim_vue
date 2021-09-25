@@ -3,7 +3,6 @@ export default {
     selectHistory: "",
     language: "zh",
     // 图片位置
-    elementSrc: require("../assets/images/elements_logo.png"),
     symbolSrc: require("../assets/images/genshin-symbol.png"),
     // 用户设置
     userSetting: {

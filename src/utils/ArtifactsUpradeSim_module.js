@@ -387,7 +387,7 @@ class ArtifactsFunction_class {
         this[AUS_LIST] = [];
         this[DELETE_HISTORY] = [];
         this[SUIT_LIST] = [];
-        this[LIST_LIMIT] = 1000;
+        this[LIST_LIMIT] = 500;
         this[LOCAL_STORAGE_KEY] = "AUSLocalList";
         this[COUNT_LIST] = {};
         this[LANGUAGE] = "origin";
@@ -491,13 +491,31 @@ class ArtifactsFunction_class {
     }
 
     /**
+     * 批量生成（随机）
+     * @param {number} count 生成数量
+     * @returns 操作结果
+     */
+    batchCreate(count) {
+        if(typeof(count) !=="number") return false;
+        count = Math.floor(count);
+        while(count>0 && this[AUS_LIST].length < this[LIST_LIMIT]){
+            this.creatArtifact();
+            count--;
+        }
+        if(count > 0) {
+            window.alert("List limit reached!");
+        }
+        if(count === 0) return true;
+    }
+
+    /**
      * 升级强化
      * @param {number} __index 序号
-     * @param {string} __entry 指定强化的词条（默认空值）
+     * @param {string} __entry 指定强化的词条序号
      * @param {number} __upLevel 强化数值的级别(0-3，3最高)
      * @returns 升级结果
      */
-    upgrade(__index, __entry = "", __upLevel = -1) {
+    upgrade(__index, __entry = -1, __upLevel = -1) {
         if (__index >= this[AUS_LIST].length || __index < 0) return false;
         let currentArtifact = this[AUS_LIST][__index],
             currentEntry = [],
@@ -529,13 +547,9 @@ class ArtifactsFunction_class {
                 upEntry = "",
                 upRate = 0;
             // 优先升级自选词条
-            if (__entry !== "" && artiConst.val.entryList.indexOf(__entry) >= 0) {
-                for (let i = 0; i < currentArtifact.entry.length; i++) {
-                    if (__entry === currentArtifact.entry[i][0]) {
-                        upIndex = i;
-                        upEntry = currentArtifact.entry[i][0];
-                    }
-                }
+            if ( (typeof(__entry) === "string" || typeof(__entry) === "number") && Number.parseInt(__entry) > -1 && Number.parseInt(__entry) < currentArtifact.entry.length) {
+                upIndex = __entry;
+                upEntry = currentArtifact.entry[__entry][0];
             } else {
                 // 升级随机词条
                 upIndex = Math.floor(Math.random() * currentArtifact.entry.length);
@@ -766,6 +780,7 @@ class ArtifactsFunction_class {
     lock(index) {
         if (typeof (index) !== 'number') return false;
         this[AUS_LIST][index].lock = !this[AUS_LIST][index].lock;
+        this.setLocalStorage(this[LOCAL_STORAGE_KEY], this[AUS_LIST]);
         return true;
     }
 
@@ -1212,6 +1227,10 @@ class ArtifactsFunction_class {
 
     get LSkey() {
         return this[LOCAL_STORAGE_KEY];
+    }
+
+    get maxCount() {
+        return this[LIST_LIMIT];
     }
 
     get AUSList() {

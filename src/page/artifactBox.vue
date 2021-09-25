@@ -1,129 +1,145 @@
 <template>
-    <div class="main-container">
-        <demo-alert :state="alertFunc.alertState" :show="alertFunc.alertShow">{{ alertFunc.alertMsg }}</demo-alert>
-        <div class="selectBox d-flex">
-            <select class="form-select" aria-label="Default select example" v-model="userSetting.filterPart">
-                <option selected value="default">{{ $t('msg.filterPartDefault') }}</option>
-                <option :value="part" v-for="part in this.$artiConst.val.parts" :key="part">
-                    {{ $t('term.'+ part) }}
-                </option>
-            </select>
-        </div>
-        <div class="container-fluid demo-container" ref="scrollListener">
-            <div class="filterBoxFill" v-show="userSetting.filterMain!=='default'|| userSetting.filterPart!=='default'">
+    <div>
+        <div class="main-container">
+            <demo-alert :state="alertFunc.alertState" :show="alertFunc.alertShow">{{ alertFunc.alertMsg }}</demo-alert>
+            <div class="countShow float-end">{{ $t('term.artifacts') }}
+                <span :style="{color:$artifact.AUSList.length===$artifact.maxCount?'red':''}">{{$artifact.AUSList.length }}/{{ $artifact.maxCount }}</span>
             </div>
-            <!-- 筛选提示框 -->
-            <div class="filterBox"
-                :class="(userSetting.filterMain!=='default'||userSetting.filterPart!=='default')?'filterBoxShow':'filterBoxHide'">
-                <div style="display:inline-block;">{{ $t('msg.filter') }}</div>
-                <div class="filterMain" v-show="userSetting.filterMain!=='default'"
-                    @click="userSetting.filterMain='default'">
-                    {{ $t('term.'+ userSetting.filterMain) }}
-                </div>
-                <div class="filterPart" v-show="userSetting.filterPart!=='default'"
-                    @click="userSetting.filterPart='default'">
-                    {{ $t('term.'+ userSetting.filterPart) }}</div>
-            </div>
-            <div class="tips" v-if="$artifact.AUSList.length===0 && userSetting.language==='zh'">列表里还没有圣遗物。<br><span
-                    @click="start">创建</span>一个吧！<br><span @click="changeLanguage('en')">Use English?</span></div>
-            <div class="tips" v-if="$artifact.AUSList.length===0 && userSetting.language==='en'">There's no artifact
-                here.<br><span @click="start">Random?</span><br><span @click="changeLanguage('zh')">使用中文</span></div>
-            <!-- 上半填充 -->
-            <div id="filltop" :style="{height:filltop+'px'}"></div>
-            <!-- 圣遗物列表 -->
-            <div v-for="(Artifacts,index) in ArtifactsList" :ref="'artifact-'+'index'" :id="'artifact-'+index"
-                class="ArtifactsBox card rounded shawdow-sm" :class="(Artifacts.symbol===showSymbol?'isSelect':'')"
-                :key="index" @click="changeShowSymbol(Artifacts.symbol)">
-                <div class="card-body ArtifactsTitle"
-                    :style="{backgroundImage:'url('+ imgUrl(Artifacts.symbol) + ')'+(Artifacts.symbol===showSymbol?',url('+ state.symbolSrc +')':'')}">
-                    <div class="islock" v-if="Artifacts.lock">
-                        <svg t="1631861008451" class="icon" viewBox="0 0 1024 1024" version="1.1"
-                            xmlns="http://www.w3.org/2000/svg" p-id="4168" width="0.5rem" height="0.5rem"
-                            fill="rgb(255,138,117)">
-                            <path
-                                d="M824 384h5.1c3.7-19.7 5.7-40 5.7-60.7C834.8 144.7 690 0 511.5 0S188.2 144.7 188.2 323.3c0 20.8 2 41 5.7 60.7h5.1c-39.8 0-72 32.2-72 72v496c0 39.8 32.2 72 72 72h625c39.8 0 72-32.2 72-72V456c0-39.8-32.2-72-72-72zM543.5 695.4V800c0 17.7-14.3 32-32 32s-32-14.3-32-32V695.4c-19.1-11.1-32-31.7-32-55.4 0-35.3 28.7-64 64-64s64 28.7 64 64c0 23.7-12.9 44.3-32 55.4zM267.6 384c-4.9-19.7-7.4-40-7.4-60.7 0-34 6.6-66.9 19.7-97.8 12.7-29.9 30.8-56.8 53.9-79.9s50-41.2 79.9-53.9C444.6 78.6 477.5 72 511.5 72s66.9 6.6 97.8 19.7c29.9 12.7 56.8 30.8 79.9 53.9 23.1 23.1 41.2 50 53.9 79.9 13.1 30.9 19.7 63.8 19.7 97.8 0 20.7-2.5 41-7.4 60.7H267.6z"
-                                p-id="4169"></path>
-                        </svg>
+            <popup
+                :title="'这是标题'" 
+                :content="'这是测试内容'" 
+                :show="true"></popup>
+            <div class="container-fluid demo-container" ref="scrollListener">
+                <!-- 列表内顶部菜单 -->
+                <div class="topMenu">
+                    <div class="selectBox d-flex float-end">
+                        <select class="form-select" aria-label="Default select example"
+                            v-model="userSetting.filterPart">
+                            <option selected value="default">{{ $t('msg.filterPartDefault') }}</option>
+                            <option :value="part" v-for="part in this.$artiConst.val.parts" :key="part">
+                                {{ $t('term.'+ part) }}
+                            </option>
+                        </select>
                     </div>
-                    <div :class="'card-text'+(ArtifactRate(index)>=userSetting.highScore?'highscore':'')"
-                        :style="{fontSize:$i18n.locale==='zh'?'0.9rem':'0.75rem',whiteSpace:'nowrap'}">
-                        {{ Artifacts.part }}</div>
-                    <div class="levelStar">
-                        <span v-for="i in 5" :key="i" style="margin-right: 2px;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="#FFCC32"
-                                class="bi bi-star-fill" viewBox="0 0 16 16">
+                </div>
+                <div class="filterBoxFill"
+                    v-show="userSetting.filterMain!=='default'|| userSetting.filterPart!=='default'">
+                </div>
+                <!-- 筛选提示框 -->
+                <div class="filterBox"
+                    :class="(userSetting.filterMain!=='default'||userSetting.filterPart!=='default')?'filterBoxShow':'filterBoxHide'">
+                    <div style="display:inline-block;">{{ $t('msg.filter') }}</div>
+                    <div class="filterMain" v-show="userSetting.filterMain!=='default'"
+                        @click="userSetting.filterMain='default'">
+                        {{ $t('term.'+ userSetting.filterMain) }}
+                    </div>
+                    <div class="filterPart" v-show="userSetting.filterPart!=='default'"
+                        @click="userSetting.filterPart='default'">
+                        {{ $t('term.'+ userSetting.filterPart) }}</div>
+                </div>
+                <div class="tips" v-if="$artifact.AUSList.length===0 && userSetting.language==='zh'">列表里还没有圣遗物。<br><span
+                        @click="start">创建</span>一个吧！<br><span @click="changeLanguage('en')">Use English?</span></div>
+                <div class="tips" v-if="$artifact.AUSList.length===0 && userSetting.language==='en'">There's no artifact
+                    here.<br><span @click="start">Random?</span><br><span @click="changeLanguage('zh')">使用中文</span>
+                </div>
+                <!-- 上半填充 -->
+                <div id="filltop" :style="{height:filltop+'px'}"></div>
+                <!-- 圣遗物列表 -->
+                <div v-for="(Artifacts,index) in ArtifactsList" :ref="'artifact-'+'index'" :id="'artifact-'+index"
+                    class="ArtifactsBox card rounded shawdow-sm" :class="(Artifacts.symbol===showSymbol?'isSelect':'')"
+                    :key="index" @click="changeShowSymbol(Artifacts.symbol)">
+                    <div class="card-body ArtifactsTitle"
+                        :style="{backgroundImage:'url('+ imgUrl(Artifacts.symbol) + ')'+(Artifacts.symbol===showSymbol?',url('+ state.symbolSrc +')':''),borderRadius:userSetting.listBriefMode?'.25rem':''}">
+                        <div class="islock" v-if="Artifacts.lock">
+                            <svg t="1631861008451" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                                xmlns="http://www.w3.org/2000/svg" p-id="4168" width="0.5rem" height="0.5rem"
+                                fill="rgb(255,138,117)">
                                 <path
-                                    d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                    d="M824 384h5.1c3.7-19.7 5.7-40 5.7-60.7C834.8 144.7 690 0 511.5 0S188.2 144.7 188.2 323.3c0 20.8 2 41 5.7 60.7h5.1c-39.8 0-72 32.2-72 72v496c0 39.8 32.2 72 72 72h625c39.8 0 72-32.2 72-72V456c0-39.8-32.2-72-72-72zM543.5 695.4V800c0 17.7-14.3 32-32 32s-32-14.3-32-32V695.4c-19.1-11.1-32-31.7-32-55.4 0-35.3 28.7-64 64-64s64 28.7 64 64c0 23.7-12.9 44.3-32 55.4zM267.6 384c-4.9-19.7-7.4-40-7.4-60.7 0-34 6.6-66.9 19.7-97.8 12.7-29.9 30.8-56.8 53.9-79.9s50-41.2 79.9-53.9C444.6 78.6 477.5 72 511.5 72s66.9 6.6 97.8 19.7c29.9 12.7 56.8 30.8 79.9 53.9 23.1 23.1 41.2 50 53.9 79.9 13.1 30.9 19.7 63.8 19.7 97.8 0 20.7-2.5 41-7.4 60.7H267.6z"
+                                    p-id="4169"></path>
                             </svg>
-                        </span>
+                        </div>
+                        <div :class="'card-text'+(ArtifactRate(index)>=userSetting.highScore?'highscore':'')"
+                            :style="{fontSize:$i18n.locale==='zh'?'0.9rem':'0.75rem',whiteSpace:'nowrap'}">
+                            {{ Artifacts.part }}</div>
+                        <div class="levelStar">
+                            <span v-for="i in 5" :key="i" style="margin-right: 2px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="#FFCC32"
+                                    class="bi bi-star-fill" viewBox="0 0 16 16">
+                                    <path
+                                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="card-text" style="color:rgb(223,185,170);white-space:nowrap"
+                            :style="{fontSize:$i18n.locale==='en'?'0.5rem':'inherit'}">
+                            {{ Artifacts.mainEntry }} </div>
+                        <div>{{ Artifacts.mainEntryValue }} <span
+                                class="badge float-end fw-normal">+{{ Artifacts.level }}</span></div>
+                        <a id="mobileShow" data-bs-toggle="offcanvas" href="#offcanArtifactShow"
+                            aria-controls="offcanArtifactShow">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="#fff"
+                                class="bi bi-info-circle-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+                            </svg>
+                        </a>
+                        <div class="isNew" v-if="Artifacts.isNew">{{ $t('tips.new') }}</div>
                     </div>
-                    <div class="card-text" style="color:rgb(223,185,170);white-space:nowrap"
-                        :style="{fontSize:$i18n.locale==='en'?'0.5rem':'inherit'}">
-                        {{ Artifacts.mainEntry }} </div>
-                    <div>{{ Artifacts.mainEntryValue }} <span
-                            class="badge float-end fw-normal">+{{ Artifacts.level }}</span></div>
-                    <a id="mobileShow" data-bs-toggle="offcanvas" href="#offcanArtifactShow"
-                        aria-controls="offcanArtifactShow">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="#fff"
-                            class="bi bi-info-circle-fill" viewBox="0 0 16 16">
-                            <path
-                                d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
-                        </svg>
-                    </a>
-                    <div class="isNew" v-if="Artifacts.isNew">{{ $t('tips.new') }}</div>
+                    <ul class="list-group list-group-flush" v-if="!userSetting.listBriefMode">
+                        <li v-for="(entry,index2) in Artifacts.entry" :key="index2" class="list-group-item"
+                            @click="ArtifactUpgrade(index,index2)">{{ entry[0]+"+"+entry[1] }}
+                            <span class="badge bg-primary upgradeCheat" v-show="Artifacts.level<20">+</span>
+                        </li>
+                        <li class="list-group-item" v-if="Artifacts.entry.length === 3">——</li>
+                    </ul>
+                    <!-- 操作框 -->
+                    <div class="card-body buttonBox" style="text-align:center;" v-if="!userSetting.listBriefMode">
+                        <button id="upgrade" @click="ArtifactUpgrade(index)" class="btn btn-sm float-start"
+                            :disabled="Artifacts.level >= 20">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="#257ad7"
+                                class="bi bi-arrow-up-square-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M2 16a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2zm6.5-4.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 1 0z" />
+                            </svg>
+                        </button>
+                        <button id="initArtifact" @click="initArtifact(index)"
+                            :class="'btn btn-sm ' + (Artifacts.level===0?'hide':'')">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="#037728"
+                                class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+                                <path
+                                    d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z" />
+                                <path fill-rule="evenodd"
+                                    d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z" />
+                            </svg>
+                        </button>
+                        <button id="deleteArtifact" @click.stop="deleteArtifact(index)" class="btn btn-sm float-end">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="#c90000"
+                                class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
-                <ul class="list-group list-group-flush" v-if="!userSetting.listBriefMode">
-                    <li v-for="(entry,index2) in Artifacts.entry" :key="index2" class="list-group-item"
-                        @click="ArtifactUpgrade(index,entry[0])">{{ entry[0]+"+"+entry[1] }}
-                        <span class="badge bg-primary upgradeCheat" v-show="Artifacts.level<20">+</span>
-                    </li>
-                    <li class="list-group-item" v-if="Artifacts.entry.length === 3">——</li>
-                </ul>
-                <!-- 操作框 -->
-                <div class="card-body buttonBox" style="text-align:center;" v-if="!userSetting.listBriefMode">
-                    <button id="upgrade" @click="ArtifactUpgrade(index)" class="btn btn-sm float-start"
-                        :disabled="Artifacts.level >= 20">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="#257ad7"
-                            class="bi bi-arrow-up-square-fill" viewBox="0 0 16 16">
-                            <path
-                                d="M2 16a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2zm6.5-4.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 1 0z" />
-                        </svg>
-                    </button>
-                    <button id="initArtifact" @click="initArtifact(index)"
-                        :class="'btn btn-sm ' + (Artifacts.level===0?'hide':'')">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="#037728"
-                            class="bi bi-arrow-repeat" viewBox="0 0 16 16">
-                            <path
-                                d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z" />
-                            <path fill-rule="evenodd"
-                                d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z" />
-                        </svg>
-                    </button>
-                    <button id="deleteArtifact" @click.stop="deleteArtifact(index)" class="btn btn-sm float-end">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="#c90000"
-                            class="bi bi-trash-fill" viewBox="0 0 16 16">
-                            <path
-                                d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
-                        </svg>
-                    </button>
+                <!-- flex填充 -->
+                <div class="ArtifactsBox card rounded" v-for="i in fillCount" :key="i" style="visibility:hidden;"></div>
+                <div id="fillbottom" :style="{height:fillbottom+'px'}"></div>
+            </div>
+            <!-- 右侧圣遗物展示详情 -->
+            <div class="ArtifactShowBox">
+                <artifact-show @upgrade="ArtifactUpgrade" @init="initArtifact" @del="deleteArtifact" @lock="lockChange"
+                    :showdetail="showDetail" :index="this.$artifact.getIndex(showSymbol)"
+                    :language="this.userSetting.language" v-if="showSymbol!==''">
+                </artifact-show>
+                <div :style="{visibility:(showSymbol!=='')?'visible':'hidden'}">
+                    <div id="radarChartBox" ref="radarChartBox"></div>
                 </div>
-            </div>
-            <!-- flex填充 -->
-            <div class="ArtifactsBox card rounded" v-for="i in fillCount" :key="i" style="visibility:hidden;"></div>
-            <div id="fillbottom" :style="{height:fillbottom+'px'}"></div>
-        </div>
-        <!-- 右侧圣遗物展示详情 -->
-        <div class="ArtifactShowBox">
-            <artifact-show @upgrade="ArtifactUpgrade" @init="initArtifact" @del="deleteArtifact" @lock="lockChange"
-                :showdetail="showDetail" :index="this.$artifact.getIndex(showSymbol)"
-                :language="this.userSetting.language" v-if="showSymbol!==''">
-            </artifact-show>
-            <div :style="{visibility:(showSymbol!=='')?'visible':'hidden'}">
-                <div id="radarChartBox" ref="radarChartBox"></div>
-            </div>
-            <div style="margin: 0 15px;" v-show="showSymbol!==''">{{ $t('msg.entryScore') }}(beta)：{{ ArtifactScore }}
-                <button id="score" class="btn btn-genshin-dark btn-sm" data-bs-toggle="modal"
-                    data-bs-target="#scoreSet">{{ $t('msg.scoreSetting') }}</button>
+                <div style="margin: 0 15px;" v-show="showSymbol!==''">
+                    {{ $t('msg.entryScore') }}(beta)：{{ ArtifactScore }}
+                    <button id="score" class="btn btn-genshin-dark btn-sm" data-bs-toggle="modal"
+                        data-bs-target="#scoreSet">{{ $t('msg.scoreSetting') }}</button>
+                </div>
             </div>
         </div>
         <!-- 手机端圣遗物展示 -->
@@ -161,14 +177,21 @@
                             p-id="720"></path>
                     </svg>
                 </button>
+                <!-- 筛选器 -->
                 <ul class="dropdown-menu filterList" aria-labelledby="filter">
-                    <li><a class="dropdown-item" href="#" @click="mainEntryfilter('default')"
+                    <li>
+                        <a class="dropdown-item" href="#" @click="mainEntryfilter('default')"
                             :style="{background:(userSetting.filterMain==='default'?'rgb(85,92,107)':'inherit')}">{{ $t('msg.default') }}<span
-                                class="ms-5 float-end">{{ $artifact.AUSList.length }}</span></a></li>
-                    <li v-for="mainEntryF in this.$artiConst.val.mainEntryList" :key="mainEntryF"><a
-                            class="dropdown-item" href="#" @click="mainEntryfilter(mainEntryF)"
+                                class="ms-5 float-end">{{ $artifact.AUSList.length }}</span>
+                        </a>
+                    </li>
+                    <li v-for="mainEntryF in this.$artiConst.val.mainEntryList" :key="mainEntryF">
+                        <a class="dropdown-item" href="#" @click="mainEntryfilter(mainEntryF)"
                             :style="{background:(userSetting.filterMain===mainEntryF?'#596379':'inherit'),color:(this.$artifact.getCount(mainEntryF)>0?'':'#a8a8a8')}">{{ $t('term.'+ mainEntryF) }}
-                            <span class="ms-5 float-end">{{ this.$artifact.getCount(mainEntryF) }}</span></a></li>
+                            <span class="ms-5 float-end">{{ this.$artifact.getCount(mainEntryF) }}</span>
+                        </a>
+                    </li>
+                    <li class="filterTip">{{ $t('msg.filter') }}</li>
                 </ul>
                 <button id="sort" class="btn me-auto btn-genshin" data-bs-toggle="dropdown" aria-expanded="false">
                     <svg class="bi bi-funnel-fill" viewBox="0 0 1024 1024" version="1.1"
@@ -295,7 +318,8 @@
                                 v-show="cusPart!=='default'&&cusMainEntry!==''&&cusMainEntry!==entry">
                                 <input class="form-check-input" v-model="cusEntry" type="checkbox" :value="entry"
                                     :id="entry+'Check'" :disabled="cusEntry.length===4&&cusEntry.indexOf(entry)===-1">
-                                <label class="form-check-label" :for="entry+'Check'" style="white-space:nowrap" :style="{fontSize:($store.state.attr_sm_en.indexOf(entry)!==-1&&$i18n.locale==='en')?'0.6rem':'inherit'}">
+                                <label class="form-check-label" :for="entry+'Check'" style="white-space:nowrap"
+                                    :style="{fontSize:($store.state.attr_sm_en.indexOf(entry)!==-1&&$i18n.locale==='en')?'0.6rem':'inherit'}">
                                     {{ $t('term.' + entry) }}
                                 </label>
                                 <select class="form-select form-select-sm mt-1 mb-1 col-md-6 ms-auto"
@@ -340,7 +364,8 @@
                                 v-model="userSetting['listBriefMode']">
                         </div>
                         <div class="mt-3">
-                            <div>{{ $t('tips.attrUpLv') }}<br><span style="color:#676767;font-size:0.6rem">此选项在强化界面无效。</span>
+                            <div>{{ $t('tips.attrUpLv') }}<br><span
+                                    style="color:#676767;font-size:0.6rem">此选项在强化界面无效。</span>
                             </div>
                             <select class="form-select form-select-sm" name="entryQuality" id="entryQuality"
                                 v-model="userSetting.entryQuality">
@@ -352,7 +377,7 @@
                             <div>{{ $t('msg.language') }}</div>
                             <select class="form-select form-select-sm" name="entryQuality" id="entryQuality"
                                 v-model="userSetting.language">
-                                <option value="en">ENGLISH</option>
+                                <option value="en">English</option>
                                 <option value="zh">简体中文</option>
                             </select>
                         </div>
@@ -374,7 +399,7 @@
             <div class="modal-dialog modal-sm modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="scoreSetting">评分标准选择</h5>
+                        <h5 class="modal-title" id="scoreSetting">{{ $t('msg.scoreSetting') }}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -430,7 +455,8 @@
                         <div>Version: {{this.$artifact.version}} </div>
                         <div>Author: <a href="https://github.com/DioMao" target="_blank">DioMao</a></div>
                         <div>Frameworks: </div>
-                        <div class="fs-sm">Vue@3.2.4 <br>Vue-router@4.0.11 <br>Vuex@4.0.2 <br>Bootstrap@5.1.0 <br>Echarts@5.1.2 <br>Vue-i18n@9.1.7</div>
+                        <div class="fs-sm">Vue@3.2.4 <br>Vue-router@4.0.11 <br>Vuex@4.0.2 <br>Bootstrap@5.1.0
+                            <br>Echarts@5.1.2 <br>Vue-i18n@9.1.7</div>
                         <div>Artifacts Images: </div>
                         <div class="fs-sm">
                             <a href="https://genshin-impact.fandom.com/" target="blank">Genshin Impact Wiki</a>
@@ -449,6 +475,7 @@
 <script>
     import demoAlert from '../components/demo-alert'
     import artifactShow from '../components/artifact-show'
+    import popup from '../components/popup'
     // bootstrap相关
     import 'bootstrap/js/dist/alert'
     import 'bootstrap/js/dist/modal'
@@ -457,7 +484,8 @@
     export default {
         components: {
             demoAlert,
-            artifactShow
+            artifactShow,
+            popup
         },
         data() {
             return {
@@ -616,6 +644,7 @@
         methods: {
             start() {
                 this.$artifact.creatArtifact();
+                // this.$artifact.batchCreate(100);
                 this.syncListData();
                 this.alertControl("随机圣遗物已生成！", 1500);
             },
@@ -638,9 +667,9 @@
                 if (Number.parseFloat(this.userSetting.entryQuality) !== -1) qualityAlert = "已启用副词条自选提升幅度！"
                 this.syncListData();
                 if (res === true) {
-                    this.alertControl(`升级成功！${qualityAlert}`, 1500);
+                    this.alertControl(this.$t('handle.upSuccess') + `！${qualityAlert}`, 1500);
                 } else {
-                    this.alertControl("当前圣遗物已满级~", 1500, "warning");
+                    this.alertControl(this.$t('handle.maxLv'), 1500, "warning");
                 }
             },
             // 圣遗物评分
@@ -903,7 +932,7 @@
     // box界面css
 
     .main-container {
-        position: absolute;
+        position: fixed;
         background-color: rgb(180, 170, 150);
         top: 3.5rem;
         width: 100%;
@@ -924,6 +953,19 @@
         align-content: flex-start;
         align-items: flex-start;
         justify-content: center;
+
+        .topMenu {
+            position: sticky;
+            overflow: hidden;
+            top: .3125rem;
+            z-index: 10;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.3);
+
+            .selectBox {
+                margin: .375rem;
+            }
+        }
 
         .tips {
             position: absolute;
@@ -969,7 +1011,7 @@
         .filterBox {
             position: fixed;
             top: 4rem;
-            z-index: 3;
+            z-index: 30;
             color: rgb(102, 112, 122);
             background-color: #FFF;
             padding: 0.5rem 1rem;
@@ -1016,7 +1058,7 @@
     .isSelect {
         box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .25) !important;
 
-        &:after {
+        &::before {
             content: "";
             position: absolute;
             pointer-events: none;
@@ -1024,8 +1066,22 @@
             left: 0;
             width: 100%;
             height: 100%;
-            border: .1rem solid #ffffff;
+            border: .0625rem solid #ffffff;
             border-radius: .25rem;
+            animation: artifactSelect2 ease 1s forwards;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            pointer-events: none;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: .0625rem solid #ffffff;
+            border-radius: .25rem;
+            animation: artifactSelect ease 1s infinite;
         }
     }
 
@@ -1038,12 +1094,16 @@
         border: none !important;
         background-color: $genshin_white !important;
 
-        &:hover {
-            box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .25) !important;
-        }
-
-        &:active {
-            opacity: 0.8;
+        &:hover::after {
+            content: "";
+            pointer-events: none;
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 100%;
+            width: 100%;
+            border-radius: .25rem;
+            border: 2px #fff solid;
         }
 
         .ArtifactsTitle {
@@ -1055,47 +1115,13 @@
 
             .islock {
                 position: absolute;
-                left: .1875rem;
-                top: .1875rem;
+                left: 0.25rem;
+                top: 0.25rem;
                 background-color: rgba(74, 83, 102, 0.7);
                 border-radius: 0.25rem;
-                padding: 0 .1875rem;
-                text-align: center;
+                padding: 0 0.125rem;
                 height: 0.8rem;
                 line-height: 0.8rem;
-            }
-
-            .isNew {
-                position: absolute;
-                z-index: 3;
-                right: 0;
-                top: -0.25rem;
-                color: rgb(255, 255, 128);
-                background-color: rgb(204, 129, 13);
-                border: solid .125rem rgb(255, 225, 55);
-                border-top-left-radius: .3125rem;
-                border-bottom-right-radius: .3125rem;
-                padding: 0 .1875rem;
-                line-height: 1rem;
-
-                &::before {
-                    content: "✦";
-                    position: absolute;
-                    z-index: 3;
-                    top: -0.5rem;
-                    right: -0.4375rem;
-                    color: rgb(255, 225, 55);
-                }
-
-                &::after {
-                    content: "✦";
-                    position: absolute;
-                    z-index: 3;
-                    bottom: -0.5625rem;
-                    left: -0.375rem;
-                    color: rgb(255, 225, 55);
-                    font-size: 0.5rem;
-                }
             }
         }
 
@@ -1122,6 +1148,8 @@
         .buttonBox {
             background-color: rgb(255, 231, 187);
             padding: .3125rem .9375rem;
+            border-bottom-left-radius: .25rem;
+            border-bottom-right-radius: .25rem;
         }
 
         ul li {
@@ -1188,6 +1216,7 @@
         background-size: contain;
         background-position-y: 50%;
         background-blend-mode: multiply;
+        padding-bottom: 0 !important;
 
         &::-webkit-scrollbar {
             display: none;
@@ -1200,6 +1229,17 @@
             }
 
             color: $genshin_white;
+        }
+
+        .filterTip {
+            position: sticky;
+            bottom: 0;
+            padding-left: 0.9rem;
+            border: solid 5px rgb(61, 69, 86);
+            color: $genshin-dark;
+            background-color: rgb(201, 197, 190);
+            width: 100%;
+            border-radius: .25rem;
         }
     }
 
@@ -1247,11 +1287,12 @@
         margin-top: -0.25rem;
     }
 
-    .selectBox {
-        width: 10rem;
+    .countShow {
         position: fixed;
-        top: .5rem;
+        top: 1.125rem;
         right: .9375rem;
         z-index: 20;
+        color: $genshin-white;
+        font-size: 1rem;
     }
 </style>

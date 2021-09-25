@@ -77,7 +77,7 @@
                     <div class="entryBox UpAlertEntry">
                         <div class="mb-1 mainEntry">
                             <span class="iconBox">✦</span>
-                            <span class="ms-1"> {{ $t('term_sp.'+ Artifact.mainEntry) }} </span>
+                            <span class="ms-1" :style="{fontSize:($store.state.attr_sm_en.indexOf(Artifact.mainEntry)!==-1&&$i18n.locale==='en')?'0.8rem':'inherit'}"> {{ $t('term_sp.'+ Artifact.mainEntry) }} </span>
                             <span class="centerEntry"> {{ mainEntryValue(Artifact.mainEntry,mainValueBefore) }} </span>
                             <span class="upgradeArrow"></span>
                             <span class="float-end upColor">
@@ -88,9 +88,9 @@
                             <div class="upEntry">
                                 <span class="iconBox">•</span> 
                                 <span class="ms-1" :style="{fontSize:($store.state.attr_sm_en.indexOf(entry)!==-1&&$i18n.locale==='en')?'0.6rem':'inherit'}"> {{ $t('term_sp.'+ entry) }} </span>
-                                <span class="centerEntry" v-show="(!isNew)||index!=newEntry.length-1">
+                                <span class="centerEntry" v-show="(!isNewAttr)||index!=newEntry.length-1">
                                     {{ showEntryList(entry,oldEntryValue[index]) }} </span>
-                                <span class="upgradeArrow" v-show="(!isNew)||index!=newEntry.length-1"></span>
+                                <span class="upgradeArrow" v-show="(!isNewAttr)||index!=newEntry.length-1"></span>
                                 <span class="float-end upColor">{{ showEntryList(entry,newEntryValue[index]) }}</span>
                                 <span class="upgradeArrowUp"></span>
                             </div>
@@ -134,7 +134,7 @@
                     lock: false
                 },
                 mainValueBefore: 0, // 升级前的主属性
-                isNew: false, // 是否是新词条
+                isNewAttr: false, // 是否是新词条
                 newEntry: ["none"],
                 newEntryValue: [0],
                 oldEntryValue: [0], // 旧词条数值
@@ -206,7 +206,7 @@
                     }
                     // 判断是否有新词条
                     if (oldEntryList.length < ArtiEntry.length) {
-                        this.isNew = true;
+                        this.isNewAttr = true;
                         if (this.newEntry[0] != "none") {
                             this.newEntry.push(ArtiEntry[ArtiEntry.length - 1][0]);
                             this.newEntryValue.push(ArtiEntry[ArtiEntry.length - 1][1]);
@@ -215,7 +215,7 @@
                             this.newEntryValue[0] = ArtiEntry[ArtiEntry.length - 1][1];
                         }
                     } else {
-                        this.isNew = false;
+                        this.isNewAttr = false;
                     }
                     this.showUpdate = true;
                 } else {
@@ -302,9 +302,8 @@
     }
 
     .containerUp {
-        position: absolute;
+        position: fixed;
         background-color: rgb(125, 83, 38);
-        ;
         top: 3.5rem;
         width: 100%;
         height: calc(100% - 3.5rem);

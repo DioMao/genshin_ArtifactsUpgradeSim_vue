@@ -19,7 +19,7 @@ module.exports = {
         mainEntry: '主属性',
         default: '默认',
         filterPartDefault: '显示全部',
-        filter: '筛选:',
+        filter: '筛选',
         upgrade: '强化',
         reset: '重置',
         delete: '删除',
@@ -55,6 +55,7 @@ module.exports = {
         maxLv: '已达到当前等级上限',
     },
     term: {
+        artifacts: '圣遗物',
         default: '默认',
         Plume: '死之羽',
         Flower: '生之花',

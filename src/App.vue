@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div>
         <!-- loading -->
         <div id="loading" :class="isLoad ? 'hide' : ''">
             <div class="loading-box">
@@ -75,17 +75,22 @@
                 title: "",
                 loadProgress: 0,
                 isLoad: false, // 加载界面显示（isLoad表示页面加载是否完成）
+                // 预载图片列表
+                imgList: [require("@/assets/images/genshin-symbol.png"),
+                require("@/assets/images/fog.png")
+                ]
             }
         },
         mounted() {
             this.title = this.$t('title');
+            this.loading();
             // 预加载图片(同时控制进度条)
-            this.$axios.all([this.preLoadImg()])
-                .then(this.$axios.spread(() => {
+            // this.$axios.all([this.preLoadImg()])
+            //     .then(this.$axios.spread(() => {
 
-                })).catch((err => {
-                    console.log(err);
-                }))
+            //     })).catch((err => {
+            //         console.log(err);
+            //     }))
         },
         computed: {
             language() {
@@ -98,26 +103,46 @@
             },
             loadProgress(val) {
                 let that = this;
-                if (val == 90) {
+                if (val == 100) {
                     setTimeout(function () {
-                        that.loadProgress = 100;
+                        // that.loadProgress = 100;
                         that.isLoad = true;
                     }, 500)
                 }
             }
         },
         methods: {
+            loading() {
+                let that = this;
+                // 确认字体加载状态
+                document.fonts.ready.then(function () {
+                    that.loadProgress += 20;
+                });
+                for(let src of this.imgList){
+                    let img = new Image();
+                    img.src = src;
+                    img.onload = () => {
+                        this.loadProgress += 40;
+                    }
+                    img.onerror = () => {
+                        this.loadProgress += 40;
+                        alert("部分资源加载失败，请刷新重试！\nSome resources failed to load, please refresh and try again!")
+                    }
+                }
+            },
             preLoadImg() {
                 const that = this;
                 let errtime = 0,
                     request = this.$axios.get(that.$store.state.symbolSrc)
                     .then(() => {
-                        that.loadProgress += 90;
+                        that.loadProgress += 80;
                         return true;
                     }).catch(err => {
                         console.log(err);
                         (errtime < 3) ? (request, errtime++) : (that.loadProgress += 15);
                     })
+                    // console.log(that.$store.state.symbolSrc)
+                    console.log(that.imgList[0])
             }
         }
     };
@@ -133,6 +158,10 @@
         font-family: "genshin-font";
         width: 100%;
         user-select: none;
+    }
+
+    .navbar {
+        position: unset !important;
     }
 
     #loading {
@@ -166,9 +195,5 @@
                 transition: all 0.5s ease;
             }
         }
-    }
-
-    .hide {
-        display: none !important;
     }
 </style>
