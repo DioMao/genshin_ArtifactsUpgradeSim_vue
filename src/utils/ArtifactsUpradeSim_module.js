@@ -387,7 +387,7 @@ class ArtifactsFunction_class {
         this[AUS_LIST] = [];
         this[DELETE_HISTORY] = [];
         this[SUIT_LIST] = [];
-        this[LIST_LIMIT] = 500;
+        this[LIST_LIMIT] = 2000;
         this[LOCAL_STORAGE_KEY] = "AUSLocalList";
         this[COUNT_LIST] = {};
         this[LANGUAGE] = "origin";
@@ -493,19 +493,24 @@ class ArtifactsFunction_class {
     /**
      * 批量生成（随机）
      * @param {number} count 生成数量
+     * @param {string} __part 指定位置，可为空
+     * @param {string} __main 指定主词条，可为空
+     * @param {array} __entryArr 指定词条（至多四条），可为空
+     * @param {array} __entryRate 副词条数值（对应自选副词条），可为空
+     * @param {string} __suit 指定圣遗物套装，可为空
      * @returns 操作结果
      */
-    batchCreate(count) {
-        if(typeof(count) !=="number") return false;
+    batchCreate(count, __part = "", __main = "", __entry = [], __entryRate = [], __suit = "") {
+        if (typeof (count) !== "number") return false;
         count = Math.floor(count);
-        while(count>0 && this[AUS_LIST].length < this[LIST_LIMIT]){
-            this.creatArtifact();
+        while (count > 0 && this[AUS_LIST].length < this[LIST_LIMIT]) {
+            this.creatArtifact(__part, __main, __entry, __entryRate, __suit);
             count--;
         }
-        if(count > 0) {
-            window.alert("List limit reached!");
+        if (count > 0) {
+            console.log("List limit reached!");
         }
-        if(count === 0) return true;
+        if (count === 0) return true;
     }
 
     /**
@@ -547,7 +552,7 @@ class ArtifactsFunction_class {
                 upEntry = "",
                 upRate = 0;
             // 优先升级自选词条
-            if ( (typeof(__entry) === "string" || typeof(__entry) === "number") && Number.parseInt(__entry) > -1 && Number.parseInt(__entry) < currentArtifact.entry.length) {
+            if ((typeof (__entry) === "string" || typeof (__entry) === "number") && Number.parseInt(__entry) > -1 && Number.parseInt(__entry) < currentArtifact.entry.length) {
                 upIndex = __entry;
                 upEntry = currentArtifact.entry[__entry][0];
             } else {
@@ -1267,7 +1272,7 @@ console.log("%cArtifactsUpgradeSim is running.Learn more: https://github.com/Dio
 /**
  * 模拟器初始化
  */
-(function() {
+(function () {
     // 加载本地数据
     let storage = window.localStorage;
     let localList = storage[ArtifactsSim.LSkey];
@@ -1278,7 +1283,7 @@ console.log("%cArtifactsUpgradeSim is running.Learn more: https://github.com/Dio
             storage.ArtifactsSimVersion = ArtifactsSim.version;
         } else if (storage.ArtifactsSimVersion !== ArtifactsSim.version) {
             // 清理0.2.0以前的数据
-            if('0.2.0' > storage.ArtifactsSimVersion){
+            if ('0.2.0' > storage.ArtifactsSimVersion) {
                 localList = "";
             }
             alert("模拟器版本更新，如果遇到错误，请尝试清除浏览器缓存!");
