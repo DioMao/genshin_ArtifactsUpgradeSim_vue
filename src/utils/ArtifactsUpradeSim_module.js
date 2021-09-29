@@ -1,5 +1,5 @@
 /**
- * ArtifactsUpgradeSim v0.2.0 module
+ * ArtifactsUpgradeSim v0.2.1 module
  * Copyrigth 2021-2022 DioMao (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_js/graphs/contributors)
  * Licensed under MIT (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_js/blob/main/LICENSE)
  */
@@ -383,7 +383,7 @@ const VERSION = Symbol("VERSION"),
 
 class ArtifactsFunction_class {
     constructor() {
-        this[VERSION] = "0.2.0";
+        this[VERSION] = "0.2.1";
         this[AUS_LIST] = [];
         this[DELETE_HISTORY] = [];
         this[SUIT_LIST] = [];
@@ -402,7 +402,7 @@ class ArtifactsFunction_class {
      * @param {string} __suit 指定圣遗物套装，可为空
      * @returns {Object} 对象newArtifacts
      */
-    creatArtifact(__part = "", __main = "", __entry = [], __entryRate = [], __suit = "") {
+    createArtifact(__part = "", __main = "", __entry = [], __entryRate = [], __suit = "") {
         if (this[AUS_LIST].length >= this[LIST_LIMIT]) {
             console.log(`Warning - The maximum length of the artifacts list is ${this[LIST_LIMIT]}.`);
             return false;
@@ -504,7 +504,7 @@ class ArtifactsFunction_class {
         if (typeof (count) !== "number") return false;
         count = Math.floor(count);
         while (count > 0 && this[AUS_LIST].length < this[LIST_LIMIT]) {
-            this.creatArtifact(__part, __main, __entry, __entryRate, __suit);
+            this.createArtifact(__part, __main, __entry, __entryRate, __suit);
             count--;
         }
         if (count > 0) {
@@ -1197,21 +1197,56 @@ class ArtifactsFunction_class {
     /**
      * get扩展（带参获取列表）
      * @param {string} language 语言
-     * @param {string} filterPart 位置筛选
-     * @param {string} filterMain 主属性筛选
+     * @param {string | array} filterPart 位置筛选
+     * @param {string | array} filterMain 主属性筛选
      * @returns 处理后的结果
      */
-    getList(language = "origin", filterPart = "default", filterMain = "default") {
+    getList(language = "origin", filterPart = "default", filterMain = "default", filterSuit = "default") {
         const lan = ["zh", "en", "origin"];
+        // 筛选符合条件的过滤属性
+        let arrFilter = function (arr, type) {
+            let res = [];
+            for (let el of arr) {
+                if (type === "main") {
+                    artiConst.val.mainEntryList.indexOf(el) >= 0 ? res.push(el) : null;
+                } else if (type === "part") {
+                    artiConst.val.parts.indexOf(el) >= 0 ? res.push(el) : null;
+                } else if (type === "suit") {
+                    artiConst.val.suitList.indexOf(el) >= 0 ? res.push(el) : null;
+                }
+            }
+            if (res.length === 0) return ["default"];
+            return res;
+        }
         // 参数验证
         if (typeof (language) !== "string" || lan.indexOf(language.toLowerCase()) === -1) language = "origin";
-        if (typeof (filterPart) !== "string" || artiConst.val.parts.indexOf(filterPart) === -1) filterPart = "default";
-        if (typeof (filterMain) !== "string" || artiConst.val.mainEntryList.indexOf(filterMain) === -1) filterMain = "default";
+        // 字符串转数组
+        if (typeof (filterPart) === "string") filterPart = [filterPart];
+        if (typeof (filterMain) === "string") filterMain = [filterMain];
+        if (typeof (filterSuit) === "string") filterSuit = [filterSuit];
+        if (Array.isArray(filterPart)) {
+            filterPart = arrFilter(filterPart, "part");
+        } else {
+            filterPart = ["default"];
+        }
+        if (Array.isArray(filterMain)) {
+            filterMain = arrFilter(filterMain, "main");
+        } else {
+            filterMain = ["default"];
+        }
+        if (Array.isArray(filterSuit)) {
+            filterSuit = arrFilter(filterSuit, "suit");
+        } else {
+            filterSuit = ["default"];
+        }
+
         language = language.toLowerCase();
         let AUSList = [];
         for (let item of this[AUS_LIST]) {
             // 筛选符合条件的圣遗物
-            if ((filterPart === 'default' || filterPart === item.part) && (filterMain === 'default' || filterMain === item.mainEntry)) {
+            if ((filterPart.indexOf("default") !== -1 || filterPart.indexOf(item.part) !== -1) &&
+                (filterMain.indexOf("default") !== -1 || filterMain.indexOf(item.mainEntry) !== -1) &&
+                (filterSuit.indexOf("default") !== -1 || filterSuit.indexOf(item.suit) !== -1)) {
                 // 深拷贝单个数据，处理后加入新数组
                 let artifact = JSON.parse(JSON.stringify(item));
                 artifact = this.translate(artifact, language);

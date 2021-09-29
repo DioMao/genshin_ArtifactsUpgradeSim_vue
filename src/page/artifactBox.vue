@@ -6,138 +6,35 @@
                 <span
                     :style="{color:$artifact.AUSList.length===$artifact.maxCount?'red':''}">{{$artifact.AUSList.length }}/{{ $artifact.maxCount }}</span>
             </div>
-            <popup :title="'这是标题'" :content="'这是测试内容'" :show="true">
+            <popup :title="'这是标题'" :show="true">
+                content
             </popup>
-            <div class="container-fluid demo-container" ref="scrollListener">
-                <!-- 列表内顶部菜单 -->
-                <!-- <div class="topMenu">
-                    <div class="selectBox d-flex float-end">
-                        <select class="form-select" aria-label="Default select example"
-                            v-model="userSetting.filterPart">
-                            <option selected value="default">{{ $t('msg.filterPartDefault') }}</option>
-                            <option :value="part" v-for="part in this.$artiConst.val.parts" :key="part">
-                                {{ $t('term.'+ part) }}
-                            </option>
-                        </select>
-                    </div>
-                </div> -->
-                <!-- <div class="filterBoxFill"
-                    v-show="userSetting.filterMain!=='default'|| userSetting.filterPart!=='default'">
-                </div> -->
-                <!-- 筛选提示框 -->
-                <div class="filterBox"
-                    :class="(userSetting.filterMain!=='default'||userSetting.filterPart!=='default')?'filterBoxShow':'filterBoxHide'">
-                    <div style="display:inline-block;">{{ $t('msg.filter') }}</div>
-                    <div class="filterMain" v-show="userSetting.filterMain!=='default'"
-                        @click="userSetting.filterMain='default'">
-                        {{ $t('term.'+ userSetting.filterMain) }}
-                    </div>
-                    <div class="filterPart" v-show="userSetting.filterPart!=='default'"
-                        @click="userSetting.filterPart='default'">
-                        {{ $t('term.'+ userSetting.filterPart) }}</div>
+            <!-- 筛选提示框 -->
+            <div class="filterBox"
+                :class="(userSetting.filterMain!=='default'||userSetting.filterPart!=='default')?'filterBoxShow':'filterBoxHide'">
+                <div style="display:inline-block;">{{ $t('msg.filter') }}</div>
+                <div class="filterMain" v-show="userSetting.filterMain!=='default'"
+                    @click="userSetting.filterMain='default'">
+                    {{ $t('term.'+ userSetting.filterMain) }}
                 </div>
-                <div class="tips" v-if="$artifact.AUSList.length===0 && userSetting.language==='zh'">列表里还没有圣遗物。<br><span
-                        @click="start">创建</span>一个吧！<br><span @click="changeLanguage('en')">Use English?</span></div>
-                <div class="tips" v-if="$artifact.AUSList.length===0 && userSetting.language==='en'">There's no artifact
-                    here.<br><span @click="start">Random?</span><br><span @click="changeLanguage('zh')">使用中文</span>
-                </div>
-                <!-- 圣遗物列表 -->
-                <div class="vm-list-container" ref="virtualContainer" :style="{paddingTop:filltop+'px',paddingBottom:fillbottom+'px'}">
-                    <div v-for="(Artifacts,index) in ArtifactsRenderList" :ref="'artifact-'+'index'"
-                        :id="'artifact-'+index" class="ArtifactsBox card rounded shawdow-sm"
-                        :class="(Artifacts.symbol===showSymbol?'isSelect':'')" :key="index"
-                        @click="changeShowSymbol(Artifacts.symbol)">
-                        <div class="card-body ArtifactsTitle"
-                            :style="{backgroundImage:'url('+ imgUrl(Artifacts.symbol) + ')'+(Artifacts.symbol===showSymbol?',url('+ state.symbolSrc +')':''),borderRadius:userSetting.listBriefMode?'.25rem':''}">
-                            <div class="islock" v-if="Artifacts.lock">
-                                <svg t="1631861008451" class="icon" viewBox="0 0 1024 1024" version="1.1"
-                                    xmlns="http://www.w3.org/2000/svg" p-id="4168" width="0.5rem" height="0.5rem"
-                                    fill="rgb(255,138,117)">
-                                    <path
-                                        d="M824 384h5.1c3.7-19.7 5.7-40 5.7-60.7C834.8 144.7 690 0 511.5 0S188.2 144.7 188.2 323.3c0 20.8 2 41 5.7 60.7h5.1c-39.8 0-72 32.2-72 72v496c0 39.8 32.2 72 72 72h625c39.8 0 72-32.2 72-72V456c0-39.8-32.2-72-72-72zM543.5 695.4V800c0 17.7-14.3 32-32 32s-32-14.3-32-32V695.4c-19.1-11.1-32-31.7-32-55.4 0-35.3 28.7-64 64-64s64 28.7 64 64c0 23.7-12.9 44.3-32 55.4zM267.6 384c-4.9-19.7-7.4-40-7.4-60.7 0-34 6.6-66.9 19.7-97.8 12.7-29.9 30.8-56.8 53.9-79.9s50-41.2 79.9-53.9C444.6 78.6 477.5 72 511.5 72s66.9 6.6 97.8 19.7c29.9 12.7 56.8 30.8 79.9 53.9 23.1 23.1 41.2 50 53.9 79.9 13.1 30.9 19.7 63.8 19.7 97.8 0 20.7-2.5 41-7.4 60.7H267.6z"
-                                        p-id="4169"></path>
-                                </svg>
-                            </div>
-                            <div :class="'card-text'+(ArtifactRate(index)>=userSetting.highScore?'highscore':'')"
-                                :style="{fontSize:$i18n.locale==='zh'?'0.9rem':'0.75rem',whiteSpace:'nowrap'}">
-                                {{ Artifacts.part }}</div>
-                            <div class="levelStar">
-                                <span v-for="i in 5" :key="i" style="margin-right: 2px;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="#FFCC32"
-                                        class="bi bi-star-fill" viewBox="0 0 16 16">
-                                        <path
-                                            d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                                    </svg>
-                                </span>
-                            </div>
-                            <div class="card-text" style="color:rgb(223,185,170);white-space:nowrap"
-                                :style="{fontSize:$i18n.locale==='en'?'0.5rem':'inherit'}">
-                                {{ Artifacts.mainEntry }} </div>
-                            <div>{{ Artifacts.mainEntryValue }} <span
-                                    class="badge float-end fw-normal">+{{ Artifacts.level }}</span></div>
-                            <a id="mobileShow" data-bs-toggle="offcanvas" href="#offcanArtifactShow"
-                                aria-controls="offcanArtifactShow">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="#fff"
-                                    class="bi bi-info-circle-fill" viewBox="0 0 16 16">
-                                    <path
-                                        d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
-                                </svg>
-                            </a>
-                            <div class="isNew" v-if="Artifacts.isNew">{{ $t('tips.new') }}</div>
-                        </div>
-                        <ul class="list-group list-group-flush" v-if="!userSetting.listBriefMode">
-                            <li v-for="(entry,index2) in Artifacts.entry" :key="index2" class="list-group-item"
-                                @click="ArtifactUpgrade(index,index2)">{{ entry[0]+"+"+entry[1] }}
-                                <span class="badge bg-primary upgradeCheat" v-show="Artifacts.level<20">+</span>
-                            </li>
-                            <li class="list-group-item" v-if="Artifacts.entry.length === 3">——</li>
-                        </ul>
-                        <!-- 操作框 -->
-                        <div class="card-body buttonBox" style="text-align:center;" v-if="!userSetting.listBriefMode">
-                            <button id="upgrade" @click="ArtifactUpgrade(index)" class="btn btn-sm float-start"
-                                :disabled="Artifacts.level >= 20">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="#257ad7"
-                                    class="bi bi-arrow-up-square-fill" viewBox="0 0 16 16">
-                                    <path
-                                        d="M2 16a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2zm6.5-4.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 1 0z" />
-                                </svg>
-                            </button>
-                            <button id="initArtifact" @click="initArtifact(index)"
-                                :class="'btn btn-sm ' + (Artifacts.level===0?'hide':'')">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="#037728"
-                                    class="bi bi-arrow-repeat" viewBox="0 0 16 16">
-                                    <path
-                                        d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z" />
-                                    <path fill-rule="evenodd"
-                                        d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z" />
-                                </svg>
-                            </button>
-                            <button id="deleteArtifact" @click.stop="deleteArtifact(index)"
-                                class="btn btn-sm float-end">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="#c90000"
-                                    class="bi bi-trash-fill" viewBox="0 0 16 16">
-                                    <path
-                                        d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                    <!-- flex填充 -->
-                    <div class="ArtifactsBox card rounded" v-for="i in fillCount" :key="i" style="visibility:hidden;">
-                    </div>
-                </div>
-                <!-- <div id="fillbottom" :style="{height:fillbottom+'px'}"></div> -->
+                <div class="filterPart" v-show="userSetting.filterPart!=='default'"
+                    @click="userSetting.filterPart='default'">
+                    {{ $t('term.'+ userSetting.filterPart) }}</div>
             </div>
+            <!-- 筛选框 -->
+            <div></div>
+            <!-- 圣遗物列表 -->
+            <artifact-list :rawdata="ArtifactsList" :showsymbol="showSymbol" :briefmode="userSetting.listBriefMode"
+                @sync="syncListData" @changeshowsymbol="changeShowSymbol" @create="createArtifact"
+                @alert="alertControl">
+            </artifact-list>
             <!-- 右侧圣遗物展示详情 -->
             <div class="ArtifactShowBox">
                 <artifact-show @upgrade="ArtifactUpgrade" @init="initArtifact" @del="deleteArtifact" @lock="lockChange"
                     :showdetail="showDetail" :index="this.$artifact.getIndex(showSymbol)"
                     :language="this.userSetting.language" v-if="showSymbol!==''">
                 </artifact-show>
-                <div :style="{visibility:(showSymbol!=='')?'visible':'hidden'}">
-                    <div id="radarChartBox" ref="radarChartBox"></div>
-                </div>
-                <div style="margin: 0 15px;" v-show="showSymbol!==''">
+                <div class="ms-3 mt-3 me-3" v-show="showSymbol!==''">
                     {{ $t('msg.entryScore') }}(beta)：{{ ArtifactScore }}
                     <button id="score" class="btn btn-genshin-dark btn-sm" data-bs-toggle="modal"
                         data-bs-target="#scoreSet">{{ $t('msg.scoreSetting') }}</button>
@@ -162,11 +59,10 @@
                     <button id="score-2" class="btn btn-genshin-dark btn-sm" data-bs-toggle="modal"
                         data-bs-target="#scoreSet">{{ $t('msg.scoreSetting') }}</button>
                 </div>
-                <div :style="{visibility:(showSymbol!=='')?'visible':'hidden'}" class="mt-3">
-                    <div id="radarChartBox2" ref="radarChartBox2"></div>
-                </div>
                 <button type="button" class="btn btn-genshin-dark mt-3" data-bs-dismiss="offcanvas" aria-label="Close"
-                    style="float: right;"><span class="xinbox"></span>{{ $t('msg.closeDetail') }}</button>
+                    style="position: fixed;inset: auto 2rem 1.5rem auto;">
+                    <span class="xinbox"></span>{{ $t('msg.closeDetail') }}
+                </button>
             </div>
         </div>
         <footer>
@@ -209,7 +105,7 @@
                     <li><a class="dropdown-item" href="#" @click="sortList(2)">{{ $t('msg.sortByPart') }}</a></li>
                     <li><a class="dropdown-item" href="#" @click="sortList(3)">{{ $t('msg.sortByMainEntry') }}</a></li>
                 </ul>
-                <button id="start" @click="start" class="btn btn-genshin"
+                <button id="create" @click="createArtifact" class="btn btn-genshin"
                     :style="{fontSize:$i18n.locale==='en'?'0.9rem':'inherit'}"><span
                         class="circleinbox"></span>{{ $t('msg.random') }}</button>
                 <button class="btn btn-genshin" :style="{fontSize:$i18n.locale==='en'?'0.9rem':'inherit'}"
@@ -458,7 +354,7 @@
                         <div>Author: <a href="https://github.com/DioMao" target="_blank">DioMao</a></div>
                         <div>Frameworks: </div>
                         <div class="fs-sm">Vue@3.2.4 <br>Vue-router@4.0.11 <br>Vuex@4.0.2 <br>Bootstrap@5.1.0
-                            <br>Echarts@5.1.2 <br>Vue-i18n@9.1.7</div>
+                            <br>Vue-i18n@9.1.7</div>
                         <div>Artifacts Images: </div>
                         <div class="fs-sm">
                             <a href="https://genshin-impact.fandom.com/" target="blank">Genshin Impact Wiki</a>
@@ -478,6 +374,7 @@
     import demoAlert from '../components/demo-alert'
     import artifactShow from '../components/artifact-show'
     import popup from '../components/popup'
+    import artifactList from '../components/artifact-list'
     // bootstrap相关
     import 'bootstrap/js/dist/alert'
     import 'bootstrap/js/dist/modal'
@@ -488,6 +385,7 @@
             demoAlert,
             artifactShow,
             popup,
+            artifactList
         },
         data() {
             return {
@@ -495,10 +393,6 @@
                 showSymbol: "", // 展示圣遗物的symbol
                 showDetail: Object, // 右侧圣遗物展示详情
                 ArtifactsList: [], // 全部圣遗物列表（监听变化用）
-                ArtifactsRenderList: [], // 渲染的圣遗物列表
-                viewList: [], // 可见部分的列表
-                itemMax: 0, // 每行最大容纳item数量
-                fillCount: 0, // 填充圣遗物列表
                 cusCloseSwitch: true, // 自选圣遗物-生成后是否关闭modal窗
                 cusSuit: "", // 自选圣遗物套装
                 cusPart: "", // 自选圣遗物位置
@@ -526,11 +420,6 @@
                     alertClose: Function, // 定时关闭提示框
                     alertState: "success" // 提示框类型
                 },
-                echarts1: undefined, //echarts初始化状态
-                echarts2: undefined,
-                radarChartOption: Object, // 雷达图配置
-                filltop: 0, // 动态填充
-                fillbottom: 0
             }
         },
         created() {
@@ -548,7 +437,6 @@
             }
         },
         mounted() {
-            var that = this;
             // 读取本地设置
             if (!window.localStorage) {
                 alert("浏览器不支持localstorage");
@@ -567,22 +455,9 @@
             if (this.ArtifactsList.length === 0 && this.$artifact.AUSList.length !== 0) {
                 this.syncListData();
             }
-            // 监听滚动条并记录位置，返回界面时回到记录位置
             setTimeout(() => {
-                that.$refs.scrollListener.scrollTop = this.$store.state.boxScroll;
                 this.showSymbol = this.$store.state.selectHistory;
             }, 1)
-            // 滚动监听
-            this.$refs.scrollListener.addEventListener("scroll", this.vmList);
-            // 监听窗口大小
-            window.addEventListener("resize", this.getFillCount);
-            this.getFillCount();
-            this.vmList();
-        },
-        beforeUnmount() {
-            // 移除监听器
-            this.$refs.scrollListener.removeEventListener("scroll", this.vmList);
-            window.removeEventListener("resize", this.getFillCount);
         },
         computed: {
             ArtifactScore() {
@@ -596,6 +471,9 @@
                 } else {
                     return 0;
                 }
+            },
+            language() {
+                return this.state.language;
             }
         },
         watch: {
@@ -603,12 +481,11 @@
                 if (val === "") {
                     return;
                 }
-                this.setRadarChart();
+                // this.setRadarChart();
                 this.showDetail = this.$artifact.getArtifact(val, this.userSetting.language);
             },
             ArtifactsList() {
-                this.setRadarChart();
-                this.getFillCount();
+                // this.setRadarChart();
                 if (this.showSymbol !== "") this.showDetail = this.$artifact.getArtifact(this.showSymbol, this
                     .userSetting.language);
             },
@@ -624,14 +501,22 @@
                     this.syncListData();
                 },
                 deep: true
+            },
+            language(val) {
+                this.userSetting.language = val;
             }
         },
         methods: {
-            start() {
-                // this.$artifact.creatArtifact();
+            // 随机生成圣遗物
+            createArtifact() {
+                // this.$artifact.createArtifact();
                 this.$artifact.batchCreate(100);
                 this.syncListData();
                 this.alertControl("随机圣遗物已生成！", 1500);
+            },
+            // 批量随机生成
+            batchCreate(count) {
+                this.$artifact.batchCreate(count);
             },
             // 自选圣遗物
             cusCreatArtifact() {
@@ -641,7 +526,7 @@
                     cusEntry.push(this.cusEntry[i]);
                     cusEntryValue.push(this.cusEntryRate[cusEntry[i]]);
                 }
-                this.$artifact.creatArtifact(this.cusPart, this.cusMainEntry, cusEntry, cusEntryValue, this.cusSuit);
+                this.$artifact.createArtifact(this.cusPart, this.cusMainEntry, cusEntry, cusEntryValue, this.cusSuit);
                 this.syncListData();
                 this.alertControl("自选圣遗物已生成！", 1500);
             },
@@ -725,7 +610,6 @@
                     return false;
                 } else {
                     localStorage.userSetting = JSON.stringify(this.userSetting);
-                    this.getFillCount();
                 }
             },
             // 清除本地数据
@@ -746,84 +630,6 @@
             },
             changeLanguage(language) {
                 this.userSetting.language = language;
-            },
-            // 雷达图设置
-            setRadarChart() {
-                if (this.showSymbol === "") return false;
-                let index = this.$artifact.getIndex(this.showSymbol),
-                    // 获取原始数据
-                    opArr = this.$artifact.AUSList[index].entry,
-                    opObj = {};
-                for (let i = 0; i < opArr.length; i++) {
-                    opObj[opArr[i][0]] = opArr[i][1];
-                }
-                if (this.echarts1 == undefined) this.echarts1 = this.$echarts.init(this.$refs.radarChartBox)
-                if (this.echarts2 == undefined) this.echarts2 = this.$echarts.init(this.$refs.radarChartBox2)
-                let entryValue = this.$artiConst.val.entryValue;
-                this.radarChartOption = {
-                    textStyle: {
-                        fontFamily: "genshin-font"
-                    },
-                    radar: {
-                        splitNumber: 7,
-                        indicator: [{
-                                name: this.$t('term.ATKPer'),
-                                max: entryValue['ATKPer'][entryValue['ATKPer'].length - 1] * 6,
-                                min: -5.8,
-                                color: "#262626"
-                            },
-                            {
-                                name: this.$t('term.CRITRate'),
-                                max: entryValue['CRITRate'][entryValue['CRITRate'].length - 1] * 6,
-                                min: -3.9,
-                                color: "#262626"
-                            },
-                            {
-                                name: this.$t('term.CRITDMG'),
-                                max: entryValue['CRITDMG'][entryValue['CRITDMG'].length - 1] * 6,
-                                min: -7.8,
-                                color: "#262626"
-                            },
-                            {
-                                name: this.$t('term.energyRecharge'),
-                                max: entryValue['energyRecharge'][entryValue['energyRecharge'].length - 1] * 6,
-                                min: -6.5,
-                                color: "#262626"
-                            },
-                            {
-                                name: this.$t('term.elementMastery'),
-                                max: entryValue['elementMastery'][entryValue['elementMastery'].length - 1] * 6,
-                                min: -23,
-                                color: "#262626"
-                            },
-                            {
-                                name: this.$t('term.HPPer'),
-                                max: entryValue['HPPer'][entryValue['HPPer'].length - 1] * 6,
-                                min: -5.8,
-                                color: "#262626"
-                            },
-                            {
-                                name: this.$t('term.DEFPer'),
-                                max: entryValue['DEFPer'][entryValue['DEFPer'].length - 1] * 6,
-                                min: -7.3,
-                                color: "#262626"
-                            }
-                        ]
-                    },
-                    series: [{
-                        name: "ArtifactRadar",
-                        type: "radar",
-                        areaStyle: {},
-                        data: [{
-                            value: [opObj["ATKPer"] || 0, opObj["CRITRate"] || 0, opObj[
-                                "CRITDMG"] || 0, opObj["energyRecharge"] || 0, opObj[
-                                "elementMastery"] || 0, opObj["HPPer"] || 0, opObj[
-                                "DEFPer"] || 0],
-                        }]
-                    }]
-                }
-                this.radarChartOption && this.echarts1.setOption(this.radarChartOption);
-                this.radarChartOption && this.echarts2.setOption(this.radarChartOption);
             },
             // 操作提示-提示框
             // state值： success/primary/warning/danger
@@ -849,8 +655,6 @@
             },
             // 修改并保存当前展示圣遗物symbol
             changeShowSymbol(symbol) {
-                // 点击后移除新遗物状态
-                this.$artifact.notNew(this.$artifact.getIndex(symbol));
                 this.showSymbol = symbol;
                 this.$store.state.selectHistory = symbol;
                 this.syncListData();
@@ -867,7 +671,6 @@
                     this.ArtifactsList = this.$artifact.getList("origin", this.userSetting.filterPart, this.userSetting
                         .filterMain);
                 }
-                this.vmList();
             },
             // 锁定/解锁
             lockChange(index) {
@@ -881,100 +684,7 @@
                     src = require('../assets/images' + "/" + item.suit.replace(/\s+/g, "") + "/" + item.part + ".png");
                 return src;
             },
-            // 计算填充数量（flex）
-            getFillCount() {
-                // 容器宽度
-                let containerWidth = this.$refs.virtualContainer.offsetWidth,
-                    // 获1rem值
-                    html = document.getElementsByTagName("html"),
-                    rem = Number.parseFloat(window.getComputedStyle(html[0]).fontSize.slice(0, -2)),
-                    // 计算圣遗物组件宽度
-                    itemWidth = 11.25 * rem,
-                    count = this.ArtifactsList.length;
-                // 计算每行能容纳的最大圣遗物数量
-                this.itemMax = Math.floor(containerWidth / itemWidth);
-                console.log(this.itemMax)
-                // 移动端只能放两个（移动端item宽度不一致，直接计算会有bug）
-                if (containerWidth < 540) {
-                    this.itemMax = 2;
-                }
-                // 计算需要填充的数量（flex布局-center，需要把组件挤到左边）
-                this.fillCount = this.itemMax - (count % this.itemMax);
-                if (this.fillCount === this.itemMax) this.fillCount = 0;
-                this.vmList();
-            },
-            // 虚拟列表
-            vmList() {
-                // 记录相对高度（this.$store.state.boxScroll为全局变量）
-                const scroll = this.$refs.scrollListener;
-                this.$store.state.boxScroll = scroll.scrollTop;
-                // 计算渲染数量
-                // 获取1rem
-                let html = document.getElementsByTagName("html"),
-                    viewH = scroll.offsetHeight,
-                    rem = Number.parseFloat(window.getComputedStyle(html[0]).fontSize.slice(0, -2)),
-                    itemH = 0,
-                    renderRow = 0;
-                // 计算单个item高度
-                if (this.ArtifactsList.length > 0) {
-                    let item = document.getElementsByClassName("ArtifactsBox")[0],
-                        totalHeight = 0;
-                    // 获取item高度
-                    try {
-                        itemH = item.getBoundingClientRect().height + 1.5 * rem;
-                    } catch (error) {
-                        (this.userSetting.listBriefMode === true) ? itemH = 8 * rem: itemH = 19 * rem;
-                    }
-                    // 计算渲染列表行数
-                    renderRow = Math.ceil(viewH / itemH) * 3;
-                    // 计算列表总高度
-                    totalHeight = Math.ceil(this.ArtifactsList.length / this.itemMax) * itemH;
-                    // 列表不够直接返回
-                    if (this.ArtifactsList.length < renderRow * this.itemMax) {
-                        this.ArtifactsRenderList = this.ArtifactsList;
-                        return;
-                    } else {
-                        // 当滚动到位置时更新渲染列表
-                        if (scroll.scrollTop > (itemH + viewH)) {
-                            // 该被隐藏的item数量
-                            let topHideRow = Math.floor((scroll.scrollTop - viewH) / itemH),
-                                topHideCount = topHideRow * this.itemMax,
-                                renderList = this.ArtifactsList.slice(topHideCount, topHideCount + renderRow * this
-                                    .itemMax);
-                            // 判断列表是否需要更新
-                            if (JSON.stringify(this.ArtifactsRenderList) === JSON.stringify(renderList)) {
-                                return;
-                            } else {
-                                // 上半填充高度
-                                this.filltop = topHideRow * itemH;
-                                // 下半填充高度
-                                this.fillbottom = totalHeight - this.filltop - (Math.ceil(renderList
-                                    .length / this.itemMax) * itemH);
-                                // 更新渲染列表
-                                this.ArtifactsRenderList = renderList;
 
-                                console.log("itemMax: " + this.itemMax + "\nviewH: " + viewH +
-                                    "\ntotalH: " + totalHeight + "\ntopHideRow: " + topHideRow +
-                                    "\nrenderLength: " + this.ArtifactsRenderList.length + "\nScroll: " + scroll
-                                    .scrollTop)
-                            }
-                        } else {
-                            this.filltop = 0;
-                            // 确定渲染列表
-                            this.ArtifactsRenderList = this.ArtifactsList.slice(0, renderRow * this.itemMax);
-                            // 计算下方填充，列表数量大于渲染数量时计算，否则为0
-                            if ((this.ArtifactsList.length - renderRow * this.itemMax) >= 0) {
-                                this.fillbottom = totalHeight - ((this.ArtifactsRenderList.length / this.itemMax) * itemH);
-                            } else {
-                                this.fillbottom = 0;
-                            }
-                        }
-                        //
-                    }
-                } else {
-                    (this.userSetting.listBriefMode === true) ? itemH = 8.1875 * rem: itemH = 19.3125 * rem;
-                }
-            }
         }
     }
 </script>
@@ -997,86 +707,10 @@
         width: 100%;
         height: calc(100% - 7.25rem);
         user-select: none;
-    }
-
-    .demo-container {
-        position: relative;
-        background-color: rgba(255, 255, 255, 0.2);
-        overflow-y: scroll;
-        padding: 0;
-        height: 100%;
-
-        .vm-list-container {
-            user-select: none;
-            overflow-x: hidden;
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            position: relative;
-            z-index: 1;
-            align-content: flex-start;
-            align-items: flex-start;
-            justify-content: center;
-        }
-
-        .topMenu {
-            position: sticky;
-            overflow: hidden;
-            top: .3125rem;
-            z-index: 10;
-            width: 100%;
-            height: 3.125rem;
-            background-color: rgba(255, 255, 255, 0.3);
-
-            .selectBox {
-                margin: .375rem;
-            }
-        }
-
-        .tips {
-            position: absolute;
-            top: 45%;
-            left: 0;
-            width: 100%;
-            color: $genshin_gray;
-            font-size: 1.5rem;
-            text-align: center;
-            opacity: 0.5;
-
-            span {
-                cursor: pointer;
-                text-decoration: underline;
-            }
-        }
-
-        &::-webkit-scrollbar {
-            width: .4rem;
-            height: .0625rem;
-            transition: ease 0.2s all;
-            background: rgba(128, 128, 128, 0.5);
-        }
-
-        &::-webkit-scrollbar-thumb {
-            // 滚动条里面小方块
-            border-radius: .625rem;
-            background: rgb(246, 244, 243);
-        }
-
-        &::-webkit-scrollbar-track {
-            // 滚动条里面轨道
-            box-shadow: inset 0 0 0.3125rem rgba(0, 0, 0, 0.2);
-            border-radius: .625rem;
-            background: rbg(217, 211, 205);
-        }
-
-        .filterBoxFill {
-            width: 100%;
-            height: 3rem;
-        }
 
         .filterBox {
             position: fixed;
-            top: 4rem;
+            bottom: 4.5rem;
             z-index: 30;
             color: rgb(102, 112, 122);
             background-color: #FFF;
@@ -1117,6 +751,20 @@
 
         .filterBoxHide {
             left: -5.5rem;
+        }
+    }
+
+    .topMenu {
+        position: sticky;
+        overflow: hidden;
+        top: .3125rem;
+        z-index: 10;
+        width: 100%;
+        height: 3.125rem;
+        background-color: rgba(255, 255, 255, 0.3);
+
+        .selectBox {
+            margin: .375rem;
         }
     }
 
@@ -1233,18 +881,6 @@
         height: 15rem;
     }
 
-    #mobileShow {
-        position: absolute;
-        top: .625rem;
-        right: .625rem;
-    }
-
-    .upgradeCheat {
-        display: inline-block;
-        position: absolute;
-        right: .3125rem;
-    }
-
     // footer
 
     footer {
@@ -1326,7 +962,7 @@
         inset: auto auto 1rem 0 !important;
     }
 
-    #start {
+    #create {
         position: relative;
         background-color: #ece5d8;
         border-radius: 1.5625rem;

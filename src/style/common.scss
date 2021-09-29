@@ -197,7 +197,8 @@ $genshin_gray: rgb(149, 149, 149);
   position: relative;
   border-radius: 1.5625rem;
   margin-right: 0 !important;
-  background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024' fill='%23000'%3e%3cpath d='M510.957251 351.97026 1021.893013 0 669.922752 510.935762 1021.893013 1021.8705 510.957251 669.901263 0.021489 1021.8705 351.99175 510.935762 0.021489 0Z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+  // background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024' fill='%23000'%3e%3cpath d='M510.957251 351.97026 1021.893013 0 669.922752 510.935762 1021.893013 1021.8705 510.957251 669.901263 0.021489 1021.8705 351.99175 510.935762 0.021489 0Z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+  background-image: url(~@/assets/images/close.png);
   background-color: $genshin_white;
 
   &::after {
@@ -585,7 +586,7 @@ $genshin_gray: rgb(149, 149, 149);
     }
   }
 
-  .demo-container {
+  .list-container {
     margin-left: 0 !important;
     width: calc(100% - 20rem) !important;
   }

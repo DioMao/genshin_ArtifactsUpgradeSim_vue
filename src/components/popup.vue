@@ -2,7 +2,9 @@
     <div class="popup-box" :class="isShow?'popup-show':'popup-hide'" @click="this.isShow = false">
         <div class="popup-text">
             <div class="popup-title">{{ title }}</div>
-            <div class="popup-content">{{ content }}</div>
+            <div class="popup-content">
+                <slot></slot>
+            </div>
         </div>
         <div class="popup-image" v-if="image!==''">
             <div class="isNew">{{ $t('tips.new') }}</div>
@@ -23,11 +25,6 @@
             title: {
                 type: String,
                 default: "Tip:"
-            },
-            // 内容
-            content: {
-                type: String,
-                default: "No content received."
             },
             // 图片src
             image: {

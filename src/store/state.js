@@ -1,5 +1,5 @@
 export default {
-    boxScroll: 0,
+    scrollTop: 0,
     selectHistory: "",
     language: "zh",
     // 图片位置
