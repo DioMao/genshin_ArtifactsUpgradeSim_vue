@@ -1,6 +1,8 @@
 {
   "name": "artifact_sim",
-  "version": "0.2.0",
+  "version": "0.2.1",
+  "author": "DioMao",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -14,7 +16,6 @@
     "axios": "^0.21.4",
     "bootstrap": "^5.1.0",
     "core-js": "^3.6.5",
-    "echarts": "^5.1.2",
     "vue": "^3.2.4",
     "vue-i18n": "^9.1.7",
     "vue-router": "^4.0.11",

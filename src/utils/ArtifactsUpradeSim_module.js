@@ -1,7 +1,7 @@
 /**
  * ArtifactsUpgradeSim v0.2.1 module
- * Copyrigth 2021-2022 DioMao (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_js/graphs/contributors)
- * Licensed under MIT (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_js/blob/main/LICENSE)
+ * Copyrigth 2021-2022 DioMao (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/graphs/contributors)
+ * Licensed under MIT (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/main/LICENSE)
  */
 "use strict";
 
@@ -486,7 +486,7 @@ class ArtifactsFunction_class {
         this[AUS_LIST].push(newArtifacts);
         // console.log(newArtifacts);
         this.setLocalStorage(this[LOCAL_STORAGE_KEY], this[AUS_LIST]);
-        this.changeCount([newArtifacts.part, newArtifacts.mainEntry]);
+        this.changeCount([newArtifacts.part, newArtifacts.mainEntry, newArtifacts.suit]);
         return newArtifacts;
     }
 
@@ -704,7 +704,7 @@ class ArtifactsFunction_class {
             // console.log("%cDelete fail.This Artifact is locked.", "color:rgb(144,82,41)");
             return false;
         } else {
-            this.changeCount([artifact.part, artifact.mainEntry], -1);
+            this.changeCount([artifact.part, artifact.mainEntry, artifact.suit], -1);
             this[DELETE_HISTORY].push(this[AUS_LIST].splice(index, 1)[0]);
             this.setLocalStorage(this[LOCAL_STORAGE_KEY], this[AUS_LIST]);
             return true;
@@ -739,7 +739,7 @@ class ArtifactsFunction_class {
         }
         let artifact = this[DELETE_HISTORY].pop();
         this[AUS_LIST].push(artifact);
-        this.changeCount([artifact.part, artifact.mainEntry]);
+        this.changeCount([artifact.part, artifact.mainEntry, artifact.suit]);
         this.setLocalStorage(this[LOCAL_STORAGE_KEY], this[AUS_LIST]);
         return true;
     }
@@ -773,7 +773,7 @@ class ArtifactsFunction_class {
     enforceUpdateCount() {
         this[COUNT_LIST] = {}
         this[AUS_LIST].forEach(val => {
-            this.changeCount([val.part, val.mainEntry]);
+            this.changeCount([val.part, val.mainEntry, val.suit]);
         })
     }
 
@@ -1300,7 +1300,7 @@ class ArtifactsFunction_class {
 
 const artiConst = new ArtifactConst();
 const ArtifactsSim = new ArtifactsFunction_class();
-console.log("%cArtifactsUpgradeSim is running.Learn more: https://github.com/DioMao/genshin_ArtifactsUpgradeSim_js", "color:rgb(144,82,41)");
+console.log("%cArtifactsUpgradeSim is running.Learn more: https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue", "color:rgb(144,82,41)");
 
 /** --------------------------------辅助函数-------------------------------- **/
 
@@ -1334,7 +1334,6 @@ console.log("%cArtifactsUpgradeSim is running.Learn more: https://github.com/Dio
         // 解析数量+兼容旧版
         try {
             ArtifactsSim.AUSList.forEach(val => {
-                ArtifactsSim.changeCount([val.part, val.mainEntry]);
                 // 兼容旧版数据
                 if (!Object.prototype.hasOwnProperty.call(val, "symbol")) {
                     val.symbol = Date.now().toString(36) + "-" + Math.random().toString(36).substring(2);
@@ -1348,6 +1347,7 @@ console.log("%cArtifactsUpgradeSim is running.Learn more: https://github.com/Dio
                 if (!Object.prototype.hasOwnProperty.call(val, "isNew")) {
                     val.isNew = false;
                 }
+                ArtifactsSim.changeCount([val.part, val.mainEntry, val.suit]);
             })
         } catch (error) {
             console.log("%cCannot set count.", "color:rgb(144,82,41)");

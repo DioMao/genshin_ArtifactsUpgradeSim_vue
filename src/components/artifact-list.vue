@@ -125,9 +125,14 @@
                 type: Boolean,
                 default: true
             },
+            // 圣遗物强化质量
+            entryquality: {
+                type: [String,Number],
+                default: -1
+            }
         },
         mounted() {
-            // 先记录scroll位置，调用vmList后会重置scroll值
+            // 先记录scrollTop，调用vmList后会重置scrollTop值
             let scroll = this.$store.state.scrollTop;
             // 读取语言
             this.$i18n.locale = this.state.language;
@@ -154,9 +159,7 @@
                 deep: true
             },
             ArtifactsRenderList() {
-                // 填充（flex）
-                this.fillCount = this.itemMax - (this.ArtifactsRenderList.length % this.itemMax);
-                if (this.fillCount === this.itemMax) this.fillCount = 0;
+                this.changeFillCount();
             }
         },
         methods: {
@@ -169,7 +172,7 @@
                 this.$emit("create");
             },
             upgrade(symbol, entry = "") {
-                if (this.$artifact.upgrade(this.$artifact.getIndex(symbol), entry)) {
+                if (this.$artifact.upgrade(this.$artifact.getIndex(symbol), entry, this.entryquality)) {
                     this.$emit("alert", this.$t('handle.upSuccess'));
                 } else {
                     this.$emit("alert", this.$t('handle.maxLv'));
@@ -207,6 +210,11 @@
                     console.log(error);
                     return '';
                 }
+            },
+            // 填充（flex）
+            changeFillCount() {
+                this.fillCount = this.itemMax - (this.ArtifactsRenderList.length % this.itemMax);
+                if (this.fillCount === this.itemMax) this.fillCount = 0;
             },
             // 虚拟列表
             vmList(unchange = true) {
@@ -251,6 +259,7 @@
                             this.fillbottom = 0;
                         }
                         this.ArtifactsRenderList = this.rawdata;
+                        this.changeFillCount();
                         return;
                     } else {
                         // 当滚动到位置时更新渲染列表
@@ -275,21 +284,23 @@
                             }
                             // 列表移动距离不大且原数据未变更则不更新，否则重新计算填充和更新
                             if (!needUpdate && !!unchange) {
+                                this.changeFillCount();
                                 return;
                             } else {
                                 // 更新渲染列表
                                 this.ArtifactsRenderList = renderList;
                                 // 当滚动距离超出总高度时，重置上半填充
-                                if(scroll.scrollTop > totalHeight){
+                                if (scroll.scrollTop > totalHeight) {
                                     scroll.scrollTop = 0;
                                     this.filltop = 0;
-                                }else{
+                                } else {
                                     // 上半填充高度
                                     this.filltop = topHideRow * itemH;
                                 }
                                 // 下半填充高度
                                 this.fillbottom = totalHeight - this.filltop - (Math.ceil(renderList
                                     .length / this.itemMax) * itemH);
+                                this.changeFillCount();
                                 // 调试信息：
                                 // console.log("itemMax: " + this.itemMax + "\nitemOffsetTop: " + item.offsetTop +
                                 //     "\ntotalH: " + totalHeight + "\ntopHideRow: " + topHideRow +
@@ -307,6 +318,7 @@
                             } else {
                                 this.fillbottom = 0;
                             }
+                            this.changeFillCount();
                         }
                     }
                 } else {
@@ -314,6 +326,7 @@
                     this.ArtifactsRenderList.length = 0;
                     this.filltop = 0;
                     this.fillbottom = 0;
+                    this.changeFillCount();
                     // 默认高度
                     (this.briefmode === true) ? itemH = 8 * rem: itemH = 19 * rem;
                 }
@@ -325,6 +338,7 @@
 <style lang="scss" scoped>
     .list-container {
         position: relative;
+        z-index: 5;
         background-color: rgba(255, 255, 255, 0.2);
         overflow-y: scroll;
         padding: 0;
@@ -361,7 +375,6 @@
 
         &::-webkit-scrollbar {
             width: .4rem;
-            height: .0625rem;
             transition: ease 0.2s all;
             background: rgba(128, 128, 128, 0.5);
         }
@@ -374,9 +387,9 @@
 
         &::-webkit-scrollbar-track {
             // 滚动条里面轨道
-            box-shadow: inset 0 0 0.3125rem rgba(0, 0, 0, 0.2);
-            border-radius: .625rem;
-            background: rbg(217, 211, 205);
+            // box-shadow: inset 0 0 0.3125rem rgba(0, 0, 0, 0.2);
+            border-radius: .1875rem;
+            background: rgba(0, 0, 0, 0.2);
         }
     }
 

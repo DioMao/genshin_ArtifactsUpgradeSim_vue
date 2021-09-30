@@ -33,7 +33,7 @@ module.exports = {
       config.plugin('html')
         .tap(args => {
           args[0].cdn = {
-            js: ['https://cdn.jsdelivr.net/combine/npm/echarts@5.1.2,npm/axios@0.21.4'],
+            js: ['https://cdn.jsdelivr.net/combine/npm/axios@0.21.4'],
             css: ['https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css']
           }
           return args

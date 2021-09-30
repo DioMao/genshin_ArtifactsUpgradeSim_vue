@@ -1,6 +1,7 @@
 <template>
     <div>
         <div class="main-container">
+            <img class="main-container-bg" src="../assets/images/genshin-symbol.png" alt="background_image">
             <demo-alert :state="alertFunc.alertState" :show="alertFunc.alertShow">{{ alertFunc.alertMsg }}</demo-alert>
             <div class="countShow float-end">{{ $t('term.artifacts') }}
                 <span
@@ -11,7 +12,7 @@
             </popup>
             <!-- 筛选提示框 -->
             <div class="filterBox"
-                :class="(userSetting.filterMain!=='default'||userSetting.filterPart!=='default')?'filterBoxShow':'filterBoxHide'">
+                :class="(userSetting.filterMain!=='default'|| userSetting.filterPart!=='default' || userSetting.filterSuit!=='default')?'filterBoxShow':'filterBoxHide'">
                 <div style="display:inline-block;">{{ $t('msg.filter') }}</div>
                 <div class="filterMain" v-show="userSetting.filterMain!=='default'"
                     @click="userSetting.filterMain='default'">
@@ -19,20 +20,23 @@
                 </div>
                 <div class="filterPart" v-show="userSetting.filterPart!=='default'"
                     @click="userSetting.filterPart='default'">
-                    {{ $t('term.'+ userSetting.filterPart) }}</div>
+                    {{ $t('term.'+ userSetting.filterPart) }}
+                </div>
+                <div class="filterSuit" v-show="userSetting.filterSuit!=='default'"
+                    @click="userSetting.filterSuit='default'">
+                    {{ $t('suitList['+ ($artiConst.val.suitList.indexOf(userSetting.filterSuit)!==-1?$artiConst.val.suitList.indexOf(userSetting.filterSuit):0) + ']') }}
+                </div>
             </div>
-            <!-- 筛选框 -->
-            <div></div>
             <!-- 圣遗物列表 -->
             <artifact-list :rawdata="ArtifactsList" :showsymbol="showSymbol" :briefmode="userSetting.listBriefMode"
-                @sync="syncListData" @changeshowsymbol="changeShowSymbol" @create="createArtifact"
-                @alert="alertControl">
+                :entryquality="userSetting.entryQuality" @sync="syncListData" @changeshowsymbol="changeShowSymbol"
+                @create="createArtifact" @alert="alertControl">
             </artifact-list>
             <!-- 右侧圣遗物展示详情 -->
             <div class="ArtifactShowBox">
                 <artifact-show @upgrade="ArtifactUpgrade" @init="initArtifact" @del="deleteArtifact" @lock="lockChange"
-                    :showdetail="showDetail" :index="this.$artifact.getIndex(showSymbol)"
-                    :language="this.userSetting.language" v-if="showSymbol!==''">
+                    :showdetail="showDetail" :index="$artifact.getIndex(showSymbol)" :language="userSetting.language"
+                    v-if="showSymbol!==''">
                 </artifact-show>
                 <div class="ms-3 mt-3 me-3" v-show="showSymbol!==''">
                     {{ $t('msg.entryScore') }}(beta)：{{ ArtifactScore }}
@@ -51,18 +55,18 @@
             <div class="offcanvas-body">
                 <div>
                     <artifact-show @upgrade="ArtifactUpgrade" @init="initArtifact" @del="deleteArtifact"
-                        @lock="lockChange" :showdetail="showDetail" :index="this.$artifact.getIndex(showSymbol)"
-                        :language="this.userSetting.language" v-if="showSymbol!==''">
+                        @lock="lockChange" :showdetail="showDetail" :index="$artifact.getIndex(showSymbol)"
+                        :language="userSetting.language" v-if="showSymbol!==''">
                     </artifact-show>
                 </div>
                 <div class="mt-3" v-show="showSymbol!==''">{{ $t('msg.entryScore') }}(beta)：{{ ArtifactScore }}
                     <button id="score-2" class="btn btn-genshin-dark btn-sm" data-bs-toggle="modal"
                         data-bs-target="#scoreSet">{{ $t('msg.scoreSetting') }}</button>
                 </div>
-                <button type="button" class="btn btn-genshin-dark mt-3" data-bs-dismiss="offcanvas" aria-label="Close"
+                <!-- <button type="button" class="btn btn-genshin-dark mt-3" data-bs-dismiss="offcanvas" aria-label="Close"
                     style="position: fixed;inset: auto 2rem 1.5rem auto;">
                     <span class="xinbox"></span>{{ $t('msg.closeDetail') }}
-                </button>
+                </button> -->
             </div>
         </div>
         <footer>
@@ -78,15 +82,37 @@
                 <!-- 筛选器 -->
                 <ul class="dropdown-menu filterList" aria-labelledby="filter">
                     <li>
-                        <a class="dropdown-item" href="#" @click="mainEntryfilter('default')"
-                            :style="{background:(userSetting.filterMain==='default'?'rgb(85,92,107)':'inherit')}">{{ $t('msg.default') }}<span
-                                class="ms-5 float-end">{{ $artifact.AUSList.length }}</span>
+                        <a class="dropdown-item" href="#" @click="multFilter('default','all')"
+                            :class="{isActived:((userSetting.filterMain=== 'default' && userSetting.filterPart=== 'default' && userSetting.filterSuit==='default'))}">
+                            {{ $t('msg.default') }}
+                            <span class="ms-5 float-end">{{ $artifact.AUSList.length }}</span>
                         </a>
                     </li>
-                    <li v-for="mainEntryF in this.$artiConst.val.mainEntryList" :key="mainEntryF">
-                        <a class="dropdown-item" href="#" @click="mainEntryfilter(mainEntryF)"
-                            :style="{background:(userSetting.filterMain===mainEntryF?'#596379':'inherit'),color:(this.$artifact.getCount(mainEntryF)>0?'':'#a8a8a8')}">{{ $t('term.'+ mainEntryF) }}
-                            <span class="ms-5 float-end">{{ this.$artifact.getCount(mainEntryF) }}</span>
+                    <!-- 位置筛选 -->
+                    <li class="filterLable">{{ $t('msg.part') }}</li>
+                    <li v-for="part in $artiConst.val.parts" :key="part">
+                        <a class="dropdown-item" href="#" @click="multFilter(part,'part')"
+                            :class="{disabled:$artifact.getCount(part)===0,isActived:userSetting.filterPart===part}"
+                            :style="{color:($artifact.getCount(part)>0?'':'#a8a8a8')}">{{ $t('term.'+ part) }}
+                            <span class="ms-5 float-end">{{ $artifact.getCount(part) }}</span>
+                        </a>
+                    </li>
+                    <!-- 套装筛选 -->
+                    <li class="filterLable">{{ $t('msg.suit') }}</li>
+                    <li v-for="(suit,index) in $artiConst.val.suitList" :key="suit">
+                        <a class="dropdown-item" href="#" @click="multFilter(suit,'suit')"
+                            :class="{disabled:$artifact.getCount(suit)===0,isActived:userSetting.filterSuit===suit}"
+                            :style="{color:($artifact.getCount(suit)>0?'':'#a8a8a8')}">{{ $t('suitList['+ index+"]") }}
+                            <span class="ms-5 float-end">{{ $artifact.getCount(suit) }}</span>
+                        </a>
+                    </li>
+                    <!-- 主属性筛选 -->
+                    <li class="filterLable">{{ $t('msg.mainEntry') }}</li>
+                    <li v-for="mainEntryF in $artiConst.val.mainEntryList" :key="mainEntryF">
+                        <a class="dropdown-item" href="#" @click="multFilter(mainEntryF,'main')"
+                            :class="{disabled:$artifact.getCount(mainEntryF)===0,isActived:userSetting.filterMain===mainEntryF}"
+                            :style="{color:($artifact.getCount(mainEntryF)>0?'':'#a8a8a8')}">{{ $t('term.'+ mainEntryF) }}
+                            <span class="ms-5 float-end">{{ $artifact.getCount(mainEntryF) }}</span>
                         </a>
                     </li>
                     <li class="filterTip">{{ $t('msg.filter') }}</li>
@@ -192,13 +218,13 @@
                     <div class="modal-body">
                         <label for="cutArtifactSuit" class="form-label">{{ $t('msg.suit') }}</label>
                         <select id="cutArtifactSuit" class="form-select form-select-sm mb-3" v-model="cusSuit">
-                            <option v-for="(suit,index) in this.$artiConst.val.suitList" :key="suit" :value="suit">
+                            <option v-for="(suit,index) in $artiConst.val.suitList" :key="suit" :value="suit">
                                 {{ $t('suitList[' + index + ']') }}</option>
                         </select>
                         <label for="cutArtifactPart" class="form-label">{{ $t('msg.part') }}</label>
                         <select id="cutArtifactPart" class="form-select form-select-sm mb-3" v-model="cusPart"
                             @change="cusEntry.length=0;cusMainEntry=''">
-                            <option v-for="part in this.$artiConst.val.parts" :key="part" :value="part">
+                            <option v-for="part in $artiConst.val.parts" :key="part" :value="part">
                                 {{ $t('term.' + part) }}</option>
                         </select>
                         <label class="form-label"
@@ -211,9 +237,8 @@
                         <label class="form-label"
                             v-show="cusPart!=='default'&&cusMainEntry!==''">{{ $t('handle.chooseEntry') }}</label>
                         <div class="d-flex justify-content-between flex-wrap">
-                            <div class="form-check mb-2" style="width:40%;"
-                                v-for="entry in this.$artiConst.val.entryList" :key="entry"
-                                v-show="cusPart!=='default'&&cusMainEntry!==''&&cusMainEntry!==entry">
+                            <div class="form-check mb-2" style="width:40%;" v-for="entry in $artiConst.val.entryList"
+                                :key="entry" v-show="cusPart!=='default'&&cusMainEntry!==''&&cusMainEntry!==entry">
                                 <input class="form-check-input" v-model="cusEntry" type="checkbox" :value="entry"
                                     :id="entry+'Check'" :disabled="cusEntry.length===4&&cusEntry.indexOf(entry)===-1">
                                 <label class="form-check-label" :for="entry+'Check'" style="white-space:nowrap"
@@ -223,9 +248,9 @@
                                 <select class="form-select form-select-sm mt-1 mb-1 col-md-6 ms-auto"
                                     v-model="cusEntryRate[entry]"
                                     :disabled="cusEntry.length===4&&cusEntry.indexOf(entry)===-1">
-                                    <option v-for="entryValueModal in this.$artiConst.val.entryValue[entry]"
+                                    <option v-for="entryValueModal in $artiConst.val.entryValue[entry]"
                                         :key="entryValueModal" :value="entryValueModal">
-                                        {{ this.$artifact.entryValFormat(entry,entryValueModal) }}</option>
+                                        {{ $artifact.entryValFormat(entry,entryValueModal) }}</option>
                                 </select>
                             </div>
                         </div>
@@ -322,18 +347,18 @@
                             <select class="form-select form-select-sm" name="scoreString" id="scoreString"
                                 v-model="userSetting.scoreConfig.strRule">
                                 <option value="default">{{ $t('msg.default') }}</option>
-                                <option v-for="config in this.$artiConst.val.scoreList" :key="config" :value="config">
-                                    {{ this.$artifact.toChinese(config,"score") }}</option>
+                                <option v-for="config in $artiConst.val.scoreList" :key="config" :value="config">
+                                    {{ $artifact.toChinese(config,"score") }}</option>
                             </select>
                         </div>
                         <div class="justify-content-between flex-wrap" style="display:flex;"
                             v-show="userSetting.scoreConfig.mode==='array'">
-                            <div class="form-check" style="width:40%;" v-for="config in this.$artiConst.val.scoreList"
+                            <div class="form-check" style="width:40%;" v-for="config in $artiConst.val.scoreList"
                                 :key="config">
                                 <input class="form-check-input" type="checkbox" :value="config" :id="'score-'+config"
                                     v-model="userSetting.scoreConfig.arrRule">
                                 <label class="form-check-label" :for="'score-'+config">
-                                    {{ this.$artifact.toChinese(config,"score") }}
+                                    {{ $artifact.toChinese(config,"score") }}
                                 </label>
                             </div>
                         </div>
@@ -350,7 +375,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div>Version: {{this.$artifact.version}} </div>
+                        <div>Version: {{$artifact.version}} </div>
                         <div>Author: <a href="https://github.com/DioMao" target="_blank">DioMao</a></div>
                         <div>Frameworks: </div>
                         <div class="fs-sm">Vue@3.2.4 <br>Vue-router@4.0.11 <br>Vuex@4.0.2 <br>Bootstrap@5.1.0
@@ -411,7 +436,8 @@
                     highScore: 35, // 高分圣遗物标准
                     listBriefMode: true, // 圣遗物列表模式（details/brief）
                     filterMain: "default", // 主词条筛选
-                    filterPart: "default" // 位置筛选
+                    filterPart: "default", // 位置筛选
+                    filterSuit: "default" // 套装筛选
                 },
                 defaultSetting: "", // 初始设置
                 alertFunc: {
@@ -509,8 +535,8 @@
         methods: {
             // 随机生成圣遗物
             createArtifact() {
-                // this.$artifact.createArtifact();
-                this.$artifact.batchCreate(100);
+                this.$artifact.createArtifact();
+                // this.$artifact.batchCreate(100);
                 this.syncListData();
                 this.alertControl("随机圣遗物已生成！", 1500);
             },
@@ -642,9 +668,16 @@
                     this.alertFunc.alertShow = false;
                 }, time)
             },
-            // 主属性筛选
-            mainEntryfilter(val) {
-                this.userSetting.filterMain = val;
+            // 筛选器
+            multFilter(val, type = "part") {
+                if (type === "all") {
+                    this.userSetting.filterMain = "default";
+                    this.userSetting.filterPart = "default";
+                    this.userSetting.filterSuit = "default";
+                }
+                if (type === "main") this.userSetting.filterMain = val;
+                if (type === "part") this.userSetting.filterPart = val;
+                if (type === "suit") this.userSetting.filterSuit = val;
             },
             // 排序
             sortList(index) {
@@ -663,13 +696,13 @@
             syncListData() {
                 if (this.userSetting.language === "en") {
                     this.ArtifactsList = this.$artifact.getList("en", this.userSetting.filterPart, this.userSetting
-                        .filterMain);
+                        .filterMain, this.userSetting.filterSuit);
                 } else if (this.userSetting.language === "zh") {
                     this.ArtifactsList = this.$artifact.getList("zh", this.userSetting.filterPart, this.userSetting
-                        .filterMain);
+                        .filterMain, this.userSetting.filterSuit);
                 } else {
                     this.ArtifactsList = this.$artifact.getList("origin", this.userSetting.filterPart, this.userSetting
-                        .filterMain);
+                        .filterMain, this.userSetting.filterSuit);
                 }
             },
             // 锁定/解锁
@@ -702,11 +735,21 @@
 
     .main-container {
         position: fixed;
+        overflow: hidden;
         background-color: rgb(180, 170, 150);
         top: 3.5rem;
         width: 100%;
         height: calc(100% - 7.25rem);
         user-select: none;
+
+        .main-container-bg {
+            position: absolute;
+            z-index: 0;
+            height: 60vh;
+            top: -27vh;
+            left: -23vh;
+            opacity: 0.2;
+        }
 
         .filterBox {
             position: fixed;
@@ -718,7 +761,8 @@
             transition: all 0.5s ease;
 
             .filterMain,
-            .filterPart {
+            .filterPart,
+            .filterSuit {
                 cursor: pointer;
                 display: inline-block;
                 position: relative;
@@ -854,7 +898,7 @@
 
                 .badge {
                     background-color: rgb(57, 68, 79);
-                    padding: .1875rem .25rem .1875rem;
+                    padding: .1875rem .25rem .0625rem;
                 }
             }
         }
@@ -912,7 +956,7 @@
     .filterList {
         height: 26.875rem;
         overflow-y: scroll;
-        background-color: rgb(61, 69, 86) !important;
+        background-color: rgba(61, 69, 86, 0.98) !important;
         background-image: url(../assets/images/genshin-symbol.png);
         background-repeat: no-repeat;
         background-size: contain;
@@ -920,25 +964,49 @@
         background-blend-mode: multiply;
         padding-bottom: 0 !important;
 
+        .filterLable {
+            padding: .25rem .5rem;
+            color: $genshin_gold;
+            background: rgba(0, 0, 0, .25);
+            margin: .25rem 0;
+        }
+
         &::-webkit-scrollbar {
             display: none;
         }
 
-        li a {
-            &:hover {
-                color: $genshin_white;
-                background-color: rgba(72, 81, 98, 0.5) !important;
-            }
+        li {
+            padding: 0 .3125rem;
 
-            color: $genshin_white;
+            a {
+                padding: .5rem .625rem;
+                color: $genshin_white;
+
+                &:hover {
+                    color: $genshin_white;
+                    background-color: rgba(236, 229, 216, 0.2) !important;
+                }
+
+            }
+        }
+
+
+        .isActived {
+            pointer-events: none;
+            background-color: $genshin_white;
+            color: $genshin_dark;
+
+            span {
+                color: rgb(114, 120, 131);
+            }
         }
 
         .filterTip {
             position: sticky;
             bottom: 0;
-            padding-left: 0.9rem;
-            border: solid 5px rgb(61, 69, 86);
-            color: $genshin-dark;
+            padding-left: .625rem;
+            border: solid .3125rem rgb(61, 69, 86);
+            color: $genshin_dark;
             background-color: rgb(201, 197, 190);
             width: 100%;
             border-radius: .25rem;
@@ -994,7 +1062,7 @@
         top: 1.125rem;
         right: .9375rem;
         z-index: 20;
-        color: $genshin-white;
+        color: $genshin_gold;
         font-size: 1rem;
     }
 </style>

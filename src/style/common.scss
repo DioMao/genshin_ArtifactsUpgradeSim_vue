@@ -1,6 +1,27 @@
 $genshin_white: rgb(236, 229, 216);
-$genshin_dark: rgb(74, 83, 102);
+$genshin_dark: rgb(73, 83, 102);
 $genshin_gray: rgb(149, 149, 149);
+$genshin_gold: rgb(211,188,142);
+$genshin_green: rgb(92,178,86);
+
+::-webkit-scrollbar {
+  width: .4rem;
+  transition: ease 0.2s all;
+  background: rgba(128, 128, 128, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  // 滚动条里面小方块
+  border-radius: .625rem;
+  background: rgb(246, 244, 243);
+}
+
+::-webkit-scrollbar-track {
+  // 滚动条里面轨道
+  // box-shadow: inset 0 0 0.3125rem rgba(0, 0, 0, 0.2);
+  border-radius: .1875rem;
+  background: rgba(0, 0, 0, 0.2);
+}
 
 // 仿原神按键
 
@@ -199,17 +220,20 @@ $genshin_gray: rgb(149, 149, 149);
   margin-right: 0 !important;
   // background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024' fill='%23000'%3e%3cpath d='M510.957251 351.97026 1021.893013 0 669.922752 510.935762 1021.893013 1021.8705 510.957251 669.901263 0.021489 1021.8705 351.99175 510.935762 0.021489 0Z'/%3e%3c/svg%3e") center/1em auto no-repeat;
   background-image: url(~@/assets/images/close.png);
+  background-size: 1.6875rem;
   background-color: $genshin_white;
+  background-repeat: no-repeat;
+  opacity: 1;
 
   &::after {
     content: "";
     pointer-events: none;
     position: absolute;
-    top: -0.25rem;
-    left: -0.25rem;
-    height: calc(100% + .5rem);
-    width: calc(100% + .5rem);
-    border: solid 0.4375rem rgb(135, 141, 141);
+    top: -0.1875rem;
+    left: -0.1875rem;
+    height: calc(100% + .375rem);
+    width: calc(100% + .375rem);
+    border: solid .25rem rgb(135, 141, 141);
     border-radius: 1.5625rem;
   }
 

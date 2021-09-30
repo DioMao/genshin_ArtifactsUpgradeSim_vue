@@ -1,7 +1,10 @@
 <template>
     <div class="ArtifactShow">
         <div class="aTitle"> {{ artifactName }} </div>
-        <div class="titleLine"></div>
+        <div class="titleLine">
+            <img class="leftArrow" :src="artifactArrowSrc" alt="artifactArrow">
+            <img class="rightArrow" :src="artifactArrowSrc" alt="artifactArrow">
+        </div>
         <div class="aHead">
             {{ showdetail.part }}
             <div class="mainEntry"> {{ showdetail.mainEntry }} </div>
@@ -42,14 +45,18 @@
             <ul>
                 <li v-for="entry in showdetail.entry" :key="entry">·{{ entry[0] + "+" + entry[1] }}</li>
             </ul>
+            <div class="suitName">{{ showdetail.suit }}</div>
         </div>
         <div class="aButtonBox">
-            <button class="btn btn-genshin btn-sm float-start" @click="upgrade" :disable="showdetail.level>=20"> {{ $t('msg.upgrade') }}
+            <button class="btn btn-genshin btn-sm float-start" @click="upgrade" :disable="showdetail.level>=20">
+                {{ $t('msg.upgrade') }}
             </button>
-            <button class="btn btn-genshin btn-sm" @click="init" v-show="showdetail.level>0"> {{ $t('msg.reset') }} </button>
+            <button class="btn btn-genshin btn-sm" @click="init" v-show="showdetail.level>0"> {{ $t('msg.reset') }}
+            </button>
             <button class="btn btn-genshin btn-sm float-end del" @click="del"> {{ $t('msg.delete') }} </button>
         </div>
-        <router-link :to="{path:'/artifact-'+index}" class="btn btn-toupgrade"><span class="circleinbox"></span>{{ $t('msg.toUpgradePage') }}
+        <router-link :to="{path:'/artifact-'+index}" class="btn btn-toupgrade">
+            <span class="circleinbox"></span>{{ $t('msg.toUpgradePage') }}
         </router-link>
     </div>
 </template>
@@ -59,7 +66,7 @@
         name: "artifact-show",
         data() {
             return {
-                
+                artifactArrowSrc: require("../assets/images/artifact_arrow.png")
             }
         },
         props: {
@@ -100,13 +107,13 @@
                 if (this.language === "en" && suitList.indexOf(this.showdetail.suit) !== -1) {
                     return suit[this.showdetail.suit][artifact[this.index].part];
                 } else if (this.language === "zh" && suitList_zh.indexOf(this.showdetail.suit) !== -1) {
-                    return suit_zh[this.showdetail.suit][this.$artifact.toChinese(artifact[this.index].part,"parts")];
+                    return suit_zh[this.showdetail.suit][this.$artifact.toChinese(artifact[this.index].part, "parts")];
                 }
                 return "none";
             },
             suitUrl() {
                 let item = this.$artifact.AUSList[this.index],
-                    src = require('../assets/images'+"/" + item.suit.replace(/\s+/g,"") + "/" + item.part + ".png");
+                    src = require('../assets/images' + "/" + item.suit.replace(/\s+/g, "") + "/" + item.part + ".png");
                 return src;
             }
         },
@@ -152,6 +159,27 @@
             width: 18.5rem;
             height: 1.625rem;
             border: solid 0.125rem rgba(144, 82, 41, 0.7);
+
+            .leftArrow {
+                position: absolute;
+                z-index: 4;
+                top: .375rem;
+                left: -0.25rem;
+                height: .75rem;
+                width: .75rem;
+                background-color: #BC6832;
+            }
+
+            .rightArrow {
+                position: absolute;
+                z-index: 4;
+                top: .375rem;
+                right: -0.25rem;
+                height: .75rem;
+                width: .75rem;
+                background-color: #BC6832;
+                transform: rotate(180deg);
+            }
         }
 
         .aHead {
@@ -228,7 +256,7 @@
         }
 
         .aContent {
-            height: 9.375rem;
+            height: 10.375rem;
             font-size: .875rem;
             padding: .9375rem 1.125rem;
             background-color: #ECE5D8;
@@ -236,12 +264,13 @@
             .badge {
                 font-weight: 400;
                 font-size: .875rem;
-                padding: .125rem .25rem .0625rem;
+                padding: .125rem .25rem 0;
                 background-color: rgb(57, 68, 79) !important;
             }
 
             ul {
                 margin-top: .625rem;
+                margin-bottom: 0;
                 list-style-type: none;
                 padding: 0;
 
@@ -249,6 +278,10 @@
                     margin-bottom: .0625rem;
                     color: rgb(76, 86, 104);
                 }
+            }
+
+            .suitName {
+                color: $genshin_green;
             }
 
             .unlock,
