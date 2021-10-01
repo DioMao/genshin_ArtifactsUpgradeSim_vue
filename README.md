@@ -42,21 +42,23 @@ npm run build
 
 #### Demo预览（可能落后于当前版本）：
 
-GIt: https://diomao.github.io/ArtifactsSimDemo
+GIt: https://diomao.github.io/artifacts_sim_demo
 
-国内CDN: http://ys.noworklife.cn （国内路线比Git快点，但是不太稳定，如果加载不出来就多刷新几次）
+国内: https://juanweimao.gitee.io/artifacts_sim_demo
 
 ---
 
 #### 引入方法：
 
-1. 直接使用\<script\>标签引入ArtifactsUpradeSim.js。
+1. ~~直接使用\<script\>标签引入ArtifactsUpradeSim.js~~。暂未提供新版js
 
-2. Vue3项目：将ArtifactsUpradeSim_module.js放入src/utils文件里。
+2. Vue3项目：将ArtifactsUpradeSim_module.js、ArtifactsData.js、index.js放入src/utils文件里。
+
+**如果项目已经存在src/utils/index.js，则需要手动将index.js的代码进行合并。**
 
 在main.js中全局引入：
 ```
-import { ArtifactsSim,artiConst } from './utils/ArtifactsUpradeSim_module'
+import { ArtifactsSim,artiConst } from './utils'
 
 // 全局挂载模拟器（ArtifactsSim）和模拟器数据（artiConst）
 app.config.globalProperties.$artifact = ArtifactsSim
@@ -111,13 +113,15 @@ ArtifactsSim.creatArtifact("cup","fire",["ATKPer","critRate","critDMG","elementM
 
 2. 获取数据处理后的列表：
 
-> ArtifactsSim.getList(language, filterPart, filterMain)
+> ArtifactsSim.getList(language, filterPart, filterMain, filterSuit)
 
 参数说明：
 
 - language: String，可选，默认则不处理，可选值为zh(中文)和en(英文)。
-- filterPart: String，可选，默认则不处理。筛选指定位置的圣遗物。
-- filterMain: String，可选，默认则不处理。筛选指定主属性的圣遗物。
+- filterPart: String | Array，可选，默认则不处理。筛选指定位置的圣遗物。
+- filterMain: String | Array，可选，默认则不处理。筛选指定主属性的圣遗物。
+- filterSuit: String | Array，可选，默认则不处理。筛选指定套装的圣遗物。
+- **可以同时使用多个filter。**
 
 3. 获取指定圣遗物：
 
