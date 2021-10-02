@@ -1,26 +1,33 @@
 <template>
     <div>
+        <demo-alert :state="alertFunc.alertState" :show="alertFunc.alertShow">{{ alertFunc.alertMsg }}</demo-alert>
         <div class="main-container">
             <img class="main-container-bg" src="../assets/images/genshin-symbol.png" alt="background_image">
-            <demo-alert :state="alertFunc.alertState" :show="alertFunc.alertShow">{{ alertFunc.alertMsg }}</demo-alert>
             <div class="countShow float-end">{{ $t('term.artifacts') }}
                 <span
                     :style="{color:$artifact.AUSList.length===$artifact.maxCount?'red':''}">{{$artifact.AUSList.length }}/{{ $artifact.maxCount }}</span>
             </div>
-            <popup :title="'这是标题'" :show="true">
-                content
+            <popup :show="true">
+                <template #title>Tips:</template>
+                <template #content>This is content.</template>
             </popup>
+            <div class="partFilterBox">
+                <div @click="userSetting.filterPart='default'"
+                    :class="{part_actived:userSetting.filterPart==='default'}">
+                    <img src="../assets/images/Icon_Artifacts.png" alt="default">
+                </div>
+                <div v-for="part in $artiConst.val.parts" :key="part" @click="userSetting.filterPart=part"
+                    :class="{part_actived:userSetting.filterPart===part}">
+                    <img :src="require('../assets/images/Icon_'+part+'.png')" :alt="part">
+                </div>
+            </div>
             <!-- 筛选提示框 -->
             <div class="filterBox"
-                :class="(userSetting.filterMain!=='default'|| userSetting.filterPart!=='default' || userSetting.filterSuit!=='default')?'filterBoxShow':'filterBoxHide'">
+                :class="(userSetting.filterMain!=='default'|| userSetting.filterSuit!=='default')?'filterBoxShow':'filterBoxHide'">
                 <div style="display:inline-block;">{{ $t('msg.filter') }}</div>
                 <div class="filterMain" v-show="userSetting.filterMain!=='default'"
                     @click="userSetting.filterMain='default'">
                     {{ $t('term.'+ userSetting.filterMain) }}
-                </div>
-                <div class="filterPart" v-show="userSetting.filterPart!=='default'"
-                    @click="userSetting.filterPart='default'">
-                    {{ $t('term.'+ userSetting.filterPart) }}
                 </div>
                 <div class="filterSuit" v-show="userSetting.filterSuit!=='default'"
                     @click="userSetting.filterSuit='default'">
@@ -28,10 +35,12 @@
                 </div>
             </div>
             <!-- 圣遗物列表 -->
-            <artifact-list :rawdata="ArtifactsList" :showsymbol="showSymbol" :briefmode="userSetting.listBriefMode"
-                :entryquality="userSetting.entryQuality" @sync="syncListData" @changeshowsymbol="changeShowSymbol"
-                @create="createArtifact" @alert="alertControl">
-            </artifact-list>
+            <div class="extra-container">
+                <artifact-list :rawdata="ArtifactsList" :showsymbol="showSymbol" :briefmode="userSetting.listBriefMode"
+                    :entryquality="userSetting.entryQuality" @sync="syncListData" @changeshowsymbol="changeShowSymbol"
+                    @create="createArtifact" @alert="alertControl">
+                </artifact-list>
+            </div>
             <!-- 右侧圣遗物展示详情 -->
             <div class="ArtifactShowBox">
                 <artifact-show @upgrade="ArtifactUpgrade" @init="initArtifact" @del="deleteArtifact" @lock="lockChange"
@@ -86,15 +95,6 @@
                             :class="{isActived:((userSetting.filterMain=== 'default' && userSetting.filterPart=== 'default' && userSetting.filterSuit==='default'))}">
                             {{ $t('msg.default') }}
                             <span class="ms-5 float-end">{{ $artifact.AUSList.length }}</span>
-                        </a>
-                    </li>
-                    <!-- 位置筛选 -->
-                    <li class="filterLable">{{ $t('msg.part') }}</li>
-                    <li v-for="part in $artiConst.val.parts" :key="part">
-                        <a class="dropdown-item" href="#" @click="multFilter(part,'part')"
-                            :class="{disabled:$artifact.getCount(part)===0,isActived:userSetting.filterPart===part}"
-                            :style="{color:($artifact.getCount(part)>0?'':'#a8a8a8')}">{{ $t('term.'+ part) }}
-                            <span class="ms-5 float-end">{{ $artifact.getCount(part) }}</span>
                         </a>
                     </li>
                     <!-- 套装筛选 -->
@@ -417,7 +417,8 @@
                 state: this.$store.state,
                 showSymbol: "", // 展示圣遗物的symbol
                 showDetail: Object, // 右侧圣遗物展示详情
-                ArtifactsList: [], // 全部圣遗物列表（监听变化用）
+                ArtifactsList: [], // 圣遗物列表
+                suitList: [], // 用户套装列表
                 cusCloseSwitch: true, // 自选圣遗物-生成后是否关闭modal窗
                 cusSuit: "", // 自选圣遗物套装
                 cusPart: "", // 自选圣遗物位置
@@ -694,16 +695,15 @@
             },
             // 同步数据
             syncListData() {
-                if (this.userSetting.language === "en") {
-                    this.ArtifactsList = this.$artifact.getList("en", this.userSetting.filterPart, this.userSetting
-                        .filterMain, this.userSetting.filterSuit);
-                } else if (this.userSetting.language === "zh") {
-                    this.ArtifactsList = this.$artifact.getList("zh", this.userSetting.filterPart, this.userSetting
+                if (this.userSetting.language === "en" || this.userSetting.language === "zh") {
+                    this.ArtifactsList = this.$artifact.getList(this.userSetting.language, this.userSetting.filterPart,
+                        this.userSetting
                         .filterMain, this.userSetting.filterSuit);
                 } else {
                     this.ArtifactsList = this.$artifact.getList("origin", this.userSetting.filterPart, this.userSetting
                         .filterMain, this.userSetting.filterSuit);
                 }
+                this.suitList = this.$artifact.suitList;
             },
             // 锁定/解锁
             lockChange(index) {
@@ -749,6 +749,38 @@
             top: -27vh;
             left: -23vh;
             opacity: 0.2;
+        }
+
+        .partFilterBox {
+            position: fixed;
+            display: flex;
+            overflow: hidden;
+            background-color: rgba(255, 255, 255, 0.3);
+            width: calc(100% - 32.5rem);
+            height: 2.5rem;
+            align-items: center;
+            justify-content: space-around;
+
+            div {
+                width: 15%;
+                text-align: center;
+                opacity: 0.5;
+                transition: all 0.3s ease;
+            }
+
+            img {
+                width: 2rem;
+                height: 2rem;
+            }
+
+            .part_actived {
+                opacity: 1;
+                transform: scale(1.05);
+
+                img {
+                    filter: drop-shadow(0 0 .5rem rgba(64, 64, 64, 0.5));
+                }
+            }
         }
 
         .filterBox {
@@ -810,6 +842,12 @@
         .selectBox {
             margin: .375rem;
         }
+    }
+
+    .extra-container {
+        position: absolute;
+        top: 2.5rem;
+        bottom: 0;
     }
 
     // ArtifactsBox

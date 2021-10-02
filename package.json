@@ -48,7 +48,9 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules": {
+      "vue/html-end-tags": "error"
+    }
   },
   "browserslist": [
     "> 1%",

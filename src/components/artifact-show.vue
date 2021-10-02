@@ -2,8 +2,8 @@
     <div class="ArtifactShow">
         <div class="aTitle"> {{ artifactName }} </div>
         <div class="titleLine">
-            <img class="leftArrow" :src="artifactArrowSrc" alt="artifactArrow">
-            <img class="rightArrow" :src="artifactArrowSrc" alt="artifactArrow">
+            <img class="leftArrow" src="../assets/images/artifact_arrow.png" alt="artifactArrow">
+            <img class="rightArrow" src="../assets/images/artifact_arrow.png" alt="artifactArrow">
         </div>
         <div class="aHead">
             {{ showdetail.part }}
@@ -58,6 +58,9 @@
         <router-link :to="{path:'/artifact-'+index}" class="btn btn-toupgrade">
             <span class="circleinbox"></span>{{ $t('msg.toUpgradePage') }}
         </router-link>
+        <!-- <div class="suitBox mt-2 mb-2">
+            <button class="btn">Test button</button>
+        </div> -->
     </div>
 </template>
 
@@ -66,7 +69,7 @@
         name: "artifact-show",
         data() {
             return {
-                artifactArrowSrc: require("../assets/images/artifact_arrow.png")
+
             }
         },
         props: {
@@ -163,7 +166,7 @@
             .leftArrow {
                 position: absolute;
                 z-index: 4;
-                top: .375rem;
+                top: .3125rem;
                 left: -0.25rem;
                 height: .75rem;
                 width: .75rem;
@@ -173,7 +176,7 @@
             .rightArrow {
                 position: absolute;
                 z-index: 4;
-                top: .375rem;
+                top: .3125rem;
                 right: -0.25rem;
                 height: .75rem;
                 width: .75rem;
@@ -337,6 +340,36 @@
             width: 100%;
             background-color: #ffd673;
             border-radius: 0;
+        }
+
+        .suitBox {
+            width: 100%;
+            position: relative;
+
+            button {
+                background-color: $genshin-white;
+                width: 100%;
+                border-radius: 0.25rem !important;
+
+                &::before {
+                    content: "";
+                    position: absolute;
+                    top: -0.125rem;
+                    left: -0.125rem;
+                    display: block;
+                    width: calc(100% + .25rem);
+                    height: calc(100% + .25rem);
+                    border-radius: .25rem;
+                }
+
+                &:hover::before {
+                    border: solid 0.1875rem rgb(255, 255, 255);
+                }
+
+                &:active {
+                    opacity: 0.8;
+                }
+            }
         }
     }
 </style>

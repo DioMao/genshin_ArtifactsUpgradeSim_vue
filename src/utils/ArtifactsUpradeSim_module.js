@@ -4,369 +4,9 @@
  * Licensed under MIT (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/main/LICENSE)
  */
 "use strict";
-
-// 常量数据
-class ArtifactConst {
-    constructor() {
-        const mainVal_1 = [7, 14.9, 22.8, 30.8, 38.7, 46.6],
-            mainVal_2 = [8.7, 18.6, 28.6, 38.5, 48.4, 58.3];
-        this.__ArtifactConstList__ = {
-            /**
-             * 英语翻译参考：
-             * 圣遗物属性：Artifact Details
-             * 冷却缩减：CD Reduction
-             * 护盾强效：Shield Strength
-             */
-            // 词缀条目
-            entryList: ["CRITRate", "CRITDMG", "ATK", "ATKPer", "DEF", "DEFPer", "HP", "HPPer", "energyRecharge", "elementMastery"],
-            entryList_en: ["CRIT Rate", "CRIT DMG", "ATK", "ATK", "DEF", "DEF", "HP", "HP", "Energy Recharge", "Element Mastery"],
-            entryList_zh: ["暴击率", "暴击伤害", "攻击力", "攻击力", "防御力", "防御力", "生命值", "生命值", "元素充能效率", "元素精通"],
-            entryProbability: [0.3, 0.3, 0.75, 0.5, 0.75, 0.5, 0.75, 0.5, 0.3, 0.3],
-            entryValue: {
-                CRITRate: [2.7222, 3.1111, 3.5, 3.8889],
-                CRITDMG: [5.4402, 6.2174, 7, 7.7718],
-                ATK: [13.6111, 15.5556, 17.5, 19.4444],
-                ATKPer: [4.0833, 4.6667, 5.25, 5.8333],
-                DEF: [16.3333, 18.5, 21, 23.3333],
-                DEFPer: [5.1031, 5.8321, 6.5611, 7.2901],
-                HP: [209.125, 239, 268.875, 298.75],
-                HPPer: [4.0833, 4.6667, 5.25, 5.8333],
-                energyRecharge: [4.5325, 5.18, 5.8275, 6.475],
-                elementMastery: [16.3333, 18.5, 21, 23.3333]
-            },
-            extraEnrtyRate: 0.3,
-            // 部件列表
-            parts: ["Plume", "Flower", "Sands", "Circlet", "Goblet"],
-            parts_en: ["Plume of Death", "Flower of Life", "Sands of Eon", "Circlet of Logos", "Goblet of Eonothem"],
-            parts_zh: ["死之羽", "生之花", "时之沙", "理之冠", "空之杯"],
-            // 部件主词条列表
-            Plume: ["ATK"],
-            Flower: ["HP"],
-            Sands: ["ATKPer", "DEFPer", "HPPer", "elementMastery", "energyRecharge"],
-            Circlet: ["CRITRate", "CRITDMG", "ATKPer", "DEFPer", "HPPer", "elementMastery", "Healing"],
-            Goblet: ["ATKPer", "DEFPer", "HPPer", "elementMastery", "Hydro", "Pyro", "Electro", "Geo", "Anemo", "Cryo", "Physical"],
-            mainEntryList: ["ATK", "HP", "CRITRate", "energyRecharge", "Healing", "CRITDMG", "ATKPer", "DEFPer", "HPPer", "elementMastery", "Hydro", "Pyro", "Electro", "Geo", "Anemo", "Cryo", "Physical"],
-            mainEntryList_en: ["ATK", "HP", "CRIT Rate", "Energy Recharge", "Healing Bonus", "CRIT DMG", "ATK", "DEF", "HP", "Element Mastery", "Hydro DMG Bonus", "Pyro DMG Bonus", "Electro DMG Bonus", "Geo DMG Bonus", "Anemo DMG Bonus", "Cryo DMG Bonus", "Physical DMG Bonus"],
-            mainEntryList_zh: ["攻击力", "生命值", "暴击率", "元素充能效率", "治疗加成", "暴击伤害", "攻击力", "防御力", "生命值", "元素精通", "水元素伤害加成", "火元素伤害加成", "雷元素伤害加成", "岩元素伤害加成", "风元素伤害加成", "冰元素伤害加成", "物理伤害加成"],
-            // 部件主词条概率
-            hourglassRate: [0.26, 0.26, 0.26, 0.1, 0.1],
-            hatRate: [0.1, 0.1, 0.22, 0.22, 0.22, 0.04, 0.1],
-            cupRate: [0.21, 0.21, 0.21, 0.025, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05],
-            // 圣遗物主词条属性
-            mainEntryValueList: {
-                ATK: [47, 100, 152, 205, 258, 311],
-                HP: [717, 1530, 2342, 3156, 3967, 4780],
-                CRITRate: [4.7, 9.9, 15.2, 20.5, 25.8, 31.1],
-                energyRecharge: [7.8, 16.5, 25.4, 34.2, 43, 51.8],
-                Healing: [5.4, 11.5, 17.6, 23.7, 29.8, 35.9],
-                CRITDMG: [9.3, 19.9, 30.5, 41, 51.6, 62.2],
-                ATKPer: mainVal_1,
-                DEFPer: mainVal_2,
-                HPPer: mainVal_1,
-                elementMastery: [28, 60, 91, 123, 155, 187],
-                Hydro: mainVal_1,
-                Pyro: mainVal_1,
-                Electro: mainVal_1,
-                Geo: mainVal_1,
-                Anemo: mainVal_1,
-                Cryo: mainVal_1,
-                Physical: mainVal_2
-            },
-            // 圣遗物评分选项
-            scoreList: ["atk", "crit", "def", "hp", "er", "em"],
-            scoreList_zh: ["攻击得分", "双暴得分", "防御得分", "生命得分", "充能得分", "精通得分"],
-            scoreStandar: {
-                CRITRate: 2,
-                CRITDMG: 1,
-                ATK: 0.13,
-                ATKPer: 1.345,
-                DEF: 0.11,
-                DEFPer: 1.07,
-                HP: 0.0087,
-                HPPer: 1.345,
-                energyRecharge: 1.2,
-                elementMastery: 0.339
-            },
-            // 圣遗物套装：
-            suitList: ['Bizzard Strayer', 'Thundersoother', 'Lavawalker', 'Maiden Beloved', "Gladiator's Finale", 'Viridescent Venerer', "Wanderer's Troupe", 'Thundering Fury', 'Crimson Witch of Flames', 'Noblesse Oblige', 'Bloodstained Chivalry', 'Archaic Petra', 'Retracing Bolide', 'Heart of Depth', 'Tenacity of the Millelith', 'Pale Flame', "Shimenawa's Reminiscence", 'Emblem of Severed Fate'],
-            suitList_zh: ['冰风迷途的勇士', '平息雷鸣的尊者', '渡过烈火的贤人', '被怜爱的少女', '角斗士的终幕礼', '翠绿之影', '流浪大地的乐团', '如雷的盛怒', '炽烈的炎之魔女', '昔日宗室之仪', '染血的骑士道', '悠古的磐岩', '逆飞的流星', '沉沦之心', '千岩牢固', '苍白之火', '追忆之注连', '绝缘之旗印'],
-            artifactSuit: {
-                "Bizzard Strayer": {
-                    "Plume": "Icebreaker's Resolve",
-                    "Flower": "Snowswept Memory",
-                    "Sands": "Frozen Homeland's Demise",
-                    "Circlet": "Broken Rime's Echo",
-                    "Goblet": "Frost-Weaved Dignity"
-                },
-                "Thundersoother": {
-                    "Plume": "Thundersoother's Plume",
-                    "Flower": "Thundersoother's Heart",
-                    "Sands": "Thundersoother's Thunder",
-                    "Circlet": "Thundersoother's Diadem",
-                    "Goblet": "Thundersoother's Goblet"
-                },
-                "Lavawalker": {
-                    "Plume": "Lavawalker's Salvation",
-                    "Flower": "Lavawalker's Resolution",
-                    "Sands": "Lavawalker's Torment",
-                    "Circlet": "Lavawalker's Wisdom",
-                    "Goblet": "Lavawalker's Epiphany"
-                },
-                "Maiden Beloved": {
-                    "Plume": "Maiden's Heart-stricken Infatuation",
-                    "Flower": "Maiden's Distant Love",
-                    "Sands": "Maiden's Passing Youth",
-                    "Circlet": "Maiden's Fading Beauty",
-                    "Goblet": "Maiden's Fleeting Leisure"
-                },
-                "Gladiator's Finale": {
-                    "Plume": "Gladiator's Destiny",
-                    "Flower": "Gladiator's Nostalgia",
-                    "Sands": "Gladiator's Longing",
-                    "Circlet": "Gladiator's Intoxication",
-                    "Goblet": "Gladiator's Triumphus"
-                },
-                "Viridescent Venerer": {
-                    "Plume": "Viridescent Arrow Feather",
-                    "Flower": "In Remembrance of Viridescent Fields",
-                    "Sands": "Viridescent Venerer's Determination",
-                    "Circlet": "Viridescent Venerer's Diadem",
-                    "Goblet": "Viridescent Venerer's Vessel"
-                },
-                "Wanderer's Troupe": {
-                    "Plume": "Bard's Arrow Feather",
-                    "Flower": "Troupe's Dawnlight",
-                    "Sands": "Concert's Final Hour",
-                    "Circlet": "Conductor's Top Hat",
-                    "Goblet": "Wanderer's String-Kettle"
-                },
-                "Thundering Fury": {
-                    "Plume": "Survivor of Catastrophe",
-                    "Flower": "Thunderbird's Mercy",
-                    "Sands": "Hourglass of Thunder",
-                    "Circlet": "Thunder Summoner's Crown",
-                    "Goblet": "Omen of Thunderstorm"
-                },
-                "Crimson Witch of Flames": {
-                    "Plume": "Witch's Ever-Burning Plume",
-                    "Flower": "Witch's Flower of Blaze",
-                    "Sands": "Witch's End Time",
-                    "Circlet": "Witch's Scorching Hat",
-                    "Goblet": "Witch's Heart Flames"
-                },
-                "Noblesse Oblige": {
-                    "Plume": "Royal Plume",
-                    "Flower": "Royal Flora",
-                    "Sands": "Royal Pocket Watch",
-                    "Circlet": "Royal Masque",
-                    "Goblet": "Royal Silver Urn"
-                },
-                "Bloodstained Chivalry": {
-                    "Plume": "Bloodstained Black Plume",
-                    "Flower": "Bloodstained Flower of Iron",
-                    "Sands": "Bloodstained Final Hour",
-                    "Circlet": "Bloodstained Iron Mask",
-                    "Goblet": "Bloodstained Chevalier's Goblet"
-                },
-                "Archaic Petra": {
-                    "Plume": "Feather of Jagged Peaks",
-                    "Flower": "Flower of Creviced Cliff",
-                    "Sands": "Sundial of Enduring Jade",
-                    "Circlet": "Mask of Solitude Basalt",
-                    "Goblet": "Goblet of Chiseled Crag"
-                },
-                "Retracing Bolide": {
-                    "Plume": "Summer Night's Finale",
-                    "Flower": "Summer Night's Bloom",
-                    "Sands": "Summer Night's Moment",
-                    "Circlet": "Summer Night's Mask",
-                    "Goblet": "Summer Night's Waterballoon"
-                },
-                "Heart of Depth": {
-                    "Plume": "Gust of Nostalgia",
-                    "Flower": "Gilded Corsage",
-                    "Sands": "Copper Compass",
-                    "Circlet": "Wine-Stained Tricorne",
-                    "Goblet": "Goblet of Thundering Deep"
-                },
-                "Tenacity of the Millelith": {
-                    "Plume": "Ceremonial War-Plume",
-                    "Flower": "Flower of Accolades",
-                    "Sands": "Orichalceous Time-Dial",
-                    "Circlet": "General's Ancient Helm",
-                    "Goblet": "Noble's Pledging Vessel"
-                },
-                "Pale Flame": {
-                    "Plume": "Wise Doctor's Pinion",
-                    "Flower": "Stainless Bloom",
-                    "Sands": "Moment of Cessation",
-                    "Circlet": "Mocking Mask",
-                    "Goblet": "Surpassing Cup"
-                },
-                "Shimenawa's Reminiscence": {
-                    "Plume": "Shaft of Remembrance",
-                    "Flower": "Entangling Bloom",
-                    "Sands": "Morning Dew's Moment",
-                    "Circlet": "Capricious Visage",
-                    "Goblet": "Hopeful Heart"
-                },
-                "Emblem of Severed Fate": {
-                    "Plume": "Sundered Feather",
-                    "Flower": "Magnificent Tsuba",
-                    "Sands": "Storm Cage",
-                    "Circlet": "Ornate Kabuto",
-                    "Goblet": "Scarlet Vessel"
-                }
-            },
-            artifactSuit_zh: {
-                "冰风迷途的勇士": {
-                    "死之羽": "摧冰而行的执望",
-                    "生之花": "历经风雪的思念",
-                    "时之沙": "冰雪故园的终期",
-                    "理之冠": "破冰踏雪的回音",
-                    "空之杯": "遍结寒霜的傲骨"
-                },
-                "平息雷鸣的尊者": {
-                    "死之羽": "平雷之羽",
-                    "生之花": "平雷之心",
-                    "时之沙": "平雷之刻",
-                    "理之冠": "平雷之冠",
-                    "空之杯": "平雷之器"
-                },
-                "渡过烈火的贤人": {
-                    "死之羽": "渡火者的解脱",
-                    "生之花": "渡火者的决绝",
-                    "时之沙": "渡火者的煎熬",
-                    "理之冠": "渡火者的智慧",
-                    "空之杯": "渡火者的醒悟"
-                },
-                "被怜爱的少女": {
-                    "死之羽": "少女飘摇的思念",
-                    "生之花": "远方的少女之心",
-                    "时之沙": "少女苦短的良辰",
-                    "理之冠": "少女易逝的芳颜",
-                    "空之杯": "少女片刻的闲暇"
-                },
-                "角斗士的终幕礼": {
-                    "死之羽": "角斗士的归宿",
-                    "生之花": "角斗士的留恋",
-                    "时之沙": "角斗士的希冀",
-                    "理之冠": "角斗士的凯旋",
-                    "空之杯": "角斗士的酣醉"
-                },
-                "翠绿之影": {
-                    "死之羽": "猎人青翠的箭羽",
-                    "生之花": "野花记忆的绿野",
-                    "时之沙": "翠绿猎人的笃定",
-                    "理之冠": "翠绿猎人之冠",
-                    "空之杯": "翠绿猎人的容器"
-                },
-                "流浪大地的乐团": {
-                    "死之羽": "琴师的箭羽",
-                    "生之花": "乐团的晨光",
-                    "时之沙": "终幕的时计",
-                    "理之冠": "指挥的礼帽",
-                    "空之杯": "吟游者之壶"
-                },
-                "如雷的盛怒": {
-                    "死之羽": "雷灾的孑遗",
-                    "生之花": "雷鸟的怜悯",
-                    "时之沙": "雷霆的时计",
-                    "理之冠": "唤雷的头冠",
-                    "空之杯": "降雷的凶兆"
-                },
-                "炽烈的炎之魔女": {
-                    "死之羽": "魔女常燃之羽",
-                    "生之花": "魔女的炎之花",
-                    "时之沙": "魔女破灭之时",
-                    "理之冠": "焦灼的魔女帽",
-                    "空之杯": "魔女的心之火"
-                },
-                "昔日宗室之仪": {
-                    "死之羽": "宗室之翎",
-                    "生之花": "宗室之花",
-                    "时之沙": "宗室时计",
-                    "理之冠": "宗室面具",
-                    "空之杯": "宗室银瓮"
-                },
-                "染血的骑士道": {
-                    "死之羽": "染血的黑之羽",
-                    "生之花": "染血的铁之心",
-                    "时之沙": "骑士染血之时",
-                    "理之冠": "染血的铁假面",
-                    "空之杯": "骑士染血之杯"
-                },
-                "悠古的磐岩": {
-                    "死之羽": "嵯峨群峰之翼",
-                    "生之花": "磐陀裂生之花",
-                    "时之沙": "星罗圭璧之晷",
-                    "理之冠": "不动玄石之相",
-                    "空之杯": "巉岩琢塑之樽"
-                },
-                "逆飞的流星": {
-                    "死之羽": "夏祭终末",
-                    "生之花": "夏祭之花",
-                    "时之沙": "夏祭之刻",
-                    "理之冠": "夏祭之面",
-                    "空之杯": "夏祭水玉"
-                },
-                "沉沦之心": {
-                    "死之羽": "饰金胸花",
-                    "生之花": "追忆之风",
-                    "时之沙": "坚铜罗盘",
-                    "理之冠": "酒渍船帽",
-                    "空之杯": "沉波之盏"
-                },
-                "千岩牢固": {
-                    "死之羽": "昭武翎羽",
-                    "生之花": "勋绩之花",
-                    "时之沙": "金铜时晷",
-                    "理之冠": "将帅兜鍪",
-                    "空之杯": "盟誓金爵"
-                },
-                "苍白之火": {
-                    "死之羽": "贤医之羽",
-                    "生之花": "无垢之花",
-                    "时之沙": "停摆之刻",
-                    "理之冠": "嗤笑之面",
-                    "空之杯": "超越之盏"
-                },
-                "追忆之注连": {
-                    "死之羽": "思忆之矢",
-                    "生之花": "羁缠之花",
-                    "时之沙": "朝露之时",
-                    "理之冠": "无常之面",
-                    "空之杯": "祈望之心"
-                },
-                "绝缘之旗印": {
-                    "死之羽": "切落之羽",
-                    "生之花": "明威之镡",
-                    "时之沙": "雷云之笼",
-                    "理之冠": "华饰之兜",
-                    "空之杯": "绯花之壶"
-                }
-            },
-            // 每级升级经验
-            exp: [3000, 3725, 4425, 5150, 5900, 6675, 7500, 8350, 9225, 10125, 11050, 12025, 13025, 15150, 17600, 20375, 23500, 27050, 31050, 35575]
-        }
-        // 设置只读
-        const nope = () => {
-                throw new Error("Error!This data is read only!");
-            },
-            read_only = (obj) => new Proxy(obj, {
-                set: nope,
-                defineProperty: nope,
-                deleteProperty: nope,
-                preventExtensions: nope,
-                setPrototypeOf: nope
-            });
-        this.__ArtifactConstList__ = read_only(this.__ArtifactConstList__);
-    }
-
-    get val() {
-        return this.__ArtifactConstList__;
-    }
-}
+import {
+    ArtifactData
+} from "./ArtifactsData"
 
 /**
  * ES6 version
@@ -377,18 +17,23 @@ const VERSION = Symbol("VERSION"),
     DELETE_HISTORY = Symbol("DELETE_HISTORY"),
     SUIT_LIST = Symbol("SUIT_LIST"),
     LIST_LIMIT = Symbol("LIST_LIMIT"),
+    SUIT_LIST_LIMIT = Symbol("SUIT_LIST_LIMIT"),
     LOCAL_STORAGE_KEY = Symbol("LOCAL_STORAGE_KEY"),
+    SUIT_LOCAL_STORAGE_KEY = Symbol("SUIT_LOCAL_STORAGE_KEY"),
     COUNT_LIST = Symbol("COUNT_LIST"),
     LANGUAGE = Symbol("LANGUAGE");
 
 class ArtifactsFunction_class {
+    #AUTHOR = "DioMao"
     constructor() {
         this[VERSION] = "0.2.1";
         this[AUS_LIST] = [];
         this[DELETE_HISTORY] = [];
         this[SUIT_LIST] = [];
         this[LIST_LIMIT] = 2000;
+        this[SUIT_LIST_LIMIT] = 100;
         this[LOCAL_STORAGE_KEY] = "AUSLocalList";
+        this[SUIT_LOCAL_STORAGE_KEY] = "AUS_SUITS";
         this[COUNT_LIST] = {};
         this[LANGUAGE] = "origin";
     }
@@ -400,27 +45,29 @@ class ArtifactsFunction_class {
      * @param {array} __entryArr 指定词条（至多四条），可为空
      * @param {array} __entryRate 副词条数值（对应自选副词条），可为空
      * @param {string} __suit 指定圣遗物套装，可为空
+     * @param {boolean} __setStorage 是否保存到localStorage（避免批量操作时频繁写入）
      * @returns {Object} 对象newArtifacts
      */
-    createArtifact(__part = "", __main = "", __entry = [], __entryRate = [], __suit = "") {
+    createArtifact(__part = "", __main = "", __entry = [], __entryRate = [], __suit = "", __setStorage = true) {
         if (this[AUS_LIST].length >= this[LIST_LIMIT]) {
             console.log(`Warning - The maximum length of the artifacts list is ${this[LIST_LIMIT]}.`);
             return false;
         }
         let newArtifacts = {
-                symbol: "",
-                level: 0,
-                suit: "none",
-                part: "none",
-                mainEntry: "none",
-                mainEntryValue: 0,
-                entry: [],
-                initEntry: '',
-                upgradeHistory: [],
-                creationDate: Date.now(),
-                lock: false,
-                isNew: true
-            },
+            symbol: "",
+            level: 0,
+            suit: "none",
+            part: "none",
+            mainEntry: "none",
+            mainEntryValue: 0,
+            entry: [],
+            initEntry: '',
+            upgradeHistory: [],
+            creationDate: Date.now(),
+            lock: false,
+            isNew: true,
+            equipped: 0
+        },
             ArtifactEntry = [],
             ArtifactEntryRate = [];
         // 自选或随机位置
@@ -479,13 +126,13 @@ class ArtifactsFunction_class {
             let newEntry = this.randomRate(ArtifactEntry, ArtifactEntryRate);
             newArtifacts.entry[3] = [newEntry, this.randomEntryValue(newEntry)];
         }
-        newArtifacts.symbol = Date.now().toString(36) + "-" + Math.random().toString(36).substring(2);
+        newArtifacts.symbol = Date.now().toString(36) + "-" + Math.random().toString(36).substring(2) + "-" + Math.random().toString(36).substring(2, 8);
         // 保存初始状态
         newArtifacts.initEntry = JSON.stringify(newArtifacts.entry);
         // 保存结果
         this[AUS_LIST].push(newArtifacts);
         // console.log(newArtifacts);
-        this.setLocalStorage(this[LOCAL_STORAGE_KEY], this[AUS_LIST]);
+        if (__setStorage) this.setLocalStorage(this[LOCAL_STORAGE_KEY], this[AUS_LIST]);
         this.changeCount([newArtifacts.part, newArtifacts.mainEntry, newArtifacts.suit]);
         return newArtifacts;
     }
@@ -504,9 +151,11 @@ class ArtifactsFunction_class {
         if (typeof (count) !== "number") return false;
         count = Math.floor(count);
         while (count > 0 && this[AUS_LIST].length < this[LIST_LIMIT]) {
-            this.createArtifact(__part, __main, __entry, __entryRate, __suit);
+            this.createArtifact(__part, __main, __entry, __entryRate, __suit, false);
             count--;
         }
+        // 批量操作完成后再统一存储到localStorage
+        this.setLocalStorage(this[LOCAL_STORAGE_KEY], this[AUS_LIST]);
         if (count > 0) {
             console.log("List limit reached!");
         }
@@ -666,9 +315,10 @@ class ArtifactsFunction_class {
     /**
      * 圣遗物重置初始状态
      * @param {number} __index 序号
+     * @param {boolean} __setStorage 是否保存到localStorage（避免批量操作时频繁写入）
      * @returns 返回操作结果
      */
-    reset(__index) {
+    reset(__index, __setStorage = true) {
         let currentArtifact = this[AUS_LIST][__index];
         if (currentArtifact.lock) {
             return false;
@@ -678,7 +328,7 @@ class ArtifactsFunction_class {
             currentArtifact.upgradeHistory.length = 0;
             currentArtifact.level = 0;
             currentArtifact.mainEntryValue = artiConst.val.mainEntryValueList[currentArtifact.mainEntry][0];
-            this.setLocalStorage(this[LOCAL_STORAGE_KEY], this[AUS_LIST]);
+            if (__setStorage) this.setLocalStorage(this[LOCAL_STORAGE_KEY], this[AUS_LIST]);
             return true;
         }
     }
@@ -688,7 +338,7 @@ class ArtifactsFunction_class {
      */
     resetAll() {
         for (let i = 0; i < this[AUS_LIST].length; i++) {
-            this.reset(i);
+            this.reset(i, false);
         }
         this.setLocalStorage(this[LOCAL_STORAGE_KEY], this[AUS_LIST]);
     }
@@ -696,17 +346,18 @@ class ArtifactsFunction_class {
     /**
      * 删除指定数据
      * @param {number} index 要删除的遗物序号
+     * @param {boolean} __setStorage 是否保存到localStorage（避免批量操作时频繁写入）
      * @returns 操作结果
      */
-    deleteOne(index) {
+    deleteOne(index, __setStorage = true) {
         let artifact = this[AUS_LIST][index];
-        if (artifact.lock === true) {
-            // console.log("%cDelete fail.This Artifact is locked.", "color:rgb(144,82,41)");
+        // 被锁定或被装备的圣遗物不能删除
+        if (artifact.lock === true || artifact.equipped > 0) {
             return false;
         } else {
             this.changeCount([artifact.part, artifact.mainEntry, artifact.suit], -1);
             this[DELETE_HISTORY].push(this[AUS_LIST].splice(index, 1)[0]);
-            this.setLocalStorage(this[LOCAL_STORAGE_KEY], this[AUS_LIST]);
+            if (__setStorage) this.setLocalStorage(this[LOCAL_STORAGE_KEY], this[AUS_LIST]);
             return true;
         }
     }
@@ -810,9 +461,10 @@ class ArtifactsFunction_class {
      * @returns 排序结果（失败才有返回值）
      */
     sortList(rule = "lvasc") {
-        if (typeof (rule) !== "string") return false;
+        if (typeof (rule) !== "string" || this[AUS_LIST].length === 0) return false;
         if (rule === "main") rule = "mainEntry";
         let list = this[AUS_LIST];
+        // 这里使用try-catch是为了版本兼容性，避免对以前的版本数据进行排序时出现错误
         try {
             list.sort((val_a, val_b) => {
                 let suit_a = artiConst.val.suitList.indexOf(val_a.suit),
@@ -949,6 +601,183 @@ class ArtifactsFunction_class {
         } catch (error) {
             return false;
         }
+    }
+
+    /** 套装函数 **/
+
+    /**
+     * 创建新的套装
+     * @param {string} name 套装名
+     * @param {boolean} setStorage 是否保存到localStorage（避免批量操作时频繁写入）
+     * @returns 操作结果
+     */
+    createSuit(name, setStorage = true) {
+        if (this[SUIT_LIST].length >= this[SUIT_LIST_LIMIT]) return false;
+        // 数据验证
+        if (typeof (name) === "string") {
+            // 长度限制
+            name = name.slice(0, 20);
+        } else {
+            name = "unnamed";
+        }
+        const newSuit = {
+            name: "",
+            Plume: "",
+            Flower: "",
+            Sands: "",
+            Circlet: "",
+            Goblet: ""
+        }
+        newSuit.name = name;
+        this[SUIT_LIST].push(newSuit);
+        if (setStorage) this.setLocalStorage(this[SUIT_LOCAL_STORAGE_KEY], this[SUIT_LIST]);
+        return true;
+    }
+
+    /**
+     * 更新套装名称
+     * @param {number} index 需要改名的套装下标
+     * @param {string} name 新的名称
+     * @returns 
+     */
+    renameSuit(index, name) {
+        if (typeof (index) !== "number" || index >= this[SUIT_LIST].length) return false;
+        index = Math.floor(index);
+        if (typeof (name) === "string") {
+            // 长度限制
+            name = name.slice(0, 20);
+        } else {
+            name = "unnamed";
+        }
+        this[SUIT_LIST][index].name = name;
+        this.setLocalStorage(this[SUIT_LOCAL_STORAGE_KEY], this[SUIT_LIST]);
+        return true;
+    }
+
+    /**
+     * 更新套装
+     * @param {number} index 需要更新的套装下标
+     * @param {array} symbolArr 包含更新的部件symbol值的数组
+     * @param {boolean} setStorage 是否保存到localStorage（避免批量操作时频繁写入）
+     * @returns 操作结果
+     */
+    updateSuit(index, symbolArr, setStorage = true) {
+        if (typeof (index) !== "number" || index >= this[SUIT_LIST].length || !Array.isArray(symbolArr)) return false;
+        index = Math.floor(index);
+        // 长度限制
+        symbolArr = symbolArr.slice(0, 5);
+        let suit = this[SUIT_LIST][index];
+        for (let symbol of symbolArr) {
+            let artifactIndex = this.getIndex(symbol);
+            if (artifactIndex !== -1) {
+                let artifact = this[AUS_LIST][artifactIndex];
+                // 如果当前位置为空或已有相同圣遗物，则进入下一个循环
+                if (suit[artifact.part] === symbol || suit[artifact.part] === "") continue;
+                // 若存在之前的装备，则将其装备状态移除
+                try {
+                    this[AUS_LIST][this.getIndex(suit[artifact.part])].equipped--;
+                } catch (error) {
+                    artifact.equipped++;
+                }
+                // 将当前圣遗物标记为装备状态，并更新suit内保存的symbol
+                artifact.equipped++;
+                suit[artifact.part] = artifact.symbol;
+            }
+        }
+        if (setStorage) this.setLocalStorage(this[SUIT_LOCAL_STORAGE_KEY], this[SUIT_LIST]);
+        return true;
+    }
+
+    /**
+     * 删除指定套装
+     * @param {number} index 要删除的套装下标
+     * @param {boolean} setStorage 是否保存到localStorage（避免批量操作时频繁写入）
+     * @returns 操作结果
+     */
+    deleteSuit(index, setStorage = true) {
+        if (typeof (index) !== "number" || index >= this[SUIT_LIST].length) return false;
+        index = Math.floor(index);
+        // 移除套装里所有装备的装备状态
+        let suit = this[SUIT_LIST][index];
+        for (let key in suit) {
+            if (key === "name") continue;
+            if (suit[key] !== "") {
+                try {
+                    this[AUS_LIST][this.getIndex(suit[key])].equipped--;
+                } catch (error) {
+                    continue;
+                }
+            }
+        }
+        this[SUIT_LIST].splice(index, 1);
+        if (setStorage) this.setLocalStorage(this[SUIT_LOCAL_STORAGE_KEY], this[SUIT_LIST]);
+        return true;
+    }
+
+    /**
+     * 移除套装指定位置的圣遗物
+     * @param {number} index 要操作的套装下标
+     * @param {string | array} part 要移除的部位
+     * @returns 操作结果
+     */
+    removeSuitItem(index, part) {
+        if (typeof (index) !== "number" || index >= this[SUIT_LIST].length) return false;
+        index = Math.floor(index);
+        // 
+        if (typeof (part) === "string") part = [part];
+        if (!Array.isArray(part)) return false;
+        let suit = this[SUIT_LIST][index];
+        // 遍历part进行匹配删除
+        part.forEach(val => {
+            if (artiConst.val.parts.indexOf(val) === -1) return;
+            try {
+                this[AUS_LIST][this.getIndex(suit[val])].equipped--;
+            } catch (error) {
+                suit[val] = "";
+            }
+            suit[val] = "";
+        })
+        return true;
+    }
+
+    /**
+     * 计算套装属性
+     * @param {number} index 需要计算属性的套装下标
+     * @returns 套装属性
+     */
+    suitState(index) {
+        if (typeof (index) !== "number" || index >= this[SUIT_LIST].length) return false;
+        index = Math.floor(index);
+        let suit = this[SUIT_LIST][index],
+            state = {};
+        // 遍历套装里每个部位的属性，并计算属性
+        for (let key in suit) {
+            if (suit[key] === "name") continue;
+            if (suit[key] !== "") {
+                try {
+                    // 定位到当前圣遗物
+                    let artifact = this[AUS_LIST][this.getIndex(suit[key])];
+                    // 主属性
+                    if (state[artifact.mainEntry] === undefined) {
+                        state[artifact.mainEntry] = artifact.mainEntryValue;
+                    } else {
+                        state[artifact.mainEntry] += artifact.mainEntryValue;
+                    }
+                    // 副词条
+                    artifact.entry.forEach(val => {
+                        if (state[val[0]] === undefined) {
+                            state[val[0]] = val[1];
+                        } else {
+                            state[val[0]] += val[1];
+                        }
+                    })
+                } catch (error) {
+                    // 若错误则将当前位置symbol移除
+                    suit[key] = "";
+                }
+            }
+        }
+        return state;
     }
 
     /** 其他函数 **/
@@ -1261,6 +1090,10 @@ class ArtifactsFunction_class {
         return this[VERSION];
     }
 
+    get author() {
+        return this.#AUTHOR;
+    }
+
     get language() {
         return this[LANGUAGE];
     }
@@ -1269,12 +1102,20 @@ class ArtifactsFunction_class {
         return this[LOCAL_STORAGE_KEY];
     }
 
+    get LSkey_suit() {
+        return this[SUIT_LOCAL_STORAGE_KEY];
+    }
+
     get maxCount() {
         return this[LIST_LIMIT];
     }
 
     get AUSList() {
         return this[AUS_LIST];
+    }
+
+    get suitList() {
+        return this[SUIT_LIST];
     }
 
     set language(val) {
@@ -1296,9 +1137,22 @@ class ArtifactsFunction_class {
             console.log("%cSet new Artifacts list success.", "color:rgb(144,82,41)");
         }
     }
+
+    set suitList(val) {
+        if (Array.isArray(val)) {
+            if (val.length > this[SUIT_LIST_LIMIT]) {
+                val.length = this[SUIT_LIST_LIMIT];
+                console.log(`Warning - The maximum length of the suits list is ${this[SUIT_LIST_LIMIT]}.`);
+            }
+            this[SUIT_LIST].length = 0;
+            this[SUIT_LIST] = val;
+            this.setLocalStorage(this[SUIT_LOCAL_STORAGE_KEY], this[SUIT_LIST]);
+            console.log("%cSet new Suits list success.", "color:rgb(144,82,41)");
+        }
+    }
 }
 
-const artiConst = new ArtifactConst();
+const artiConst = new ArtifactData();
 const ArtifactsSim = new ArtifactsFunction_class();
 console.log("%cArtifactsUpgradeSim is running.Learn more: https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue", "color:rgb(144,82,41)");
 
@@ -1311,6 +1165,7 @@ console.log("%cArtifactsUpgradeSim is running.Learn more: https://github.com/Dio
     // 加载本地数据
     let storage = window.localStorage;
     let localList = storage[ArtifactsSim.LSkey];
+    let suitList = storage[ArtifactsSim.LSkey_suit];
     if (!storage) {
         throw new Error("The browser does not support LocalStorage.");
     } else {
@@ -1325,6 +1180,13 @@ console.log("%cArtifactsUpgradeSim is running.Learn more: https://github.com/Dio
             storage.ArtifactsSimVersion = ArtifactsSim.version;
         }
     }
+    if (suitList !== undefined && suitList !== "[]" && suitList !== "") {
+        try {
+            ArtifactsSim.AUSList = JSON.parse(localList);
+        } catch (error) {
+            console.log("%cSet new Suits list fail.", "color:rgb(144,82,41)");
+        }
+    }
     if (localList !== undefined && localList !== "[]" && localList !== "") {
         try {
             ArtifactsSim.AUSList = JSON.parse(localList);
@@ -1336,7 +1198,7 @@ console.log("%cArtifactsUpgradeSim is running.Learn more: https://github.com/Dio
             ArtifactsSim.AUSList.forEach(val => {
                 // 兼容旧版数据
                 if (!Object.prototype.hasOwnProperty.call(val, "symbol")) {
-                    val.symbol = Date.now().toString(36) + "-" + Math.random().toString(36).substring(2);
+                    val.symbol = Date.now().toString(36) + "-" + Math.random().toString(36).substring(2) + "-" + Math.random().toString(36).substring(2, 8);
                 }
                 if (!Object.prototype.hasOwnProperty.call(val, "suit")) {
                     val.suit = "Gladiator's Finale";
@@ -1346,6 +1208,9 @@ console.log("%cArtifactsUpgradeSim is running.Learn more: https://github.com/Dio
                 }
                 if (!Object.prototype.hasOwnProperty.call(val, "isNew")) {
                     val.isNew = false;
+                }
+                if (!Object.prototype.hasOwnProperty.call(val, "equipped")) {
+                    val.equipped = 0;
                 }
                 ArtifactsSim.changeCount([val.part, val.mainEntry, val.suit]);
             })

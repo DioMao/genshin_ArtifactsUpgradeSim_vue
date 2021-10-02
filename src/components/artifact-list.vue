@@ -1,10 +1,12 @@
 <template>
+    <!-- 列表容器 -->
     <div class="list-container" ref="listContainer">
         <div class="tips" v-if="$artifact.AUSList.length===0 && state.language==='zh'">列表里还没有圣遗物。<br><span
                 @click="createArtifact">创建</span>一个吧！<br><span @click="changeLanguage('en')">Use English?</span></div>
         <div class="tips" v-if="$artifact.AUSList.length===0 && state.language==='en'">There's no artifact
             here.<br><span @click="createArtifact">Random?</span><br><span @click="changeLanguage('zh')">使用中文</span>
         </div>
+        <!-- 渲染容器 -->
         <div class="item-container" ref="itemContainer"
             :style="{paddingTop:filltop+'px',paddingBottom:fillbottom+'px'}">
             <div v-for="(Artifacts,index) in ArtifactsRenderList" :id="'artifact-'+index"
@@ -47,6 +49,9 @@
                         </svg>
                     </a>
                     <div class="isNew" v-if="Artifacts.isNew">{{ $t('tips.new') }}</div>
+                    <div class="equipped" v-if="Artifacts.equipped>0">
+                        Use
+                    </div>
                 </div>
                 <ul class="list-group list-group-flush" v-if="!briefmode">
                     <li v-for="(entry,index2) in Artifacts.entry" :key="index2" class="list-group-item"
@@ -127,7 +132,7 @@
             },
             // 圣遗物强化质量
             entryquality: {
-                type: [String,Number],
+                type: [String, Number],
                 default: -1
             }
         },
@@ -341,6 +346,7 @@
         z-index: 5;
         background-color: rgba(255, 255, 255, 0.2);
         overflow-y: scroll;
+        overflow-x: hidden;
         padding: 0;
         height: 100%;
 
@@ -459,6 +465,20 @@
                 padding: 0 0.125rem;
                 height: 0.8rem;
                 line-height: 0.8rem;
+            }
+
+            .equipped {
+                color: rgb(102, 34, 46);
+                background-color: rgba(102, 34, 46, 0.5);
+                border-radius: .25rem;
+                border: solid .0625rem rgb(102, 34, 46);
+                font-size: .7rem;
+                line-height: .7rem;
+                padding: .2rem;
+                position: absolute;
+                z-index: 3;
+                bottom: 0.0625rem;
+                left: 50%;
             }
         }
 

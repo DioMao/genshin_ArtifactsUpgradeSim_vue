@@ -1,9 +1,11 @@
 <template>
     <div class="popup-box" :class="isShow?'popup-show':'popup-hide'" @click="this.isShow = false">
         <div class="popup-text">
-            <div class="popup-title">{{ title }}</div>
+            <div class="popup-title">
+                <slot name="title">Tips:</slot>
+            </div>
             <div class="popup-content">
-                <slot></slot>
+                <slot name="content">This is default content.</slot>
             </div>
         </div>
         <div class="popup-image" v-if="image!==''">
@@ -21,11 +23,6 @@
             }
         },
         props: {
-            // 标题
-            title: {
-                type: String,
-                default: "Tip:"
-            },
             // 图片src
             image: {
                 type: String,

@@ -1,7 +1,9 @@
 const path = require('path')
 
 module.exports = {
-  publicPath: '/',
+  publicPath: process.env.NODE_ENV === 'production'
+  ? './'
+  : '/',
   pluginOptions: {
     'style-resources-loader': {
       preProcessor: 'scss',
@@ -11,12 +13,11 @@ module.exports = {
       ],
     }
   },
-  configureWebpack: () => {
-    // 生产环境配置
-    // if (process.env.NODE_ENV === "production") {
 
-    // }
+  configureWebpack: () => {
+
   },
+
   // 使用cdn不打包的项目
   chainWebpack: config => {
     if (process.env.NODE_ENV === "production") {
@@ -39,5 +40,7 @@ module.exports = {
           return args
         })
     }
-  }
+  },
+
+  productionSourceMap: false
 }

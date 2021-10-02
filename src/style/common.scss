@@ -1,8 +1,8 @@
 $genshin_white: rgb(236, 229, 216);
 $genshin_dark: rgb(73, 83, 102);
 $genshin_gray: rgb(149, 149, 149);
-$genshin_gold: rgb(211,188,142);
-$genshin_green: rgb(92,178,86);
+$genshin_gold: rgb(211, 188, 142);
+$genshin_green: rgb(92, 178, 86);
 
 ::-webkit-scrollbar {
   width: .4rem;
@@ -540,12 +540,16 @@ $genshin_green: rgb(92,178,86);
     width: 100% !important;
   }
 
-  .upgradeArrowUp {
-    right: 0.2rem !important;
-  }
+  .UpAlertBody {
+    padding: 0 0.5rem;
 
-  .myMask .upgradeAlert .UpAlertBody .UpAlertEntry .upEntry .upgradeArrowUp {
-    right: -0.6rem !important;
+    .upgradeArrowUp {
+      right: 0.2rem !important;
+    }
+
+    .UpAlertEntry .upEntry .upgradeArrowUp {
+      right: -0.6rem !important;
+    }
   }
 
   .upgrade-button-lg {
@@ -561,6 +565,10 @@ $genshin_green: rgb(92,178,86);
 @media screen and (max-width: 56.875rem) {
   .ArtifactShowBox {
     display: none !important;
+  }
+
+  .partFilterBox {
+    width: 100% !important;
   }
 
   .upArtifactBox {
@@ -610,9 +618,9 @@ $genshin_green: rgb(92,178,86);
     }
   }
 
-  .list-container {
+  .extra-container {
     margin-left: 0 !important;
-    width: calc(100% - 20rem) !important;
+    width: calc(100% - 32.5rem) !important;
   }
 
   footer {

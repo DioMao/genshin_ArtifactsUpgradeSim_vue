@@ -31,6 +31,10 @@
     <% for (var i in htmlWebpackPlugin.options.cdn && htmlWebpackPlugin.options.cdn.js) { %>
     <script src="<%= htmlWebpackPlugin.options.cdn.js[i] %>"></script>
     <% } %>
+    <% if(process.env.NODE_ENV==='production') { %>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-WQ4Y49LFZ3"></script>
+        <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-WQ4Y49LFZ3');</script>
+    <% } %>
 </body>
 
 </html>
