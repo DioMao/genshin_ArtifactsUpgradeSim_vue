@@ -3,7 +3,7 @@
  * Copyrigth 2021-2022 DioMao (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/graphs/contributors)
  * Licensed under MIT (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/main/LICENSE)
  */
- "use strict"; 
+"use strict";
 
 // 常量数据
 export class ArtifactData {
@@ -25,7 +25,7 @@ export class ArtifactData {
             entryProbability: [0.3, 0.3, 0.75, 0.5, 0.75, 0.5, 0.75, 0.5, 0.3, 0.3],
             entryValue: {
                 CRITRate: [2.7222, 3.1111, 3.5, 3.8889],
-                CRITDMG: [5.4402, 6.2174, 7, 7.7718],
+                CRITDMG: [5.4402, 6.2174, 6.99, 7.7718],
                 ATK: [13.6111, 15.5556, 17.5, 19.4444],
                 ATKPer: [4.0833, 4.6667, 5.25, 5.8333],
                 DEF: [16.3333, 18.5, 21, 23.3333],
@@ -35,6 +35,7 @@ export class ArtifactData {
                 energyRecharge: [4.5325, 5.18, 5.8275, 6.475],
                 elementMastery: [16.3333, 18.5, 21, 23.3333]
             },
+            // 初始4词条概率
             extraEnrtyRate: 0.3,
             // 部件列表
             parts: ["Plume", "Flower", "Sands", "Circlet", "Goblet"],
@@ -89,9 +90,9 @@ export class ArtifactData {
                 elementMastery: 0.339
             },
             // 圣遗物套装：
-            suitList: ['Bizzard Strayer', 'Thundersoother', 'Lavawalker', 'Maiden Beloved', "Gladiator's Finale", 'Viridescent Venerer', "Wanderer's Troupe", 'Thundering Fury', 'Crimson Witch of Flames', 'Noblesse Oblige', 'Bloodstained Chivalry', 'Archaic Petra', 'Retracing Bolide', 'Heart of Depth', 'Tenacity of the Millelith', 'Pale Flame', "Shimenawa's Reminiscence", 'Emblem of Severed Fate'],
-            suitList_zh: ['冰风迷途的勇士', '平息雷鸣的尊者', '渡过烈火的贤人', '被怜爱的少女', '角斗士的终幕礼', '翠绿之影', '流浪大地的乐团', '如雷的盛怒', '炽烈的炎之魔女', '昔日宗室之仪', '染血的骑士道', '悠古的磐岩', '逆飞的流星', '沉沦之心', '千岩牢固', '苍白之火', '追忆之注连', '绝缘之旗印'],
-            artifactSuit: {
+            setList: ['Bizzard Strayer', 'Thundersoother', 'Lavawalker', 'Maiden Beloved', "Gladiator's Finale", 'Viridescent Venerer', "Wanderer's Troupe", 'Thundering Fury', 'Crimson Witch of Flames', 'Noblesse Oblige', 'Bloodstained Chivalry', 'Archaic Petra', 'Retracing Bolide', 'Heart of Depth', 'Tenacity of the Millelith', 'Pale Flame', "Shimenawa's Reminiscence", 'Emblem of Severed Fate'],
+            setList_zh: ['冰风迷途的勇士', '平息雷鸣的尊者', '渡过烈火的贤人', '被怜爱的少女', '角斗士的终幕礼', '翠绿之影', '流浪大地的乐团', '如雷的盛怒', '炽烈的炎之魔女', '昔日宗室之仪', '染血的骑士道', '悠古的磐岩', '逆飞的流星', '沉沦之心', '千岩牢固', '苍白之火', '追忆之注连', '绝缘之旗印'],
+            artifactSet: {
                 "Bizzard Strayer": {
                     "Plume": "Icebreaker's Resolve",
                     "Flower": "Snowswept Memory",
@@ -219,7 +220,7 @@ export class ArtifactData {
                     "Goblet": "Scarlet Vessel"
                 }
             },
-            artifactSuit_zh: {
+            artifactSet_zh: {
                 "冰风迷途的勇士": {
                     "死之羽": "摧冰而行的执望",
                     "生之花": "历经风雪的思念",
@@ -348,12 +349,390 @@ export class ArtifactData {
                 }
             },
             // 每级升级经验
-            exp: [3000, 3725, 4425, 5150, 5900, 6675, 7500, 8350, 9225, 10125, 11050, 12025, 13025, 15150, 17600, 20375, 23500, 27050, 31050, 35575]
+            exp: [3000, 3725, 4425, 5150, 5900, 6675, 7500, 8350, 9225, 10125, 11050, 12025, 13025, 15150, 17600, 20375, 23500, 27050, 31050, 35575],
+            // 人物
+            character: [
+                {
+                    name: "Albedo",
+                    name_zh: "阿贝多",
+                    rarity: 5,
+                    element: ["Geo"],
+                    weapon: "sword",
+                    sex: "male",
+                    nation: "Mondstadt",
+                },
+                {
+                    name: "Aloy",
+                    name_zh: "埃洛伊",
+                    rarity: 5,
+                    element: ["Cryo"],
+                    weapon: "bow",
+                    sex: "female",
+                    nation: "other"
+                },
+                {
+                    name: "Diluc",
+                    name_zh: "迪卢克",
+                    rarity: 5,
+                    element: ["Pyro"],
+                    weapon: "claymore",
+                    sex: "male",
+                    nation: "Mondstadt"
+                },
+                {
+                    name: "Eula",
+                    name_zh: "优菈",
+                    rarity: 5,
+                    element: ["Cryo"],
+                    weapon: "claymore",
+                    sex: "female",
+                    nation: "Mondstadt"
+                },
+                {
+                    name: "Ganyu",
+                    name_zh: "甘雨",
+                    rarity: 5,
+                    element: ["Cryo"],
+                    weapon: "bow",
+                    sex: "female",
+                    nation: "Liyue"
+                },
+                {
+                    name: "Hu Tao",
+                    name_zh: "胡桃",
+                    rarity: 5,
+                    element: ["Pyro"],
+                    weapon: "polearm",
+                    sex: "female",
+                    nation: "Liyue"
+                },
+                {
+                    name: "Jean",
+                    name_zh: "琴",
+                    rarity: 5,
+                    element: ["Anemo"],
+                    weapon: "sword",
+                    sex: "female",
+                    nation: "Mondstadt"
+                },
+                {
+                    name: "Kaedehara Kazuha",
+                    name_zh: "枫原万叶",
+                    rarity: 5,
+                    element: ["Anemo"],
+                    weapon: "sword",
+                    sex: "male",
+                    nation: "Inazuma"
+                },
+                {
+                    name: "Kamisato Ayaka",
+                    name_zh: "神里绫华",
+                    rarity: 5,
+                    element: ["Cryo"],
+                    weapon: "sword",
+                    sex: "female",
+                    nation: "Inazuma"
+                },
+                {
+                    name: "Keqing",
+                    name_zh: "刻晴",
+                    rarity: 5,
+                    element: ["Electro"],
+                    weapon: "sword",
+                    sex: "female",
+                    nation: "Liyue"
+                },
+                {
+                    name: "Klee",
+                    name_zh: "可莉",
+                    rarity: 5,
+                    element: ["Pyro"],
+                    weapon: "catalyst",
+                    sex: "female",
+                    nation: "Mondstadt"
+                },
+                {
+                    name: "Mona",
+                    name_zh: "莫娜",
+                    rarity: 5,
+                    element: ["Hydro"],
+                    weapon: "catalyst",
+                    sex: "female",
+                    nation: "Mondstadt"
+                },
+                {
+                    name: "Qiqi",
+                    name_zh: "七七",
+                    rarity: 5,
+                    element: ["Cryo"],
+                    weapon: "sword",
+                    sex: "female",
+                    nation: "Liyue"
+                },
+                {
+                    name: "Raiden Shogun",
+                    name_zh: "雷电将军",
+                    rarity: 5,
+                    element: ["Electro"],
+                    weapon: "polearm",
+                    sex: "female",
+                    nation: "Inazuma"
+                },
+                {
+                    name: "Sangonomiya Kokomi",
+                    name_zh: "珊瑚宫心海",
+                    rarity: 5,
+                    element: ["Hydro"],
+                    weapon: "catalyst",
+                    sex: "female",
+                    nation: "Inazuma"
+                },
+                {
+                    name: "Tartaglia",
+                    name_zh: "达达利亚",
+                    rarity: 5,
+                    element: ["Hydro"],
+                    weapon: "bow",
+                    sex: "male",
+                    nation: "Snezhnaya"
+                },
+                {
+                    name: "Traveler",
+                    name_zh: "旅行者",
+                    rarity: 5,
+                    element: ["Dendro"],
+                    weapon: "bow",
+                    sex: "none",
+                    nation: "other"
+                },
+                {
+                    name: "Venti",
+                    name_zh: "温迪",
+                    rarity: 5,
+                    element: ["Anemo"],
+                    weapon: "bow",
+                    sex: "male",
+                    nation: "Mondstadt"
+                },
+                {
+                    name: "Xiao",
+                    name_zh: "魈",
+                    rarity: 5,
+                    element: ["Anemo"],
+                    weapon: "polearm",
+                    sex: "male",
+                    nation: "Liyue"
+                },
+                {
+                    name: "Yoimiya",
+                    name_zh: "宵宫",
+                    rarity: 5,
+                    element: ["Pyro"],
+                    weapon: "bow",
+                    sex: "female",
+                    nation: "Inazuma"
+                },
+                {
+                    name: "Zhongli",
+                    name_zh: "钟离",
+                    rarity: 5,
+                    element: ["Geo"],
+                    weapon: "polearm",
+                    sex: "male",
+                    nation: "Liyue"
+                },
+                {
+                    name: "Amber",
+                    name_zh: "安柏",
+                    rarity: 4,
+                    element: ["Pyro"],
+                    weapon: "bow",
+                    sex: "female",
+                    nation: "Mondstadt"
+                },
+                {
+                    name: "Barbara",
+                    name_zh: "芭芭拉",
+                    rarity: 4,
+                    element: ["Hydro"],
+                    weapon: "catalyst",
+                    sex: "female",
+                    nation: "Mondstadt"
+                },
+                {
+                    name: "Beidou",
+                    name_zh: "北斗",
+                    rarity: 4,
+                    element: ["Electro"],
+                    weapon: "claymore",
+                    sex: "female",
+                    nation: "Liyue"
+                },
+                {
+                    name: "Bennett",
+                    name_zh: "班尼特",
+                    rarity: 4,
+                    element: ["Pyro"],
+                    weapon: "sword",
+                    sex: "male",
+                    nation: "Mondstadt"
+                },
+                {
+                    name: "Chongyun",
+                    name_zh: "重云",
+                    rarity: 4,
+                    element: ["Cryo"],
+                    weapon: "claymore",
+                    sex: "male",
+                    nation: "Liyue"
+                },
+                {
+                    name: "Diona",
+                    name_zh: "迪奥娜",
+                    rarity: 4,
+                    element: ["Cryo"],
+                    weapon: "bow",
+                    sex: "female",
+                    nation: "Mondstadt"
+                },
+                {
+                    name: "Fischl",
+                    name_zh: "菲谢尔",
+                    rarity: 4,
+                    element: ["Electro"],
+                    weapon: "bow",
+                    sex: "female",
+                    nation: "Mondstadt"
+                },
+                {
+                    name: "Kaeya",
+                    name_zh: "凯亚",
+                    rarity: 4,
+                    element: ["Cryo"],
+                    weapon: "sword",
+                    sex: "male",
+                    nation: "Mondstadt"
+                },
+                {
+                    name: "Kujou Sara",
+                    name_zh: "九条裟罗",
+                    rarity: 4,
+                    element: ["Electro"],
+                    weapon: "bow",
+                    sex: "female",
+                    nation: "Inazuma"
+                },
+                {
+                    name: "Lisa",
+                    name_zh: "丽莎",
+                    rarity: 4,
+                    element: ["Electro"],
+                    weapon: "catalyst",
+                    sex: "female",
+                    nation: "Mondstadt"
+                },
+                {
+                    name: "Ningguang",
+                    name_zh: "凝光",
+                    rarity: 4,
+                    element: ["Geo"],
+                    weapon: "catalyst",
+                    sex: "female",
+                    nation: "Liyue"
+                },
+                {
+                    name: "Noelle",
+                    name_zh: "诺艾尔",
+                    rarity: 4,
+                    element: ["Geo"],
+                    weapon: "claymore",
+                    sex: "female",
+                    nation: "Mondstadt"
+                },
+                {
+                    name: "Razor",
+                    name_zh: "雷泽",
+                    rarity: 4,
+                    element: ["Electro"],
+                    weapon: "claymore",
+                    sex: "male",
+                    nation: "Mondstadt"
+                },
+                {
+                    name: "Rosaria",
+                    name_zh: "罗莎莉亚",
+                    rarity: 4,
+                    element: ["Cryo"],
+                    weapon: "polearm",
+                    sex: "female",
+                    nation: "Mondstadt"
+                },
+                {
+                    name: "Sayu",
+                    name_zh: "早柚",
+                    rarity: 4,
+                    element: ["Anemo"],
+                    weapon: "claymore",
+                    sex: "female",
+                    nation: "Inazuma"
+                },
+                {
+                    name: "Sucrose",
+                    name_zh: "砂糖",
+                    rarity: 4,
+                    element: ["Anemo"],
+                    weapon: "catalyst",
+                    sex: "female",
+                    nation: "Mondstadt"
+                },
+                {
+                    name: "Xiangling",
+                    name_zh: "香菱",
+                    rarity: 4,
+                    element: ["Pyro"],
+                    weapon: "polearm",
+                    sex: "female",
+                    nation: "Liyue"
+                },
+                {
+                    name: "Xingqiu",
+                    name_zh: "行秋",
+                    rarity: 4,
+                    element: ["Hydro"],
+                    weapon: "sword",
+                    sex: "male",
+                    nation: "Liyue"
+                },
+                {
+                    name: "Xinyan",
+                    name_zh: "辛焱",
+                    rarity: 4,
+                    element: ["Pyro"],
+                    weapon: "claymore",
+                    sex: "female",
+                    nation: "Liyue"
+                },
+                {
+                    name: "Yanfei",
+                    name_zh: "烟绯",
+                    rarity: 4,
+                    element: ["Pyro"],
+                    weapon: "catalyst",
+                    sex: "female",
+                    nation: "Liyue"
+                },
+            ],
+            // 武器类型
+            weaponType: ["sword", "bow", "catalyst", "claymore", "polearm"],
+            // 元素类型
+            elementType: ["Pyro", "Hydro", "Dendro", "Electro", "Anemo", "Cryo", "Geo"],
+            // 地区
+            nation: ["other", "Mondstadt", "Liyue", "Inazuma", "Snezhnaya"],
         }
         // 设置只读
         const nope = () => {
-                throw new Error("Error!This data is read only!");
-            },
+            throw new Error("Error!This data is read only!");
+        },
             read_only = (obj) => new Proxy(obj, {
                 set: nope,
                 defineProperty: nope,

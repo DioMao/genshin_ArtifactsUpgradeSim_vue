@@ -2,16 +2,16 @@
     <div class="ArtifactShow">
         <div class="aTitle"> {{ artifactName }} </div>
         <div class="titleLine">
-            <img class="leftArrow" src="../assets/images/artifact_arrow.png" alt="artifactArrow">
-            <img class="rightArrow" src="../assets/images/artifact_arrow.png" alt="artifactArrow">
+            <img class="leftArrow" src="../assets/images/artifact_arrow.png" alt="artifactArrow" draggable="false">
+            <img class="rightArrow" src="../assets/images/artifact_arrow.png" alt="artifactArrow" draggable="false">
         </div>
         <div class="aHead">
             {{ showdetail.part }}
             <div class="mainEntry"> {{ showdetail.mainEntry }} </div>
             <div class="mainEntryValue">{{ showdetail.mainEntryValue }}</div>
             <div class="aImg">
-                <img :src="suitUrl" :alt="showdetail.part">
-                <img :src="this.$store.state.symbolSrc" alt="genshin-symbol">
+                <img :src="setUrl" :alt="showdetail.part" draggable="false">
+                <img :src="this.$store.state.symbolSrc" alt="genshin-symbol" draggable="false">
             </div>
             <div class="levelStar">
                 <span v-for="i in 5" :key="i" style="margin-right: 3px;">
@@ -45,22 +45,33 @@
             <ul>
                 <li v-for="entry in showdetail.entry" :key="entry">·{{ entry[0] + "+" + entry[1] }}</li>
             </ul>
-            <div class="suitName">{{ showdetail.suit }}</div>
+            <div class="setName">{{ showdetail.set }}</div>
         </div>
-        <div class="aButtonBox">
+        <div class="aEquipped" v-if="showdetail.equipped">
+            <img :src="sideUrl" alt="side_avatar" draggable="false">
+            <span v-show="language==='en'">Equipped: </span>
+            <span>{{ $t('name.'+ showdetail.equipped).replace(/\s+/g,"") }}</span>
+            <span v-show="language==='zh'">已装备</span>
+        </div>
+        <div class="aButtonBox" v-if="showButton">
             <button class="btn btn-genshin btn-sm float-start" @click="upgrade" :disable="showdetail.level>=20">
                 {{ $t('msg.upgrade') }}
             </button>
             <button class="btn btn-genshin btn-sm" @click="init" v-show="showdetail.level>0"> {{ $t('msg.reset') }}
             </button>
-            <button class="btn btn-genshin btn-sm float-end del" @click="del"> {{ $t('msg.delete') }} </button>
+            <button class="btn btn-genshin btn-sm float-end del" @click="del">
+                <span data-bs-dismiss="offcanvas" class="mobileShow"></span>
+                {{ $t('msg.delete') }}
+            </button>
         </div>
-        <router-link :to="{path:'/artifact-'+index}" class="btn btn-toupgrade">
-            <span class="circleinbox"></span>{{ $t('msg.toUpgradePage') }}
-        </router-link>
-        <!-- <div class="suitBox mt-2 mb-2">
-            <button class="btn">Test button</button>
-        </div> -->
+        <div class="actionBox mt-2 mb-2 d-flex justify-content-between" v-if="showButton">
+            <router-link :to="{path:'/equip-'+index}" class="btn btn-genshin">
+                <span class="squareinbox"></span> {{ $t('handle.equip') }}
+            </router-link>
+            <router-link :to="{path:'/artifact-'+index}" class="btn btn-toupgrade">
+                <span class="circleinbox"></span>{{ $t('msg.toUpgradePage') }}
+            </router-link>
+        </div>
     </div>
 </template>
 
@@ -79,7 +90,7 @@
                     return {
                         symbol: "",
                         level: 0,
-                        suit: "none",
+                        set: "none",
                         part: "none",
                         mainEntry: "none",
                         mainEntryValue: 0,
@@ -92,32 +103,49 @@
                 }
             },
             index: {
-                type: Number,
+                type: [Number, String],
                 default: -1
             },
             language: {
                 type: String,
                 default: "origin"
+            },
+            showButton: {
+                type: Boolean,
+                default: true
             }
         },
         computed: {
             artifactName() {
                 let artifact = this.$artifact.AUSList,
-                    suitList = this.$artiConst.val.suitList,
-                    suitList_zh = this.$artiConst.val.suitList_zh,
-                    suit = this.$artiConst.val.artifactSuit,
-                    suit_zh = this.$artiConst.val.artifactSuit_zh;
-                if (this.language === "en" && suitList.indexOf(this.showdetail.suit) !== -1) {
-                    return suit[this.showdetail.suit][artifact[this.index].part];
-                } else if (this.language === "zh" && suitList_zh.indexOf(this.showdetail.suit) !== -1) {
-                    return suit_zh[this.showdetail.suit][this.$artifact.toChinese(artifact[this.index].part, "parts")];
+                    setList = this.$artiConst.val.setList,
+                    setList_zh = this.$artiConst.val.setList_zh,
+                    set = this.$artiConst.val.artifactSet,
+                    set_zh = this.$artiConst.val.artifactSet_zh;
+                if (this.language === "en" && setList.indexOf(this.showdetail.set) !== -1) {
+                    return set[this.showdetail.set][artifact[this.index].part];
+                } else if (this.language === "zh" && setList_zh.indexOf(this.showdetail.set) !== -1) {
+                    return set_zh[this.showdetail.set][this.$artifact.toChinese(artifact[this.index].part, "parts")];
                 }
                 return "none";
             },
-            suitUrl() {
+            setUrl() {
                 let item = this.$artifact.AUSList[this.index],
-                    src = require('../assets/images' + "/" + item.suit.replace(/\s+/g, "") + "/" + item.part + ".png");
+                    src = require('../assets/images/Artifacts/' + item.set.replace(/\s+/g, "") + "/" + item.part + ".png");
                 return src;
+            },
+            sideUrl() {
+                if(this.showdetail.equipped){
+                    let src;
+                    try {
+                        src = require('../assets/images/avatars_side/' + this.showdetail.equipped.replace(/\s+/g, "_") +'_side.png');
+                        return src;
+                    }catch {
+                        src = require('../assets/images/genshin_emoji/Icon_Emoji_003_Paimon_Hehe.png');
+                        return src;
+                    }
+                }
+                return '';
             }
         },
         methods: {
@@ -283,7 +311,7 @@
                 }
             }
 
-            .suitName {
+            .setName {
                 color: $genshin_green;
             }
 
@@ -318,6 +346,24 @@
             }
         }
 
+        .aEquipped {
+            position: relative;
+            width: 100%;
+            font-size: .875rem;
+            line-height: .9375rem;
+            color: $genshin_dark;
+            background-color: rgb(255, 231, 187);
+            padding: .5rem 0 .5rem 2.75rem;
+            
+            img {
+                position: absolute;
+                z-index: 2;
+                left: .25rem;
+                bottom: .25rem;
+                height: 2.5rem;
+            }
+        }
+
         .aButtonBox {
             height: 2.5rem;
             background-color: #a87940;
@@ -334,41 +380,25 @@
                 border-left: solid 0.0625rem rgb(243, 239, 225);
                 border-right: solid 0.0625rem rgb(243, 239, 225);
             }
+
+            .mobileShow {
+                position: absolute;
+                inset: 0 0 0 0;
+            }
         }
 
-        .btn-toupgrade {
-            width: 100%;
-            background-color: #ffd673;
-            border-radius: 0;
-        }
-
-        .suitBox {
+        .actionBox {
             width: 100%;
             position: relative;
 
-            button {
-                background-color: $genshin-white;
-                width: 100%;
-                border-radius: 0.25rem !important;
+            .btn-genshin {
+                width: 45%;
+            }
 
-                &::before {
-                    content: "";
-                    position: absolute;
-                    top: -0.125rem;
-                    left: -0.125rem;
-                    display: block;
-                    width: calc(100% + .25rem);
-                    height: calc(100% + .25rem);
-                    border-radius: .25rem;
-                }
-
-                &:hover::before {
-                    border: solid 0.1875rem rgb(255, 255, 255);
-                }
-
-                &:active {
-                    opacity: 0.8;
-                }
+            .btn-toupgrade {
+                width: 45%;
+                background-color: #ffd673;
+                border-radius: 1.5rem;
             }
         }
     }

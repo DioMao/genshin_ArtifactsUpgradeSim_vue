@@ -27,14 +27,15 @@
             <div class="entryList mb-1" v-for="entry in Artifact.entry" :key="entry">
                 <div class="">
                     <span class="iconBox">•</span>
-                    <span class="ms-1" :style="{fontSize:($store.state.attr_sm_en.indexOf(entry[0])!==-1&&$i18n.locale==='en')?'0.6rem':'inherit'}">{{ $t('term_sp.'+entry[0]) }}</span>
+                    <span class="ms-1"
+                        :style="{fontSize:($store.state.attr_sm_en.indexOf(entry[0])!==-1&&$i18n.locale==='en')?'0.6rem':'inherit'}">{{ $t('term_sp.'+entry[0]) }}</span>
                     <span class="float-end">{{ showEntryList(entry[0],entry[1]) }}</span>
                 </div>
             </div>
         </div>
         <div class="upArtifactBox">
             <div class="artiImgBox">
-                <img :src="suitUrl">
+                <img :src="setUrl" draggable="false">
             </div>
             <div class="flashingCircle ani-rotate1"></div>
             <div class="flashingCircle flashingCircle2 ani-rotate2"></div>
@@ -46,8 +47,8 @@
             <button @click="upgrade" class="btn btn-genshin" v-show="Artifact.level<20"><span
                     class="circleinbox"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $t('handle.upgrade') }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
         </div>
-        <div class="upgradeMax" v-show="Artifact.level>=20">{{ $t('handle.maxLv') }}<br><button class="btn btn-genshin-dark"
-                @click="initArtifact"><span
+        <div class="upgradeMax" v-show="Artifact.level>=20">{{ $t('handle.maxLv') }}<br><button
+                class="btn btn-genshin-dark" @click="initArtifact"><span
                     class="circleinbox"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $t('handle.reset') }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
         </div>
         <div class="myMask" v-show="showUpdate">
@@ -56,7 +57,7 @@
                     <div class="upgradeSuccess ani-upSuccess">{{ $t('handle.upSuccess') }}</div>
                     <div class="upgradeImgBox ani-ArtifactShow">
                         <div class="upgradeImg">
-                            <img :src="suitUrl" :alt="Artifact.part">
+                            <img :src="setUrl" :alt="Artifact.part" draggable="false">
                         </div>
                         <div class="UpLevelStar">
                             <span v-for="i in 5" :key="i" style="margin-right: 2px;">
@@ -77,7 +78,9 @@
                     <div class="entryBox UpAlertEntry">
                         <div class="mb-1 mainEntry">
                             <span class="iconBox">✦</span>
-                            <span class="ms-1" :style="{fontSize:($store.state.attr_sm_en.indexOf(Artifact.mainEntry)!==-1&&$i18n.locale==='en')?'0.8rem':'inherit'}"> {{ $t('term_sp.'+ Artifact.mainEntry) }} </span>
+                            <span class="ms-1"
+                                :style="{fontSize:($store.state.attr_sm_en.indexOf(Artifact.mainEntry)!==-1&&$i18n.locale==='en')?'0.8rem':'inherit'}">
+                                {{ $t('term_sp.'+ Artifact.mainEntry) }} </span>
                             <span class="centerEntry"> {{ mainEntryValue(Artifact.mainEntry,mainValueBefore) }} </span>
                             <span class="upgradeArrow"></span>
                             <span class="float-end upColor">
@@ -86,8 +89,10 @@
                         </div>
                         <div class="entryList mb-1" v-for="(entry,index) in newEntry" :key="index">
                             <div class="upEntry">
-                                <span class="iconBox">•</span> 
-                                <span class="ms-1" :style="{fontSize:($store.state.attr_sm_en.indexOf(entry)!==-1&&$i18n.locale==='en')?'0.6rem':'inherit'}"> {{ $t('term_sp.'+ entry) }} </span>
+                                <span class="iconBox">•</span>
+                                <span class="ms-1"
+                                    :style="{fontSize:($store.state.attr_sm_en.indexOf(entry)!==-1&&$i18n.locale==='en')?'0.6rem':'inherit'}">
+                                    {{ $t('term_sp.'+ entry) }} </span>
                                 <span class="centerEntry" v-show="(!isNewAttr)||index!=newEntry.length-1">
                                     {{ showEntryList(entry,oldEntryValue[index]) }} </span>
                                 <span class="upgradeArrow" v-show="(!isNewAttr)||index!=newEntry.length-1"></span>
@@ -123,15 +128,15 @@
                 Artifact: {
                     symbol: "",
                     level: 0,
-                    suit: "none",
+                    set: "none",
                     part: "none",
                     mainEntry: "none",
                     mainEntryValue: 0,
                     entry: [],
                     initEntry: '',
                     upgradeHistory: [],
-                    creationDate: Date.now(),
-                    lock: false
+                    lock: false,
+                    equipped: 0
                 },
                 mainValueBefore: 0, // 升级前的主属性
                 isNewAttr: false, // 是否是新词条
@@ -147,13 +152,24 @@
             }
         },
         computed: {
-            suitUrl() {
-                let item = this.$artifact.AUSList[this.index],
-                    src = require('../assets/images' + "/" + item.suit.replace(/\s+/g, "") + "/" + item.part + ".png");
-                return src;
+            setUrl() {
+                let item = this.$artifact.AUSList[this.index];
+                if (item === undefined) {
+                    return "";
+                } else {
+                    let src = require('../assets/images/Artifacts/' + item.set.replace(/\s+/g, "") + "/" + item.part +
+                        ".png");
+                    return src;
+                }
             }
         },
         mounted() {
+            // 验证圣遗物是否存在，否则跳转回列表（防止url直接访问出错）
+            if (this.$artifact.AUSList.length < (parseInt(this.index) + 1)) {
+                this.$router.replace("/");
+            } else {
+                this.Artifact = this.$artifact.AUSList[this.index];
+            }
             // 读取语言设置
             if (!window.localStorage) {
                 alert("浏览器不支持localstorage");
@@ -165,6 +181,8 @@
             if (this.ArtifactsList.length == 0 && this.$artifact.AUSList.length != 0) {
                 this.ArtifactsList = [...this.$artifact.AUSList];
             }
+        },
+        updated() {
             // 验证圣遗物是否存在，否则跳转回列表（防止url直接访问出错）
             if (this.$artifact.AUSList.length < (parseInt(this.index) + 1)) {
                 this.$router.replace("/");
@@ -294,7 +312,7 @@
         width: 12.5rem;
         z-index: 2;
         bottom: 2rem;
-        right: 4rem;
+        right: 5rem;
         color: #fff;
         font-size: 0.9rem;
         text-align: center;
@@ -303,7 +321,7 @@
 
     .containerUp {
         position: fixed;
-        background-color: rgb(125, 83, 38);
+        background-image: linear-gradient(180deg, rgb(112, 53, 25), rgb(125, 83, 38));
         top: 3.5rem;
         width: 100%;
         height: calc(100% - 3.5rem);

@@ -5,7 +5,7 @@ import App from './App.vue'
 // import * as echarts from 'echarts'
 import axios from 'axios'
 import i18n from './language'
-import { ArtifactsSim,artiConst } from './utils/ArtifactsUpradeSim_module'
+import { ArtifactsSim, artiConst } from './utils/ArtifactsUpradeSim_module'
 // 全局样式
 import 'bootstrap/dist/css/bootstrap.min.css'
 

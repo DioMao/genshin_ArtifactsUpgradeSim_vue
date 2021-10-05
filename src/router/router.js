@@ -1,7 +1,9 @@
-import { createRouter,createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 
 import artifactBox from '@/page/artifactBox'
 import artifactUpgrade from '@/page/artifactUpgrade'
+import artifactEquip from '@/page/artifactEquip'
+import notFound from '@/page/404'
 
 const router = createRouter({
     history: createWebHashHistory(),
@@ -20,6 +22,17 @@ const router = createRouter({
             name: 'upgrade',
             component: artifactUpgrade,
             props: true
+        },
+        {
+            path: '/equip-:index',
+            name: 'equip',
+            component: artifactEquip,
+            props: true
+        },
+        {
+            path: '/:catchAll(.*)*',
+            name: 'notFound',
+            component: notFound
         }
     ]
 })

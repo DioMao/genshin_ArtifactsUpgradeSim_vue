@@ -2,7 +2,8 @@
     <div>
         <demo-alert :state="alertFunc.alertState" :show="alertFunc.alertShow">{{ alertFunc.alertMsg }}</demo-alert>
         <div class="main-container">
-            <img class="main-container-bg" src="../assets/images/genshin-symbol.png" alt="background_image">
+            <img class="main-container-bg" src="../assets/images/genshin-symbol.png" alt="background_image"
+                draggable="false">
             <div class="countShow float-end">{{ $t('term.artifacts') }}
                 <span
                     :style="{color:$artifact.AUSList.length===$artifact.maxCount?'red':''}">{{$artifact.AUSList.length }}/{{ $artifact.maxCount }}</span>
@@ -14,24 +15,24 @@
             <div class="partFilterBox">
                 <div @click="userSetting.filterPart='default'"
                     :class="{part_actived:userSetting.filterPart==='default'}">
-                    <img src="../assets/images/Icon_Artifacts.png" alt="default">
+                    <img src="../assets/images/Icon_Artifacts.png" alt="default" draggable="false">
                 </div>
                 <div v-for="part in $artiConst.val.parts" :key="part" @click="userSetting.filterPart=part"
                     :class="{part_actived:userSetting.filterPart===part}">
-                    <img :src="require('../assets/images/Icon_'+part+'.png')" :alt="part">
+                    <img :src="require('../assets/images/Icon_'+part+'.png')" :alt="part" draggable="false">
                 </div>
             </div>
             <!-- 筛选提示框 -->
             <div class="filterBox"
-                :class="(userSetting.filterMain!=='default'|| userSetting.filterSuit!=='default')?'filterBoxShow':'filterBoxHide'">
+                :class="(userSetting.filterMain!=='default'|| userSetting.filterSet!=='default')?'filterBoxShow':'filterBoxHide'">
                 <div style="display:inline-block;">{{ $t('msg.filter') }}</div>
                 <div class="filterMain" v-show="userSetting.filterMain!=='default'"
                     @click="userSetting.filterMain='default'">
                     {{ $t('term.'+ userSetting.filterMain) }}
                 </div>
-                <div class="filterSuit" v-show="userSetting.filterSuit!=='default'"
-                    @click="userSetting.filterSuit='default'">
-                    {{ $t('suitList['+ ($artiConst.val.suitList.indexOf(userSetting.filterSuit)!==-1?$artiConst.val.suitList.indexOf(userSetting.filterSuit):0) + ']') }}
+                <div class="filterSet" v-show="userSetting.filterSet!=='default'"
+                    @click="userSetting.filterSet='default'">
+                    {{ $t('setList['+ ($artiConst.val.setList.indexOf(userSetting.filterSet)!==-1?$artiConst.val.setList.indexOf(userSetting.filterSet):0) + ']') }}
                 </div>
             </div>
             <!-- 圣遗物列表 -->
@@ -45,7 +46,7 @@
             <div class="ArtifactShowBox">
                 <artifact-show @upgrade="ArtifactUpgrade" @init="initArtifact" @del="deleteArtifact" @lock="lockChange"
                     :showdetail="showDetail" :index="$artifact.getIndex(showSymbol)" :language="userSetting.language"
-                    v-if="showSymbol!==''">
+                    :showButton="true" v-if="showSymbol!==''">
                 </artifact-show>
                 <div class="ms-3 mt-3 me-3" v-show="showSymbol!==''">
                     {{ $t('msg.entryScore') }}(beta)：{{ ArtifactScore }}
@@ -65,7 +66,7 @@
                 <div>
                     <artifact-show @upgrade="ArtifactUpgrade" @init="initArtifact" @del="deleteArtifact"
                         @lock="lockChange" :showdetail="showDetail" :index="$artifact.getIndex(showSymbol)"
-                        :language="userSetting.language" v-if="showSymbol!==''">
+                        :language="userSetting.language" :showButton="true" v-if="showSymbol!==''">
                     </artifact-show>
                 </div>
                 <div class="mt-3" v-show="showSymbol!==''">{{ $t('msg.entryScore') }}(beta)：{{ ArtifactScore }}
@@ -91,25 +92,25 @@
                 <!-- 筛选器 -->
                 <ul class="dropdown-menu filterList" aria-labelledby="filter">
                     <li>
-                        <a class="dropdown-item" href="#" @click="multFilter('default','all')"
-                            :class="{isActived:((userSetting.filterMain=== 'default' && userSetting.filterPart=== 'default' && userSetting.filterSuit==='default'))}">
+                        <a class="dropdown-item" href="javascript:void(0)" @click="multFilter('default','all')"
+                            :class="{isActived:((userSetting.filterMain=== 'default' && userSetting.filterSet==='default'))}">
                             {{ $t('msg.default') }}
                             <span class="ms-5 float-end">{{ $artifact.AUSList.length }}</span>
                         </a>
                     </li>
                     <!-- 套装筛选 -->
-                    <li class="filterLable">{{ $t('msg.suit') }}</li>
-                    <li v-for="(suit,index) in $artiConst.val.suitList" :key="suit">
-                        <a class="dropdown-item" href="#" @click="multFilter(suit,'suit')"
-                            :class="{disabled:$artifact.getCount(suit)===0,isActived:userSetting.filterSuit===suit}"
-                            :style="{color:($artifact.getCount(suit)>0?'':'#a8a8a8')}">{{ $t('suitList['+ index+"]") }}
-                            <span class="ms-5 float-end">{{ $artifact.getCount(suit) }}</span>
+                    <li class="filterLable">{{ $t('msg.set') }}</li>
+                    <li v-for="(set,index) in $artiConst.val.setList" :key="set">
+                        <a class="dropdown-item" href="javascript:void(0)" @click="multFilter(set,'set')"
+                            :class="{disabled:$artifact.getCount(set)===0,isActived:userSetting.filterSet===set}"
+                            :style="{color:($artifact.getCount(set)>0?'':'#a8a8a8')}">{{ $t('setList['+ index+"]") }}
+                            <span class="ms-5 float-end">{{ $artifact.getCount(set) }}</span>
                         </a>
                     </li>
                     <!-- 主属性筛选 -->
                     <li class="filterLable">{{ $t('msg.mainEntry') }}</li>
                     <li v-for="mainEntryF in $artiConst.val.mainEntryList" :key="mainEntryF">
-                        <a class="dropdown-item" href="#" @click="multFilter(mainEntryF,'main')"
+                        <a class="dropdown-item" href="javascript:void(0)" @click="multFilter(mainEntryF,'main')"
                             :class="{disabled:$artifact.getCount(mainEntryF)===0,isActived:userSetting.filterMain===mainEntryF}"
                             :style="{color:($artifact.getCount(mainEntryF)>0?'':'#a8a8a8')}">{{ $t('term.'+ mainEntryF) }}
                             <span class="ms-5 float-end">{{ $artifact.getCount(mainEntryF) }}</span>
@@ -126,10 +127,14 @@
                     </svg>
                 </button>
                 <ul class="dropdown-menu sortList" aria-labelledby="sort">
-                    <li><a class="dropdown-item" href="#" @click="sortList(0)">{{ $t('msg.lvasc') }}</a></li>
-                    <li><a class="dropdown-item" href="#" @click="sortList(1)">{{ $t('msg.lvdesc') }}</a></li>
-                    <li><a class="dropdown-item" href="#" @click="sortList(2)">{{ $t('msg.sortByPart') }}</a></li>
-                    <li><a class="dropdown-item" href="#" @click="sortList(3)">{{ $t('msg.sortByMainEntry') }}</a></li>
+                    <li><a class="dropdown-item" href="javascript:void(0)"
+                            @click="sortList(0)">{{ $t('msg.lvasc') }}</a></li>
+                    <li><a class="dropdown-item" href="javascript:void(0)"
+                            @click="sortList(1)">{{ $t('msg.lvdesc') }}</a></li>
+                    <li><a class="dropdown-item" href="javascript:void(0)"
+                            @click="sortList(2)">{{ $t('msg.sortByPart') }}</a></li>
+                    <li><a class="dropdown-item" href="javascript:void(0)"
+                            @click="sortList(3)">{{ $t('msg.sortByMainEntry') }}</a></li>
                 </ul>
                 <button id="create" @click="createArtifact" class="btn btn-genshin"
                     :style="{fontSize:$i18n.locale==='en'?'0.9rem':'inherit'}"><span
@@ -139,13 +144,13 @@
                         class="squareinbox"></span>{{ $t('msg.custom') }}</button>
 
                 <div class="dropdown" style="display:inline-block;">
-                    <a class="btn btn-genshin dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                    <a class="btn btn-genshin dropdown-toggle" href="javascript:void(0)" role="button" id="dropdownMenuLink"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         {{ $t('msg.more') }}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <li>
-                            <a class="dropdown-item" href="#" @click="undoDel">
+                            <a class="dropdown-item" href="javascript:void(0)" @click="undoDel">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="currentColor"
                                     class="bi bi-arrow-return-left" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd"
@@ -155,7 +160,7 @@
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="#" @click="resetAll">
+                            <a class="dropdown-item" href="javascript:void(0)" @click="resetAll">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="currentColor"
                                     class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd"
@@ -167,7 +172,7 @@
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="#" @click="ArtifactClear">
+                            <a class="dropdown-item" href="javascript:void(0)" @click="ArtifactClear">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="currentColor"
                                     class="bi bi-trash-fill" viewBox="0 0 16 16">
                                     <path
@@ -180,7 +185,7 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#userSet">
+                            <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#userSet">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="currentColor"
                                     class="bi bi-gear-fill" viewBox="0 0 16 16">
                                     <path
@@ -193,7 +198,7 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#about">
+                            <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#about">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="currentColor"
                                     class="bi bi-info-circle-fill" viewBox="0 0 16 16">
                                     <path
@@ -216,10 +221,10 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <label for="cutArtifactSuit" class="form-label">{{ $t('msg.suit') }}</label>
-                        <select id="cutArtifactSuit" class="form-select form-select-sm mb-3" v-model="cusSuit">
-                            <option v-for="(suit,index) in $artiConst.val.suitList" :key="suit" :value="suit">
-                                {{ $t('suitList[' + index + ']') }}</option>
+                        <label for="cutArtifactSet" class="form-label">{{ $t('msg.set') }}</label>
+                        <select id="cutArtifactSet" class="form-select form-select-sm mb-3" v-model="cusSet">
+                            <option v-for="(set,index) in $artiConst.val.setList" :key="set" :value="set">
+                                {{ $t('setList[' + index + ']') }}</option>
                         </select>
                         <label for="cutArtifactPart" class="form-label">{{ $t('msg.part') }}</label>
                         <select id="cutArtifactPart" class="form-select form-select-sm mb-3" v-model="cusPart"
@@ -374,7 +379,7 @@
                         <h5 class="modal-title" id="about">{{ $t('msg.about') }}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body about-bg">
                         <div>Version: {{$artifact.version}} </div>
                         <div>Author: <a href="https://github.com/DioMao" target="_blank">DioMao</a></div>
                         <div>Frameworks: </div>
@@ -418,9 +423,9 @@
                 showSymbol: "", // 展示圣遗物的symbol
                 showDetail: Object, // 右侧圣遗物展示详情
                 ArtifactsList: [], // 圣遗物列表
-                suitList: [], // 用户套装列表
+                setList: [], // 用户套装列表
                 cusCloseSwitch: true, // 自选圣遗物-生成后是否关闭modal窗
-                cusSuit: "", // 自选圣遗物套装
+                cusSet: "", // 自选圣遗物套装
                 cusPart: "", // 自选圣遗物位置
                 cusMainEntry: "", // 自选圣遗物主词条
                 cusEntry: [], // 自选圣遗物副词条
@@ -438,7 +443,7 @@
                     listBriefMode: true, // 圣遗物列表模式（details/brief）
                     filterMain: "default", // 主词条筛选
                     filterPart: "default", // 位置筛选
-                    filterSuit: "default" // 套装筛选
+                    filterSet: "default" // 套装筛选
                 },
                 defaultSetting: "", // 初始设置
                 alertFunc: {
@@ -553,7 +558,7 @@
                     cusEntry.push(this.cusEntry[i]);
                     cusEntryValue.push(this.cusEntryRate[cusEntry[i]]);
                 }
-                this.$artifact.createArtifact(this.cusPart, this.cusMainEntry, cusEntry, cusEntryValue, this.cusSuit);
+                this.$artifact.createArtifact(this.cusPart, this.cusMainEntry, cusEntry, cusEntryValue, this.cusSet);
                 this.syncListData();
                 this.alertControl("自选圣遗物已生成！", 1500);
             },
@@ -567,17 +572,6 @@
                     this.alertControl(this.$t('handle.upSuccess') + `！${qualityAlert}`, 1500);
                 } else {
                     this.alertControl(this.$t('handle.maxLv'), 1500, "warning");
-                }
-            },
-            // 圣遗物评分
-            ArtifactRate(index) {
-                let mode = this.userSetting.scoreConfig.mode;
-                if (mode === "string") {
-                    return this.$artifact.ArtifactScore(index, this.userSetting.scoreConfig.strRule);
-                } else if (mode === "array") {
-                    return this.$artifact.ArtifactScore(index, this.userSetting.scoreConfig.arrRule);
-                } else {
-                    return 0;
                 }
             },
             // 初始化圣遗物
@@ -674,11 +668,11 @@
                 if (type === "all") {
                     this.userSetting.filterMain = "default";
                     this.userSetting.filterPart = "default";
-                    this.userSetting.filterSuit = "default";
+                    this.userSetting.filterSet = "default";
                 }
                 if (type === "main") this.userSetting.filterMain = val;
                 if (type === "part") this.userSetting.filterPart = val;
-                if (type === "suit") this.userSetting.filterSuit = val;
+                if (type === "set") this.userSetting.filterSet = val;
             },
             // 排序
             sortList(index) {
@@ -698,26 +692,18 @@
                 if (this.userSetting.language === "en" || this.userSetting.language === "zh") {
                     this.ArtifactsList = this.$artifact.getList(this.userSetting.language, this.userSetting.filterPart,
                         this.userSetting
-                        .filterMain, this.userSetting.filterSuit);
+                        .filterMain, this.userSetting.filterSet);
                 } else {
                     this.ArtifactsList = this.$artifact.getList("origin", this.userSetting.filterPart, this.userSetting
-                        .filterMain, this.userSetting.filterSuit);
+                        .filterMain, this.userSetting.filterSet);
                 }
-                this.suitList = this.$artifact.suitList;
+                this.setList = this.$artifact.setList;
             },
             // 锁定/解锁
             lockChange(index) {
                 this.$artifact.lock(index);
                 this.syncListData();
             },
-            // 图片动态路径
-            imgUrl(symbol) {
-                let index = this.$artifact.getIndex(symbol),
-                    item = this.$artifact.AUSList[index],
-                    src = require('../assets/images' + "/" + item.suit.replace(/\s+/g, "") + "/" + item.part + ".png");
-                return src;
-            },
-
         }
     }
 </script>
@@ -764,7 +750,9 @@
             div {
                 width: 15%;
                 text-align: center;
-                opacity: 0.5;
+                opacity: 0.3;
+                background-color: rgba(255, 255, 255, 1);
+                border-radius: .5rem;
                 transition: all 0.3s ease;
             }
 
@@ -794,7 +782,7 @@
 
             .filterMain,
             .filterPart,
-            .filterSuit {
+            .filterSet {
                 cursor: pointer;
                 display: inline-block;
                 position: relative;
@@ -847,120 +835,8 @@
     .extra-container {
         position: absolute;
         top: 2.5rem;
+        width: 100%;
         bottom: 0;
-    }
-
-    // ArtifactsBox
-    .isSelect {
-        box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .25) !important;
-
-        &::before {
-            content: "";
-            position: absolute;
-            pointer-events: none;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: .0625rem solid #ffffff;
-            border-radius: .25rem;
-            animation: artifactSelect2 ease 1s forwards;
-        }
-
-        &::after {
-            content: "";
-            position: absolute;
-            pointer-events: none;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: .0625rem solid #ffffff;
-            border-radius: .25rem;
-            animation: artifactSelect ease 1s infinite;
-        }
-    }
-
-    .ArtifactsBox {
-        margin: .75rem .625rem;
-        width: 10rem;
-        font-size: 0.8rem;
-        transition: ease 0.2s all;
-        // overflow: hidden;
-        border: none !important;
-        background-color: $genshin_white !important;
-
-        &:hover::after {
-            content: "";
-            pointer-events: none;
-            position: absolute;
-            left: 0;
-            right: 0;
-            height: 100%;
-            width: 100%;
-            border-radius: .25rem;
-            border: 2px #fff solid;
-        }
-
-        .ArtifactsTitle {
-            position: relative;
-            background-position: 4.5rem 0.6rem, -4.7rem -7.7rem;
-            background-size: 5rem, 19rem;
-            background-repeat: no-repeat;
-            background-blend-mode: normal, color-burn;
-
-            .islock {
-                position: absolute;
-                left: 0.25rem;
-                top: 0.25rem;
-                background-color: rgba(74, 83, 102, 0.7);
-                border-radius: 0.25rem;
-                padding: 0 0.125rem;
-                height: 0.8rem;
-                line-height: 0.8rem;
-            }
-        }
-
-        .highScoreAward {
-            position: absolute;
-        }
-
-        .card-body {
-            &:first-child {
-                background-color: rgb(195, 133, 66);
-                border-top-left-radius: .25rem;
-                border-top-right-radius: .25rem;
-                border-bottom-right-radius: 1.5625rem;
-                color: #fff;
-                padding: .625rem .9375rem;
-
-                .badge {
-                    background-color: rgb(57, 68, 79);
-                    padding: .1875rem .25rem .0625rem;
-                }
-            }
-        }
-
-        .buttonBox {
-            background-color: rgb(255, 231, 187);
-            padding: .3125rem .9375rem;
-            border-bottom-left-radius: .25rem;
-            border-bottom-right-radius: .25rem;
-        }
-
-        ul li {
-            color: $genshin_dark;
-            background-color: $genshin_white;
-            font-size: 0.75rem;
-            white-space: nowrap;
-        }
-    }
-
-    #radarChartBox,
-    #radarChartBox2 {
-        margin: .625rem auto;
-        width: 18.125rem;
-        height: 15rem;
     }
 
     // footer
@@ -1019,10 +895,11 @@
             a {
                 padding: .5rem .625rem;
                 color: $genshin_white;
+                background-color: inherit;
 
                 &:hover {
                     color: $genshin_white;
-                    background-color: rgba(236, 229, 216, 0.2) !important;
+                    background-color: transparentize($genshin_white, 0.8);
                 }
 
             }
@@ -1102,5 +979,12 @@
         z-index: 20;
         color: $genshin_gold;
         font-size: 1rem;
+    }
+
+    .about-bg {
+        background-image: url(../assets/images/genshin_emoji/Icon_Emoji_024_Keqing_Good_Night.png);
+        background-repeat: no-repeat;
+        background-size: 10rem;
+        background-position: 90% center;
     }
 </style>
