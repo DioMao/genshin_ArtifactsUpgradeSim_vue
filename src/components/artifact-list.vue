@@ -11,8 +11,9 @@
             :style="{paddingTop:filltop+'px',paddingBottom:fillbottom+'px'}">
             <div v-for="(Artifacts,index) in ArtifactsRenderList" :id="'artifact-'+index"
                 class="ArtifactsBox card rounded shawdow-sm" :class="{isSelect:Artifacts.symbol===showsymbol}"
-                :key="index" @click="changeShowSymbol(Artifacts.symbol)" @mousedown="clickMethod($event,true)"
-                @mouseup="clickMethod($event,false)" @mouseleave="clickMethod($event,false) ">
+                :key="index" @click="changeShowSymbol(Artifacts.symbol,Artifacts.isNew)"
+                @mousedown="clickMethod($event,true)" @mouseup="clickMethod($event,false)"
+                @mouseleave="clickMethod($event,false) ">
                 <div class="card-body ArtifactsTitle"
                     :style="{backgroundImage:'url('+ imgUrl(Artifacts.symbol) + '),linear-gradient(135deg,rgb(159,96,42),rgb(207,122,38))',borderRadius:briefmode?'.25rem .25rem 1.5625rem':''}">
                     <div class="islock" v-if="Artifacts.lock">
@@ -42,8 +43,7 @@
                     <div>{{ Artifacts.mainEntryValue }} <span
                             class="badge float-end fw-normal">+{{ Artifacts.level }}</span></div>
                     <!-- 移动端点击显示offcan窗口 -->
-                    <a class="mobileShow" data-bs-toggle="offcanvas" href="#offcanArtifactShow"
-                        aria-controls="offcanArtifactShow">
+                    <a class="mobileShow" @click="mobileShow()">
                     </a>
                     <!-- 新圣遗物标识 -->
                     <div class="isNew" v-if="Artifacts.isNew">{{ $t('tips.new') }}</div>
@@ -154,22 +154,44 @@
             // 移除监听器
             this.$refs.listContainer.removeEventListener("scroll", this.vmList);
             window.removeEventListener("resize", this.vmList);
+            // 卸载前记录列表滚动条位置
+            this.$store.commit('saveScroll', this.$refs.listContainer.scrollTop);
         },
         watch: {
             rawdata: {
-                handler() {
+                handler(val, old) {
+                    // 列表数量变化时才调用vmList计算渲染列表
+                    if (val.length !== old.length) {
+                        this.vmList(false);
+                    }
                     this.vmList(false);
                 },
                 deep: true
             },
-            ArtifactsRenderList() {
-                this.changeFillCount();
+            ArtifactsRenderList: {
+                handler(val,old) {
+                    if(val.length !== old.length) {
+                        this.changeFillCount();
+                    }
+                },
+                deep: true
+            },
+            briefmode() {
+                this.$refs.listContainer.scrollTop = 0;
             }
         },
         methods: {
-            changeShowSymbol(symbol) {
-                // 点击后移除新遗物状态
-                this.$artifact.notNew(this.$artifact.getIndex(symbol));
+            changeShowSymbol(symbol, isNew) {
+                // 此时并未同步数据，需要自己处理掉isNew状态（如果有）
+                if (isNew) {
+                    // 点击后移除新遗物状态
+                    this.$artifact.notNew(this.$artifact.getIndex(symbol));
+                    for (let item of this.ArtifactsRenderList) {
+                        if (item.symbol === symbol) {
+                            item.isNew = false;
+                        }
+                    }
+                }
                 this.$emit("changeshowsymbol", symbol);
             },
             createArtifact() {
@@ -191,6 +213,9 @@
                 this.$artifact.deleteOne(this.$artifact.getIndex(symbol));
                 this.$emit("changeshowsymbol", "");
                 this.syncListData();
+            },
+            mobileShow() {
+                this.$emit("mobileshow");
             },
             // 选择语言
             changeLanguage(language) {
@@ -244,13 +269,11 @@
             },
             // 虚拟列表
             vmList(unchange = true) {
-                // 记录相对高度（this.$store.state.scrollTop为全局变量）
                 const scroll = this.$refs.listContainer;
-                this.$store.commit('saveScroll', scroll.scrollTop);
                 // 计算渲染数量
-                // 获取1rem
                 let html = document.getElementsByTagName("html"),
                     viewH = scroll.offsetHeight,
+                    // 获取1rem
                     rem = Number.parseFloat(window.getComputedStyle(html[0]).fontSize.slice(0, -2)),
                     itemContainerWidth = this.$refs.itemContainer.offsetWidth,
                     itemH = 0,
@@ -292,9 +315,17 @@
                         if (scroll.scrollTop > (itemH + viewH)) {
                             // 该被隐藏的item数量
                             let topHideRow = Math.floor((scroll.scrollTop - viewH) / itemH),
-                                renderList = this.rawdata.slice(topHideRow * this.itemMax, topHideRow * this.itemMax +
-                                    renderRow * this.itemMax),
+                                renderList = [],
+                                renderIndex = 0,
                                 needUpdate = true;
+                            // 浅拷贝renderList:
+                            for (let index in this.rawdata) {
+                                if (index >= topHideRow * this.itemMax &&
+                                    index < topHideRow * this.itemMax + renderRow * this.itemMax) {
+                                    renderList[renderIndex] = this.rawdata[index];
+                                    renderIndex++;
+                                }
+                            }
                             // 判断列表是否需要更新
                             if (this.ArtifactsRenderList.length > 0 && renderList.length >= Math.ceil(viewH / itemH)) {
                                 for (let i = 0; i < renderList.length; i++) {
@@ -375,7 +406,7 @@
         .item-container {
             user-select: none;
             width: 100%;
-            overflow-x: hidden;
+            overflow: hidden;
             display: flex;
             flex-direction: row;
             flex-wrap: wrap;
@@ -472,13 +503,13 @@
                 width: 1.75rem;
                 height: 1.75rem;
                 border: solid 2px $genshin_white;
-                background-color: rgb(91,99,114);
+                background-color: rgb(91, 99, 114);
                 border-radius: 3rem;
 
                 img {
                     height: 160%;
                     width: 160%;
-                    margin: -0.875rem 0 0 -0.375rem;
+                    margin: -0.875rem 0 0 -0.4375rem;
                 }
             }
 

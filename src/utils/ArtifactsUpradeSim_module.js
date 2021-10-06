@@ -1,5 +1,5 @@
 /**
- * ArtifactsUpgradeSim v0.2.1 module
+ * ArtifactsUpgradeSim v0.2.2 module
  * Copyrigth 2021-2022 DioMao (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/graphs/contributors)
  * Licensed under MIT (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/main/LICENSE)
  */
@@ -12,8 +12,7 @@ import {
  * ES6 version
  */
 // 定义私有属性
-const VERSION = Symbol("VERSION"),
-    AUS_LIST = Symbol("AUS_LIST"),
+const AUS_LIST = Symbol("AUS_LIST"),
     DELETE_HISTORY = Symbol("DELETE_HISTORY"),
     SET_LIST = Symbol("SET_LIST"),
     LIST_LIMIT = Symbol("LIST_LIMIT"),
@@ -21,12 +20,14 @@ const VERSION = Symbol("VERSION"),
     LOCAL_STORAGE_KEY = Symbol("LOCAL_STORAGE_KEY"),
     SET_LOCAL_STORAGE_KEY = Symbol("SET_LOCAL_STORAGE_KEY"),
     COUNT_LIST = Symbol("COUNT_LIST"),
-    LANGUAGE = Symbol("LANGUAGE");
+    LANGUAGE = Symbol("LANGUAGE"),
+    TIMEOUT_ARTIFACT = Symbol("TIMEOUT_ARTIFACT"),
+    TIMEOUT_SET = Symbol("TIMEOUT_SET");
 
 class ArtifactsFunction_class {
     #AUTHOR = "DioMao"
+    #VERSION = "0.2.2"
     constructor() {
-        this[VERSION] = "0.2.1";
         this[AUS_LIST] = [];
         this[DELETE_HISTORY] = [];
         this[SET_LIST] = [];
@@ -36,6 +37,8 @@ class ArtifactsFunction_class {
         this[SET_LOCAL_STORAGE_KEY] = "AUS_SETList";
         this[COUNT_LIST] = {};
         this[LANGUAGE] = "origin";
+        this[TIMEOUT_ARTIFACT] = true;
+        this[TIMEOUT_SET] = true;
     }
 
     /**
@@ -1067,13 +1070,27 @@ class ArtifactsFunction_class {
      * @param {array | srting | object} val 值
      */
     setLocalStorage(key, val) {
+        if (key !== this[LOCAL_STORAGE_KEY] && key !== this[SET_LOCAL_STORAGE_KEY]) return false;
         if (typeof (val) === "object") val = JSON.stringify(val);
         if (typeof (val) === "number") val = val.toString();
         let storage = window.localStorage;
         if (!storage) {
             throw new Error("The browser does not support LocalStorage.");
         } else {
-            storage.setItem(key, val);
+            // 防止短时间内频繁写入
+            if (key === this[LOCAL_STORAGE_KEY]) {
+                clearTimeout(this[TIMEOUT_ARTIFACT]);
+                this[TIMEOUT_ARTIFACT] = setTimeout(() => {
+                    storage.setItem(key, val);
+                    // console.log("artifact storage")
+                }, 1000);
+            } else if (key === this[SET_LOCAL_STORAGE_KEY]) {
+                clearTimeout(this[TIMEOUT_SET]);
+                this[TIMEOUT_SET] = setTimeout(() => {
+                    storage.setItem(key, val);
+                    // console.log("set storage")
+                }, 1000);
+            }
         }
     }
 
@@ -1141,7 +1158,7 @@ class ArtifactsFunction_class {
 
     // 获取版本号
     get version() {
-        return this[VERSION];
+        return this.#VERSION;
     }
 
     get author() {
@@ -1231,7 +1248,9 @@ console.log("%cArtifactsUpgradeSim is running.Learn more: https://github.com/Dio
                 localList = "";
             }
             // 删除0.2.2以前的suit数据
-            storage.removeItem('AUS_SUITS');
+            if ('0.2.2' > storage.ArtifactsSimVersion){
+                storage.removeItem('AUS_SUITS');
+            }
             alert("模拟器版本更新，如果遇到错误，请尝试清除浏览器缓存!");
             storage.ArtifactsSimVersion = ArtifactsSim.version;
         }

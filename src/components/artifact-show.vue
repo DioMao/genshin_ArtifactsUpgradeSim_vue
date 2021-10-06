@@ -1,58 +1,66 @@
 <template>
     <div class="ArtifactShow">
-        <div class="aTitle"> {{ artifactName }} </div>
-        <div class="titleLine">
-            <img class="leftArrow" src="../assets/images/artifact_arrow.png" alt="artifactArrow" draggable="false">
-            <img class="rightArrow" src="../assets/images/artifact_arrow.png" alt="artifactArrow" draggable="false">
-        </div>
-        <div class="aHead">
-            {{ showdetail.part }}
-            <div class="mainEntry"> {{ showdetail.mainEntry }} </div>
-            <div class="mainEntryValue">{{ showdetail.mainEntryValue }}</div>
-            <div class="aImg">
-                <img :src="setUrl" :alt="showdetail.part" draggable="false">
-                <img :src="this.$store.state.symbolSrc" alt="genshin-symbol" draggable="false">
-            </div>
-            <div class="levelStar">
-                <span v-for="i in 5" :key="i" style="margin-right: 3px;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="#FFCC32"
-                        class="bi bi-star-fill" viewBox="0 0 16 16">
-                        <path
-                            d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                    </svg>
-                </span>
-            </div>
-        </div>
-        <div class="blurLine"></div>
-        <div class="aContent">
-            <span class="badge">+{{ showdetail.level }}</span>
-            <span class="unlock" v-if="!showdetail.lock" @click="lockChange">
-                <svg t="1631860853969" class="icon" viewBox="0 0 1024 1024" version="1.1"
-                    xmlns="http://www.w3.org/2000/svg" p-id="4021" width="1rem" height="1rem" fill="rgb(158,161,168)">
-                    <path
-                        d="M825 384H268.6c-4.9-19.7-7.4-40-7.4-60.7 0-34 6.6-66.9 19.7-97.8 12.7-29.9 30.8-56.8 53.9-79.9s50-41.2 79.9-53.9C445.6 78.6 478.5 72 512.5 72s66.9 6.6 97.8 19.7c19.4 8.2 37.5 18.7 54.2 31.4 14.4 11 34.6 9.8 47.5-3 15.4-15.4 13.7-40.9-3.7-54.1C653.9 24.6 586.1 0 512.5 0 334 0 189.2 144.7 189.2 323.3c0 20.8 2 41 5.7 60.7h5.1c-39.8 0-72 32.2-72 72v496c0 39.8 32.2 72 72 72h625c39.8 0 72-32.2 72-72V456c0-39.8-32.2-72-72-72zM544.5 695.4V800c0 17.7-14.3 32-32 32s-32-14.3-32-32V695.4c-19.1-11.1-32-31.7-32-55.4 0-35.3 28.7-64 64-64s64 28.7 64 64c0 23.7-12.9 44.3-32 55.4z"
-                        p-id="4022"></path>
-                </svg>
-            </span>
-            <span class="islock" v-else @click="lockChange">
-                <svg t="1631861008451" class="icon" viewBox="0 0 1024 1024" version="1.1"
-                    xmlns="http://www.w3.org/2000/svg" p-id="4168" width="1rem" height="1rem" fill="rgb(255,138,117)">
-                    <path
-                        d="M824 384h5.1c3.7-19.7 5.7-40 5.7-60.7C834.8 144.7 690 0 511.5 0S188.2 144.7 188.2 323.3c0 20.8 2 41 5.7 60.7h5.1c-39.8 0-72 32.2-72 72v496c0 39.8 32.2 72 72 72h625c39.8 0 72-32.2 72-72V456c0-39.8-32.2-72-72-72zM543.5 695.4V800c0 17.7-14.3 32-32 32s-32-14.3-32-32V695.4c-19.1-11.1-32-31.7-32-55.4 0-35.3 28.7-64 64-64s64 28.7 64 64c0 23.7-12.9 44.3-32 55.4zM267.6 384c-4.9-19.7-7.4-40-7.4-60.7 0-34 6.6-66.9 19.7-97.8 12.7-29.9 30.8-56.8 53.9-79.9s50-41.2 79.9-53.9C444.6 78.6 477.5 72 511.5 72s66.9 6.6 97.8 19.7c29.9 12.7 56.8 30.8 79.9 53.9 23.1 23.1 41.2 50 53.9 79.9 13.1 30.9 19.7 63.8 19.7 97.8 0 20.7-2.5 41-7.4 60.7H267.6z"
-                        p-id="4169"></path>
-                </svg>
-            </span>
-            <ul>
-                <li v-for="entry in showdetail.entry" :key="entry">·{{ entry[0] + "+" + entry[1] }}</li>
-            </ul>
-            <div class="setName">{{ showdetail.set }}</div>
-        </div>
-        <div class="aEquipped" v-if="showdetail.equipped">
-            <img :src="sideUrl" alt="side_avatar" draggable="false">
-            <span v-show="language==='en'">Equipped: </span>
-            <span>{{ $t('name.'+ showdetail.equipped).replace(/\s+/g,"") }}</span>
-            <span v-show="language==='zh'">已装备</span>
-        </div>
+        <swiper class="swiperContainer" :slides-per-view="1" :direction="'vertical'">
+            <swiper-slide>
+                <div class="aTitle"> {{ artifactName }} </div>
+                <div class="titleLine">
+                    <img class="leftArrow" src="../assets/images/artifact_arrow.png" alt="artifactArrow"
+                        draggable="false">
+                    <img class="rightArrow" src="../assets/images/artifact_arrow.png" alt="artifactArrow"
+                        draggable="false">
+                </div>
+                <div class="aHead">
+                    {{ showdetail.part }}
+                    <div class="mainEntry"> {{ showdetail.mainEntry }} </div>
+                    <div class="mainEntryValue">{{ showdetail.mainEntryValue }}</div>
+                    <div class="aImg">
+                        <img :src="setUrl" :alt="showdetail.part" draggable="false">
+                        <img :src="this.$store.state.symbolSrc" alt="genshin-symbol" draggable="false">
+                    </div>
+                    <div class="levelStar">
+                        <span v-for="i in 5" :key="i" style="margin-right: 3px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="#FFCC32"
+                                class="bi bi-star-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                <div class="blurLine"></div>
+                <div class="aContent">
+                    <span class="badge">+{{ showdetail.level }}</span>
+                    <span class="unlock" v-if="!showdetail.lock" @click="lockChange">
+                        <svg t="1631860853969" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                            xmlns="http://www.w3.org/2000/svg" p-id="4021" width="1rem" height="1rem"
+                            fill="rgb(158,161,168)">
+                            <path
+                                d="M825 384H268.6c-4.9-19.7-7.4-40-7.4-60.7 0-34 6.6-66.9 19.7-97.8 12.7-29.9 30.8-56.8 53.9-79.9s50-41.2 79.9-53.9C445.6 78.6 478.5 72 512.5 72s66.9 6.6 97.8 19.7c19.4 8.2 37.5 18.7 54.2 31.4 14.4 11 34.6 9.8 47.5-3 15.4-15.4 13.7-40.9-3.7-54.1C653.9 24.6 586.1 0 512.5 0 334 0 189.2 144.7 189.2 323.3c0 20.8 2 41 5.7 60.7h5.1c-39.8 0-72 32.2-72 72v496c0 39.8 32.2 72 72 72h625c39.8 0 72-32.2 72-72V456c0-39.8-32.2-72-72-72zM544.5 695.4V800c0 17.7-14.3 32-32 32s-32-14.3-32-32V695.4c-19.1-11.1-32-31.7-32-55.4 0-35.3 28.7-64 64-64s64 28.7 64 64c0 23.7-12.9 44.3-32 55.4z"
+                                p-id="4022"></path>
+                        </svg>
+                    </span>
+                    <span class="islock" v-else @click="lockChange">
+                        <svg t="1631861008451" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                            xmlns="http://www.w3.org/2000/svg" p-id="4168" width="1rem" height="1rem"
+                            fill="rgb(255,138,117)">
+                            <path
+                                d="M824 384h5.1c3.7-19.7 5.7-40 5.7-60.7C834.8 144.7 690 0 511.5 0S188.2 144.7 188.2 323.3c0 20.8 2 41 5.7 60.7h5.1c-39.8 0-72 32.2-72 72v496c0 39.8 32.2 72 72 72h625c39.8 0 72-32.2 72-72V456c0-39.8-32.2-72-72-72zM543.5 695.4V800c0 17.7-14.3 32-32 32s-32-14.3-32-32V695.4c-19.1-11.1-32-31.7-32-55.4 0-35.3 28.7-64 64-64s64 28.7 64 64c0 23.7-12.9 44.3-32 55.4zM267.6 384c-4.9-19.7-7.4-40-7.4-60.7 0-34 6.6-66.9 19.7-97.8 12.7-29.9 30.8-56.8 53.9-79.9s50-41.2 79.9-53.9C444.6 78.6 477.5 72 511.5 72s66.9 6.6 97.8 19.7c29.9 12.7 56.8 30.8 79.9 53.9 23.1 23.1 41.2 50 53.9 79.9 13.1 30.9 19.7 63.8 19.7 97.8 0 20.7-2.5 41-7.4 60.7H267.6z"
+                                p-id="4169"></path>
+                        </svg>
+                    </span>
+                    <ul>
+                        <li v-for="entry in showdetail.entry" :key="entry">·{{ entry[0] + "+" + entry[1] }}</li>
+                    </ul>
+                    <div class="setName">{{ showdetail.set }}</div>
+                </div>
+                <div class="aEquipped" v-if="showdetail.equipped">
+                    <img :src="sideUrl" alt="side_avatar" draggable="false">
+                    <span v-show="language==='en'">Equipped: </span>
+                    <span>{{ $t('name.'+ showdetail.equipped).replace(/\s+/g,"") }}</span>
+                    <span v-show="language==='zh'">已装备</span>
+                </div>
+            </swiper-slide>
+        </swiper>
         <div class="aButtonBox" v-if="showButton">
             <button class="btn btn-genshin btn-sm float-start" @click="upgrade" :disable="showdetail.level>=20">
                 {{ $t('msg.upgrade') }}
@@ -76,11 +84,25 @@
 </template>
 
 <script>
+    import {
+        Swiper,
+        SwiperSlide
+    } from 'swiper/vue';
+
     export default {
         name: "artifact-show",
+        components: {
+            Swiper,
+            SwiperSlide
+        },
         data() {
             return {
-
+                swiperOptions: {
+                    direction: 'vertical',
+                    slidesPerView: 'auto',
+                    freeMode: true,
+                    mousewheel: true
+                }
             }
         },
         props: {
@@ -131,16 +153,18 @@
             },
             setUrl() {
                 let item = this.$artifact.AUSList[this.index],
-                    src = require('../assets/images/Artifacts/' + item.set.replace(/\s+/g, "") + "/" + item.part + ".png");
+                    src = require('../assets/images/Artifacts/' + item.set.replace(/\s+/g, "") + "/" + item.part +
+                        ".png");
                 return src;
             },
             sideUrl() {
-                if(this.showdetail.equipped){
+                if (this.showdetail.equipped) {
                     let src;
                     try {
-                        src = require('../assets/images/avatars_side/' + this.showdetail.equipped.replace(/\s+/g, "_") +'_side.png');
+                        src = require('../assets/images/avatars_side/' + this.showdetail.equipped.replace(/\s+/g, "_") +
+                            '_side.png');
                         return src;
-                    }catch {
+                    } catch {
                         src = require('../assets/images/genshin_emoji/Icon_Emoji_003_Paimon_Hehe.png');
                         return src;
                     }
@@ -166,6 +190,11 @@
 </script>
 
 <style lang="scss" scoped>
+    .swiperContainer {
+        position: relative;
+        z-index: 10;
+    }
+
     .ArtifactShow {
         position: relative;
         margin: 0 auto;
@@ -354,7 +383,7 @@
             color: $genshin_dark;
             background-color: rgb(255, 231, 187);
             padding: .5rem 0 .5rem 2.75rem;
-            
+
             img {
                 position: absolute;
                 z-index: 2;

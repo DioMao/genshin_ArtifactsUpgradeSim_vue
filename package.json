@@ -1,6 +1,6 @@
 {
   "name": "artifact_sim",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "author": "DioMao",
   "license": "MIT",
   "private": true,
@@ -16,6 +16,7 @@
     "axios": "^0.21.4",
     "bootstrap": "^5.1.0",
     "core-js": "^3.6.5",
+    "swiper": "^6.8.0",
     "vue": "^3.2.4",
     "vue-i18n": "^9.1.7",
     "vue-router": "^4.0.11",

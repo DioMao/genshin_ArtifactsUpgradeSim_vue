@@ -181,7 +181,7 @@
             width: 13.6rem;
             margin-top: -1rem;
             margin-left: -6.8rem;
-            background-color: rgb(245, 245, 245);
+            background-color: rgb(245,245,245);
             mask: url(./assets/images/elements_logo.png);
             mask-image: url(./assets/images/elements_logo.png);
             -webkit-mask-image: url(./assets/images/elements_logo.png);
@@ -191,7 +191,7 @@
             .loading-progress {
                 height: 100%;
                 width: 0;
-                background-color: rgb(102, 102, 102);
+                background-color: rgb(102,102,102);
                 transition: all 0.5s ease;
             }
         }

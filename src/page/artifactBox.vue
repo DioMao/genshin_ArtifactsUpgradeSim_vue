@@ -39,44 +39,48 @@
             <div class="extra-container">
                 <artifact-list :rawdata="ArtifactsList" :showsymbol="showSymbol" :briefmode="userSetting.listBriefMode"
                     :entryquality="userSetting.entryQuality" @sync="syncListData" @changeshowsymbol="changeShowSymbol"
-                    @create="createArtifact" @alert="alertControl">
+                    @create="createArtifact" @alert="alertControl" @mobileshow="mobileshow">
                 </artifact-list>
             </div>
             <!-- 右侧圣遗物展示详情 -->
             <div class="ArtifactShowBox">
                 <artifact-show @upgrade="ArtifactUpgrade" @init="initArtifact" @del="deleteArtifact" @lock="lockChange"
-                    :showdetail="showDetail" :index="$artifact.getIndex(showSymbol)" :language="userSetting.language"
-                    :showButton="true" v-if="showSymbol!==''">
+                    :showdetail="showDetail" :index="ShowIndex" :language="userSetting.language" :showButton="true"
+                    v-if="showSymbol!==''">
                 </artifact-show>
                 <div class="ms-3 mt-3 me-3" v-show="showSymbol!==''">
-                    {{ $t('msg.entryScore') }}(beta)：{{ ArtifactScore }}
+                    <!-- 圣遗物评分组件 -->
+                    <artifact-score :index="ShowIndex" :rule="userSetting.scoreConfig.mode==='string'?userSetting.scoreConfig.strRule
+                    :userSetting.scoreConfig.arrRule" :artifact="JSON.stringify($artifact.AUSList[ShowIndex])">
+
+                    </artifact-score>
                     <button id="score" class="btn btn-genshin-dark btn-sm" data-bs-toggle="modal"
                         data-bs-target="#scoreSet">{{ $t('msg.scoreSetting') }}</button>
                 </div>
             </div>
         </div>
         <!-- 手机端圣遗物展示 -->
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanArtifactShow" aria-labelledby="offcanArtifactShow">
+        <div class="ArtifactShowMobile" :class="{MobileShow:showMobileDetail}">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title">{{ $t('msg.artifactDetail') }}</h5>
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
-                    aria-label="Close"></button>
+                <button type="button" class="btn-close text-reset" @click="showMobileDetail=false"></button>
             </div>
             <div class="offcanvas-body">
                 <div>
                     <artifact-show @upgrade="ArtifactUpgrade" @init="initArtifact" @del="deleteArtifact"
-                        @lock="lockChange" :showdetail="showDetail" :index="$artifact.getIndex(showSymbol)"
-                        :language="userSetting.language" :showButton="true" v-if="showSymbol!==''">
+                        @lock="lockChange" :showdetail="showDetail" :index="ShowIndex" :language="userSetting.language"
+                        :showButton="true" v-if="showSymbol!==''">
                     </artifact-show>
                 </div>
-                <div class="mt-3" v-show="showSymbol!==''">{{ $t('msg.entryScore') }}(beta)：{{ ArtifactScore }}
+                <div class="mt-3" v-show="showSymbol!==''">
+                    <!-- 圣遗物评分组件 -->
+                    <artifact-score :index="ShowIndex" :rule="userSetting.scoreConfig.mode==='string'?userSetting.scoreConfig.strRule
+                    :userSetting.scoreConfig.arrRule" :artifact="JSON.stringify($artifact.AUSList[ShowIndex])">
+
+                    </artifact-score>
                     <button id="score-2" class="btn btn-genshin-dark btn-sm" data-bs-toggle="modal"
                         data-bs-target="#scoreSet">{{ $t('msg.scoreSetting') }}</button>
                 </div>
-                <!-- <button type="button" class="btn btn-genshin-dark mt-3" data-bs-dismiss="offcanvas" aria-label="Close"
-                    style="position: fixed;inset: auto 2rem 1.5rem auto;">
-                    <span class="xinbox"></span>{{ $t('msg.closeDetail') }}
-                </button> -->
             </div>
         </div>
         <footer>
@@ -144,8 +148,8 @@
                         class="squareinbox"></span>{{ $t('msg.custom') }}</button>
 
                 <div class="dropdown" style="display:inline-block;">
-                    <a class="btn btn-genshin dropdown-toggle" href="javascript:void(0)" role="button" id="dropdownMenuLink"
-                        data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="btn btn-genshin dropdown-toggle" href="javascript:void(0)" role="button"
+                        id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                         {{ $t('msg.more') }}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
@@ -185,7 +189,8 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#userSet">
+                            <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal"
+                                data-bs-target="#userSet">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="currentColor"
                                     class="bi bi-gear-fill" viewBox="0 0 16 16">
                                     <path
@@ -198,7 +203,8 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#about">
+                            <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal"
+                                data-bs-target="#about">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="currentColor"
                                     class="bi bi-info-circle-fill" viewBox="0 0 16 16">
                                     <path
@@ -405,6 +411,7 @@
     import artifactShow from '../components/artifact-show'
     import popup from '../components/popup'
     import artifactList from '../components/artifact-list'
+    import artifactScore from '../components/artifact-score'
     // bootstrap相关
     import 'bootstrap/js/dist/alert'
     import 'bootstrap/js/dist/modal'
@@ -415,12 +422,14 @@
             demoAlert,
             artifactShow,
             popup,
-            artifactList
+            artifactList,
+            artifactScore
         },
         data() {
             return {
                 state: this.$store.state,
                 showSymbol: "", // 展示圣遗物的symbol
+                ShowIndex: -1, // 展示圣遗物的index
                 showDetail: Object, // 右侧圣遗物展示详情
                 ArtifactsList: [], // 圣遗物列表
                 setList: [], // 用户套装列表
@@ -452,6 +461,7 @@
                     alertClose: Function, // 定时关闭提示框
                     alertState: "success" // 提示框类型
                 },
+                showMobileDetail: false
             }
         },
         created() {
@@ -492,18 +502,6 @@
             }, 1)
         },
         computed: {
-            ArtifactScore() {
-                let mode = this.userSetting.scoreConfig.mode,
-                    index = this.$artifact.getIndex(this.showSymbol);
-                this.ArtifactsList[index]; // 监听当前圣遗物数据，更新评分视图用
-                if (mode === "string") {
-                    return this.$artifact.ArtifactScore(index, this.userSetting.scoreConfig.strRule).toFixed(2);
-                } else if (mode === "array") {
-                    return this.$artifact.ArtifactScore(index, this.userSetting.scoreConfig.arrRule).toFixed(2);
-                } else {
-                    return 0;
-                }
-            },
             language() {
                 return this.state.language;
             }
@@ -513,11 +511,11 @@
                 if (val === "") {
                     return;
                 }
-                // this.setRadarChart();
+                this.ShowIndex = this.$artifact.getIndex(val);
                 this.showDetail = this.$artifact.getArtifact(val, this.userSetting.language);
             },
             ArtifactsList() {
-                // this.setRadarChart();
+
                 if (this.showSymbol !== "") this.showDetail = this.$artifact.getArtifact(this.showSymbol, this
                     .userSetting.language);
             },
@@ -651,6 +649,10 @@
             },
             changeLanguage(language) {
                 this.userSetting.language = language;
+            },
+            // 手机端显示圣遗物详情
+            mobileshow() {
+                this.showMobileDetail = true;
             },
             // 操作提示-提示框
             // state值： success/primary/warning/danger
@@ -839,6 +841,30 @@
         bottom: 0;
     }
 
+    .ArtifactShowMobile {
+        position: fixed;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 100%;
+        z-index: 1024;
+        top: 0;
+        bottom: 0;
+        outline: 0;
+        right: -100%;
+        transition: all 0.3s ease-out;
+
+        .offcanvas-body {
+            max-width: 100%;
+            overflow-y: scroll;
+
+        }
+    }
+
+    .MobileShow {
+        right: 0;
+    }
+
     // footer
 
     footer {
@@ -969,7 +995,7 @@
     #score,
     #score-2 {
         float: right;
-        margin-top: -0.25rem;
+        margin-top: .5rem;
     }
 
     .countShow {
