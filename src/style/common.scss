@@ -9,21 +9,21 @@ $genshin_green: rgb(92, 178, 86);
 $genshin_yellow: rgb(255, 225, 75);
 
 ::-webkit-scrollbar {
-  width: .4rem;
+  width: 0.4rem;
   transition: ease 0.2s all;
   background: rgba(128, 128, 128, 0.5);
 }
 
 ::-webkit-scrollbar-thumb {
   // 滚动条里面小方块
-  border-radius: .625rem;
+  border-radius: 0.625rem;
   background: rgb(246, 244, 243);
 }
 
 ::-webkit-scrollbar-track {
   // 滚动条里面轨道
   // box-shadow: inset 0 0 0.3125rem rgba(0, 0, 0, 0.2);
-  border-radius: .1875rem;
+  border-radius: 0.1875rem;
   background: rgba(0, 0, 0, 0.2);
 }
 
@@ -37,11 +37,8 @@ $genshin_yellow: rgb(255, 225, 75);
   &::before {
     content: "";
     position: absolute;
-    top: -0.125rem;
-    left: -0.125rem;
+    inset: -0.1875rem;
     display: block;
-    width: calc(100% + .25rem);
-    height: calc(100% + .25rem);
     border-radius: 1.5625rem;
   }
 
@@ -63,11 +60,8 @@ $genshin_yellow: rgb(255, 225, 75);
   &::before {
     content: "";
     position: absolute;
-    top: -0.125rem;
-    left: -0.125rem;
+    inset: -0.1875rem;
     display: block;
-    width: calc(100% + .25rem);
-    height: calc(100% + .25rem);
     border-radius: 1.5625rem;
   }
 
@@ -93,10 +87,7 @@ $genshin_yellow: rgb(255, 225, 75);
   &::after {
     content: "";
     position: absolute;
-    width: 0.8rem;
-    height: 0.8rem;
-    top: 0.3rem;
-    left: 0.3rem;
+    inset: 0.3125rem;
     border: solid 0.125rem rgb(245, 195, 50);
     border-radius: 100rem;
   }
@@ -111,15 +102,12 @@ $genshin_yellow: rgb(255, 225, 75);
   height: 1.2rem;
   width: 1.2rem;
   background-color: rgb(48, 48, 48);
-  border-radius: .125rem;
+  border-radius: 0.125rem;
 
   &::after {
     content: "";
     position: absolute;
-    width: 0.7rem;
-    height: 0.7rem;
-    top: 0.25rem;
-    left: 0.25rem;
+    inset: 0.25rem;
     border: solid 0.125rem rgb(245, 195, 50);
   }
 }
@@ -167,10 +155,10 @@ $genshin_yellow: rgb(255, 225, 75);
   top: -0.25rem;
   color: rgb(255, 255, 128);
   background-color: rgb(204, 129, 13);
-  border: solid .125rem rgb(255, 225, 55);
-  border-top-left-radius: .3125rem;
-  border-bottom-right-radius: .3125rem;
-  padding: 0 .1875rem;
+  border: solid 0.125rem rgb(255, 225, 55);
+  border-top-left-radius: 0.3125rem;
+  border-bottom-right-radius: 0.3125rem;
+  padding: 0 0.1875rem;
   line-height: 1rem;
 
   &::before {
@@ -199,12 +187,9 @@ $genshin_yellow: rgb(255, 225, 75);
     content: "";
     position: absolute;
     pointer-events: none;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: .0625rem solid #ffffff;
-    border-radius: .25rem;
+    inset: -0.0625rem;
+    border: 0.125rem solid #ffffff;
+    border-radius: 0.03125rem;
     animation: artifactSelect2 ease 1s forwards;
   }
 
@@ -212,12 +197,9 @@ $genshin_yellow: rgb(255, 225, 75);
     content: "";
     position: absolute;
     pointer-events: none;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: .0625rem solid #ffffff;
-    border-radius: .25rem;
+    inset: -0.0625rem;
+    border: 0.125rem solid #ffffff;
+    border-radius: 0.3125rem;
     animation: artifactSelect ease 1s infinite;
   }
 }
@@ -243,10 +225,7 @@ $genshin_yellow: rgb(255, 225, 75);
     content: "";
     pointer-events: none;
     position: absolute;
-    top: .1875rem;
-    left: .1875rem;
-    height: calc(100% - .375rem);
-    width: calc(100% - .375rem);
+    inset: 0.1875rem;
     border: solid 0.1875rem rgb(81, 91, 107);
   }
 }
@@ -256,7 +235,6 @@ $genshin_yellow: rgb(255, 225, 75);
   position: relative;
   border-radius: 1.5625rem;
   margin-right: 0 !important;
-  // background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024' fill='%23000'%3e%3cpath d='M510.957251 351.97026 1021.893013 0 669.922752 510.935762 1021.893013 1021.8705 510.957251 669.901263 0.021489 1021.8705 351.99175 510.935762 0.021489 0Z'/%3e%3c/svg%3e") center/1em auto no-repeat;
   background-image: url(~@/assets/images/close.png);
   background-size: 1.6875rem;
   background-color: $genshin_white;
@@ -267,11 +245,8 @@ $genshin_yellow: rgb(255, 225, 75);
     content: "";
     pointer-events: none;
     position: absolute;
-    top: -0.1875rem;
-    left: -0.1875rem;
-    height: calc(100% + .375rem);
-    width: calc(100% + .375rem);
-    border: solid .25rem rgb(135, 141, 141);
+    inset: -0.1875rem;
+    border: solid 0.25rem rgb(135, 141, 141);
     border-radius: 1.5625rem;
   }
 
@@ -293,10 +268,7 @@ $genshin_yellow: rgb(255, 225, 75);
     content: "";
     pointer-events: none;
     position: absolute;
-    top: .1875rem;
-    left: .1875rem;
-    height: calc(100% - .375rem);
-    width: calc(100% - .375rem);
+    inset: 0.1875rem;
     border: solid 0.1875rem rgb(242, 238, 231);
   }
 }
@@ -304,6 +276,27 @@ $genshin_yellow: rgb(255, 225, 75);
 .modal-footer {
   padding: 0.5rem 0.75rem !important;
   background-color: $genshin_white;
+}
+
+.form-switch .form-check-input {
+  margin-top: 0;
+  margin-right: 0.5rem;
+  height: 1.5rem;
+  width: 2.5rem;
+  background-color: $genshin_dark;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%28255, 255, 255, 1%29'/%3e%3c/svg%3e");
+  border: solid 2px $genshin_white;
+
+  &:focus {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%28255, 255, 255, 1%29'/%3e%3c/svg%3e");
+    outline: none;
+    box-shadow: none;
+  }
+
+  &:checked {
+    background-color: $genshin_gold;
+    border-color: $genshin_white;
+  }
 }
 
 // 公共css
@@ -333,12 +326,12 @@ $genshin_yellow: rgb(255, 225, 75);
   .siteTitle {
     font-size: 1.2rem;
     color: $genshin_white;
-    padding-left: .3rem;
+    padding-left: 0.3rem;
 
     a {
       color: $genshin_white;
       text-decoration-line: none;
-      box-shadow: #c38542 -0.6875rem .0625rem 0rem 0rem;
+      box-shadow: #c38542 -0.6875rem 0.0625rem 0rem 0rem;
     }
   }
 }
@@ -524,45 +517,39 @@ $genshin_yellow: rgb(255, 225, 75);
 @keyframes artifactSelect {
   0% {
     transform: rotate3d(0, 0, 0);
-    box-shadow: 0 0 .5rem .1875rem #fff;
+    box-shadow: 0 0 0.5rem 0.1875rem #fff;
   }
 
   50% {
     transform: rotate3d(0, 0, 0);
-    box-shadow: 0 0 .0625rem .0625rem #fff;
+    box-shadow: 0 0 0.0625rem 0.0625rem #fff;
   }
 
   100% {
     transform: rotate3d(0, 0, 0);
-    box-shadow: 0 0 .5rem .1875rem #fff;
+    box-shadow: 0 0 0.5rem 0.1875rem #fff;
   }
 }
 
 @keyframes artifactSelect2 {
   0% {
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: solid .0625rem #fff;
+    position: absolute;
+    inset: 0;
+    border: solid 0.0625rem #fff;
     opacity: 1;
   }
 
   80% {
-    top: -10%;
-    left: -10%;
-    width: 120%;
-    height: 120%;
-    border: solid .125rem #fff;
+    position: absolute;
+    inset: -0.75rem;
+    border: solid 0.125rem #fff;
     opacity: 0;
   }
 
   100% {
-    top: -10%;
-    left: -10%;
-    width: 120%;
-    height: 120%;
-    border: solid .125rem #fff;
+    position: absolute;
+    inset: -0.75rem;
+    border: solid 0.125rem #fff;
     opacity: 0;
   }
 }
@@ -653,7 +640,6 @@ $genshin_yellow: rgb(255, 225, 75);
   }
 }
 
-
 // 响应式
 @media screen and (max-width: 30rem) {
   .ArtifactsBox {
@@ -661,7 +647,7 @@ $genshin_yellow: rgb(255, 225, 75);
   }
 
   .entryBox {
-    padding: 0 .5rem;
+    padding: 0 0.5rem;
     width: 100% !important;
   }
 
@@ -678,8 +664,8 @@ $genshin_yellow: rgb(255, 225, 75);
   }
 
   .upgrade-button-lg {
-    bottom: .9375rem !important;
-    right: .9375rem !important;
+    bottom: 0.9375rem !important;
+    right: 0.9375rem !important;
   }
 
   .UpAlertMainEntry {
@@ -723,7 +709,7 @@ $genshin_yellow: rgb(255, 225, 75);
     }
 
     .buttonBox {
-      border-top: solid .0625rem #35393d;
+      border-top: solid 0.0625rem #35393d;
     }
   }
 
@@ -759,7 +745,7 @@ $genshin_yellow: rgb(255, 225, 75);
     overflow-y: scroll !important;
     position: fixed !important;
     z-index: 1;
-    padding-top: .9375rem !important;
+    padding-top: 0.9375rem !important;
     top: 3.5rem !important;
     right: 6.25rem !important;
     width: 20rem !important;

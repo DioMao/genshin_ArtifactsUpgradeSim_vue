@@ -1,11 +1,16 @@
 <template>
-    
+  <div></div>
+  <div></div>
 </template>
 
 <script>
-export default {
-    
-}
+  import { useStore } from "vuex";
+  export default {
+    setup() {
+      const store = useStore();
+      console.log(store);
+    },
+  };
 </script>
 
 <style lang="scss" scoped>
