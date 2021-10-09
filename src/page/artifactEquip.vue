@@ -351,26 +351,24 @@
       },
       // 替换圣遗物
       chengeArtifact() {
-        let index = this.$artifact.getIndex(this.symbol);
         this.$artifact.updateSet(Number.parseInt(this.setIndex), [this.artifact.symbol]);
         // 更新artifact和oldArtifact
-        this.artifact = this.$artifact.getArtifact(this.$artifact.AUSList[index].symbol, this.language);
+        this.artifact = this.$artifact.getArtifact(this.symbol, this.language);
         // isSame判定
         this.isSame = true;
       },
       // 圣遗物锁定
       lockChange(symbol) {
-        let index = this.$artifact.getIndex(symbol);
-        this.$artifact.lock(index);
-        this.artifact = this.$artifact.getArtifact(this.$artifact.AUSList[index].symbol, this.language);
+        this.$artifact.lock(symbol);
+        this.artifact = this.$artifact.getArtifact(symbol, this.language);
       },
       // 卸下圣遗物
       removeArtifact() {
-        let index = this.$artifact.getIndex(this.symbol);
-        let part = this.$artifact.AUSList[index].part;
+        let artifact = this.$artifact.getArtifact(this.symbol);
+        let part = artifact.part;
         this.$artifact.removeSetItem(Number.parseInt(this.setIndex), [part]);
         // 更新artifact和oldArtifact
-        this.artifact = this.$artifact.getArtifact(this.$artifact.AUSList[index].symbol, this.language);
+        this.artifact = this.$artifact.getArtifact(artifact.symbol, this.language);
         // isSame判定
         this.oldArtifact = undefined;
         this.isSame = false;
