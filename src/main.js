@@ -5,7 +5,7 @@ import App from "./App.vue";
 // import * as echarts from 'echarts'
 import axios from "axios";
 import i18n from "./language";
-import { ArtifactsSim, artiConst, IDB } from "./utils/ArtifactsUpradeSim_module";
+import { ArtifactsSim, artiConst, IDB, initArtifactSim } from "./utils/ArtifactsUpradeSim_module";
 // 全局样式
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -23,5 +23,19 @@ app
   .use(store)
   .use(i18n);
 
-router.isReady().then(app.mount("#app"));
-// app.mount('#app')
+// 初始化模拟器数据后挂载实例
+initArtifactSim()
+  .then(() => {
+    app.mount("#app");
+  })
+  .catch(err => {
+    console.log(err);
+    if (confirm("Initialization failed, please try to clear local cache.\n数据初始化失败，请尝试清除本地缓存。")) {
+      // 清除缓存
+      window.localStorage.clear();
+      IDB.delete();
+      location.reload();
+    }
+  });
+
+// router.isReady().then(app.mount("#app"));

@@ -20,75 +20,26 @@
       </svg>
       {{ $t("handle.back") }}
     </button>
-    <!-- 角色选择容器 -->
-    <div class="user_container">
-      <!-- 角色筛选器 -->
-      <div class="filterBox">
-        <button type="button" class="btn btn-genshin dropdown-genshin-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-          {{ filterShow }}
-        </button>
-        <ul class="dropdown-menu dropdown-menu-lg-end">
-          <li @click="filterCharacter = 'default'">
-            <a class="dropdown-item" :class="{ itemSelected: filterCharacter === 'default' }">{{ $t("msg.default") }}</a>
-          </li>
-          <!-- 属性筛选 -->
-          <li class="filterLable">{{ $t("element.element") }}</li>
-          <li v-for="element in $artiConst.val.elementType" :key="element" @click="filterCharacter = element">
-            <a class="dropdown-item" :class="{ itemSelected: filterCharacter === element }">{{ $t("element." + element) }}</a>
-          </li>
-          <!-- 武器筛选 -->
-          <li class="filterLable">{{ $t("weaponType.weapon") }}</li>
-          <li v-for="weapon in $artiConst.val.weaponType" :key="weapon" @click="filterCharacter = weapon">
-            <a class="dropdown-item" :class="{ itemSelected: filterCharacter === weapon }">{{ $t("weaponType." + weapon) }}</a>
-          </li>
-          <!-- 地区筛选 -->
-          <li class="filterLable">{{ $t("nation.nation") }}</li>
-          <li v-for="nation in $artiConst.val.nation" :key="nation" @click="filterCharacter = nation">
-            <a class="dropdown-item" :class="{ itemSelected: filterCharacter === nation }">{{ $t("nation." + nation) }}</a>
-          </li>
-        </ul>
-      </div>
-      <!-- 角色列表 -->
-      <div class="characterBox" ref="characterBox">
-        <div
-          class="characterShow"
-          v-for="character in characterList"
-          :key="character"
-          :class="{ isSelect: selectCharacter === character.name }"
-          @click="selectCharacter = character.name"
-          @mousedown="clickMethod($event, true)"
-          @mouseup="clickMethod($event, false)"
-          @mouseleave="clickMethod($event, false)"
-        >
-          <div class="avatarBox" :class="'star_' + character.rarity">
-            <img :src="avatarSrc(character.name)" :alt="character.name" draggable="false" />
-          </div>
-          <div class="elementBox">
-            <img :src="elementSrc(character.element[0])" :alt="character.element[0]" draggable="false" />
-          </div>
-          <div class="lvBox">Lv. 90</div>
-        </div>
-        <div class="fillItem" v-for="i in fillCount" :key="'fill_' + i"></div>
-      </div>
-      <!-- 按钮 -->
-      <div class="buttonBox">
-        <button
-          class="btn btn-genshin btn-switch"
-          :class="{ disable: selectCharacter === '' }"
-          :disabled="selectCharacter === ''"
-          @click="chengeArtifact()"
-          v-show="!isSame"
-        >
-          <span class="circleinbox"></span>
-          {{ $t("handle.switch") }}
-        </button>
-        <button class="btn btn-genshin-dark btn-remove" v-show="isSame" @click="removeArtifact()">
-          <span class="xinbox"></span>
-          {{ $t("handle.remove") }}
-        </button>
-        <button class="btn btn-genshin btn-detail" :class="{ disable: selectCharacter === '' }"><span class="squareinbox"></span>Detail</button>
-      </div>
-    </div>
+    <!-- 角色列表 -->
+    <character-list @character="characterChange" :characterprop="selectCharacter">
+      <button
+        class="btn btn-genshin btn-switch"
+        :class="{ disable: selectCharacter === '' }"
+        :disabled="selectCharacter === ''"
+        @click="chengeArtifact()"
+        v-show="!isSame"
+      >
+        <span class="circleinbox"></span>
+        {{ $t("handle.switch") }}
+      </button>
+      <button class="btn btn-genshin-dark btn-remove" v-show="isSame" @click="removeArtifact()">
+        <span class="xinbox"></span>
+        {{ $t("handle.remove") }}
+      </button>
+      <button class="btn btn-genshin btn-detail" :disabled="selectCharacter === ''" @click="$router.push('/state-' + selectCharacter)">
+        <span class="squareinbox"></span>Detail
+      </button>
+    </character-list>
     <!-- 圣遗物变更信息 -->
     <div class="bg-container">
       <!-- 背景样式 -->
@@ -142,110 +93,107 @@
 
 <script>
   import artifactShow from "../components/artifact-show";
+  import characterList from "../components/character-list";
   import "@/style/stars.css";
+  import { getCurrentInstance, ref, watch } from "vue";
+  import { useRouter } from "vue-router";
 
   export default {
     props: ["symbol"],
     components: {
       artifactShow,
+      characterList,
+    },
+    setup(props) {
+      // 获取全局函数
+      const globalProperties = getCurrentInstance().appContext.config.globalProperties;
+      const artifactFunc = globalProperties.$artifact;
+      const db = globalProperties.$db;
+      const router = useRouter();
+      // 输出的响应式对象
+      const setIndex = ref(-1);
+      const artifact = ref({});
+      // 是否与当前人物装备的圣遗物相同
+      const isSame = ref(false);
+      const selectCharacter = ref("");
+      // 人物筛选条件
+      const language = ref("origin");
+
+      // 数值处理
+      const formatValue = (key, value) => {
+        let res = artifactFunc.entryValFormat(key, value);
+        if (res.indexOf("-") === -1) res = "+" + res;
+        return res;
+      };
+
+      // 替换圣遗物
+      const chengeArtifact = () => {
+        artifactFunc.updateSet(Number.parseInt(setIndex.value), [artifact.value.symbol]);
+        // 更新artifact和oldArtifact
+        artifact.value = artifactFunc.getArtifact(props.symbol, language.value);
+        // isSame判定
+        isSame.value = true;
+      };
+      // 圣遗物锁定
+      const lockChange = symbol => {
+        artifactFunc.lock(symbol);
+        artifact.value = artifactFunc.getArtifact(symbol, language.value);
+      };
+
+      watch([() => props.symbol], async val => {
+        // symbol
+        let artifact = await db.ARTIFACT_LIST.get(val[0]);
+        if (artifact === undefined) {
+          router.replace("/");
+        }
+      });
+      return {
+        setIndex,
+        artifact,
+        isSame,
+        selectCharacter,
+        language,
+        formatValue,
+        chengeArtifact,
+        lockChange,
+      };
     },
     data() {
       return {
-        selectCharacter: "",
-        characterList: [], // 人物列表
-        setList: [], // 人物套装列表
-        artifact: {}, // 当前圣遗物数据
         artifactName: "none", // 当前圣遗物名称
         oldArtifactName: "none", // 已装备的圣遗物名称
         oldArtifact: undefined, // 人物已装备的圣遗物数据
         setBonusChange: {}, // 圣遗物套装变化情况
         fillCount: 0, // 填充（flex）
         itemMax: 0,
-        language: "origin",
-        setIndex: -1, // 当前人物套装序号
-        isSame: false, // 是否与当前人物装备的圣遗物相同
         changeList: {}, // 属性变化表
-        filterCharacter: "default", // 人物筛选条件
       };
     },
     mounted() {
-      // 初始化人物列表
-      this.characterList = this.$artiConst.val.character;
-      // 初始化人物装备列表
-      this.setList = this.$artifact.setList;
       // 读取语言设置
       if (!window.localStorage) {
         alert("浏览器不支持localstorage");
         return false;
       } else if (localStorage.userSetting !== "" && localStorage.userSetting !== undefined) {
-        this.language = JSON.parse(localStorage.userSetting).language;
+        this.language = JSON.parse(localStorage.userSetting)?.language;
         this.$i18n.locale = JSON.parse(localStorage.userSetting).language;
       }
-      try {
-        if (this.$artifact.AUSList.length === 0) {
-          this.$db.ARTIFACT_LIST.toArray().then(res => {
-            this.$artifact.AUSList = res;
-            if (this.$artifact.getIndex(this.symbol) === -1) {
-              this.$router.replace("/");
-            }
-            this.initPage();
-          });
-        } else {
-          this.initPage();
-        }
-      } catch (error) {
-        console.log(error);
-        this.$router.replace("/");
+      // 当前圣遗物信息
+      this.artifact = this.$artifact.getArtifact(this.symbol, JSON.parse(localStorage.userSetting).language);
+      if (this.language === "zh") {
+        this.artifactName = this.$artiConst.val.artifactSet_zh[this.artifact.set][this.artifact.part];
+      } else if (this.language === "en") {
+        let part = this.$artiConst.val.parts[this.$artiConst.val.parts_en.indexOf(this.artifact.part)];
+        this.artifactName = this.$artiConst.val.artifactSet[this.artifact.set][part];
+      }
+      // 如果已经被使用则将当前人物设置为使用者
+      if (this.artifact.equipped) {
+        this.selectCharacter = this.artifact.equipped;
       }
     },
-    computed: {
-      filterShow() {
-        const artiConst = this.$artiConst.val;
-        if (this.filterCharacter === "default") {
-          return this.$t("msg.default");
-        } else if (artiConst.elementType.indexOf(this.filterCharacter) > -1) {
-          return this.$t("element." + this.filterCharacter);
-        } else if (artiConst.weaponType.indexOf(this.filterCharacter) > -1) {
-          return this.$t("weaponType." + this.filterCharacter);
-        } else if (artiConst.nation.indexOf(this.filterCharacter) > -1) {
-          return this.$t("nation." + this.filterCharacter);
-        }
-        return "-NOT FOUND THIS STRING-";
-      },
-    },
     watch: {
-      symbol(val) {
-        if (this.$artifact.getIndex(val) === -1) {
-          this.$router.replace("/");
-        }
-      },
       characterList() {
         this.fillFunc();
-      },
-      // 人物筛选
-      filterCharacter(val) {
-        let artiConst = this.$artiConst.val;
-        if (val === "default") {
-          this.characterList = artiConst.character;
-        } else {
-          let res = [],
-            type;
-          if (artiConst.elementType.indexOf(val) > -1) {
-            type = "element";
-          } else if (artiConst.weaponType.indexOf(val) > -1) {
-            type = "weapon";
-          } else if (artiConst.nation.indexOf(val) > -1) {
-            type = "nation";
-          }
-          artiConst.character.forEach(el => {
-            if (type === "element" && el["element"].indexOf(val) > -1) {
-              res.push(el);
-            } else if (el[type] === val) res.push(el);
-          });
-          this.characterList = res;
-        }
-        // 筛选后重置当前选择人物
-        this.selectCharacter = "";
       },
       selectCharacter(val) {
         if (val === "") {
@@ -254,12 +202,12 @@
           this.isSame = false;
           return;
         }
-        let index = this.$artifact.getIndex(this.symbol);
         // 更新当前套装序号
         this.setIndex = this.$artifact.getSetIndex(val);
         // 更新已装备的圣遗物
-        let oldIndex = this.$artifact.getIndex(this.$artifact.setList[this.setIndex][this.$artifact.AUSList[index].part]);
-        this.oldArtifact = this.$artifact.AUSList[oldIndex];
+        let oldSymbol = this.$artifact.setList[this.setIndex][this.$artifact.getArtifact(this.symbol).part];
+        let oldIndex = this.$artifact.getIndex(this.$artifact.setList[this.setIndex][this.$artifact.getArtifact(this.symbol).part]);
+        this.oldArtifact = this.$artifact.getArtifact(oldSymbol);
         if (oldIndex > -1) {
           this.isSameFunc();
         } else {
@@ -331,36 +279,9 @@
       },
     },
     methods: {
-      // 人物头像链接处理
-      avatarSrc(name) {
-        try {
-          let src = require("../assets/images/character/Character_" + name.replace(/\s+/g, "_") + "_Thumb.png");
-          return src;
-        } catch (error) {
-          return "";
-        }
-      },
-      // 元素图片链接处理
-      elementSrc(name) {
-        try {
-          let src = require("../assets/images/elements/Element_" + name + ".png");
-          return src;
-        } catch (error) {
-          return "";
-        }
-      },
-      // 替换圣遗物
-      chengeArtifact() {
-        this.$artifact.updateSet(Number.parseInt(this.setIndex), [this.artifact.symbol]);
-        // 更新artifact和oldArtifact
-        this.artifact = this.$artifact.getArtifact(this.symbol, this.language);
-        // isSame判定
-        this.isSame = true;
-      },
-      // 圣遗物锁定
-      lockChange(symbol) {
-        this.$artifact.lock(symbol);
-        this.artifact = this.$artifact.getArtifact(symbol, this.language);
+      //
+      characterChange(val) {
+        this.selectCharacter = val;
       },
       // 卸下圣遗物
       removeArtifact() {
@@ -373,43 +294,9 @@
         this.oldArtifact = undefined;
         this.isSame = false;
       },
-      // 数值处理
-      formatValue(key, value) {
-        return this.$artifact.entryValFormat(key, value);
-      },
-      // 点击效果
-      clickMethod(event, type) {
-        if (type) {
-          event.currentTarget.classList.add("isClick");
-        } else {
-          event.currentTarget.classList.remove("isClick");
-        }
-      },
-      // 计算填充
-      fillFunc() {
-        let boxWidth = this.$refs.characterBox.offsetWidth,
-          html = document.getElementsByTagName("html"),
-          rem = Number.parseFloat(window.getComputedStyle(html[0]).fontSize.slice(0, -2));
-        this.itemMax = Math.floor(boxWidth / (4.5 * rem));
-        this.fillCount = this.itemMax - (this.characterList.length % this.itemMax);
-        if (this.fillCount === this.itemMax) this.fillCount = 0;
-      },
       // isSame判定
       isSameFunc() {
         this.isSame = this.artifact.symbol === this.oldArtifact.symbol;
-      },
-      initPage() {
-        this.artifact = this.$artifact.getArtifact(this.symbol, JSON.parse(localStorage.userSetting).language);
-        if (this.language === "zh") {
-          this.artifactName = this.$artiConst.val.artifactSet_zh[this.artifact.set][this.artifact.part];
-        } else if (this.language === "en") {
-          let part = this.$artiConst.val.parts[this.$artiConst.val.parts_en.indexOf(this.artifact.part)];
-          this.artifactName = this.$artiConst.val.artifactSet[this.artifact.set][part];
-        }
-        // 如果已经被使用则将当前人物设置为使用者
-        if (this.artifact.equipped) {
-          this.selectCharacter = this.artifact.equipped;
-        }
       },
     },
   };
@@ -430,17 +317,6 @@
     width: 100%;
     height: calc(100% - 3.5rem);
     overflow: hidden;
-  }
-
-  .user_container {
-    position: fixed;
-    z-index: 5;
-    width: 24rem;
-    background-color: rgba(53, 57, 61, 0.9);
-    background-image: linear-gradient(180deg, rgb(39, 50, 63), rgb(57, 56, 54));
-    height: 100%;
-    overflow: hidden;
-    transition: all 0.5s ease;
   }
 
   .filterBox {
@@ -518,84 +394,8 @@
   }
 
   .buttonBox {
-    position: relative;
-    height: 3.5rem;
-    width: 100%;
-    box-shadow: 0 -0.25rem 0.75rem rgb(53, 57, 61);
-    z-index: 4;
-    padding: 0.5rem 1rem 0 1rem;
-    text-align: center;
-
     .btn-detail {
       margin-left: 1rem;
-    }
-  }
-
-  .characterBox {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    justify-content: center;
-    align-items: flex-start;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    height: calc(100% - 10rem);
-
-    .characterShow {
-      position: relative;
-      z-index: 3;
-      background-color: $genshin_white;
-      border-radius: 0.25rem;
-      margin: 0.25rem;
-      width: 4rem;
-      height: 5rem;
-      transform: all 0.2s ease;
-
-      .avatarBox {
-        width: 4rem;
-        height: 4rem;
-        border-radius: 0.25rem 0.25rem 1rem 0;
-        overflow: hidden;
-
-        img {
-          height: 100%;
-          width: 100%;
-        }
-      }
-
-      .elementBox {
-        position: absolute;
-        top: -0.25rem;
-        left: 0.0625rem;
-        width: 1rem;
-        height: 1rem;
-
-        img {
-          height: 100%;
-          width: 100%;
-        }
-      }
-
-      .star_5 {
-        background-image: linear-gradient(135deg, rgb(127, 87, 46), rgb(183, 115, 38));
-      }
-
-      .star_4 {
-        background-image: linear-gradient(135deg, rgb(87, 83, 129), rgb(156, 114, 177));
-      }
-
-      .lvBox {
-        font-size: 0.75rem;
-        line-height: 1rem;
-        text-align: center;
-      }
-    }
-
-    .fillItem {
-      width: 4rem;
-      margin: 0.25rem;
     }
   }
 

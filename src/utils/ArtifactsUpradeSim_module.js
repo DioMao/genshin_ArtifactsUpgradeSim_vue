@@ -37,7 +37,7 @@ class ArtifactsFunction_class {
     this[SET_LIST] = [];
     this[LIST_LIMIT] = 2000;
     this[SET_LIST_LIMIT] = 100;
-    this[COUNT_LIST] = {};
+    this[COUNT_LIST] = Object.create(null);
     this[LANGUAGE] = "origin";
   }
 
@@ -68,7 +68,7 @@ class ArtifactsFunction_class {
         upgradeHistory: [],
         lock: false,
         isNew: true,
-        equipped: false,
+        equipped: 0,
       },
       ArtifactEntry = [],
       ArtifactEntryRate = [];
@@ -94,16 +94,18 @@ class ArtifactsFunction_class {
     newArtifacts.mainEntryValue = artiConst.val.mainEntryValueList[newArtifacts.mainEntry][0];
     // 临时词条库（排除已有词条）
     for (let i = 0; i < artiConst.val.entryList.length; i++) {
-      artiConst.val.entryList[i] === newArtifacts.mainEntry
-        ? null
-        : (ArtifactEntry.push(artiConst.val.entryList[i]), ArtifactEntryRate.push(artiConst.val.entryProbability[i]));
+      if (artiConst.val.entryList[i] !== newArtifacts.mainEntry) {
+        ArtifactEntry.push(artiConst.val.entryList[i]);
+        ArtifactEntryRate.push(artiConst.val.entryProbability[i]);
+      }
     }
     // 自选副词条
     if (__entry.length <= 4 && this.entryVerify(newArtifacts.mainEntry, __entry)) {
       for (let i = 0; i < __entry.length; i++) {
-        let cusEntry = __entry[i],
-          cusEntryRate = __entryRate[i],
-          index = ArtifactEntry.indexOf(cusEntry);
+        let cusEntry = __entry[i];
+        let cusEntryRate = __entryRate[i];
+        let index = ArtifactEntry.indexOf(cusEntry);
+        if (artiConst.val.entryList.indexOf(cusEntry) === -1) continue;
         // 从临时词条库中移除已有词条，避免重复
         ArtifactEntry.splice(index, 1);
         ArtifactEntryRate.splice(index, 1);
@@ -227,7 +229,8 @@ class ArtifactsFunction_class {
         upRate = this.randomEntryValue(upEntry);
       }
       // console.log("Upgrade success," + upEntry + " + " + upRate);
-      currentArtifact.entry[upIndex][1] += upRate;
+      // 转成整数进行计算（防止精度丢失）
+      currentArtifact.entry[upIndex][1] = (currentArtifact.entry[upIndex][1] * 10000 + upRate * 10000) / 10000;
       currentArtifact.upgradeHistory.push([upEntry, upRate]);
     }
     // 增加等级
@@ -450,7 +453,7 @@ class ArtifactsFunction_class {
    * 强制刷新countList
    */
   enforceUpdateCount() {
-    this[COUNT_LIST] = {};
+    this[COUNT_LIST] = Object.create(null);
     this[AUS_LIST].forEach(val => {
       this.changeCount([val.part, val.mainEntry, val.set]);
     });
@@ -616,17 +619,15 @@ class ArtifactsFunction_class {
 
   /**
    * 移除isNew状态
-   * @param {number} index 圣遗物下标
+   * @param {symbol} symbol 圣遗物标识
    * @returns 操作结果
    */
-  notNew(index) {
-    try {
-      this[AUS_LIST][index].isNew = false;
-      IDB.ARTIFACT_LIST.put(this[AUS_LIST][index]);
-      return true;
-    } catch (error) {
-      return false;
-    }
+  notNew(symbol) {
+    let index = this.getIndex(symbol);
+    if (index === -1) return false;
+    this[AUS_LIST][index].isNew = false;
+    IDB.ARTIFACT_LIST.put(this[AUS_LIST][index]);
+    return true;
   }
 
   /** 套装函数 **/
@@ -645,15 +646,13 @@ class ArtifactsFunction_class {
     } else {
       name = "unnamed";
     }
-    const newSet = {
-      name: "",
-      Plume: "",
-      Flower: "",
-      Sands: "",
-      Circlet: "",
-      Goblet: "",
-    };
+    const newSet = Object.create(null);
     newSet.name = name;
+    newSet.Plume = "";
+    newSet.Flower = "";
+    newSet.Sands = "";
+    newSet.Circlet = "";
+    newSet.Goblet = "";
     this[SET_LIST].push(newSet);
     IDB.CUSTOM_SET.add(newSet);
     return true;
@@ -670,7 +669,7 @@ class ArtifactsFunction_class {
     index = Math.floor(index);
     if (typeof name === "string") {
       // 长度限制
-      name = name.slice(0, 20);
+      name = name.slice(0, 50);
     } else {
       name = "unnamed";
     }
@@ -685,13 +684,19 @@ class ArtifactsFunction_class {
    * @returns 套装序号
    */
   getSetIndex(name = "") {
-    if (typeof name !== "string") return -1;
-    for (let index in this[SET_LIST]) {
-      if (this[SET_LIST][index].name === name) {
-        return index;
-      }
-    }
-    return -1;
+    return this[SET_LIST].findIndex(val => {
+      return val.name === name;
+    });
+  }
+
+  /**
+   * 根据name获取套装 **如果有重名套装，则返回第一个**
+   * @param {string} name 套装名称
+   */
+  getSet(name = "") {
+    return this[SET_LIST].find(val => {
+      return val.name === name;
+    });
   }
 
   /**
@@ -702,8 +707,8 @@ class ArtifactsFunction_class {
   getSetBonus(index) {
     if (typeof index !== "number" || index < 0 || index >= this[SET_LIST].length) return false;
     index = Math.floor(index);
-    let set = this[SET_LIST][index],
-      res = {};
+    let set = this[SET_LIST][index];
+    let res = Object.create(null);
     for (const key in set) {
       if (key === "name" || set[key] === "") continue;
       let artifact = this[AUS_LIST][this.getIndex(set[key])];
@@ -734,43 +739,24 @@ class ArtifactsFunction_class {
       let artifactIndex = this.getIndex(symbol);
       if (artifactIndex !== -1) {
         let artifact = this[AUS_LIST][artifactIndex];
-        let oldset = this[SET_LIST][this.getSetIndex(artifact.equipped)],
-          oldIndex = this.getIndex(set[artifact.part]);
-        // 如果当前位置为空或已有相同圣遗物
-        if (set[artifact.part] === symbol || set[artifact.part] === "") {
-          // 如果当前圣遗物已有使用者
-          if (artifact.equipped) {
-            oldset[artifact.part] = "";
-            IDB.CUSTOM_SET.put(oldset);
-          }
-          artifact.equipped = set.name;
-          set[artifact.part] = artifact.symbol;
-          IDB.ARTIFACT_LIST.put(artifact);
-          IDB.CUSTOM_SET.put(set);
-          continue;
-        } else {
-          // 如果当前位置不为空，且当前圣遗物已有使用者，则交换圣遗物
-          if (oldset !== undefined && artifact.equipped) {
-            oldset[artifact.part] = set[artifact.part];
-            set[artifact.part] = artifact.symbol;
-            // 圣遗物使用者更新
-            artifact.equipped = set.name;
-            if (oldIndex > -1) {
-              this[AUS_LIST][oldIndex].equipped = oldset.name;
-            } else {
-              oldset[artifact.part] = "";
-            }
-            IDB.ARTIFACT_LIST.bulkPut([artifact, this[AUS_LIST][oldIndex]]);
-            IDB.CUSTOM_SET.bulkPut([set, oldset]);
-          } else {
-            // 如果当前位置不为空，但当前圣遗物没有使用者，则卸下之前的圣遗物
-            this[AUS_LIST][oldIndex].equipped = false;
-            artifact.equipped = set.name;
-            set[artifact.part] = artifact.symbol;
-            IDB.ARTIFACT_LIST.bulkPut([artifact, this[AUS_LIST][oldIndex]]);
-            IDB.CUSTOM_SET.put(set);
-          }
+        let oldset = this[SET_LIST][this.getSetIndex(artifact.equipped)];
+        let oldArtifact = this.getArtifact(set[artifact.part]);
+        // 已有相同圣遗物则进入下个循环
+        if (set[artifact.part] === symbol) continue;
+        // 修改已有的圣遗物的使用者、圣遗物套装的symbol值
+        if (oldset) {
+          oldset[artifact.part] = set[artifact.part];
+          IDB.CUSTOM_SET.put(oldset);
         }
+        if (oldArtifact) {
+          oldArtifact.equipped = artifact.equipped;
+          IDB.ARTIFACT_LIST.put(oldArtifact);
+        }
+        // 修改当前圣遗物的使用者、圣遗物套装的symbol值
+        artifact.equipped = set.name;
+        set[artifact.part] = artifact.symbol;
+        IDB.ARTIFACT_LIST.put(artifact);
+        IDB.CUSTOM_SET.put(set);
       }
     }
     return true;
@@ -791,14 +777,13 @@ class ArtifactsFunction_class {
       if (key === "name") continue;
       if (set[key] !== "") {
         try {
-          this[AUS_LIST][this.getIndex(set[key])].equipped = false;
+          this[AUS_LIST][this.getIndex(set[key])].equipped = 0;
         } catch (error) {
           continue;
         }
       }
     }
     this[SET_LIST].splice(index, 1);
-    // if (setStorage) this.setLocalStorage(this[SET_LOCAL_STORAGE_KEY], this[SET_LIST]);
     return true;
   }
 
@@ -820,7 +805,7 @@ class ArtifactsFunction_class {
       if (artiConst.val.parts.indexOf(val) === -1) return;
       let oldIndex = this.getIndex(set[val]);
       if (oldIndex > -1) {
-        this[AUS_LIST][oldIndex].equipped = false;
+        this[AUS_LIST][oldIndex].equipped = 0;
         IDB.ARTIFACT_LIST.put(this[AUS_LIST][oldIndex]);
       }
       set[val] = "";
@@ -843,39 +828,42 @@ class ArtifactsFunction_class {
 
   /**
    * 计算套装属性
-   * @param {number} index 需要计算属性的套装下标
+   * @param {number} name 需要计算属性的套装名称
    * @returns 套装属性
    */
-  setState(index) {
-    if (typeof index !== "number" || index >= this[SET_LIST].length) return false;
-    index = Math.floor(index);
-    let set = this[SET_LIST][index],
-      state = {};
+  getSetState(name) {
+    const index = this.getSetIndex(name);
+    if (index === -1) return undefined;
+    let set = this[SET_LIST][index];
+    let state = Object.create(null);
+    let entryList = Array.from(new Set([...artiConst.val.entryList, ...artiConst.val.mainEntryList]));
+    for (let entry of entryList) {
+      state[entry] = 0;
+    }
     // 遍历套装里每个部位的属性，并计算属性
     for (let key in set) {
-      if (set[key] === "name") continue;
-      if (set[key] !== "") {
-        try {
-          // 定位到当前圣遗物
-          let artifact = this.getArtifact(set[key]);
+      let symbol = set[key];
+      if (symbol !== "" && artiConst.val.parts.includes(key)) {
+        let artifact = this.getArtifact(symbol);
+        if (artifact !== undefined) {
           // 主属性
           if (state[artifact.mainEntry] === undefined) {
             state[artifact.mainEntry] = artifact.mainEntryValue;
           } else {
-            state[artifact.mainEntry] += artifact.mainEntryValue;
+            state[artifact.mainEntry] = (state[artifact.mainEntry] * 100 + artifact.mainEntryValue * 100) / 100;
           }
           // 副词条
           artifact.entry.forEach(val => {
             if (state[val[0]] === undefined) {
               state[val[0]] = val[1];
             } else {
-              state[val[0]] += val[1];
+              state[val[0]] = (state[val[0]] * 10000 + val[1] * 10000) / 10000;
             }
           });
-        } catch (error) {
-          // 若错误则将当前位置symbol移除
-          set[key] = "";
+        } else {
+          symbol = "";
         }
+        // console.log(`${key} : ${symbol}`);
       }
     }
     return state;
@@ -891,31 +879,18 @@ class ArtifactsFunction_class {
    */
   toChinese(word, type) {
     if (typeof word !== "string" || typeof type !== "string") return false;
-    if (type == "entry") {
-      if (artiConst.val.entryList.indexOf(word) !== -1) {
-        return artiConst.val.entryList_zh[artiConst.val.entryList.indexOf(word)];
-      }
+    const articonst = artiConst.val;
+    let type_zh = "";
+    if (type !== "parts") {
+      type += "List";
+    }
+    type_zh = type + "_zh";
+    if(!articonst[type]){
       return false;
-    } else if (type === "parts") {
-      if (artiConst.val.parts.indexOf(word) !== -1) {
-        return artiConst.val.parts_zh[artiConst.val.parts.indexOf(word)];
-      }
-      return false;
-    } else if (type === "mainEntry") {
-      if (artiConst.val.mainEntryList.indexOf(word) !== -1) {
-        return artiConst.val.mainEntryList_zh[artiConst.val.mainEntryList.indexOf(word)];
-      }
-      return false;
-    } else if (type === "score") {
-      if (artiConst.val.scoreList.indexOf(word) !== -1) {
-        return artiConst.val.scoreList_zh[artiConst.val.scoreList.indexOf(word)];
-      }
-      return false;
-    } else if (type === "set") {
-      if (artiConst.val.setList.indexOf(word) !== -1) {
-        return artiConst.val.setList_zh[artiConst.val.setList.indexOf(word)];
-      }
-      return false;
+    }
+    let index = articonst[type].indexOf(word);
+    if (index !== -1) {
+      return articonst[type_zh][index];
     }
     return false;
   }
@@ -1244,7 +1219,7 @@ console.log("%cArtifactsUpgradeSim is running.Learn more: https://github.com/Dio
 /**
  * 模拟器初始化
  */
-(function() {
+const initArtifactSim = function() {
   // 加载本地数据
   let storage = window.localStorage;
   if (!storage) {
@@ -1262,21 +1237,30 @@ console.log("%cArtifactsUpgradeSim is running.Learn more: https://github.com/Dio
       storage.ArtifactsSimVersion = ArtifactsSim.version;
     }
   }
-  // 圣遗物列表读取
-  IDB.ARTIFACT_LIST.toArray().then(res => {
-    ArtifactsSim.AUSList = res;
+  return new Promise((resolve, reject) => {
+    // 初始化套装列表
+    for (let key in artiConst.val.character) {
+      const character = artiConst.val.character[key];
+      ArtifactsSim.createSet(character.name);
+    }
+    Promise.all([IDB.ARTIFACT_LIST.toArray(), IDB.CUSTOM_SET.toArray()])
+      .then(res => {
+        const artifactList = res[0];
+        const setList = res[1];
+        // 初始化圣遗物列表
+        ArtifactsSim.AUSList = artifactList;
+        ArtifactsSim.enforceUpdateCount();
+        // 读取套装列表
+        for (let item of setList) {
+          let index = ArtifactsSim.getSetIndex(item.name);
+          ArtifactsSim.setList[index] = item;
+        }
+        resolve(true);
+      })
+      .catch(err => {
+        reject(err);
+      });
   });
-  // 初始化套装
-  for (let key in artiConst.val.character) {
-    let character = artiConst.val.character[key];
-    IDB.CUSTOM_SET.get(character.name).then(res => {
-      if (res !== undefined) {
-        ArtifactsSim.setList.push(res);
-      } else {
-        ArtifactsSim.createSet(character.name);
-      }
-    });
-  }
-})();
+};
 
-export { ArtifactsSim, artiConst, IDB };
+export { ArtifactsSim, artiConst, IDB, initArtifactSim };

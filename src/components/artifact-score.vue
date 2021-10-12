@@ -4,7 +4,7 @@
     <div class="splitLine"></div>
     <div class="scoreSheetBox">
       <div class="SheetItem" v-for="(entry, index) in currentEntry" :key="'entry' + index">
-        <div>
+        <div class="sheetTitle">
           {{ $t("term." + entry[0]) }}
           <span class="percentShow">{{ entryProgess(entry[0], entry[1]) + "%" }}</span>
         </div>
@@ -105,6 +105,10 @@
 
     .SheetItem {
       margin-bottom: 0.25rem;
+
+      .sheetTitle{
+        margin-bottom: 0.125rem;
+      }
 
       .percentShow {
         float: right;

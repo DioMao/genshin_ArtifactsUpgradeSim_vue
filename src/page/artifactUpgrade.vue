@@ -165,17 +165,8 @@
     },
     mounted() {
       if (this.$artifact.getIndex(this.symbol) === -1) {
-        this.$db.ARTIFACT_LIST.get(this.symbol).then(res => {
-          if (res !== undefined) {
-            this.Artifact = res;
-            this.$db.ARTIFACT_LIST.toArray().then(res => {
-              this.$artifact.AUSList = res;
-              this.setUrl = require("../assets/images/Artifacts/" + this.Artifact.set.replace(/\s+/g, "") + "/" + this.Artifact.part + ".png");
-            });
-          } else {
-            this.$router.replace("/");
-          }
-        });
+        this.Artifact = this.$artifact.getArtifact(this.symbol);
+        this.setUrl = require("../assets/images/Artifacts/" + this.Artifact.set.replace(/\s+/g, "") + "/" + this.Artifact.part + ".png");
       } else {
         // 验证圣遗物是否存在，否则跳转回列表（防止url直接访问出错）
         if (this.$artifact.getArtifact(this.symbol) === undefined) {
@@ -513,7 +504,7 @@
 
     .flashingCircle2 {
       border-top-left-radius: 5.4625rem;
-      border-top-right-radius: 3.1875rem;
+      border-top-right-radius: 4.1875rem;
       border-bottom-left-radius: 5.7rem;
       border-bottom-right-radius: 4.6875rem;
     }

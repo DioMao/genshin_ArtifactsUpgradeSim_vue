@@ -123,6 +123,7 @@
         // 当前渲染列表
         ArtifactsRenderList: [],
         // 填充
+        anchor: 0,
         fillCount: 0,
         filltop: 0,
         fillbottom: 0,
@@ -203,7 +204,7 @@
         // 此时并未同步数据，需要自己处理掉isNew状态（如果有）
         if (isNew) {
           // 点击后移除新遗物状态
-          this.$artifact.notNew(this.$artifact.getIndex(symbol));
+          this.$artifact.notNew(symbol);
           for (let item of this.ArtifactsRenderList) {
             if (item.symbol === symbol) {
               item.isNew = false;
@@ -286,14 +287,13 @@
       // 虚拟列表
       vmList(unchange = true) {
         const scroll = this.$refs.listContainer;
+        const rem = Number.parseFloat(window.getComputedStyle(document.getElementsByTagName("html")[0]).fontSize.slice(0, -2));
         // 计算渲染数量
-        let html = document.getElementsByTagName("html"),
-          viewH = scroll.offsetHeight,
-          // 获取1rem
-          rem = Number.parseFloat(window.getComputedStyle(html[0]).fontSize.slice(0, -2)),
-          itemContainerWidth = this.$refs.itemContainer.offsetWidth,
-          itemH = 0,
-          renderRow = 0;
+        let viewH = scroll.offsetHeight;
+        // 获取1rem
+        let itemContainerWidth = this.$refs.itemContainer.offsetWidth;
+        let itemH = 0;
+        let renderRow = 0;
         // 计算每行最大数量 ***合并***
         if (itemContainerWidth < 540) {
           this.itemMax = 2;
@@ -302,8 +302,8 @@
         }
         // 计算单个item高度
         if (this.rawdata.length > 0) {
-          let item = document.getElementsByClassName("ArtifactsBox")[0],
-            totalHeight = 0;
+          let item = document.getElementsByClassName("ArtifactsBox")[0];
+          let totalHeight = 0;
           // 获取item高度
           try {
             itemH = item.getBoundingClientRect().height + 1.5 * rem;
@@ -314,6 +314,15 @@
           renderRow = Math.ceil(viewH / itemH) * 3;
           // 计算列表总高度
           totalHeight = Math.ceil(this.rawdata.length / this.itemMax) * itemH;
+          // 滚动高度到达一定值时刷新列表
+          if (Math.abs(this.anchor - scroll.scrollTop) > viewH) {
+            this.anchor = scroll.scrollTop;
+          } else {
+            if (unchange) {
+              this.changeFillCount();
+              return;
+            }
+          }
           // 列表不够直接返回
           if (this.rawdata.length < renderRow * this.itemMax) {
             this.filltop = 0;
@@ -327,12 +336,11 @@
             return;
           } else {
             // 当滚动到位置时更新渲染列表
-            if (scroll.scrollTop > itemH + viewH) {
+            if (scroll.scrollTop > viewH) {
               // 该被隐藏的item数量
               let topHideRow = Math.floor((scroll.scrollTop - viewH) / itemH),
                 renderList = [],
-                renderIndex = 0,
-                needUpdate = true;
+                renderIndex = 0;
               // 浅拷贝renderList:
               for (let index in this.rawdata) {
                 if (index >= topHideRow * this.itemMax && index < topHideRow * this.itemMax + renderRow * this.itemMax) {
@@ -340,45 +348,24 @@
                   renderIndex++;
                 }
               }
-              // 判断列表是否需要更新
-              if (this.ArtifactsRenderList.length > 0 && renderList.length >= Math.ceil(viewH / itemH)) {
-                for (let i = 0; i < renderList.length; i++) {
-                  if (i === renderList.length) break;
-                  // 设置在渲染列表中设置前后锚点，若其中一个不在renderList中则刷新列表
-                  let refreshItem = (renderRow / 3) * this.itemMax;
-                  if (
-                    renderList.indexOf(this.ArtifactsRenderList[refreshItem - 1]) !== -1 &&
-                    renderList.indexOf(this.ArtifactsRenderList[refreshItem * 2 + 1]) !== -1
-                  ) {
-                    needUpdate = false;
-                    break;
-                  }
-                }
-              }
-              // 列表移动距离不大且原数据未变更则不更新，否则重新计算填充和更新
-              if (!needUpdate && !!unchange) {
-                this.changeFillCount();
-                return;
+              // 更新渲染列表
+              this.ArtifactsRenderList = renderList;
+              // 当滚动距离超出总高度时，重置上半填充
+              if (scroll.scrollTop > totalHeight) {
+                scroll.scrollTop = 0;
+                this.filltop = 0;
               } else {
-                // 更新渲染列表
-                this.ArtifactsRenderList = renderList;
-                // 当滚动距离超出总高度时，重置上半填充
-                if (scroll.scrollTop > totalHeight) {
-                  scroll.scrollTop = 0;
-                  this.filltop = 0;
-                } else {
-                  // 上半填充高度
-                  this.filltop = topHideRow * itemH;
-                }
-                // 下半填充高度
-                this.fillbottom = totalHeight - this.filltop - Math.ceil(renderList.length / this.itemMax) * itemH;
-                this.changeFillCount();
-                // 调试信息：
-                // console.log("itemMax: " + this.itemMax + "\nitemOffsetTop: " + item.offsetTop +
-                //     "\ntotalH: " + totalHeight + "\ntopHideRow: " + topHideRow +
-                //     "\nrenderLength: " + this.ArtifactsRenderList.length + "\nScroll: " + scroll
-                //     .scrollTop)
+                // 上半填充高度
+                this.filltop = topHideRow * itemH;
               }
+              // 下半填充高度
+              this.fillbottom = totalHeight - this.filltop - Math.ceil(renderList.length / this.itemMax) * itemH;
+              this.changeFillCount();
+              // 调试信息：
+              // console.log("itemMax: " + this.itemMax + "\nitemOffsetTop: " + item.offsetTop +
+              //     "\ntotalH: " + totalHeight + "\ntopHideRow: " + topHideRow +
+              //     "\nrenderLength: " + this.ArtifactsRenderList.length + "\nScroll: " + scroll
+              //     .scrollTop)
             } else {
               this.filltop = 0;
               // 确定渲染列表
@@ -470,6 +457,8 @@
   // ArtifactsBox
 
   .ArtifactsBox {
+    position: relative;
+    z-index: 1;
     margin: 0.75rem 0.625rem;
     width: 10rem;
     font-size: 0.8rem;
@@ -482,7 +471,8 @@
       content: "";
       pointer-events: none;
       position: absolute;
-      inset: -0.0625rem;
+      z-index: -1;
+      inset: -0.125rem;
       border-radius: 0.25rem;
       border: 0.125rem #fff solid;
     }
@@ -493,6 +483,10 @@
       background-size: 5rem, 100%;
       background-repeat: no-repeat;
       background-blend-mode: normal, color-burn;
+
+      &:hover {
+        filter: brightness(1.1);
+      }
 
       .islock {
         position: absolute;

@@ -25,7 +25,7 @@
         {{ $t("term." + userSetting.filterMain) }}
       </div>
       <div class="filterSet" v-show="userSetting.filterSet !== 'default'" @click="userSetting.filterSet = 'default'">
-        {{ $t("setList[" + ($artiConst.val.setList.indexOf(userSetting.filterSet) !== -1 ? $artiConst.val.setList.indexOf(userSetting.filterSet) : 0) + "]") }}
+        {{ $t("setList[" + (setList.indexOf(userSetting.filterSet) !== -1 ? setList.indexOf(userSetting.filterSet) : 0) + "]") }}
       </div>
     </div>
     <!-- 圣遗物列表 -->
@@ -52,7 +52,6 @@
         @lock="lockChange"
         @close="showMobileDetail = false"
         :showdetail="showDetail"
-        :index="ShowIndex"
         :symbol="showSymbol"
         :language="userSetting.language"
         :showButton="true"
@@ -63,7 +62,7 @@
         <!-- 圣遗物评分组件 -->
         <artifact-score
           :rule="userSetting.scoreConfig.mode === 'string' ? userSetting.scoreConfig.strRule : userSetting.scoreConfig.arrRule"
-          :artifact="JSON.stringify($artifact.AUSList[$artifact.getIndex(showSymbol)])"
+          :artifact="JSON.stringify($artifact.getArtifact(showSymbol))"
         >
         </artifact-score>
         <button id="score" class="btn btn-genshin-dark btn-sm" data-bs-toggle="modal" data-bs-target="#scoreSet">{{ $t("msg.scoreSetting") }}</button>
@@ -85,7 +84,6 @@
           @close="showMobileDetail = false"
           @lock="lockChange"
           :showdetail="showDetail"
-          :index="ShowIndex"
           :symbol="showSymbol"
           :language="userSetting.language"
           :showButton="true"
@@ -97,7 +95,7 @@
         <!-- 圣遗物评分组件 -->
         <artifact-score
           :rule="userSetting.scoreConfig.mode === 'string' ? userSetting.scoreConfig.strRule : userSetting.scoreConfig.arrRule"
-          :artifact="JSON.stringify($artifact.AUSList[$artifact.getIndex(showSymbol)])"
+          :artifact="JSON.stringify($artifact.getArtifact(showSymbol))"
         >
         </artifact-score>
         <button id="score-2" class="btn btn-genshin-dark btn-sm" data-bs-toggle="modal" data-bs-target="#scoreSet">{{ $t("msg.scoreSetting") }}</button>
@@ -138,7 +136,7 @@
         </li>
         <!-- 套装筛选 -->
         <li class="filterLable">{{ $t("msg.set") }}</li>
-        <li v-for="(set, index) in $artiConst.val.setList" :key="set">
+        <li v-for="(set, index) in setList" :key="set">
           <a
             class="dropdown-item"
             href="javascript:void(0)"
@@ -284,7 +282,7 @@
         <div class="modal-body">
           <label for="cutArtifactSet" class="form-label">{{ $t("msg.set") }}</label>
           <select id="cutArtifactSet" class="form-select form-select-sm mb-3" v-model="cusSet">
-            <option v-for="(set, index) in $artiConst.val.setList" :key="set" :value="set"> {{ $t("setList[" + index + "]") }}</option>
+            <option v-for="(set, index) in setList" :key="set" :value="set"> {{ $t("setList[" + index + "]") }}</option>
           </select>
           <label for="cutArtifactPart" class="form-label">{{ $t("msg.part") }}</label>
           <select
@@ -442,7 +440,7 @@
           <div>Version: {{ $artifact.version }}</div>
           <div>Author: <a href="https://github.com/DioMao" target="_blank">DioMao</a></div>
           <div>Frameworks:</div>
-          <div class="fs-sm">Vue3 <br />Vue-router4 <br />Vuex4 <br />Bootstrap5 <br />Vue-i18n@9.1.7<br>Dexie</div>
+          <div class="fs-sm">Vue3 <br />Vue-router4 <br />Vuex4 <br />Bootstrap5 <br />Vue-i18n@9.1.7<br />Dexie</div>
           <div>Artifacts Images:</div>
           <div class="fs-sm">
             <a href="https://genshin-impact.fandom.com/" target="blank">Genshin Impact Wiki</a>
@@ -466,6 +464,7 @@
   import "bootstrap/js/dist/alert";
   import "bootstrap/js/dist/modal";
   import "bootstrap/js/dist/dropdown";
+  import { getCurrentInstance, readonly, ref } from "vue";
 
   export default {
     components: {
@@ -475,21 +474,46 @@
       artifactList,
       artifactScore,
     },
+    setup() {
+      // 获取全局函数
+      const globalProperties = getCurrentInstance().appContext.config.globalProperties;
+      // const artifactFunc = globalProperties.$artifact;
+      const artiConst = globalProperties.$artiConst.val;
+      // const db = globalProperties.$db;
+      // 自选圣遗物副词条数值
+      const cusEntryRate = ref({});
+      // 自选圣遗物主词条对照表
+      const cusEntryListProto = ref({
+        Plume: artiConst.Plume,
+        Flower: artiConst.Flower,
+        Sands: artiConst.Sands,
+        Circlet: artiConst.Circlet,
+        Goblet: artiConst.Goblet,
+      });
+      // 套装列表
+      const setList = ref(artiConst.setList);
+      // 初始化自选圣遗物副词条数值为最大值
+      for (let key in artiConst.entryValue) {
+        cusEntryRate.value[key] = artiConst.entryValue[key][artiConst.entryValue[key].length - 1];
+      }
+      const cusEntryList = readonly(cusEntryListProto);
+      return {
+        cusEntryRate,
+        cusEntryList,
+        setList,
+      };
+    },
     data() {
       return {
         state: this.$store.state,
         showSymbol: "", // 展示圣遗物的symbol
-        ShowIndex: -1, // 展示圣遗物的index
         showDetail: Object, // 右侧圣遗物展示详情
         ArtifactsList: [], // 圣遗物列表
-        setList: [], // 用户套装列表
         cusCloseSwitch: true, // 自选圣遗物-生成后是否关闭modal窗
         cusSet: "", // 自选圣遗物套装
         cusPart: "", // 自选圣遗物位置
         cusMainEntry: "", // 自选圣遗物主词条
         cusEntry: [], // 自选圣遗物副词条
-        cusEntryRate: Object, // 自选圣遗物副词条数值
-        cusEntryList: Object, // 自选圣遗物副词对照表
         userSetting: {
           // 用户设置
           scoreConfig: {
@@ -518,18 +542,7 @@
       };
     },
     created() {
-      this.cusEntryList = {
-        Plume: this.$artiConst.val.Plume,
-        Flower: this.$artiConst.val.Flower,
-        Sands: this.$artiConst.val.Sands,
-        Circlet: this.$artiConst.val.Circlet,
-        Goblet: this.$artiConst.val.Goblet,
-      };
       this.defaultSetting = JSON.stringify(this.userSetting);
-      // 初始化自选副词条为最大值
-      for (let i in this.$artiConst.val.entryValue) {
-        this.cusEntryRate[i] = this.$artiConst.val.entryValue[i][this.$artiConst.val.entryValue[i].length - 1];
-      }
     },
     mounted() {
       // 读取本地设置
@@ -547,12 +560,8 @@
       }
       this.changeSetting();
       // 初始化列表数据
-      this.$db.ARTIFACT_LIST.toArray().then(res => {
-        this.$artifact.AUSList = res;
-        this.$artifact.enforceUpdateCount();
-        this.syncListData();
-        this.showSymbol = this.$store.state.selectHistory;
-      });
+      this.syncListData();
+      this.showSymbol = this.$store.state.selectHistory;
     },
     computed: {
       language() {
@@ -564,7 +573,6 @@
         if (val === "") {
           return;
         }
-        this.ShowIndex = this.$artifact.getIndex(val);
         this.showDetail = this.$artifact.getArtifact(val, this.userSetting.language);
       },
       ArtifactsList() {
@@ -603,7 +611,7 @@
       },
       // 批量随机生成
       batchCreate(count) {
-        this.$artifact.batchCreate(count);
+        this.$artifact.bulkCreate(count);
       },
       // 自选圣遗物
       cusCreatArtifact() {

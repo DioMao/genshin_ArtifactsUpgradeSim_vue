@@ -699,13 +699,13 @@ $genshin_yellow: rgb(255, 225, 75);
   }
 
   // 套装界面
-  .user_container {
+  .user-container {
     top: 55%;
     width: 100% !important;
     height: 50%;
 
     .characterBox {
-      height: calc(45% - 6.5rem);
+      height: calc(100% - 8.5rem);
     }
 
     .buttonBox {
