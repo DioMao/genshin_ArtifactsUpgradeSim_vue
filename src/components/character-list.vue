@@ -1,5 +1,21 @@
 <template>
-  <div class="user-container">
+  <!-- 横幅模式 -->
+  <div class="character-banner-container banner-wrapper" v-if="mode === 'banner'">
+    <div class="character-banner">
+      <div
+        class="character-banner-show"
+        v-for="character in characterList"
+        :key="character"
+        :class="{ bannerSelect: character.name === selectCharacter }"
+        @click="selectCharacter = character.name"
+      >
+        <img :src="avatarSideSrc(character.name)" :alt="character.name" draggable="false" />
+        <div class="character-banner-select" v-if="character.name === selectCharacter"></div>
+      </div>
+    </div>
+  </div>
+  <!-- 列表模式 -->
+  <div class="character-container" v-else>
     <!-- 角色筛选器 -->
     <div class="filterBox">
       <button type="button" class="btn btn-genshin dropdown-genshin-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -27,26 +43,32 @@
       </ul>
     </div>
     <!-- 角色列表 -->
-    <div class="characterBox" ref="characterBox">
-      <div
-        class="characterShow"
-        v-for="character in characterList"
-        :key="character"
-        :class="{ isSelect: selectCharacter === character.name }"
-        @click="selectCharacter = character.name"
-        @mousedown="clickMethod($event, true)"
-        @mouseup="clickMethod($event, false)"
-        @mouseleave="clickMethod($event, false)"
-      >
-        <div class="avatarBox" :class="'star_' + character.rarity">
-          <img :src="avatarSrc(character.name)" :alt="character.name" draggable="false" />
+    <div class="list-wrapper">
+      <div class="characterBox" ref="characterBox">
+        <div
+          class="characterShow"
+          v-for="character in characterList"
+          :key="character"
+          :class="{ isSelect: selectCharacter === character.name }"
+          @click="selectCharacter = character.name"
+          @mousedown="clickMethod($event, true)"
+          @mouseup="clickMethod($event, false)"
+          @mouseleave="clickMethod($event, false)"
+        >
+          <div class="avatarBox" :class="{ star_5: character.rarity === 5, star_4: character.rarity === 4, star_sp: character.name === 'Aloy' }">
+            <img :src="avatarSrc(character.name)" :alt="character.name" draggable="false" />
+          </div>
+          <div class="elementBox">
+            <img :src="elementSrc(character.element[0])" :alt="character.element[0]" draggable="false" />
+          </div>
+          <div class="lvBox">Lv. 90</div>
         </div>
-        <div class="elementBox">
-          <img :src="elementSrc(character.element[0])" :alt="character.element[0]" draggable="false" />
-        </div>
-        <div class="lvBox">Lv. 90</div>
+        <div class="fillItem" v-for="i in fillCount" :key="'fill_' + i"></div>
       </div>
-      <div class="fillItem" v-for="i in fillCount" :key="'fill_' + i"></div>
+      <!-- 自定义滚动条 -->
+      <div class="genshin-vertical-scrollbar" id="vertical">
+        <div class="genshin-vertical-indicator"></div>
+      </div>
     </div>
     <!-- 按钮 -->
     <div class="buttonBox">
@@ -56,11 +78,24 @@
 </template>
 
 <script>
-  import { getCurrentInstance, ref, computed, watch, onMounted } from "vue";
+  import { getCurrentInstance, ref, computed, watch, onMounted, nextTick } from "vue";
+  import BScroll from "@better-scroll/core";
+  import MouseWheel from "@better-scroll/mouse-wheel";
+  import ScrollBar from "@better-scroll/scroll-bar";
+  BScroll.use(MouseWheel).use(ScrollBar);
 
   export default {
     name: "character-list",
-    props: ["characterprop"],
+    props: {
+      characterprop: {
+        type: String,
+        default: "",
+      },
+      mode: {
+        type: String,
+        default: "list",
+      },
+    },
     emits: ["character"],
     setup(props, context) {
       // 获取全局函数
@@ -109,10 +144,47 @@
       // 填充（flex）
       const fillCount = ref(0);
       const itemMax = ref(0);
+      // better scroll
+      const bannerScroll = ref({});
+      const listScroll = ref({});
 
       onMounted(() => {
+        // const vertical = document.getElementById(".vertical");
         // 初始化人物列表
         characterList.value = artiConst.character;
+        // better scroll初始化
+        nextTick(() => {
+          // banner模式
+          if (props.mode === "banner") {
+            bannerScroll.value = new BScroll(document.querySelector(".banner-wrapper"), {
+              probeType: 3,
+              scrollX: true,
+              scrollY: false,
+              click: true,
+              bounceTime: 500,
+              mouseWheel: true,
+              // 兼容touch与鼠标事件（针对平板等设备）
+              disableMouse: false,
+              disableTouch: false,
+            });
+          } else {
+            // 列表模式
+            listScroll.value = new BScroll(document.querySelector(".list-wrapper"), {
+              probeType: 3,
+              scrollX: false,
+              click: true,
+              bounceTime: 500,
+              mouseWheel: true,
+              scrollbar: {
+                customElements: [document.getElementById("vertical")],
+                fade: false,
+              },
+              // 兼容touch与鼠标事件（针对平板等设备）
+              disableMouse: false,
+              disableTouch: false,
+            });
+          }
+        });
       });
 
       const filterShow = computed(() => {
@@ -145,6 +217,17 @@
           return "";
         }
       };
+      // 人物侧面头像链接
+      const avatarSideSrc = name => {
+        let src;
+        try {
+          src = require("../assets/images/avatars_side/" + name.replace(/\s+/g, "_") + "_side.png");
+          return src;
+        } catch {
+          src = require("../assets/images/genshin_emoji/Icon_Emoji_003_Paimon_Hehe.png");
+          return src;
+        }
+      };
       // 元素图片链接处理
       const elementSrc = name => {
         try {
@@ -163,9 +246,11 @@
         filterShow,
         clickMethod,
         avatarSrc,
+        avatarSideSrc,
         elementSrc,
         fillCount,
         itemMax,
+        bannerScroll,
       };
     },
     watch: {
@@ -173,7 +258,7 @@
       //   this.selectCharacter = val;
       // },
       characterList() {
-        this.fillFunc();
+        if (this.mode !== "banner") this.fillFunc();
       },
     },
     methods: {
@@ -190,7 +275,59 @@
 </script>
 
 <style lang="scss" scoped>
-  .user-container {
+  // 横幅模式
+  .character-banner-container {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.25);
+    white-space: nowrap;
+    overflow: hidden;
+
+    .character-banner {
+      display: inline-block;
+      // display: flex;
+      // flex-wrap: nowrap;
+      white-space: nowrap;
+
+      .character-banner-show {
+        display: inline-block;
+        position: relative;
+        margin: 0.75rem 0.5rem;
+        border: solid 0.1875rem transparentize($genshin_gray_light, 0.5);
+        border-radius: 4rem;
+        background-color: rgba(0, 0, 0, 0.35);
+        text-align: center;
+
+        &::before {
+          content: "";
+          display: block;
+          height: 3rem;
+          width: 3rem;
+        }
+
+        .character-banner-select {
+          position: absolute;
+          inset: auto -0.5rem -0.75rem -0.5rem;
+          height: 0.125rem;
+          background-color: $genshin_cyan_blue;
+          animation: banner-select ease-in-out 0.2s forwards;
+        }
+
+        img {
+          position: absolute;
+          top: -1rem;
+          left: -0.625rem;
+          width: 4rem;
+        }
+      }
+
+      .bannerSelect {
+        background-color: transparentize($genshin_cyan_blue, 0.25);
+        border: solid 0.1875rem transparentize($genshin_cyan_blue, 0.25);
+      }
+    }
+  }
+  // 列表模式
+  .character-container {
     position: fixed;
     z-index: 5;
     width: 24rem;
@@ -201,6 +338,26 @@
     transition: all 0.5s ease;
   }
 
+  .list-wrapper {
+    position: relative;
+    overflow: hidden;
+    height: calc(100% - 10rem);
+
+    .genshin-vertical-scrollbar {
+      position: absolute;
+      inset: 1rem 0.25rem 1rem auto;
+      width: 0.25rem;
+      background-color: transparentize($genshin_gray, 0.7);
+
+      .genshin-vertical-indicator {
+        width: 110%;
+        height: 70%;
+        border-radius: 6px;
+        background-color: transparentize($genshin_white, 0.3);
+      }
+    }
+  }
+
   .characterBox {
     position: relative;
     display: flex;
@@ -209,9 +366,6 @@
     align-content: flex-start;
     justify-content: center;
     align-items: flex-start;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    height: calc(100% - 10rem);
 
     .characterShow {
       position: relative;
@@ -254,6 +408,10 @@
 
       .star_4 {
         background-image: linear-gradient(135deg, rgb(87, 83, 129), rgb(156, 114, 177));
+      }
+
+      .star_sp {
+        background-image: linear-gradient(135deg, rgb(148, 86, 96), rgb(181, 78, 88));
       }
 
       .lvBox {
@@ -351,5 +509,14 @@
     z-index: 4;
     padding: 0.5rem 1rem 0 1rem;
     text-align: center;
+  }
+
+  @keyframes banner-select {
+    0% {
+      inset: auto 0.75rem -0.75rem 0.75rem;
+    }
+    100% {
+      inset: auto -0.5rem -0.75rem -0.5rem;
+    }
   }
 </style>

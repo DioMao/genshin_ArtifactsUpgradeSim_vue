@@ -19,58 +19,76 @@
     </svg>
     {{ $t("handle.back") }}
   </button>
-  <!-- 人物列表 -->
-  <div class="state-container">
-    <character-list @character="change" :characterprop="'Xingqiu'" style="right:0;"></character-list>
-    <div class="stateShowBox">
-      <div class="stateDetail" v-for="(value, key) in characterState" :key="key">{{ $t("term." + key) }}: {{ $artifact.entryValFormat(key, value) }}</div>
+  <div class="state-container" :class="'bg-' + characterElement">
+    <!-- 人物展示 -->
+    <div class="characterDetail">
+      <div class="characterName">{{ $t("element." + characterElement) }} / {{ $t("name." + selectCharacter) }}</div>
     </div>
-    <div class="artifactEquip" :class="{artifactEquipShow:artifactEquipBox}">
-      <div v-for="(value, key) in characterArtifact" :key="key">
-        {{ key + ": " + value }}
+    <character-list mode="banner" @character="characterChange" :characterprop="selectCharacter"></character-list>
+    <!-- 属性展示 -->
+    <div class="stateShowBox">
+      <div class="stateDetail" v-for="(value, key) in characterState" :key="key">
+        <span class="stateName">
+          {{ $t("term." + key) }}
+        </span>
+        <span class="stateValue"> +{{ $artifact.entryValFormat(key, value) }} </span>
       </div>
-      <div class="artifactEquipSwitch" @click="artifactEquipShow">{{ artifactEquipBox?"✖":">" }}</div>
     </div>
   </div>
 </template>
 
 <script>
-  import { getCurrentInstance, ref } from "vue";
-  import { useStore } from "vuex";
-  import characterList from "@/components/character-list.vue";
+  import { getCurrentInstance, ref, watch } from "vue";
+  // import { useStore } from "vuex";
+  import characterList from "../components/character-list";
   export default {
-    props: ["name"],
+    props: {
+      name: {
+        type: String,
+        default: "",
+      },
+    },
     components: {
       characterList,
     },
     setup(props) {
       const globalProperties = getCurrentInstance().appContext.config.globalProperties;
       const artifactFunc = globalProperties.$artifact;
-      // const artiConst = globalProperties.$artiConst.val;
+      const artiConst = globalProperties.$artiConst.val;
       // const db = globalProperties.$db;
-      const store = useStore().state;
+      // const store = useStore().state;
 
       const characterState = ref(artifactFunc.getSetState(props.name));
       const characterArtifact = ref(artifactFunc.getSet(props.name));
-      const artifactEquipBox = ref(false);
-      artifactFunc.getSet();
+      const selectCharacter = ref(props.name);
+      const characterElement = ref([]);
 
+      let character = artiConst.character.find(val => {
+        return val.name === props.name;
+      });
+      if (character !== undefined) {
+        characterElement.value = character.element[0];
+      }
+      // 选择人物
+      const characterChange = val => {
+        selectCharacter.value = val;
+      };
+      watch(selectCharacter, val => {
+        characterState.value = artifactFunc.getSetState(val);
+        characterArtifact.value = artifactFunc.getSet(val);
+        characterElement.value = artiConst.character.find(chara => {
+          return chara.name === val;
+        }).element[0];
+      });
       // console.log(artifactFunc.setState(props.name));
-      console.log(store);
-
-      const artifactEquipShow = () => {
-        artifactEquipBox.value = !artifactEquipBox.value;
-      };
-      const change = val => {
-        console.log(val);
-      };
+      // console.log(store);
 
       return {
         characterState,
         characterArtifact,
-        artifactEquipBox,
-        change,
-        artifactEquipShow,
+        selectCharacter,
+        characterElement,
+        characterChange,
       };
     },
   };
@@ -90,19 +108,93 @@
     top: 3.5rem;
     width: 100%;
     height: calc(100% - 3.5rem);
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    padding: 0 6.25rem;
+  }
+
+  // 各属性背景色
+  .bg-Pyro {
+    background-image: linear-gradient(180deg, rgb(98, 29, 25), rgb(143, 40, 27));
+  }
+
+  .bg-Hydro {
+    background-image: linear-gradient(180deg, rgb(24, 58, 147), rgb(45, 113, 180));
+  }
+
+  .bg-Dendro {
+    background-image: linear-gradient(180deg, rgb(40, 97, 36), rgb(70, 114, 0));
+  }
+
+  .bg-Electro {
+    background-image: linear-gradient(180deg, rgb(108, 46, 142), rgb(128, 73, 157));
+  }
+
+  .bg-Anemo {
+    background-image: linear-gradient(180deg, rgb(30, 105, 98), rgb(75, 187, 176));
+  }
+
+  .bg-Cryo {
+    background-image: linear-gradient(180deg, rgb(39, 105, 141), rgb(70, 161, 188));
+  }
+
+  .bg-Geo {
+    background-image: linear-gradient(180deg, rgb(121, 98, 41), rgb(162, 141, 46));
+  }
+
+  .characterDetail {
+    position: relative;
+    width: 100%;
+
+    .characterName {
+      position: relative;
+      width: unset;
+      z-index: 3;
+      font-size: 1.5rem;
+      color: $genshin_gold;
+      padding: 0.25rem 2rem;
+    }
   }
 
   .stateShowBox {
+    position: relative;
     overflow-x: hidden;
-    overflow-y: scroll;
-    padding: 0 2rem;
+    padding: 0.5rem 2rem;
     width: 100%;
-    height: 100%;
+
+    color: $genshin_white;
+    background-color: rgba(0, 0, 0, 0.35);
+    transition: all 0.5s ease-in-out;
 
     .stateDetail {
+      position: relative;
+      height: 2.25rem;
+      line-height: 2.25rem;
+      padding: 0 0.5rem;
+
+      .stateValue {
+        float: right;
+        margin-right: 4rem;
+      }
+
       &:nth-child(2n + 1) {
-        background-image: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.15), transparent);
+        background-color: rgba(0, 0, 0, 0.25);
+      }
+
+      &:nth-child(2n) {
+        background-color: rgba(255, 255, 255, 0.05);
+      }
+
+      &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border: solid 0.1875rem transparentize($genshin_gray_light, 1);
+        transition: all 0.2s linear;
+      }
+
+      &:hover::before {
+        border: solid 0.1875rem $genshin_gray_light;
       }
     }
   }
@@ -137,8 +229,14 @@
 
   // 移动端兼容
   @media screen and (max-width: 56.875rem) {
-    .stateShowBox {
-      height: 50%;
+    .state-container {
+      padding: 0;
+
+      .stateDetail {
+        .stateValue {
+          margin-right: 0;
+        }
+      }
     }
   }
 </style>

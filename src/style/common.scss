@@ -3,8 +3,10 @@ $genshin_white: rgb(236, 229, 216);
 $genshin_dark: rgb(73, 83, 102);
 $genshin_gray: rgb(102, 102, 102);
 $genshin_gold: rgb(211, 188, 142);
+$genshin_cyan_blue: rgb(104,221,255);
 $genshin_orange_red: rgb(255, 95, 64);
 $genshin_green_light: rgb(143, 229, 0);
+$genshin_gray_light: rgb(169,169,169);
 $genshin_green: rgb(92, 178, 86);
 $genshin_yellow: rgb(255, 225, 75);
 
@@ -699,13 +701,13 @@ $genshin_yellow: rgb(255, 225, 75);
   }
 
   // 套装界面
-  .user-container {
+  .character-container {
     top: 55%;
     width: 100% !important;
     height: 50%;
 
-    .characterBox {
-      height: calc(100% - 8.5rem);
+    .list-wrapper {
+      height: calc(50% - 8.5rem);
     }
 
     .buttonBox {

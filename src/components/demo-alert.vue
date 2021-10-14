@@ -17,7 +17,7 @@
         />
       </symbol>
     </svg>
-    <div :class="'alert d-flex align-items-center alert-' + state" role="alert" v-if="show">
+    <div class="alert-style d-flex align-items-center" role="alert" v-if="show">
       <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img">
         <use v-if="state == 'success'" xlink:href="#check-circle-fill" />
         <use v-if="state == 'primary'" xlink:href="#info-fill" />
@@ -46,4 +46,21 @@
   };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  .alert-style {
+    position: relative;
+    padding: 1rem 1rem;
+    margin-bottom: 1rem;
+    border: 0.0625rem solid transparent;
+    border-radius: 0.0625rem;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: $genshin_white;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0.25rem;
+      border: solid 0.125rem transparentize($genshin_gray, 0.25);
+    }
+  }
+</style>

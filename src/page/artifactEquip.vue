@@ -37,7 +37,7 @@
         {{ $t("handle.remove") }}
       </button>
       <button class="btn btn-genshin btn-detail" :disabled="selectCharacter === ''" @click="$router.push('/state-' + selectCharacter)">
-        <span class="squareinbox"></span>Detail
+        <span class="squareinbox"></span>{{ $t("handle.stateDetail") }}
       </button>
     </character-list>
     <!-- 圣遗物变更信息 -->
@@ -139,6 +139,9 @@
         artifactFunc.lock(symbol);
         artifact.value = artifactFunc.getArtifact(symbol, language.value);
       };
+      const characterChange = val => {
+        selectCharacter.value = val;
+      };
 
       watch([() => props.symbol], async val => {
         // symbol
@@ -156,6 +159,7 @@
         formatValue,
         chengeArtifact,
         lockChange,
+        characterChange,
       };
     },
     data() {
@@ -279,10 +283,6 @@
       },
     },
     methods: {
-      //
-      characterChange(val) {
-        this.selectCharacter = val;
-      },
       // 卸下圣遗物
       removeArtifact() {
         let artifact = this.$artifact.getArtifact(this.symbol);
@@ -394,6 +394,7 @@
   }
 
   .buttonBox {
+    width: 45%;
     .btn-detail {
       margin-left: 1rem;
     }
@@ -548,10 +549,10 @@
   }
 
   .btn-switch {
-    width: 12rem;
+    width: 45%;
   }
 
   .btn-remove {
-    width: 12rem;
+    width: 45%;
   }
 </style>

@@ -61,9 +61,11 @@ module.exports = {
     switch: "Switch",
     equip: "Equip",
     remove: "Remove",
+    stateDetail: "State Detail",
   },
   term: {
     artifacts: "Artifacts",
+    name: "Name",
     default: "Default",
     Plume: "Plume of Death",
     Flower: "Flower of Life",

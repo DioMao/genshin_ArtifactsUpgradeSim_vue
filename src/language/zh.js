@@ -61,9 +61,11 @@ module.exports = {
     switch: "替换",
     equip: "装备",
     remove: "卸下",
+    stateDetail: "属性详情",
   },
   term: {
     artifacts: "圣遗物",
+    name: "角色名",
     default: "默认",
     Plume: "死之羽",
     Flower: "生之花",

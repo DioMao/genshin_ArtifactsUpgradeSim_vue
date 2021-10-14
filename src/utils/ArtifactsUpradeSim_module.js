@@ -833,13 +833,13 @@ class ArtifactsFunction_class {
    */
   getSetState(name) {
     const index = this.getSetIndex(name);
-    if (index === -1) return undefined;
-    let set = this[SET_LIST][index];
     let state = Object.create(null);
     let entryList = Array.from(new Set([...artiConst.val.entryList, ...artiConst.val.mainEntryList]));
     for (let entry of entryList) {
       state[entry] = 0;
     }
+    if (index === -1) return state;
+    let set = this[SET_LIST][index];
     // 遍历套装里每个部位的属性，并计算属性
     for (let key in set) {
       let symbol = set[key];
@@ -885,7 +885,7 @@ class ArtifactsFunction_class {
       type += "List";
     }
     type_zh = type + "_zh";
-    if(!articonst[type]){
+    if (!articonst[type]) {
       return false;
     }
     let index = articonst[type].indexOf(word);
