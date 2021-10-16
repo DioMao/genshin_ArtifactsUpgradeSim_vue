@@ -834,16 +834,16 @@ export class ArtifactData {
     };
     // 设置只读
     const nope = () => {
-        throw new Error("Error!This data is read only!");
-      },
-      read_only = obj =>
-        new Proxy(obj, {
-          set: nope,
-          defineProperty: nope,
-          deleteProperty: nope,
-          preventExtensions: nope,
-          setPrototypeOf: nope,
-        });
+      throw new Error("Error!This data is read only!");
+    };
+    const read_only = obj =>
+      new Proxy(obj, {
+        set: nope,
+        defineProperty: nope,
+        deleteProperty: nope,
+        preventExtensions: nope,
+        setPrototypeOf: nope,
+      });
     this.__ArtifactConstList__ = read_only(this.__ArtifactConstList__);
   }
 

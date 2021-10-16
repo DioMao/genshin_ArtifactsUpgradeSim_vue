@@ -601,7 +601,7 @@ class ArtifactsFunction_class {
   /**
    * 处理并返回指定symbol的圣遗物数据
    * @param {string} symbol 圣遗物symbol
-   * @param {string} language 目标语言（默认中文）
+   * @param {string} language 目标语言(默认不处理)
    * @returns 查询结果
    */
   getArtifact(symbol, language = "origin") {
@@ -619,7 +619,7 @@ class ArtifactsFunction_class {
 
   /**
    * 移除isNew状态
-   * @param {symbol} symbol 圣遗物标识
+   * @param {string} symbol 圣遗物标识
    * @returns 操作结果
    */
   notNew(symbol) {
@@ -628,6 +628,31 @@ class ArtifactsFunction_class {
     this[AUS_LIST][index].isNew = false;
     IDB.ARTIFACT_LIST.put(this[AUS_LIST][index]);
     return true;
+  }
+
+  /**
+   * 获取圣遗物名称
+   * @param {string} symbol 圣遗物标识
+   * @param {string} language 目标语言(默认英语)
+   * @returns 圣遗物名称
+   */
+  getArtifactName(symbol, language = "en") {
+    const lan = ["en", "zh"];
+    if (lan.indexOf(language) === -1) {
+      language = "en";
+    }
+    let artifact;
+    let artifactSet = "artifactSet";
+    if (language === "en") {
+      artifact = this.getArtifact(symbol);
+    } else if (language === "zh") {
+      artifact = this.getArtifact(symbol, "zh");
+      artifactSet += "_zh";
+    }
+    if (artifact) {
+      return artiConst.val[artifactSet][artifact.set][artifact.part];
+    }
+    return "Can't get name.";
   }
 
   /** 套装函数 **/
@@ -845,19 +870,19 @@ class ArtifactsFunction_class {
       let symbol = set[key];
       if (symbol !== "" && artiConst.val.parts.includes(key)) {
         let artifact = this.getArtifact(symbol);
-        if (artifact !== undefined) {
+        if (artifact) {
           // 主属性
-          if (state[artifact.mainEntry] === undefined) {
-            state[artifact.mainEntry] = artifact.mainEntryValue;
-          } else {
+          if (state[artifact.mainEntry]) {
             state[artifact.mainEntry] = (state[artifact.mainEntry] * 100 + artifact.mainEntryValue * 100) / 100;
+          } else {
+            state[artifact.mainEntry] = artifact.mainEntryValue;
           }
           // 副词条
           artifact.entry.forEach(val => {
-            if (state[val[0]] === undefined) {
-              state[val[0]] = val[1];
-            } else {
+            if (state[val[0]]) {
               state[val[0]] = (state[val[0]] * 10000 + val[1] * 10000) / 10000;
+            } else {
+              state[val[0]] = val[1];
             }
           });
         } else {
@@ -898,7 +923,7 @@ class ArtifactsFunction_class {
   /**
    * 圣遗物翻译&词条处理
    * @param {object} artifact 待处理的圣遗物数据
-   * @param {string} language 目标语言
+   * @param {string} language 目标语言(默认中文)
    * @returns 处理后的圣遗物数据
    */
   translate(item, language = "zh") {

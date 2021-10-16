@@ -227,7 +227,7 @@
         let that = this,
           index = this.$artifact.getIndex(this.symbol),
           artifactNow = this.$artifact.AUSList[index],
-          artiConst = this.$artiConst.val,
+          // artiConst = this.$artiConst.val,
           compareFunc = function(arr, type) {
             for (let i in arr) {
               let entry = arr[i][0],
@@ -240,13 +240,7 @@
             }
           };
         // 旧装备名称
-        if (this.language === "zh") {
-          let set_zh = artiConst.setList_zh[artiConst.setList.indexOf(val.set)],
-            part_zh = artiConst.parts_zh[artiConst.parts.indexOf(val.part)];
-          this.oldArtifactName = artiConst.artifactSet_zh[set_zh][part_zh];
-        } else if (this.language === "en") {
-          this.oldArtifactName = artiConst.artifactSet[val.set][val.part];
-        }
+        this.oldArtifactName = this.$artifact.getArtifactName(val.symbol,this.language);
         // 记录旧数据+对比新数据(旧属性为负值，代表更换后会失去的属性，新属性为正值)
         // 主属性对比
         if (artifactNow.mainEntry === val.mainEntry) {
@@ -465,7 +459,7 @@
             color: $genshin_orange_red;
 
             &::before {
-              content: "✖";
+              content: "✘";
               position: absolute;
               left: -0.5rem;
             }
@@ -544,7 +538,7 @@
       z-index: 0;
       background-image: linear-gradient(180deg, #ffffff00, #f1d68480, #f1d684, #ffffff00);
       background-image: -webkit-linear-gradient(180deg, #ffffff00, #f1d68480, #f1d684, #ffffff00);
-      background-image: -moz-linear-gradient(180deg, #ffffff00, #f1d68480, #f1d684, #ffffff00);
+      background-image: -moz-linear-gradient(270deg, #ffffff00, #f1d68480, #f1d684, #ffffff00);
     }
   }
 

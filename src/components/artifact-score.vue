@@ -17,16 +17,11 @@
 </template>
 
 <script>
+  import { getCurrentInstance, onMounted, ref, watch } from "vue";
+  import { useStore } from "vuex";
+
   export default {
     name: "artifact-score",
-    data() {
-      return {
-        symbol: "",
-        score: 0,
-        language: "zh",
-        currentEntry: [],
-      };
-    },
     props: {
       rule: {
         type: [String, Array],
@@ -36,40 +31,60 @@
         default: "",
       },
     },
-    mounted() {
-      // 读取语言设置
-      if (!window.localStorage) {
-        alert("浏览器不支持localstorage");
-        return false;
-      } else if (localStorage.userSetting !== "" && localStorage.userSetting !== undefined) {
-        this.language = JSON.parse(localStorage.userSetting).language;
-        this.$i18n.locale = JSON.parse(localStorage.userSetting).language;
-      } else {
-        this.language = this.$store.state.language;
-        this.$i18n.locale = this.$store.state.language;
-      }
-    },
-    watch: {
-      // 监听属性变化
-      artifact(val) {
-        if (val !== "" && val !== undefined) {
-          this.currentEntry = JSON.parse(val).entry;
-          this.symbol = JSON.parse(val).symbol;
+    setup(props) {
+      // 获取全局函数
+      const globalProperties = getCurrentInstance().appContext.config.globalProperties;
+      const store = useStore().state;
+      const artifactFunc = globalProperties.$artifact;
+      const artiConst = globalProperties.$artiConst.val;
+      const i18n = globalProperties.$i18n;
+
+      const language = ref("");
+      const currentEntry = ref([]);
+      const symbol = ref("");
+      onMounted(() => {
+        // 读取语言设置
+        if (!window.localStorage) {
+          alert("浏览器不支持localstorage");
+          return false;
+        } else if (localStorage.userSetting !== "" && localStorage.userSetting !== undefined) {
+          language.value = JSON.parse(localStorage.userSetting).language;
+          i18n.locale = JSON.parse(localStorage.userSetting).language;
+        } else {
+          language.value = store.language;
+          i18n.locale = store.language;
         }
-      },
-    },
-    methods: {
+      });
+
+      watch(
+        () => props.artifact,
+        val => {
+          if (val !== "" && val !== undefined) {
+            currentEntry.value = JSON.parse(val).entry;
+            symbol.value = JSON.parse(val).symbol;
+          }
+        }
+      );
+
       // 圣遗物评分
-      ArtifactRate(symbol) {
-        return this.$artifact.ArtifactScore(symbol, this.rule).toFixed(2);
-      },
+      const ArtifactRate = symbol => {
+        return artifactFunc.ArtifactScore(symbol, props.rule).toFixed(2);
+      };
       // 进度条
-      entryProgess(entry, value) {
-        let entryValueList = this.$artiConst.val.entryValue[entry];
+      const entryProgess = (entry, value) => {
+        let entryValueList = artiConst.entryValue[entry];
         if (entryValueList !== undefined) {
           return Math.floor((value / (entryValueList[entryValueList.length - 1] * 6)) * 100);
         }
-      },
+      };
+
+      return {
+        language,
+        currentEntry,
+        symbol,
+        ArtifactRate,
+        entryProgess,
+      };
     },
   };
 </script>
@@ -106,7 +121,7 @@
     .SheetItem {
       margin-bottom: 0.25rem;
 
-      .sheetTitle{
+      .sheetTitle {
         margin-bottom: 0.125rem;
       }
 

@@ -920,12 +920,6 @@
     outline: 0;
     right: -100%;
     transition: all 0.3s ease-out;
-
-    .offcanvas-body {
-      max-width: 100%;
-      overflow-y: scroll;
-      background-color: rgba(0, 0, 0, 0.85);
-    }
   }
 
   .MobileShow {

@@ -11,7 +11,6 @@
       <div class="mainEntryValue">{{ showdetail.mainEntryValue }}</div>
       <div class="aImg">
         <img :src="setUrl" :alt="showdetail.part" draggable="false" />
-        <img :src="this.$store.state.symbolSrc" alt="genshin-symbol" draggable="false" />
       </div>
       <div class="levelStar">
         <span v-for="i in 5" :key="i" style="margin-right: 3px;">
@@ -23,7 +22,6 @@
         </span>
       </div>
     </div>
-    <div class="blurLine"></div>
     <div class="aContent">
       <span class="badge">+{{ showdetail.level }}</span>
       <span class="unlock" v-if="!showdetail.lock" @click="lockChange">
@@ -128,17 +126,7 @@
     },
     computed: {
       artifactName() {
-        let artifact = this.$artifact.getArtifact(this.symbol),
-          setList = this.$artiConst.val.setList,
-          setList_zh = this.$artiConst.val.setList_zh,
-          set = this.$artiConst.val.artifactSet,
-          set_zh = this.$artiConst.val.artifactSet_zh;
-        if (this.language === "en" && setList.indexOf(this.showdetail.set) !== -1) {
-          return set[this.showdetail.set][artifact.part];
-        } else if (this.language === "zh" && setList_zh.indexOf(this.showdetail.set) !== -1) {
-          return set_zh[this.showdetail.set][this.$artifact.toChinese(artifact.part, "parts")];
-        }
-        return "none";
+        return this.$artifact.getArtifactName(this.symbol, this.language);
       },
       setUrl() {
         let item = this.$artifact.getArtifact(this.symbol),
@@ -246,9 +234,9 @@
       font-size: 0.8125rem;
       height: 8.4375rem;
       padding: 0.5625rem 1.125rem;
-      background-image: linear-gradient(to bottom right, #6a5453, #e4ab52);
-      background-image: -webkit-linear-gradient(to bottom right, #6a5453, #e4ab52);
-      background-image: -moz-linear-gradient(to bottom right, #6a5453, #e4ab52);
+      background-image: linear-gradient(to bottom right, rgba(60, 30, 30, 0.65) 15%, rgba(225, 135, 0, 0.65)), url(../assets/images/item_bg.png);
+      background-size: 100%, auto 8.1875rem;
+      background-position-y: 0, 0;
       .mainEntry {
         position: absolute;
         z-index: 2;
@@ -268,8 +256,8 @@
       .aImg {
         position: absolute;
         z-index: 2;
-        right: 1.125rem;
-        top: 0.3125rem;
+        right: 0.375rem;
+        top: 0.5rem;
         width: 7.8125rem;
         height: 7.8125rem;
 
@@ -280,16 +268,6 @@
             width: inherit;
             height: inherit;
           }
-
-          &:last-child {
-            position: absolute;
-            opacity: 0.1;
-            z-index: 1;
-            width: 12.5rem;
-            height: 12.5rem;
-            top: -2.1875rem;
-            right: -2.1875rem;
-          }
         }
       }
 
@@ -299,15 +277,6 @@
         left: 1.125rem;
         bottom: 0.5625rem;
       }
-    }
-
-    .blurLine {
-      position: absolute;
-      top: 10.0625rem;
-      height: 0.25rem;
-      width: 100%;
-      background-color: #000;
-      opacity: 0.2;
     }
 
     .aContent {

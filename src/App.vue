@@ -21,33 +21,39 @@
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-      <div>
-        <p style="color: red">——仅供娱乐，请勿作为实际游戏参考——</p>
+      <div class="genshin-notice">
+        <h3>仅供娱乐，请勿作为实际游戏参考</h3>
+        <div class="msg-box">
+          <h4>◆ 数据存储</h4>
+          <p>
+            本模拟器采用本地存储，使用localStorage、indexedDb保存设置和数据。<br />
+            遇到bug就清理一下缓存，或者看看git上更新没有。<del>都不行就只能辱骂作者了。</del>><a href="https://github.com/DioMao" target="_blank">DioMao</a>
+          </p>
+        </div>
         <p>本模拟器采用本地存储，脱机可用，不上传任何数据。</p>
-        <p>遇到bug就清理一下缓存，或者看看git上更新没有。<del>都不行就只能辱骂作者了。</del>><a href="https://github.com/DioMao" target="_blank">DioMao</a></p>
-        <p style="color: red">1. 自选圣遗物说明</p>
+        <h4>1. 自选圣遗物说明</h4>
         <p>
           自选圣遗物时，依次选择套装、位置、主词条和副词条。未选择的属性会随机生成。
         </p>
         <p>
           自选圣遗物时，副词条可以留空，这种情况会生成主属性符合且随机副词条的圣遗物。自选了副词条但不足3条时，模拟器会随机选择符合条件的副词条补至3条，且不会生成第四副词条。
         </p>
-        <p style="color: red">2. 圣遗物评分说明</p>
+        <h4>2. 圣遗物评分说明</h4>
         <p>1) 预设模式</p>
         <p>预设模式是根据已有的设定来进行分数估算。<del>目前还没有完善，实际是选什么算什么。</del></p>
         <p>2) 自选模式</p>
         <p>顾名思义，选中哪几个就算哪几个的总分。</p>
         <p>3) 高分圣遗物标准</p>
         <p>自定高分圣遗物标准，可选区间为20到50分。</p>
-        <p style="color: red">3. 删除和清空列表</p>
+        <h4>3. 删除和清空列表</h4>
         <p>
           单独删除圣遗物是可以撤销的。清空列表比较大力，生效了就不能找回了。
         </p>
-        <p style="color: red">4. 列表模式</p>
+        <h4>4. 列表模式</h4>
         <p>
           为了新功能的设计，现在圣遗物列表的默认模式改成了简洁模式。如果需要详细列表的话，可以去设置里关掉简洁模式。
         </p>
-        <p style="color: red">5. 副词条提升幅度</p>
+        <h4>5. 副词条提升幅度</h4>
         <p>
           副词条一共分四个档位，每次升级时会随机选择，设置里可以自选提升幅度。比如选择4，则每次强化提升数值的都是最大值。
         </p>
@@ -68,7 +74,7 @@
         loadProgress: 0,
         isLoad: false, // 加载界面显示（isLoad表示页面加载是否完成）
         // 预载图片列表
-        imgList: [require("@/assets/images/genshin-symbol.png"), require("@/assets/images/fog.png")],
+        imgList: [require("@/assets/images/genshin-symbol.png"), require("@/assets/images/fog.png"), require("@/assets/images/item_bg.png")],
       };
     },
     mounted() {
@@ -106,16 +112,16 @@
         let that = this;
         // 确认字体加载状态
         document.fonts.ready.then(function() {
-          that.loadProgress += 20;
+          that.loadProgress += 25;
         });
         for (let src of this.imgList) {
           let img = new Image();
           img.src = src;
           img.onload = () => {
-            this.loadProgress += 40;
+            this.loadProgress += 25;
           };
           img.onerror = () => {
-            this.loadProgress += 40;
+            this.loadProgress += 25;
             alert("部分资源加载失败，请刷新重试！\nSome resources failed to load, please refresh and try again!");
           };
         }
@@ -139,13 +145,7 @@
 </script>
 
 <style lang="scss">
-  @font-face {
-    font-family: "genshin-font";
-    src: url(./style/genshin_mini_artifact.ttf);
-  }
-
   #app {
-    font-family: "genshin-font";
     width: 100%;
     user-select: none;
   }
@@ -184,6 +184,41 @@
         background-color: rgb(102, 102, 102);
         transition: all 0.5s ease;
       }
+    }
+  }
+
+  .genshin-notice {
+    color: rgb(147, 128, 106);
+
+    h3 {
+      background-color: $genshin_brown_red;
+      font-size: 1.125rem;
+      color: rgb(244, 216, 168);
+      border-radius: 0.25rem;
+      line-height: 2.125rem;
+      height: 2rem;
+      padding: 0 0.5rem;
+    }
+
+    h4 {
+      font-size: 0.9375rem;
+      color: rgb(165, 88, 67);
+
+      &::after {
+        content: "";
+        display: block;
+        width: 100%;
+        height: 0.125rem;
+        background-color: rgb(209, 192, 175);
+        margin-top: 0.1875rem;
+      }
+    }
+
+    .msg-box {
+      padding: 0.75rem 0.5rem;
+      border-radius: 0.25rem;
+      background-color: rgb(223, 213, 192);
+      border: solid 0.125rem rgb(216, 204, 180);
     }
   }
 </style>

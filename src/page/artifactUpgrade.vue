@@ -66,7 +66,26 @@
           <div class="upgradeSuccess ani-upSuccess">{{ $t("handle.upSuccess") }}</div>
           <div class="upgradeImgBox ani-ArtifactShow">
             <div class="upgradeImg">
+              <img src="../assets/images/Background_Symbol.png" alt="symbol" draggable="false" />
               <img :src="setUrl" :alt="Artifact.part" draggable="false" />
+              <div class="islock" v-if="Artifact.lock">
+                <svg
+                  t="1631861008451"
+                  class="icon"
+                  viewBox="0 0 1024 1024"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  p-id="4168"
+                  width="0.625rem"
+                  height="0.625rem"
+                  fill="rgb(255,138,117)"
+                >
+                  <path
+                    d="M824 384h5.1c3.7-19.7 5.7-40 5.7-60.7C834.8 144.7 690 0 511.5 0S188.2 144.7 188.2 323.3c0 20.8 2 41 5.7 60.7h5.1c-39.8 0-72 32.2-72 72v496c0 39.8 32.2 72 72 72h625c39.8 0 72-32.2 72-72V456c0-39.8-32.2-72-72-72zM543.5 695.4V800c0 17.7-14.3 32-32 32s-32-14.3-32-32V695.4c-19.1-11.1-32-31.7-32-55.4 0-35.3 28.7-64 64-64s64 28.7 64 64c0 23.7-12.9 44.3-32 55.4zM267.6 384c-4.9-19.7-7.4-40-7.4-60.7 0-34 6.6-66.9 19.7-97.8 12.7-29.9 30.8-56.8 53.9-79.9s50-41.2 79.9-53.9C444.6 78.6 477.5 72 511.5 72s66.9 6.6 97.8 19.7c29.9 12.7 56.8 30.8 79.9 53.9 23.1 23.1 41.2 50 53.9 79.9 13.1 30.9 19.7 63.8 19.7 97.8 0 20.7-2.5 41-7.4 60.7H267.6z"
+                    p-id="4169"
+                  ></path>
+                </svg>
+              </div>
             </div>
             <div class="UpLevelStar">
               <span v-for="i in 5" :key="i" style="margin-right: 2px;">
@@ -110,13 +129,13 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="upAlertBtn ani-AlertBtnShow">
-        <button class="btn btn-genshin" @click="showUpdate = false">
-          <span class="circleinbox"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{
-            $t("handle.confirm")
-          }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        </button>
+        <div class="upAlertBtn ani-AlertBtnShow">
+          <button class="btn btn-genshin" @click="showUpdate = false">
+            <span class="circleinbox"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{
+              $t("handle.confirm")
+            }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -309,7 +328,7 @@
     z-index: 0;
     background-image: linear-gradient(180deg, #ffffff00, #f1d68480, #f1d684, #ffffff00);
     background-image: -webkit-linear-gradient(180deg, #ffffff00, #f1d68480, #f1d684, #ffffff00);
-    background-image: -moz-linear-gradient(180deg, #ffffff00, #f1d68480, #f1d684, #ffffff00);
+    background-image: -moz-linear-gradient(270deg, #ffffff00, #f1d68480, #f1d684, #ffffff00);
   }
 
   .upgradeMax {
@@ -364,7 +383,7 @@
       padding: 0.125rem 0.3125rem;
       background-image: linear-gradient(90deg, #ffffff00, rgba(0, 0, 0, 0.2), #fff00000);
       background-image: -webkit-linear-gradient(90deg, #ffffff00, rgba(0, 0, 0, 0.2), #fff00000);
-      background-image: -moz-linear-gradient(90deg, #ffffff00, rgba(0, 0, 0, 0.2), #fff00000);
+      background-image: -moz-linear-gradient(0deg, #ffffff00, rgba(0, 0, 0, 0.2), #fff00000);
       font-size: 1.1rem;
     }
 
@@ -379,7 +398,7 @@
         padding: 0.125rem 0.3125rem;
         background-image: linear-gradient(90deg, #ffffff00, rgba(0, 0, 0, 0.12), #fff00000);
         background-image: -webkit-linear-gradient(90deg, #ffffff00, rgba(0, 0, 0, 0.12), #fff00000);
-        background-image: -moz-linear-gradient(90deg, #ffffff00, rgba(0, 0, 0, 0.12), #fff00000);
+        background-image: -moz-linear-gradient(0deg, #ffffff00, rgba(0, 0, 0, 0.12), #fff00000);
         font-size: 0.9rem;
       }
 
@@ -387,7 +406,7 @@
         padding: 0.125rem 0.3125rem;
         background-image: linear-gradient(90deg, #ffffff00, rgba(0, 0, 0, 0.2), #fff00000);
         background-image: -webkit-linear-gradient(90deg, #ffffff00, rgba(0, 0, 0, 0.2), #fff00000);
-        background-image: -moz-linear-gradient(90deg, #ffffff00, rgba(0, 0, 0, 0.2), #fff00000);
+        background-image: -moz-linear-gradient(0deg, #ffffff00, rgba(0, 0, 0, 0.2), #fff00000);
         font-size: 0.9rem;
       }
     }
@@ -411,7 +430,7 @@
     margin-bottom: 0.2rem;
     background-image: linear-gradient(270deg, #ffffff90, rgba(0, 0, 0, 0.2));
     background-image: -webkit-linear-gradient(270deg, #ffffff90, rgba(0, 0, 0, 0.2));
-    background-image: -moz-linear-gradient(270deg, #ffffff90, rgba(0, 0, 0, 0.2));
+    background-image: -moz-linear-gradient(180deg, #ffffff90, rgba(0, 0, 0, 0.2));
 
     &::after {
       content: "";
@@ -436,7 +455,7 @@
     margin-bottom: 0rem;
     background-image: linear-gradient(270deg, rgb(144, 232, 0.9) 65%, rgba(0, 0, 0, 0) 20%);
     background-image: -webkit-linear-gradient(270deg, rgb(144, 232, 0.9) 65%, rgba(0, 0, 0, 0) 20%);
-    background-image: -moz-linear-gradient(270deg, rgb(144, 232, 0.9) 65%, rgba(0, 0, 0, 0) 20%);
+    background-image: -moz-linear-gradient(180deg, rgb(144, 232, 0.9) 65%, rgba(0, 0, 0, 0) 20%);
     transform: rotate(270deg);
 
     &::after {
@@ -527,8 +546,9 @@
     }
 
     .upAlertBtn {
-      position: relative;
-      top: 20rem;
+      position: absolute;
+      width: 100%;
+      top: 19rem;
       text-align: center;
     }
 
@@ -575,19 +595,41 @@
           box-shadow: yellow 0rem 0rem 1.25rem 0.125rem;
 
           .upgradeImg {
+            position: relative;
             height: 5rem;
             width: 100%;
-            background-color: rgb(195, 133, 66);
+            background-color: rgb(230, 138, 39);
             border-bottom-right-radius: 0.9375rem;
+            overflow: hidden;
 
             img {
+              position: absolute;
+              z-index: 2;
               height: 100%;
               width: 100%;
+
+              &:first-child{
+                z-index: 1;
+                opacity: 0.2;
+              }
+            }
+
+            .islock {
+              position: absolute;
+              z-index: 2;
+              left: 0.0625rem;
+              top: 0.0625rem;
+              background-color: transparentize($genshin_dark, 0.3);
+              border-radius: 0.25rem;
+              padding: 0.0625rem 0.1875rem 0;
+              height: 0.9375rem;
+              line-height: 0.8rem;
             }
           }
 
           .UpLevelStar {
             position: absolute;
+            z-index: 2;
             top: 4.0625rem;
             left: -0.375rem;
             height: 0.625rem;

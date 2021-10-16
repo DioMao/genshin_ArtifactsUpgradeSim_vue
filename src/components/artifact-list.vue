@@ -128,6 +128,7 @@
         filltop: 0,
         fillbottom: 0,
         itemMax: 0,
+        waiting: null,
       };
     },
     props: {
@@ -160,7 +161,7 @@
       // 读取语言
       this.$i18n.locale = this.state.language;
       // 滚动监听
-      this.$refs.listContainer.addEventListener("scroll", this.vmList);
+      this.$refs.listContainer.addEventListener("scroll", this.throttle(this.vmList));
       // 监听窗口大小
       window.addEventListener("resize", this.vmList);
       // 返回界面时回到记录位置
@@ -284,8 +285,21 @@
         this.fillCount = this.itemMax - (this.ArtifactsRenderList.length % this.itemMax);
         if (this.fillCount === this.itemMax) this.fillCount = 0;
       },
+      // 节流函数
+      throttle(fn) {
+        this.waiting = null;
+        return function() {
+          if (!this.waiting) {
+            this.waiting = setTimeout(() => {
+              fn.apply(this, arguments);
+              this.waiting = null;
+            }, 100);
+          }
+        };
+      },
       // 虚拟列表
       vmList(unchange = true) {
+        // console.log("vmlist");
         const scroll = this.$refs.listContainer;
         const rem = Number.parseFloat(window.getComputedStyle(document.getElementsByTagName("html")[0]).fontSize.slice(0, -2));
         // 计算渲染数量

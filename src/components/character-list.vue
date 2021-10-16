@@ -6,7 +6,7 @@
         class="character-banner-show"
         v-for="character in characterList"
         :key="character"
-        :class="{ bannerSelect: character.name === selectCharacter }"
+        :class="{ bannerSelect: character.name === selectCharacter, bannerHover: character.name !== selectCharacter }"
         @click="selectCharacter = character.name"
       >
         <img :src="avatarSideSrc(character.name)" :alt="character.name" draggable="false" />
@@ -56,6 +56,7 @@
           @mouseleave="clickMethod($event, false)"
         >
           <div class="avatarBox" :class="{ star_5: character.rarity === 5, star_4: character.rarity === 4, star_sp: character.name === 'Aloy' }">
+            <img src="../assets/images/Background_Symbol.png" alt="symbol" draggable="false" />
             <img :src="avatarSrc(character.name)" :alt="character.name" draggable="false" />
           </div>
           <div class="elementBox">
@@ -314,9 +315,15 @@
 
         img {
           position: absolute;
-          top: -1rem;
-          left: -0.625rem;
+          top: -0.9375rem;
+          left: -0.5rem;
           width: 4rem;
+        }
+      }
+
+      .bannerHover {
+        &:hover {
+          animation: banner-hover 0.6s linear forwards;
         }
       }
 
@@ -378,14 +385,21 @@
       transform: all 0.2s ease;
 
       .avatarBox {
+        position: relative;
         width: 4rem;
         height: 4rem;
         border-radius: 0.25rem 0.25rem 1rem 0;
         overflow: hidden;
 
         img {
+          position: absolute;
+          display: inline-block;
           height: 100%;
           width: 100%;
+
+          &:first-child {
+            opacity: 0.2;
+          }
         }
       }
 
@@ -403,7 +417,7 @@
       }
 
       .star_5 {
-        background-image: linear-gradient(135deg, rgb(127, 87, 46), rgb(183, 115, 38));
+        background-image: linear-gradient(135deg, rgb(150, 102, 46), rgb(230, 138, 39));
       }
 
       .star_4 {
@@ -517,6 +531,21 @@
     }
     100% {
       inset: auto -0.5rem -0.75rem -0.5rem;
+    }
+  }
+
+  @keyframes banner-hover {
+    0% {
+      border: solid 0.1875rem transparentize($genshin_gray_light, 0.5);
+      background-color: rgba(0, 0, 0, 0.35);
+    }
+    50% {
+      border: solid 0.1875rem transparentize(rgb(206, 206, 206), 0.5);
+      background-color: rgba(78, 78, 78, 0.25);
+    }
+    100% {
+      border: solid 0.1875rem transparentize($genshin_gray_light, 0.5);
+      background-color: rgba(0, 0, 0, 0.35);
     }
   }
 </style>

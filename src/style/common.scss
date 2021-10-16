@@ -3,15 +3,27 @@ $genshin_white: rgb(236, 229, 216);
 $genshin_dark: rgb(73, 83, 102);
 $genshin_gray: rgb(102, 102, 102);
 $genshin_gold: rgb(211, 188, 142);
-$genshin_cyan_blue: rgb(104,221,255);
+$genshin_cyan_blue: rgb(104, 221, 255);
 $genshin_orange_red: rgb(255, 95, 64);
 $genshin_green_light: rgb(143, 229, 0);
-$genshin_gray_light: rgb(169,169,169);
+$genshin_gray_light: rgb(169, 169, 169);
 $genshin_green: rgb(92, 178, 86);
 $genshin_yellow: rgb(255, 225, 75);
+$genshin_brown_white: rgb(217,213,203);
+$genshin_brown_red: rgb(171,102,82);
+
+@font-face {
+  font-family: "genshin-font";
+  src: url(~@/style/genshin_mini_artifact.ttf);
+}
+
+body{
+  font-family: "genshin-font" !important;
+}
 
 ::-webkit-scrollbar {
   width: 0.4rem;
+  height: 0.4rem;
   transition: ease 0.2s all;
   background: rgba(128, 128, 128, 0.5);
 }
@@ -259,7 +271,7 @@ $genshin_yellow: rgb(255, 225, 75);
 
 .offcanvas-body {
   position: relative;
-  background-color: rgb(249, 246, 242);
+  background-color: $genshin_brown_white;
 }
 
 .modal-body {
@@ -412,15 +424,18 @@ $genshin_yellow: rgb(255, 225, 75);
 
 @keyframes AlertBoxUp {
   0% {
-    margin-top: 0;
+    transform: translateY(0);
+    // margin-top: 0;
   }
 
   40% {
-    margin-top: 0;
+    transform: translateY(0);
+    // margin-top: 0;
   }
 
   100% {
-    margin-top: -6.25rem;
+    transform: translateY(-6.25rem);
+    // margin-top: -6.25rem;
   }
 }
 
@@ -480,15 +495,15 @@ $genshin_yellow: rgb(255, 225, 75);
 
 @keyframes upSuccess {
   0% {
-    top: -8.5rem;
+    transform: translateY(-2rem);
   }
 
   40% {
-    top: -8.5rem;
+    transform: translateY(-2rem);
   }
 
   100% {
-    top: -6.5rem;
+    transform: translateY(0);
   }
 }
 
