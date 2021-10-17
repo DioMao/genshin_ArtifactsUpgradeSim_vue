@@ -27,7 +27,46 @@
     <character-list mode="banner" @character="characterChange" :characterprop="selectCharacter"></character-list>
     <!-- 属性展示 -->
     <div class="stateShowBox">
-      <div class="stateDetail" v-for="(value, key) in characterState" :key="key">
+      <!-- 基础属性 -->
+      <div class="stateTitle">{{ $t("term.baseStats") }}</div>
+      <div class="stateDetail" v-for="(value, key) in baseStats" :key="key">
+        <span class="stateName">
+          {{ $t("term." + key) }}
+        </span>
+        <span class="stateValue" v-if="key !== 'elementMastery'">
+          +{{ $artifact.entryValFormat(key, value[0]) + " & +" + Number.parseFloat(value[1]).toFixed(0) }}
+        </span>
+        <span class="stateValue" v-else> +{{ $artifact.entryValFormat(key, value) }} </span>
+        <span class="EMBonusDetail" v-if="key === 'elementMastery' && $i18n.locale === 'zh'">{{
+          `元素精通越高，就能释放越强的元素能量。
+          蒸发、融化反应造成伤害时，伤害提升${EMBonus[0]}%。
+          超载、超导、感电、碎冰、扩散反应造成的伤害提升${EMBonus[1]}%。
+          结晶反应形成的晶片护盾，提供的伤害吸收量提升${EMBonus[2]}%。`
+        }}</span>
+        <span class="EMBonusDetail" v-if="key === 'elementMastery' && $i18n.locale === 'en'">{{
+          `The higher a character's elemental mastery, the stronger the elemental energy that can be released.
+          Increases damage caused by Vaporize and Melt by ${EMBonus[0]}%.
+          Also increases damage caused by Overloaded, Superconduct, Electro-Charged,Shattered, and Swirl by ${EMBonus[1]}%.
+          Increases the damage absorption power of shields created through Crystallize by ${EMBonus[2]}%.`
+        }}</span>
+      </div>
+      <div class="stateDetail">
+        <span class="stateName">{{ $t("term.stamina") }}</span>
+        <span class="stateValue">240</span>
+      </div>
+      <!-- 进阶属性 -->
+      <div class="stateTitle">{{ $t("term.advanceStats") }}</div>
+      <div class="for-nth-child" style="display:none;"></div>
+      <div class="stateDetail" v-for="(value, key) in advanceStats" :key="key">
+        <span class="stateName">
+          {{ $t("term." + key) }}
+        </span>
+        <span class="stateValue"> +{{ $artifact.entryValFormat(key, value) }} </span>
+      </div>
+      <!-- 元素属性 -->
+      <div class="stateTitle">{{ $t("term.elementalType") }}</div>
+      <div class="for-nth-child" style="display:none;"></div>
+      <div class="stateDetail" v-for="(value, key) in elementalType" :key="key">
         <span class="stateName">
           {{ $t("term." + key) }}
         </span>
@@ -38,7 +77,7 @@
 </template>
 
 <script>
-  import { getCurrentInstance, ref, watch } from "vue";
+  import { getCurrentInstance, onMounted, ref, watch } from "vue";
   // import { useStore } from "vuex";
   import characterList from "../components/character-list";
   export default {
@@ -58,10 +97,30 @@
       // const db = globalProperties.$db;
       // const store = useStore().state;
 
-      const characterState = ref(artifactFunc.getSetState(props.name));
       const characterArtifact = ref(artifactFunc.getSet(props.name));
       const selectCharacter = ref(props.name);
       const characterElement = ref([]);
+      const baseStats = ref({ HPPer: [0, 0], ATKPer: [0, 0], DEFPer: [0, 0], elementMastery: 0 });
+      const advanceStats = ref({ CRITRate: 0, CRITDMG: 0, Healing: 0, incomingHealing: 0, energyRecharge: 0, CD: 0, Shield: 0 });
+      const elementalType = ref({
+        Pyro: 0,
+        PyroRES: 0,
+        Hydro: 0,
+        HydroRES: 0,
+        Dendro: 0,
+        DendroRES: 0,
+        Electro: 0,
+        ElectroRES: 0,
+        Anemo: 0,
+        AnemoRES: 0,
+        Cryo: 0,
+        CryoRES: 0,
+        Geo: 0,
+        GeoRES: 0,
+        Physical: 0,
+        PhysicalRES: 0,
+      });
+      const EMBonus = ref([]);
 
       let character = artiConst.character.find(val => {
         return val.name === props.name;
@@ -69,26 +128,66 @@
       if (character !== undefined) {
         characterElement.value = character.element[0];
       }
+
+      onMounted(() => {
+        calcStats();
+      });
+
       // 选择人物
       const characterChange = val => {
         selectCharacter.value = val;
       };
       watch(selectCharacter, val => {
-        characterState.value = artifactFunc.getSetState(val);
+        calcStats();
         characterArtifact.value = artifactFunc.getSet(val);
         characterElement.value = artiConst.character.find(chara => {
           return chara.name === val;
         }).element[0];
       });
+
+      // 属性值计算+格式化
+      const calcStats = () => {
+        const baseList = ["ATK", "ATKPer", "DEF", "DEFPer", "HP", "HPPer", "elementMastery"];
+        const advanceList = ["CRITRate", "CRITDMG", "Healing", "incomingHealing", "energyRecharge", "CD", "Shield"];
+        const totalStats = artifactFunc.getSetState(selectCharacter.value);
+        EMBonus.value = artifactFunc.calcEMBonus(totalStats.elementMastery);
+        for (let key in totalStats) {
+          const stat = totalStats[key];
+          if (baseList.includes(key)) {
+            if (key === "ATK") {
+              baseStats.value.ATKPer[1] = stat;
+            } else if (key === "ATKPer") {
+              baseStats.value.ATKPer[0] = stat;
+            } else if (key === "HP") {
+              baseStats.value.HPPer[1] = stat;
+            } else if (key === "HPPer") {
+              baseStats.value.HPPer[0] = stat;
+            } else if (key === "DEF") {
+              baseStats.value.DEFPer[1] = stat;
+            } else if (key === "DEFPer") {
+              baseStats.value.DEFPer[0] = stat;
+            } else {
+              baseStats.value[key] = stat;
+            }
+          } else if (advanceList.includes(key)) {
+            advanceStats.value[key] = stat;
+          } else {
+            elementalType.value[key] = stat;
+          }
+        }
+      };
       // console.log(artifactFunc.setState(props.name));
       // console.log(store);
 
       return {
-        characterState,
         characterArtifact,
         selectCharacter,
         characterElement,
+        baseStats,
+        advanceStats,
+        elementalType,
         characterChange,
+        EMBonus,
       };
     },
   };
@@ -161,20 +260,32 @@
     overflow-x: hidden;
     padding: 0.5rem 2rem;
     width: 100%;
-
     color: $genshin_white;
     background-color: rgba(0, 0, 0, 0.35);
     transition: all 0.5s ease-in-out;
 
+    .stateTitle {
+      font-size: 0.875rem;
+      color: rgb(145, 140, 130);
+      margin-top: 0.5rem;
+    }
+
     .stateDetail {
       position: relative;
-      height: 2.25rem;
       line-height: 2.25rem;
       padding: 0 0.5rem;
 
       .stateValue {
         float: right;
         margin-right: 4rem;
+      }
+
+      .EMBonusDetail {
+        display: block;
+        line-height: 1.25rem;
+        font-size: 0.875rem;
+        padding-bottom: 0.375rem;
+        white-space: pre-line;
       }
 
       &:nth-child(2n + 1) {

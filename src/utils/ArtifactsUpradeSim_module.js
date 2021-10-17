@@ -894,6 +894,21 @@ class ArtifactsFunction_class {
     return state;
   }
 
+  /**
+   * 计算元素精通收益
+   */
+  calcEMBonus(elementMastery) {
+    if (typeof elementMastery !== "number") return [0, 0, 0];
+    //元素精通加成公式：y=kx/(x+a)
+    // 对剧变反应：k=16.0，a=2000；
+    // 对增幅反应：k=2.78，a=1400；
+    // 对结晶盾值：k=4.44，a=1400；
+    const formula = (k, a, x) => {
+      return (((k * x) / (x + a)) * 100).toFixed(1);
+    };
+    return [formula(2.78, 1400, elementMastery), formula(16, 2000, elementMastery), formula(4.44, 1400, elementMastery)];
+  }
+
   /** 其他函数 **/
 
   /**
@@ -959,9 +974,10 @@ class ArtifactsFunction_class {
    * 词条数值处理（展示用）
    * @param {string} entry 词条名称
    * @param {string | number} entryValue 词条数值
+   * @param {boolean} 是否转为百分数（没有对应词条名称时生效）
    * @returns 处理后的词条数值
    */
-  entryValFormat(entry, entryValue) {
+  entryValFormat(entry, entryValue, isPercent = true) {
     const nonPercent = ["ATK", "HP", "DEF", "elementMastery"],
       entryList = artiConst.val.mainEntryList.concat(artiConst.val.entryList);
     if (typeof entry !== "string" || (typeof entryValue !== "string" && typeof entryValue !== "number")) {
@@ -975,7 +991,11 @@ class ArtifactsFunction_class {
       }
       return entryValue;
     } else {
-      return false;
+      if(isPercent){
+        return Number.parseFloat(entryValue).toFixed(1) + "%";
+      }else {
+        return Number.parseFloat(entryValue).toFixed(0);
+      }
     }
   }
 

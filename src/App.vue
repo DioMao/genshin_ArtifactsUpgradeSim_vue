@@ -26,11 +26,12 @@
         <div class="msg-box">
           <h4>◆ 数据存储</h4>
           <p>
+            这是一个仅前端的项目。<br />
             本模拟器采用本地存储，使用localStorage、indexedDb保存设置和数据。<br />
             遇到bug就清理一下缓存，或者看看git上更新没有。<del>都不行就只能辱骂作者了。</del>><a href="https://github.com/DioMao" target="_blank">DioMao</a>
           </p>
         </div>
-        <p>本模拟器采用本地存储，脱机可用，不上传任何数据。</p>
+        <p>本模拟器采用本地存储，不上传任何数据。</p>
         <h4>1. 自选圣遗物说明</h4>
         <p>
           自选圣遗物时，依次选择套装、位置、主词条和副词条。未选择的属性会随机生成。
@@ -212,13 +213,6 @@
         background-color: rgb(209, 192, 175);
         margin-top: 0.1875rem;
       }
-    }
-
-    .msg-box {
-      padding: 0.75rem 0.5rem;
-      border-radius: 0.25rem;
-      background-color: rgb(223, 213, 192);
-      border: solid 0.125rem rgb(216, 204, 180);
     }
   }
 </style>

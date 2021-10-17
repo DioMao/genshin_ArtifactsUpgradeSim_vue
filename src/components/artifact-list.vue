@@ -172,7 +172,7 @@
     },
     beforeUnmount() {
       // 移除监听器
-      this.$refs.listContainer.removeEventListener("scroll", this.vmList);
+      this.$refs.listContainer.removeEventListener("scroll", this.throttle(this.vmList));
       window.removeEventListener("resize", this.vmList);
       // 卸载前记录列表滚动条位置
       this.$store.commit("saveScroll", this.$refs.listContainer.scrollTop);

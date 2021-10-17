@@ -789,6 +789,15 @@ export class ArtifactData {
           nation: "Mondstadt",
         },
         {
+          name: "Thoma",
+          name_zh: "托马",
+          rarity: 4,
+          element: ["Pyro"],
+          weapon: "polearm",
+          sex: "male",
+          nation: "Inazuma",
+        },
+        {
           name: "Xiangling",
           name_zh: "香菱",
           rarity: 4,

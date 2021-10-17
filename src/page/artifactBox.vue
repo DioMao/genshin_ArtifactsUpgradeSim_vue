@@ -212,6 +212,9 @@
         </a>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
           <li>
+            <router-link class="dropdown-item" to="/state-Albedo">{{ $t("handle.characterStateList") }}</router-link>
+          </li>
+          <li>
             <a class="dropdown-item" href="javascript:void(0)" @click="undoDel">
               <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">
                 <path

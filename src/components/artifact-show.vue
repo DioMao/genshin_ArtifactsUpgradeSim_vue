@@ -69,19 +69,33 @@
       <span>{{ $t("name." + showdetail.equipped).replace(/\s+/g, "") }}</span>
       <span v-show="language === 'zh'">已装备</span>
     </div>
-    <div class="aButtonBox" v-if="showButton">
-      <button class="btn btn-genshin btn-sm float-start" @click="upgrade" :disable="showdetail.level >= 20">
-        {{ $t("msg.upgrade") }}
-      </button>
-      <button class="btn btn-genshin btn-sm" @click="init" v-show="showdetail.level > 0">{{ $t("msg.reset") }}</button>
-      <button class="btn btn-genshin btn-sm float-end del" @click="del">
-        <span class="mobileShow" @click="close"></span>
-        {{ $t("msg.delete") }}
-      </button>
-    </div>
-    <div class="actionBox mt-2 mb-2 d-flex justify-content-between" v-if="showButton">
-      <div class="btn btn-genshin" @click="toPath(symbol, 'equip')"><span class="squareinbox"></span> {{ $t("handle.equip") }}</div>
-      <div class="btn btn-toupgrade" @click="toPath(symbol, 'artifact')"><span class="circleinbox"></span>{{ $t("msg.toUpgradePage") }}</div>
+    <div v-if="showButton">
+      <div class="actionBox mt-2 mb-2 d-flex justify-content-between">
+        <div class="btn btn-genshin" @click="toPath(symbol, 'equip')"><span class="squareinbox"></span> {{ $t("handle.equip") }}</div>
+        <div class="btn btn-genshin btn-toupgrade" @click="toPath(symbol, 'artifact')"><span class="circleinbox"></span>{{ $t("msg.toUpgradePage") }}</div>
+      </div>
+      <div class="aButtonBox mt-3 msg-box">
+        <h4>◆ {{ $t("handle.commonHandle") }}</h4>
+        <div class="firstLine mb-2">
+          <button class="btn btn-genshin btn-sm" @click="upgrade" :disabled="showdetail.level >= 20">
+            {{ $t("msg.upgrade") }}
+          </button>
+          <button class="btn btn-genshin btn-sm" @click="init" :disabled="showdetail.lock || showdetail.level === 0">{{ $t("msg.reset") }}</button>
+          <button class="btn btn-genshin btn-sm del" :disabled="showdetail.lock" @click="del">
+            <span class="mobileShow" @click="close"></span>
+            {{ $t("msg.delete") }}
+          </button>
+        </div>
+        <h4>◆ {{ $t("handle.targetedEnhanced") }}</h4>
+        <div>
+          <div class="entryUp" v-for="(entry, index) in showdetail.entry" :key="entry[0] + index">
+            <span> • {{ entry[0] }}+{{ entry[1] }} </span>
+            <button class="btn btn-genshin btn-sm" @click="upgrade(index)" :disabled="showdetail.level >= 20">
+              {{ $t("msg.upgrade") }}
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -108,6 +122,7 @@
             upgradeHistory: [],
             creationDate: Date.now(),
             lock: false,
+            equipped: 0,
           };
         },
       },
@@ -148,8 +163,8 @@
       },
     },
     methods: {
-      upgrade() {
-        this.$emit("upgrade", this.symbol);
+      upgrade(entry = -1) {
+        this.$emit("upgrade", this.symbol, entry);
       },
       init() {
         this.$emit("init", this.symbol);
@@ -234,9 +249,10 @@
       font-size: 0.8125rem;
       height: 8.4375rem;
       padding: 0.5625rem 1.125rem;
-      background-image: linear-gradient(to bottom right, rgba(60, 30, 30, 0.65) 15%, rgba(225, 135, 0, 0.65)), url(../assets/images/item_bg.png);
-      background-size: 100%, auto 8.1875rem;
+      background-image: linear-gradient(to bottom right, rgba(110, 72, 72, 0.5) 15%, rgba(255, 175, 45, 0.7)), url(../assets/images/item_bg.png);
+      background-size: auto 8.1875rem, 100%;
       background-position-y: 0, 0;
+
       .mainEntry {
         position: absolute;
         z-index: 2;
@@ -358,11 +374,28 @@
     }
 
     .aButtonBox {
-      height: 2.5rem;
-      background-color: #a87940;
-      text-align: center;
-      padding: 0.4375rem 1.875rem;
-      overflow: hidden;
+      color: rgb(147, 128, 106);
+
+      .firstLine {
+        display: flex;
+        flex-wrap: nowrap;
+        align-content: flex-start;
+        justify-content: space-between;
+      }
+
+      h4 {
+        font-size: 0.9375rem;
+        color: rgb(165, 88, 67);
+
+        &::after {
+          content: "";
+          display: block;
+          width: 100%;
+          height: 0.125rem;
+          background-color: rgb(209, 192, 175);
+          margin-top: 0.1875rem;
+        }
+      }
 
       button {
         font-size: 0.9375rem;
@@ -372,6 +405,22 @@
         width: 4.375rem;
         border-left: solid 0.0625rem rgb(243, 239, 225);
         border-right: solid 0.0625rem rgb(243, 239, 225);
+      }
+
+      .entryUp {
+        display: flex;
+        flex-wrap: nowrap;
+        align-content: flex-start;
+        justify-content: space-between;
+        height: 1.5rem;
+        line-height: 1.5rem;
+        margin-bottom: 0.75rem;
+
+        span{
+          font-size: .875rem;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
       }
 
       .mobileShow {
@@ -385,14 +434,9 @@
       width: 100%;
       position: relative;
 
-      .btn-genshin {
-        width: 45%;
-      }
-
+      .btn-genshin,
       .btn-toupgrade {
         width: 45%;
-        background-color: #ffd673;
-        border-radius: 1.5rem;
       }
     }
   }
