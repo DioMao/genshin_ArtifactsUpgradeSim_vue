@@ -68,6 +68,8 @@ module.exports = {
   },
   term: {
     artifacts: "圣遗物",
+    Set2: "2件套",
+    Set4: "4件套",
     baseStats: "基础属性",
     advanceStats: "进阶属性",
     elementalType: "元素属性",

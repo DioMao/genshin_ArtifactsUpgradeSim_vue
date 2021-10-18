@@ -737,7 +737,7 @@ class ArtifactsFunction_class {
     for (const key in set) {
       if (key === "name" || set[key] === "") continue;
       let artifact = this[AUS_LIST][this.getIndex(set[key])];
-      if (artifact !== undefined) {
+      if (artifact) {
         if (Object.hasOwnProperty.call(res, artifact.set)) {
           res[artifact.set] += 1;
         } else {
@@ -891,6 +891,30 @@ class ArtifactsFunction_class {
         // console.log(`${key} : ${symbol}`);
       }
     }
+    // 获取套装属性加成
+    const setBonus = this.getSetBonus(index);
+    const bonusFunc = (key, count) => {
+      const setBonus = artiConst.val.setBonus[key][count];
+      // 如果存在N件套效果
+      if (setBonus) {
+        for (let stat in setBonus) {
+          if (state[stat]) {
+            state[stat] += setBonus[stat];
+          } else {
+            state[stat] = setBonus[stat];
+          }
+        }
+      }
+    };
+    for (let key in setBonus) {
+      const count = setBonus[key];
+      if (count >= 2) {
+        bonusFunc(key, 2);
+      }
+      if (count >= 4) {
+        bonusFunc(key, 4);
+      }
+    }
     return state;
   }
 
@@ -899,9 +923,9 @@ class ArtifactsFunction_class {
    */
   calcEMBonus(elementMastery) {
     if (typeof elementMastery !== "number") return [0, 0, 0];
-    //元素精通加成公式：y=kx/(x+a)
-    // 对剧变反应：k=16.0，a=2000；
+    // 元素精通加成公式：y=kx/(x+a)
     // 对增幅反应：k=2.78，a=1400；
+    // 对剧变反应：k=16.0，a=2000；
     // 对结晶盾值：k=4.44，a=1400；
     const formula = (k, a, x) => {
       return (((k * x) / (x + a)) * 100).toFixed(1);
@@ -991,9 +1015,9 @@ class ArtifactsFunction_class {
       }
       return entryValue;
     } else {
-      if(isPercent){
+      if (isPercent) {
         return Number.parseFloat(entryValue).toFixed(1) + "%";
-      }else {
+      } else {
         return Number.parseFloat(entryValue).toFixed(0);
       }
     }

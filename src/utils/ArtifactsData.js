@@ -14,12 +14,6 @@ export class ArtifactData {
     //ATK = [47,60,73,86,100,,,139,152,166];
     //ATKPer = [7,9,11,12.9,14.9,16.9,18.9,20.9,22.8,24.8,26.8,28.8,30.8]
     this.__ArtifactConstList__ = {
-      /**
-       * 英语翻译参考：
-       * 圣遗物属性：Artifact Details
-       * 冷却缩减：CD Reduction
-       * 护盾强效：Shield Strength
-       */
       // 词缀条目
       entryList: ["CRITRate", "CRITDMG", "ATK", "ATKPer", "DEF", "DEFPer", "HP", "HPPer", "energyRecharge", "elementMastery"],
       entryList_en: ["CRIT Rate", "CRIT DMG", "ATK", "ATK", "DEF", "DEF", "HP", "HP", "Energy Recharge", "Element Mastery"],
@@ -193,6 +187,8 @@ export class ArtifactData {
           Sands: "Frozen Homeland's Demise",
           Circlet: "Broken Rime's Echo",
           Goblet: "Frost-Weaved Dignity",
+          Set2: "Cryo DMG Bonus +15%.",
+          Set4: "When a characterattacks an opponent affected by Cryo, their CRIT Rate is increasedby 20%. If the opponent is Frozen, CRIT Rate is increased byan additional 20%.",
         },
         Thundersoother: {
           Plume: "Thundersoother's Plume",
@@ -200,6 +196,8 @@ export class ArtifactData {
           Sands: "Thundersoother's Thunder",
           Circlet: "Thundersoother's Diadem",
           Goblet: "Thundersoother's Goblet",
+          Set2:"Electro RES increased by 40%.",
+          Set4:"Increases DMG against opponents affected by Electro by 35%.",
         },
         Lavawalker: {
           Plume: "Lavawalker's Salvation",
@@ -207,6 +205,8 @@ export class ArtifactData {
           Sands: "Lavawalker's Torment",
           Circlet: "Lavawalker's Wisdom",
           Goblet: "Lavawalker's Epiphany",
+          Set2:"Pyro RES increased by 40%.",
+          Set4:"Increases DMG against opponents affected by Pyro by 35%.",
         },
         "Maiden Beloved": {
           Plume: "Maiden's Heart-stricken Infatuation",
@@ -214,6 +214,8 @@ export class ArtifactData {
           Sands: "Maiden's Passing Youth",
           Circlet: "Maiden's Fading Beauty",
           Goblet: "Maiden's Fleeting Leisure",
+          Set2:"Character Healing Effectiveness +15%.",
+          Set4:"Using an Elemental Skill or Burst increases healing received by all party members by 20% for 10s.",
         },
         "Gladiator's Finale": {
           Plume: "Gladiator's Destiny",
@@ -221,6 +223,8 @@ export class ArtifactData {
           Sands: "Gladiator's Longing",
           Circlet: "Gladiator's Intoxication",
           Goblet: "Gladiator's Triumphus",
+          Set2:"ATK +18%.",
+          Set4:"If the wielder of this artifact set uses a Sword, Claymore or Polearm, increases their Normal Attack DMG by35%.",
         },
         "Viridescent Venerer": {
           Plume: "Viridescent Arrow Feather",
@@ -228,6 +232,8 @@ export class ArtifactData {
           Sands: "Viridescent Venerer's Determination",
           Circlet: "Viridescent Venerer's Diadem",
           Goblet: "Viridescent Venerer's Vessel",
+          Set2:"Anemo DMG Bonus +15%.",
+          Set4:"Increases Swirl DMG by 60%. Decreases opponent's Elemental RES to the element infused in the Swirl by 40% for 10s.",
         },
         "Wanderer's Troupe": {
           Plume: "Bard's Arrow Feather",
@@ -235,6 +241,8 @@ export class ArtifactData {
           Sands: "Concert's Final Hour",
           Circlet: "Conductor's Top Hat",
           Goblet: "Wanderer's String-Kettle",
+          Set2:"Increases Elemental Mastery by 80.",
+          Set4:"Increases Charged Attack DMG by 35% if the character uses a Catalyst or a Bow.",
         },
         "Thundering Fury": {
           Plume: "Survivor of Catastrophe",
@@ -242,6 +250,8 @@ export class ArtifactData {
           Sands: "Hourglass of Thunder",
           Circlet: "Thunder Summoner's Crown",
           Goblet: "Omen of Thunderstorm",
+          Set2:"Electro DMG Bonus +15%.",
+          Set4:"Increases damage caused by Overloaded, Electro-Charged and Superconduct by 40%. Triggering such effects decreases Elemental Skill CD by 1s. Can only occur once every 0.8s.",
         },
         "Crimson Witch of Flames": {
           Plume: "Witch's Ever-Burning Plume",
@@ -249,6 +259,8 @@ export class ArtifactData {
           Sands: "Witch's End Time",
           Circlet: "Witch's Scorching Hat",
           Goblet: "Witch's Heart Flames",
+          Set2:"Pyro DMG Bonus +15%.",
+          Set4:"Increases Overloaded and Burning DMG by 40%. Increases Vaporize and Melt DMG by 15%. Using Elemental Skill increases the 2-Piece Set Bonus by 50% of its starting value for 10s. Max 3 stacks.",
         },
         "Noblesse Oblige": {
           Plume: "Royal Plume",
@@ -256,6 +268,8 @@ export class ArtifactData {
           Sands: "Royal Pocket Watch",
           Circlet: "Royal Masque",
           Goblet: "Royal Silver Urn",
+          Set2:"Elemental Burst DMG +20%.",
+          Set4:"Using an Elemental Burst increases all party members' ATK by 20% for 12s. This effect cannot stack.",
         },
         "Bloodstained Chivalry": {
           Plume: "Bloodstained Black Plume",
@@ -263,6 +277,8 @@ export class ArtifactData {
           Sands: "Bloodstained Final Hour",
           Circlet: "Bloodstained Iron Mask",
           Goblet: "Bloodstained Chevalier's Goblet",
+          Set2:"Physical DMG +25%.",
+          Set4:"After defeating an opponent, increases Charged Attack DMG by 50%, and reduces its Stamina cost to 0 for 10s.",
         },
         "Archaic Petra": {
           Plume: "Feather of Jagged Peaks",
@@ -270,6 +286,8 @@ export class ArtifactData {
           Sands: "Sundial of Enduring Jade",
           Circlet: "Mask of Solitude Basalt",
           Goblet: "Goblet of Chiseled Crag",
+          Set2:"Gain a 15% Geo DMG Bonus.",
+          Set4:"Upon obtaining an Elemental Shard created through a Crystallize Reaction, all party members gain a 35% DMG Bonus for that particular element for 10s. Only one form of Elemental DMG Bonus can be gained in this manner at any one time.",
         },
         "Retracing Bolide": {
           Plume: "Summer Night's Finale",
@@ -277,6 +295,8 @@ export class ArtifactData {
           Sands: "Summer Night's Moment",
           Circlet: "Summer Night's Mask",
           Goblet: "Summer Night's Waterballoon",
+          Set2:"Increases Shield Strength by 35%.",
+          Set4:"While protected by a shield, gain an additional 40% Normal and Charged Attack DMG.",
         },
         "Heart of Depth": {
           Plume: "Gust of Nostalgia",
@@ -284,6 +304,8 @@ export class ArtifactData {
           Sands: "Copper Compass",
           Circlet: "Wine-Stained Tricorne",
           Goblet: "Goblet of Thundering Deep",
+          Set2:"Hydro DMG Bonus +15%.",
+          Set4:"After using Elemental Skill, increases Normal Attack and Charged Attack DMG by 30% for 15s.",
         },
         "Tenacity of the Millelith": {
           Plume: "Ceremonial War-Plume",
@@ -291,6 +313,8 @@ export class ArtifactData {
           Sands: "Orichalceous Time-Dial",
           Circlet: "General's Ancient Helm",
           Goblet: "Noble's Pledging Vessel",
+          Set2:"HP increased by 20%.",
+          Set4:"When an Elemental Skill hits an opponent, the ATK of all nearby party members is increased by 20% and their Shield Strength is increased by 30% for 3s. This effect can be triggered once every 0.5s. This effect can still be triggered even when the character who is using this artifact set is not on the field.",
         },
         "Pale Flame": {
           Plume: "Wise Doctor's Pinion",
@@ -298,6 +322,8 @@ export class ArtifactData {
           Sands: "Moment of Cessation",
           Circlet: "Mocking Mask",
           Goblet: "Surpassing Cup",
+          Set2:"Physical DMG is increased by 25%.",
+          Set4:"When an Elemental Skill hits an opponent, ATK is increased by 9% for 7s. This effect stacks up to 2 times and can be triggered once every 0.3s. Once 2 stacks are reached, the 2-set effect is increased by 100%.",
         },
         "Shimenawa's Reminiscence": {
           Plume: "Shaft of Remembrance",
@@ -305,6 +331,8 @@ export class ArtifactData {
           Sands: "Morning Dew's Moment",
           Circlet: "Capricious Visage",
           Goblet: "Hopeful Heart",
+          Set2:"ATK +18%.",
+          Set4:"When casting an Elemental Skill, if the character has 15 or more Energy, they lose 15 Energy and Normal/Charged/Plunging Attack DMG is increased by 50% for 10s. This effect will not trigger again during that duration.",
         },
         "Emblem of Severed Fate": {
           Plume: "Sundered Feather",
@@ -312,6 +340,8 @@ export class ArtifactData {
           Sands: "Storm Cage",
           Circlet: "Ornate Kabuto",
           Goblet: "Scarlet Vessel",
+          Set2:"Energy Recharge +20%.",
+          Set4:"Increases Elemental Burst DMG by 25% of Energy Recharge. A maximum of 75% bonus DMG can be obtained inthis way.",
         },
       },
       artifactSet_zh: {
@@ -321,6 +351,8 @@ export class ArtifactData {
           时之沙: "冰雪故园的终期",
           理之冠: "破冰踏雪的回音",
           空之杯: "遍结寒霜的傲骨",
+          Set2:"获得15%冰元素伤害加成。",
+          Set4:"攻击处于冰元素影响下的敌人时，暴击率提高20%；若敌人处于冻结状态下，则暴击率额外提高20%。",
         },
         平息雷鸣的尊者: {
           死之羽: "平雷之羽",
@@ -328,6 +360,8 @@ export class ArtifactData {
           时之沙: "平雷之刻",
           理之冠: "平雷之冠",
           空之杯: "平雷之器",
+          Set2:"雷元素抗性提高40%。",
+          Set4:"对处于雷元素影响下的敌人造成的伤害提升35%。"
         },
         渡过烈火的贤人: {
           死之羽: "渡火者的解脱",
@@ -335,6 +369,8 @@ export class ArtifactData {
           时之沙: "渡火者的煎熬",
           理之冠: "渡火者的智慧",
           空之杯: "渡火者的醒悟",
+          Set2:"火元素抗性提高40%。",
+          Set4:"对处于火元素影响下的敌人造成的伤害提升35%。",
         },
         被怜爱的少女: {
           死之羽: "少女飘摇的思念",
@@ -342,6 +378,8 @@ export class ArtifactData {
           时之沙: "少女苦短的良辰",
           理之冠: "少女易逝的芳颜",
           空之杯: "少女片刻的闲暇",
+          Set2:"角色造成的治疗效果提升15%。",
+          Set4:"施放元素战技或元素爆发后的10秒内，队伍中所有角色受治疗效果加成提高20%。",
         },
         角斗士的终幕礼: {
           死之羽: "角斗士的归宿",
@@ -349,6 +387,8 @@ export class ArtifactData {
           时之沙: "角斗士的希冀",
           理之冠: "角斗士的凯旋",
           空之杯: "角斗士的酣醉",
+          Set2:"攻击力提高18%。",
+          Set4:"装备该圣遗物套装的角色为单手剑、双手剑、长柄武器角色时，角色普通攻击造成的伤害提高35%。",
         },
         翠绿之影: {
           死之羽: "猎人青翠的箭羽",
@@ -356,6 +396,8 @@ export class ArtifactData {
           时之沙: "翠绿猎人的笃定",
           理之冠: "翠绿猎人之冠",
           空之杯: "翠绿猎人的容器",
+          Set2:"获得15%风元素伤害加成。",
+          Set4:"扩散反应造成的伤害提升60%。根据扩散的元素类型，降低受到影响的敌人40%的对应元素抗性，持续10秒。",
         },
         流浪大地的乐团: {
           死之羽: "琴师的箭羽",
@@ -363,6 +405,8 @@ export class ArtifactData {
           时之沙: "终幕的时计",
           理之冠: "指挥的礼帽",
           空之杯: "吟游者之壶",
+          Set2:"元素精通提高80点。",
+          Set4:"装备该圣遗物套装的角色为法器、弓箭角色时，角色重击造成的伤害提高35%。",
         },
         如雷的盛怒: {
           死之羽: "雷灾的孑遗",
@@ -370,6 +414,8 @@ export class ArtifactData {
           时之沙: "雷霆的时计",
           理之冠: "唤雷的头冠",
           空之杯: "降雷的凶兆",
+          Set2:"获得15%雷元素伤害加成。",
+          Set4:"超载、感电、超导反应造成的伤害提升40%。触发这些元素反应时，元素战技冷却时间减少1秒。该效果每0.8秒最多触发一次。",
         },
         炽烈的炎之魔女: {
           死之羽: "魔女常燃之羽",
@@ -377,6 +423,8 @@ export class ArtifactData {
           时之沙: "魔女破灭之时",
           理之冠: "焦灼的魔女帽",
           空之杯: "魔女的心之火",
+          Set2:"获得15%火元素伤害加成。",
+          Set4:"超载、燃烧反应造成的伤害提升40%，蒸发、融化反应的加成系数提高15%。施放元素战技后的10秒内，2件套的效果提高50%，该效果最多叠加3次。",
         },
         昔日宗室之仪: {
           死之羽: "宗室之翎",
@@ -384,6 +432,8 @@ export class ArtifactData {
           时之沙: "宗室时计",
           理之冠: "宗室面具",
           空之杯: "宗室银瓮",
+          Set2:"元素爆发造成的伤害提升20%。",
+          Set4:"施放元素爆发后，队伍中所有角色攻击力提升20%，持续12秒。该效果不可叠加。",
         },
         染血的骑士道: {
           死之羽: "染血的黑之羽",
@@ -391,6 +441,8 @@ export class ArtifactData {
           时之沙: "骑士染血之时",
           理之冠: "染血的铁假面",
           空之杯: "骑士染血之杯",
+          Set2:"造成的物理伤害提高25%。",
+          Set4:"击败敌人后的10秒内，施放重击时不消耗体力，且重击造成的伤害提升50%。",
         },
         悠古的磐岩: {
           死之羽: "嵯峨群峰之翼",
@@ -398,6 +450,8 @@ export class ArtifactData {
           时之沙: "星罗圭璧之晷",
           理之冠: "不动玄石之相",
           空之杯: "巉岩琢塑之樽",
+          Set2:"获得15%岩元素伤害加成。",
+          Set4:"获得结晶反应形成的晶片时，队伍中所有角色获得35%对应元素伤害加成，持续10秒。同时只能通过该效果获得一种元素伤害加成。",
         },
         逆飞的流星: {
           死之羽: "夏祭终末",
@@ -405,6 +459,8 @@ export class ArtifactData {
           时之沙: "夏祭之刻",
           理之冠: "夏祭之面",
           空之杯: "夏祭水玉",
+          Set2:"护盾强效提高35%。",
+          Set4:"处于护盾庇护下时，额外获得40%普通攻击和重击伤害加成。",
         },
         沉沦之心: {
           死之羽: "饰金胸花",
@@ -412,6 +468,8 @@ export class ArtifactData {
           时之沙: "坚铜罗盘",
           理之冠: "酒渍船帽",
           空之杯: "沉波之盏",
+          Set2:"获得15%水元素伤害加成。",
+          Set4:"施放元素战技后的15秒内，普通攻击与重击造成的伤害提高30%。",
         },
         千岩牢固: {
           死之羽: "昭武翎羽",
@@ -419,6 +477,8 @@ export class ArtifactData {
           时之沙: "金铜时晷",
           理之冠: "将帅兜鍪",
           空之杯: "盟誓金爵",
+          Set2:"生命值提升20%。",
+          Set4:"元素战技命中敌人后，使队伍中附近的所有角色攻击力提升20%，护盾强效提升30%，持续3秒。该效果每0.5秒至多触发一次。装备此圣遗物套装的角色处于队伍后台时，依然能触发该效果。",
         },
         苍白之火: {
           死之羽: "贤医之羽",
@@ -426,6 +486,8 @@ export class ArtifactData {
           时之沙: "停摆之刻",
           理之冠: "嗤笑之面",
           空之杯: "超越之盏",
+          Set2:"造成的物理伤害提高25%。",
+          Set4:"元素战技命中敌人后，攻击力提升9%。该效果持续7秒，至多叠加2层，每0.3秒至多触发一次。叠满2层时，2件套的效果提升100%。",
         },
         追忆之注连: {
           死之羽: "思忆之矢",
@@ -433,6 +495,8 @@ export class ArtifactData {
           时之沙: "朝露之时",
           理之冠: "无常之面",
           空之杯: "祈望之心",
+          Set2:"攻击力提高18%。",
+          Set4:"施放元素战技时，如果角色的元素能量高于或等于15点，则会流失15点元素能量，使接下来的10秒内，普通攻击、重击、下落攻击造成的伤害提高50%，持续期间内该效果不会再次触发。",
         },
         绝缘之旗印: {
           死之羽: "切落之羽",
@@ -440,7 +504,30 @@ export class ArtifactData {
           时之沙: "雷云之笼",
           理之冠: "华饰之兜",
           空之杯: "绯花之壶",
+          Set2:"元素充能效率提高20%。",
+          Set4:"基于元素充能效率的25%，提高元素爆发造成的伤害。至多通过这种方式获得75%提升。",
         },
+      },
+      // 圣遗物套装效果
+      setBonus: {
+        "Bizzard Strayer": { 2: { Cryo: 15 }, 4: null },
+        Thundersoother: { 2: { Cryo: 40 }, 4: null },
+        Lavawalker: { 2: { PyroRES: 40 }, 4: null },
+        "Maiden Beloved": { 2: { Healing: 15 }, 4: null },
+        "Gladiator's Finale": { 2: { ATKPer: 18 }, 4: null },
+        "Viridescent Venerer": { 2: { Anemo: 15 }, 4: null },
+        "Wanderer's Troupe": { 2: { elementMastery: 80 }, 4: null },
+        "Thundering Fury": { 2: { Electro: 15 }, 4: null },
+        "Crimson Witch of Flames": { 2: { Pyro: 15 }, 4: null },
+        "Noblesse Oblige": { 2: null, 4: null },
+        "Bloodstained Chivalry": { 2: { Physical: 25 }, 4: null },
+        "Archaic Petra": { 2: { Geo: 15 }, 4: null },
+        "Retracing Bolide": { 2: { Shield: 35 }, 4: null },
+        "Heart of Depth": { 2: { Hydro: 15 }, 4: null },
+        "Tenacity of the Millelith": { 2: { HPPer: 20 }, 4: null },
+        "Pale Flame": { 2: { Physical: 25 }, 4: null },
+        "Shimenawa's Reminiscence": { 2: { ATKPer: 18 }, 4: null },
+        "Emblem of Severed Fate": { 2: { energyRecharge: 20 }, 4: null },
       },
       // 每级升级经验
       exp: [3000, 3725, 4425, 5150, 5900, 6675, 7500, 8350, 9225, 10125, 11050, 12025, 13025, 15150, 17600, 20375, 23500, 27050, 31050, 35575],
@@ -840,6 +927,21 @@ export class ArtifactData {
       elementType: ["Pyro", "Hydro", "Dendro", "Electro", "Anemo", "Cryo", "Geo"],
       // 地区
       nation: ["other", "Mondstadt", "Liyue", "Inazuma", "Snezhnaya"],
+      // 其他属性
+      otherStats: [
+        "HydroRES",
+        "PyroRES",
+        "ElectroRES",
+        "GeoRES",
+        "AnemoRES",
+        "CryoRES",
+        "DendroRES",
+        "PhysicalRES",
+        "incomingHealing",
+        "CD",
+        "Shield",
+        "stamina",
+      ],
     };
     // 设置只读
     const nope = () => {

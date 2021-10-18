@@ -61,7 +61,11 @@
       <ul>
         <li v-for="entry in showdetail.entry" :key="entry">·{{ entry[0] + "+" + entry[1] }}</li>
       </ul>
-      <div class="setName">{{ showdetail.set }}</div>
+      <div class="setName">{{ showdetail.set }}:</div>
+      <div class="setBonusDetail">
+        <span :class="setActive >= 2 ? 'setActived' : 'setInactivated'">{{ $t("term.Set2") }}: {{ setDetail.Set2 }}</span>
+        <span :class="setActive >= 4 ? 'setActived' : 'setInactivated'">{{ $t("term.Set4") }}: {{ setDetail.Set4 }}</span>
+      </div>
     </div>
     <div class="aEquipped" v-if="showdetail.equipped">
       <img :src="sideUrl" alt="side_avatar" draggable="false" />
@@ -161,6 +165,32 @@
         }
         return "";
       },
+      setDetail() {
+        let artifactSet;
+        if (this.language === "zh") {
+          artifactSet = this.$artiConst.val.artifactSet_zh;
+        } else {
+          artifactSet = this.$artiConst.val.artifactSet;
+        }
+        return artifactSet[this.showdetail.set];
+      },
+      // 套装激活情况
+      setActive() {
+        if (this.showdetail.equipped) {
+          let setBonus = this.$artifact.getSetBonus(this.$artifact.getSetIndex(this.showdetail.equipped));
+          for (let key in setBonus) {
+            const count = setBonus[key];
+            let setName = key;
+            if (this.language === "zh") {
+              setName = this.$artiConst.val.setList_zh[this.$artiConst.val.setList.indexOf(key)];
+            }
+            if (setName === this.showdetail.set) {
+              return count;
+            }
+          }
+        }
+        return 0;
+      },
     },
     methods: {
       upgrade(entry = -1) {
@@ -212,10 +242,7 @@
     .titleLine {
       position: absolute;
       z-index: 2;
-      top: 0.125rem;
-      right: 0.125rem;
-      bottom: 0.125rem;
-      left: 0.125rem;
+      inset: 0.125rem;
       width: 18.5rem;
       height: 1.625rem;
       border: solid 0.125rem rgba(144, 82, 41, 0.7);
@@ -250,7 +277,7 @@
       height: 8.4375rem;
       padding: 0.5625rem 1.125rem;
       background-image: linear-gradient(to bottom right, rgba(110, 72, 72, 0.5) 15%, rgba(255, 175, 45, 0.7)), url(../assets/images/item_bg.png);
-      background-size: auto 8.1875rem, 100%;
+      background-size: auto 8.25rem, 100%;
       background-position-y: 0, 0;
 
       .mainEntry {
@@ -296,7 +323,7 @@
     }
 
     .aContent {
-      height: 10.375rem;
+      min-height: 16rem;
       font-size: 0.875rem;
       padding: 0.9375rem 1.125rem;
       background-color: #ece5d8;
@@ -322,6 +349,50 @@
 
       .setName {
         color: $genshin_green;
+      }
+
+      .setBonusDetail {
+        color: rgb(113, 119, 130);
+        padding-left: 0.875rem;
+
+        span {
+          position: relative;
+          display: block;
+          line-height: 1rem;
+          margin-top: 0.25rem;
+        }
+
+        .setInactivated {
+          &::before {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0.0625rem;
+            left: -0.875rem;
+            color: rgb(113, 119, 130);
+            background-image: url(../assets/svg/ban.svg);
+            background-size: cover;
+            height: 0.75rem;
+            width: 0.75rem;
+          }
+        }
+
+        .setActived {
+          color: $genshin_green;
+
+          &::before {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0.0625rem;
+            left: -0.875rem;
+            color: rgb(113, 119, 130);
+            background-image: url(../assets/svg/correct.svg);
+            background-size: cover;
+            height: 0.75rem;
+            width: 0.75rem;
+          }
+        }
       }
 
       .unlock,
@@ -416,8 +487,8 @@
         line-height: 1.5rem;
         margin-bottom: 0.75rem;
 
-        span{
-          font-size: .875rem;
+        span {
+          font-size: 0.875rem;
           white-space: nowrap;
           text-overflow: ellipsis;
         }

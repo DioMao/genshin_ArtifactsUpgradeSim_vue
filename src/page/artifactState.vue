@@ -46,7 +46,7 @@
         <span class="EMBonusDetail" v-if="key === 'elementMastery' && $i18n.locale === 'en'">{{
           `The higher a character's elemental mastery, the stronger the elemental energy that can be released.
           Increases damage caused by Vaporize and Melt by ${EMBonus[0]}%.
-          Also increases damage caused by Overloaded, Superconduct, Electro-Charged,Shattered, and Swirl by ${EMBonus[1]}%.
+          Also increases damage caused by Overloaded, Superconduct, Electro-Charged, Shattered, and Swirl by ${EMBonus[1]}%.
           Increases the damage absorption power of shields created through Crystallize by ${EMBonus[2]}%.`
         }}</span>
       </div>

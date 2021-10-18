@@ -71,7 +71,7 @@
           <div class="setChangeInfo">
             <span v-if="JSON.stringify(setBonusChange) === '{}'">{{ $t("msg.noChanges") }}</span>
             <span v-for="(value, key) in setBonusChange" :key="key" :class="value[1] ? 'getBonus' : 'lostBonus'">
-              {{ $t("setList[" + $artiConst.val.setList.indexOf(key) + "]") + "(" + value[0] + ")" }}
+              {{ $t("setList[" + $artiConst.val.setList.indexOf(key) + "]") + "(" + value[0] + "): " + setBonusDetail(key, value[0]) }}
             </span>
           </div>
           <div class="attrChange">{{ $t("msg.characterAttrChange") }}</div>
@@ -108,6 +108,8 @@
       // 获取全局函数
       const globalProperties = getCurrentInstance().appContext.config.globalProperties;
       const artifactFunc = globalProperties.$artifact;
+      const artiConst = globalProperties.$artiConst.val;
+      const trans = globalProperties.$t;
       const db = globalProperties.$db;
       const router = useRouter();
       // 输出的响应式对象
@@ -143,6 +145,17 @@
         selectCharacter.value = val;
       };
 
+      // 套装信息
+      const setBonusDetail = (key, count) => {
+        let artifactSet = "artifactSet";
+        if (language.value === "zh") {
+          artifactSet += "_zh";
+        }
+        key = trans("setList[" + artiConst.setList.indexOf(key) + "]");
+        count = "Set" + count;
+        return artiConst[artifactSet][key][count];
+      };
+
       watch([() => props.symbol], async val => {
         // symbol
         let artifact = await db.ARTIFACT_LIST.get(val[0]);
@@ -160,6 +173,7 @@
         chengeArtifact,
         lockChange,
         characterChange,
+        setBonusDetail,
       };
     },
     data() {
@@ -240,7 +254,7 @@
             }
           };
         // 旧装备名称
-        this.oldArtifactName = this.$artifact.getArtifactName(val.symbol,this.language);
+        this.oldArtifactName = this.$artifact.getArtifactName(val.symbol, this.language);
         // 记录旧数据+对比新数据(旧属性为负值，代表更换后会失去的属性，新属性为正值)
         // 主属性对比
         if (artifactNow.mainEntry === val.mainEntry) {

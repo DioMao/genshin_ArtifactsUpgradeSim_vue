@@ -1,5 +1,5 @@
 <template>
-  <div class="popup-box" :class="isShow ? 'popup-show' : 'popup-hide'" @click="this.isShow = false">
+  <div class="popup-box" :class="isShow ? 'popup-show' : ''" @click="this.isShow = false">
     <div class="popup-text">
       <div class="popup-title">
         <slot name="title">Tips:</slot>
@@ -64,6 +64,7 @@
     display: flex;
     justify-content: space-between;
     top: 40%;
+    left: -15rem;
     z-index: 30;
     width: 15rem;
     background-color: rgb(245, 242, 238);
@@ -101,10 +102,6 @@
   }
 
   .popup-show {
-    left: 0;
-  }
-
-  .popup-hide {
-    left: -15rem;
+    transform: translateX(15rem);
   }
 </style>

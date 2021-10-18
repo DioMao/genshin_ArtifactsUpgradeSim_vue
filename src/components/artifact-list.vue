@@ -24,7 +24,7 @@
           class="card-body ArtifactsTitle"
           :style="{
             backgroundImage: 'url(' + imgUrl(Artifacts.symbol) + '),linear-gradient(135deg,rgb(159,96,42),rgb(207,122,38))',
-            borderRadius: briefmode ? '.25rem .25rem 1.5625rem' : '',
+            borderRadius: '.25rem .25rem 1.5625rem',
           }"
         >
           <div class="islock" v-if="Artifacts.lock">
@@ -72,41 +72,6 @@
             <img :src="sideUrl(Artifacts.equipped)" alt="equipped" draggable="false" />
           </div>
         </div>
-        <ul class="list-group list-group-flush" v-if="!briefmode">
-          <li v-for="(entry, index2) in Artifacts.entry" :key="index2" class="list-group-item" @click="upgrade(Artifacts.symbol, index2)">
-            {{ entry[0] + "+" + entry[1] }}
-            <span class="badge bg-primary upgradeCheat" v-show="Artifacts.level < 20">+</span>
-          </li>
-          <li class="list-group-item" v-if="Artifacts.entry.length === 3">——</li>
-        </ul>
-        <!-- 操作框 -->
-        <div class="card-body buttonBox" style="text-align:center;" v-if="!briefmode">
-          <button id="upgrade" @click="upgrade(Artifacts.symbol)" class="btn btn-sm float-start" :disabled="Artifacts.level >= 20">
-            <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="#257ad7" class="bi bi-arrow-up-square-fill" viewBox="0 0 16 16">
-              <path
-                d="M2 16a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2zm6.5-4.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 1 0z"
-              />
-            </svg>
-          </button>
-          <button id="initArtifact" @click="init(Artifacts.symbol)" :class="'btn btn-sm ' + (Artifacts.level === 0 ? 'hide' : '')">
-            <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="#037728" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
-              <path
-                d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"
-              />
-              <path
-                fill-rule="evenodd"
-                d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"
-              />
-            </svg>
-          </button>
-          <button id="deleteArtifact" @click.stop="deleteArtifact(Artifacts.symbol)" class="btn btn-sm float-end">
-            <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="#c90000" class="bi bi-trash-fill" viewBox="0 0 16 16">
-              <path
-                d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"
-              />
-            </svg>
-          </button>
-        </div>
       </div>
       <!-- flex填充 -->
       <div class="ArtifactsBox card rounded" v-for="i in fillCount" :key="i" style="visibility:hidden;"></div>
@@ -143,11 +108,6 @@
       showsymbol: {
         type: String,
         default: "",
-      },
-      // 列表模式
-      briefmode: {
-        type: Boolean,
-        default: true,
       },
       // 圣遗物强化质量
       entryquality: {
@@ -195,9 +155,6 @@
           }
         },
         deep: true,
-      },
-      briefmode() {
-        this.$refs.listContainer.scrollTop = 0;
       },
     },
     methods: {
@@ -322,7 +279,7 @@
           try {
             itemH = item.getBoundingClientRect().height + 1.5 * rem;
           } catch (error) {
-            this.briefmode ? (itemH = 8 * rem) : (itemH = 19 * rem);
+            itemH = 8 * rem;
           }
           // 计算渲染列表行数
           renderRow = Math.ceil(viewH / itemH) * 3;
@@ -400,7 +357,7 @@
           this.fillbottom = 0;
           this.changeFillCount();
           // 默认高度
-          this.briefmode === true ? (itemH = 8 * rem) : (itemH = 19 * rem);
+          itemH = 8 * rem;
         }
       },
     },

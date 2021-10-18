@@ -19,7 +19,7 @@
       </div>
     </div>
     <!-- 筛选提示框 -->
-    <div class="filterBox" :class="userSetting.filterMain !== 'default' || userSetting.filterSet !== 'default' ? 'filterBoxShow' : 'filterBoxHide'">
+    <div class="filterBox" :class="userSetting.filterMain !== 'default' || userSetting.filterSet !== 'default' ? 'filterBoxShow' : ''">
       <div style="display:inline-block;">{{ $t("msg.filter") }}</div>
       <div class="filterMain" v-show="userSetting.filterMain !== 'default'" @click="userSetting.filterMain = 'default'">
         {{ $t("term." + userSetting.filterMain) }}
@@ -33,7 +33,6 @@
       <artifact-list
         :rawdata="ArtifactsList"
         :showsymbol="showSymbol"
-        :briefmode="userSetting.listBriefMode"
         :entryquality="userSetting.entryQuality"
         @sync="syncListData"
         @changeshowsymbol="changeShowSymbol"
@@ -362,10 +361,10 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <div class="form-check form-switch mt-3">
+          <!-- <div class="form-check form-switch mt-3">
             <label class="form-check-label" for="listModeRadio">{{ $t("msg.brief") }}</label>
             <input class="form-check-input" type="checkbox" id="listModeRadio" v-model="userSetting['listBriefMode']" />
-          </div>
+          </div> -->
           <div class="mt-3">
             <div>{{ $t("tips.attrUpLv") }}<br /><span style="color:#676767;font-size:0.6rem">此选项在强化界面无效。</span></div>
             <select class="form-select form-select-sm" name="entryQuality" id="entryQuality" v-model="userSetting.entryQuality">
@@ -528,7 +527,6 @@
           language: "zh", // 语言
           entryQuality: -1, // 副词条升级品质
           highScore: 35, // 高分圣遗物标准
-          listBriefMode: true, // 圣遗物列表模式（details/brief）
           sortRule: "lvdesc", // 排序规则
           filterMain: "default", // 主词条筛选
           filterPart: "default", // 位置筛选
@@ -846,6 +844,7 @@
     .filterBox {
       position: fixed;
       bottom: 4.5rem;
+      left: -5.5rem;
       z-index: 30;
       color: rgb(102, 112, 122);
       background-color: #fff;
@@ -882,11 +881,7 @@
     }
 
     .filterBoxShow {
-      left: 0;
-    }
-
-    .filterBoxHide {
-      left: -5.5rem;
+      transform: translateX(5.5rem);
     }
   }
 
@@ -926,7 +921,7 @@
   }
 
   .MobileShow {
-    right: 0;
+    transform: translateX(-100%);
   }
 
   // footer

@@ -68,6 +68,8 @@ module.exports = {
   },
   term: {
     artifacts: "Artifacts",
+    Set2: "2-Piece",
+    Set4: "4-Piece",
     baseStats: "Base Stats",
     advanceStats: "Advance Stats",
     elementalType: "Elemental Type",
