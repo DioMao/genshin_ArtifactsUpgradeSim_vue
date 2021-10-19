@@ -5,6 +5,10 @@ module.exports = {
     attrUpLv: "副词条提升幅度",
     notFound: "前面的区域，以后再来探索吧！",
     toHome: "回到首页",
+    lowest: "最低",
+    lower: "较低",
+    higher: "较高",
+    highest: "最高",
   },
   msg: {
     language: "语言",
@@ -65,6 +69,7 @@ module.exports = {
     characterStateList: "人物属性",
     commonHandle: "通用操作",
     targetedEnhanced: "精准强化",
+    enhancedRank: "强化幅度",
   },
   term: {
     artifacts: "圣遗物",

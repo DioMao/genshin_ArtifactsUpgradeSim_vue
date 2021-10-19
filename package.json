@@ -1,6 +1,6 @@
 {
-  "name": "artifact_sim",
-  "version": "0.2.2",
+  "name": "genshin_artifact_sim",
+  "version": "0.2.3",
   "author": "DioMao",
   "license": "MIT",
   "private": true,

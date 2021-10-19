@@ -5,6 +5,10 @@ module.exports = {
     attrUpLv: "Bonus Attributes Upgrade Quality",
     notFound: "404 Not Found",
     toHome: "Back Home",
+    lowest: "Lowest",
+    lower: "Lower",
+    higher: "Higher",
+    highest: "Highest",
   },
   msg: {
     language: "language",
@@ -64,7 +68,8 @@ module.exports = {
     stateDetail: "State Detail",
     characterStateList: "Character State",
     commonHandle: "Common Handle",
-    targetedEnhanced: "Targeted Enhanced"
+    targetedEnhanced: "Targeted Enhanced",
+    enhancedRank: "Enhanced Rank",
   },
   term: {
     artifacts: "Artifacts",

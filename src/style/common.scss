@@ -9,15 +9,15 @@ $genshin_green_light: rgb(143, 229, 0);
 $genshin_gray_light: rgb(169, 169, 169);
 $genshin_green: rgb(92, 178, 86);
 $genshin_yellow: rgb(255, 225, 75);
-$genshin_brown_white: rgb(217,213,203);
-$genshin_brown_red: rgb(171,102,82);
+$genshin_brown_white: rgb(217, 213, 203);
+$genshin_brown_red: rgb(171, 102, 82);
 
 @font-face {
   font-family: "genshin-font";
   src: url(~@/style/genshin_mini_artifact.ttf);
 }
 
-body{
+body {
   font-family: "genshin-font" !important;
 }
 
@@ -432,17 +432,14 @@ body{
 @keyframes AlertBoxUp {
   0% {
     transform: translateY(0);
-    // margin-top: 0;
   }
 
   40% {
     transform: translateY(0);
-    // margin-top: 0;
   }
 
   100% {
     transform: translateY(-6.25rem);
-    // margin-top: -6.25rem;
   }
 }
 

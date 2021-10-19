@@ -99,6 +99,16 @@
             </button>
           </div>
         </div>
+        <h4>◆ {{ $t("handle.enhancedRank") }}</h4>
+        <div>
+          <select class="form-select" v-model="enhancedRank">
+            <option value="-1">{{ $t("msg.random") }}</option>
+            <option value="0">{{ $t("tips.lowest") }}</option>
+            <option value="1">{{ $t("tips.lower") }}</option>
+            <option value="2">{{ $t("tips.higher") }}</option>
+            <option value="3">{{ $t("tips.highest") }}</option>
+          </select>
+        </div>
       </div>
     </div>
   </div>
@@ -108,7 +118,9 @@
   export default {
     name: "artifact-show",
     data() {
-      return {};
+      return {
+        enhancedRank: -1,
+      };
     },
     props: {
       showdetail: {
@@ -194,7 +206,7 @@
     },
     methods: {
       upgrade(entry = -1) {
-        this.$emit("upgrade", this.symbol, entry);
+        this.$emit("upgrade", this.symbol, entry, this.enhancedRank);
       },
       init() {
         this.$emit("init", this.symbol);
@@ -386,7 +398,7 @@
             position: absolute;
             top: 0.0625rem;
             left: -0.875rem;
-            color: rgb(113, 119, 130);
+            color: $genshin_green;
             background-image: url(../assets/svg/correct.svg);
             background-size: cover;
             height: 0.75rem;

@@ -29,7 +29,7 @@
     <div class="stateShowBox">
       <!-- 基础属性 -->
       <div class="stateTitle">{{ $t("term.baseStats") }}</div>
-      <div class="stateDetail" v-for="(value, key) in baseStats" :key="key">
+      <div class="stateDetail" v-for="(value, key) in baseStats" :key="key" :class="'stat-' + key">
         <span class="stateName">
           {{ $t("term." + key) }}
         </span>
@@ -50,14 +50,14 @@
           Increases the damage absorption power of shields created through Crystallize by ${EMBonus[2]}%.`
         }}</span>
       </div>
-      <div class="stateDetail">
+      <div class="stateDetail stat-stamina">
         <span class="stateName">{{ $t("term.stamina") }}</span>
         <span class="stateValue">240</span>
       </div>
       <!-- 进阶属性 -->
       <div class="stateTitle">{{ $t("term.advanceStats") }}</div>
       <div class="for-nth-child" style="display:none;"></div>
-      <div class="stateDetail" v-for="(value, key) in advanceStats" :key="key">
+      <div class="stateDetail" v-for="(value, key) in advanceStats" :key="key" :class="'stat-' + key">
         <span class="stateName">
           {{ $t("term." + key) }}
         </span>
@@ -66,7 +66,7 @@
       <!-- 元素属性 -->
       <div class="stateTitle">{{ $t("term.elementalType") }}</div>
       <div class="for-nth-child" style="display:none;"></div>
-      <div class="stateDetail" v-for="(value, key) in elementalType" :key="key">
+      <div class="stateDetail" v-for="(value, key) in elementalType" :key="key" :class="'stat-' + key">
         <span class="stateName">
           {{ $t("term." + key) }}
         </span>
@@ -273,7 +273,7 @@
     .stateDetail {
       position: relative;
       line-height: 2.25rem;
-      padding: 0 0.5rem;
+      padding: 0 0.5rem 0 2rem;
 
       .stateValue {
         float: right;
@@ -306,6 +306,127 @@
 
       &:hover::before {
         border: solid 0.1875rem $genshin_gray_light;
+      }
+
+      &::after {
+        content: "";
+        display: block;
+        position: absolute;
+        z-index: 3;
+        left: 0.25rem;
+        top: 0.3125rem;
+        height: 1.5rem;
+        width: 1.5rem;
+        background-size: 100%;
+      }
+    }
+
+    // 属性图标
+    .stat-HPPer {
+      &::after {
+        background-image: url(../assets/images/stats_icon/Icon_HPPer.png);
+      }
+    }
+
+    .stat-ATKPer {
+      &::after {
+        background-image: url(../assets/images/stats_icon/Icon_ATKPer.png);
+      }
+    }
+
+    .stat-DEFPer {
+      &::after {
+        background-image: url(../assets/images/stats_icon/Icon_DEFPer.png);
+      }
+    }
+
+    .stat-elementMastery {
+      &::after {
+        background-image: url(../assets/images/stats_icon/Icon_elementMastery.png);
+      }
+    }
+
+    .stat-stamina {
+      &::after {
+        background-image: url(../assets/images/stats_icon/Icon_stamina.png);
+      }
+    }
+
+    .stat-CRITRate {
+      &::after {
+        background-image: url(../assets/images/stats_icon/Icon_CRITRate.png);
+      }
+    }
+
+    .stat-Healing {
+      &::after {
+        background-image: url(../assets/images/stats_icon/Icon_Healing.png);
+      }
+    }
+    
+    .stat-energyRecharge {
+      &::after {
+        background-image: url(../assets/images/stats_icon/Icon_energyRecharge.png);
+      }
+    }
+
+    .stat-CD {
+      &::after {
+        background-image: url(../assets/images/stats_icon/Icon_CD.png);
+      }
+    }
+
+    .stat-Shield {
+      &::after {
+        background-image: url(../assets/images/stats_icon/Icon_Shield.png);
+      }
+    }
+
+    .stat-Pyro {
+      &::after {
+        background-image: url(../assets/images/stats_icon/Icon_Pyro.png);
+      }
+    }
+
+    .stat-Hydro {
+      &::after {
+        background-image: url(../assets/images/stats_icon/Icon_Hydro.png);
+      }
+    }
+
+    .stat-Anemo {
+      &::after {
+        background-image: url(../assets/images/stats_icon/Icon_Anemo.png);
+      }
+    }
+
+    .stat-Electro {
+      &::after {
+        background-image: url(../assets/images/stats_icon/Icon_Electro.png);
+      }
+    }
+
+    .stat-Dendro {
+      &::after {
+        background-image: url(../assets/images/stats_icon/Icon_Dendro.png);
+      }
+    }
+
+    .stat-Cryo {
+      &::after {
+        background-image: url(../assets/images/stats_icon/Icon_Cryo.png);
+      }
+    }
+
+    .stat-Geo {
+      &::after {
+        background-image: url(../assets/images/stats_icon/Icon_Geo.png);
+      }
+    }
+
+    .stat-Physical {
+      &::after {
+        background-image: url(../assets/images/stats_icon/Icon_Physical.png);
       }
     }
   }

@@ -318,6 +318,7 @@
           top: -0.9375rem;
           left: -0.5rem;
           width: 4rem;
+          transition: all 0.2s ease-in-out;
         }
       }
 
@@ -330,6 +331,10 @@
       .bannerSelect {
         background-color: transparentize($genshin_cyan_blue, 0.25);
         border: solid 0.1875rem transparentize($genshin_cyan_blue, 0.25);
+
+        img {
+          transform: scale(1.1) translateY(-5%);
+        }
       }
     }
   }

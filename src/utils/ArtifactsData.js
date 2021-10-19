@@ -1,5 +1,5 @@
 /**
- * ArtifactsUpgradeSim v0.2.2 module_data
+ * ArtifactsUpgradeSim v0.2.3 module_data
  * Copyrigth 2021-2022 DioMao (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/graphs/contributors)
  * Licensed under MIT (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/main/LICENSE)
  */

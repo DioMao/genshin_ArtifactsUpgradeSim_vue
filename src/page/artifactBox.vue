@@ -33,7 +33,6 @@
       <artifact-list
         :rawdata="ArtifactsList"
         :showsymbol="showSymbol"
-        :entryquality="userSetting.entryQuality"
         @sync="syncListData"
         @changeshowsymbol="changeShowSymbol"
         @create="createArtifact"
@@ -366,15 +365,8 @@
             <input class="form-check-input" type="checkbox" id="listModeRadio" v-model="userSetting['listBriefMode']" />
           </div> -->
           <div class="mt-3">
-            <div>{{ $t("tips.attrUpLv") }}<br /><span style="color:#676767;font-size:0.6rem">此选项在强化界面无效。</span></div>
-            <select class="form-select form-select-sm" name="entryQuality" id="entryQuality" v-model="userSetting.entryQuality">
-              <option value="-1">{{ $t("msg.random") }}</option>
-              <option v-for="quality in 4" :key="quality" :value="quality - 1">{{ quality }}</option>
-            </select>
-          </div>
-          <div class="mt-3">
             <div>{{ $t("msg.language") }}</div>
-            <select class="form-select form-select-sm" name="entryQuality" id="entryQuality" v-model="userSetting.language">
+            <select class="form-select form-select-sm" v-model="userSetting.language">
               <option value="en">English</option>
               <option value="zh">简体中文</option>
             </select>
@@ -525,7 +517,6 @@
             arrRule: [],
           },
           language: "zh", // 语言
-          entryQuality: -1, // 副词条升级品质
           highScore: 35, // 高分圣遗物标准
           sortRule: "lvdesc", // 排序规则
           filterMain: "default", // 主词条筛选
@@ -627,10 +618,10 @@
         this.alertControl("自选圣遗物已生成！", 1500);
       },
       // 圣遗物升级
-      ArtifactUpgrade(symbol, entry = "") {
-        let res = this.$artifact.upgrade(symbol, entry, this.userSetting.entryQuality),
+      ArtifactUpgrade(symbol, entry = "",enhancedRank = -1) {
+        let res = this.$artifact.upgrade(symbol, entry, Number.parseInt(enhancedRank)),
           qualityAlert = "";
-        if (Number.parseFloat(this.userSetting.entryQuality) !== -1) qualityAlert = "已启用副词条自选提升幅度！";
+        if (Number.parseFloat(enhancedRank) !== -1) qualityAlert = "已启用副词条自选提升幅度！";
         this.syncListData();
         if (res === true) {
           this.alertControl(this.$t("handle.upSuccess") + `！${qualityAlert}`, 1500);

@@ -81,13 +81,6 @@
     mounted() {
       this.title = this.$t("title");
       this.loading();
-      // 预加载图片(同时控制进度条)
-      // this.$axios.all([this.preLoadImg()])
-      //     .then(this.$axios.spread(() => {
-
-      //     })).catch((err => {
-      //         console.log(err);
-      //     }))
     },
     computed: {
       language() {
@@ -123,24 +116,9 @@
           };
           img.onerror = () => {
             this.loadProgress += 25;
-            alert("部分资源加载失败，请刷新重试！\nSome resources failed to load, please refresh and try again!");
           };
         }
       },
-      // preLoadImg() {
-      //     const that = this;
-      //     let errtime = 0,
-      //         request = this.$axios.get(that.$store.state.symbolSrc)
-      //         .then(() => {
-      //             that.loadProgress += 80;
-      //             return true;
-      //         }).catch(err => {
-      //             console.log(err);
-      //             (errtime < 3) ? (request, errtime++) : (that.loadProgress += 15);
-      //         })
-      //     // console.log(that.$store.state.symbolSrc)
-      //     console.log(that.imgList[0])
-      // }
     },
   };
 </script>

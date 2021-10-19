@@ -48,15 +48,7 @@
           <div class="card-text" :style="{ fontSize: $i18n.locale === 'zh' ? '0.9rem' : '0.75rem', whiteSpace: 'nowrap' }">
             {{ Artifacts.part }}
           </div>
-          <div class="levelStar">
-            <span v-for="i in 5" :key="i" style="margin-right: 2px;">
-              <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="#FFCC32" class="bi bi-star-fill" viewBox="0 0 16 16">
-                <path
-                  d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-                />
-              </svg>
-            </span>
-          </div>
+          <div class="levelStar"></div>
           <div class="card-text" style="color:rgb(223,185,170);white-space:nowrap" :style="{ fontSize: $i18n.locale === 'en' ? '0.5rem' : 'inherit' }">
             {{ Artifacts.mainEntry }}
           </div>
@@ -109,11 +101,6 @@
         type: String,
         default: "",
       },
-      // 圣遗物强化质量
-      entryquality: {
-        type: [String, Number],
-        default: -1,
-      },
     },
     mounted() {
       // 先记录scrollTop，调用vmList后会重置scrollTop值
@@ -142,9 +129,9 @@
         handler(val, old) {
           // 列表数量变化时才调用vmList计算渲染列表
           if (val.length !== old.length) {
-            this.vmList(false);
+            this.vmList();
           }
-          this.vmList(false);
+          this.vmList();
         },
         deep: true,
       },
@@ -173,23 +160,6 @@
       },
       createArtifact() {
         this.$emit("create");
-      },
-      upgrade(symbol, entry = "") {
-        if (this.$artifact.upgrade(symbol, entry, this.entryquality)) {
-          this.$emit("alert", this.$t("handle.upSuccess"));
-        } else {
-          this.$emit("alert", this.$t("handle.maxLv"));
-        }
-        this.syncListData();
-      },
-      init(symbol) {
-        this.$artifact.reset(symbol);
-        this.syncListData();
-      },
-      deleteArtifact(symbol) {
-        this.$artifact.deleteOne(symbol);
-        this.$emit("changeshowsymbol", "");
-        this.syncListData();
       },
       mobileShow() {
         this.$emit("mobileshow");
@@ -250,12 +220,12 @@
             this.waiting = setTimeout(() => {
               fn.apply(this, arguments);
               this.waiting = null;
-            }, 100);
+            }, 200);
           }
         };
       },
       // 虚拟列表
-      vmList(unchange = true) {
+      vmList() {
         // console.log("vmlist");
         const scroll = this.$refs.listContainer;
         const rem = Number.parseFloat(window.getComputedStyle(document.getElementsByTagName("html")[0]).fontSize.slice(0, -2));
@@ -288,11 +258,6 @@
           // 滚动高度到达一定值时刷新列表
           if (Math.abs(this.anchor - scroll.scrollTop) > viewH) {
             this.anchor = scroll.scrollTop;
-          } else {
-            if (unchange) {
-              this.changeFillCount();
-              return;
-            }
           }
           // 列表不够直接返回
           if (this.rawdata.length < renderRow * this.itemMax) {
@@ -434,7 +399,6 @@
     width: 10rem;
     font-size: 0.8rem;
     transition: ease 0.2s all;
-    // overflow: hidden;
     border: none !important;
     background-color: $genshin_white !important;
 
@@ -489,6 +453,12 @@
         }
       }
 
+      .levelStar {
+        height: 1rem;
+        width: 5rem;
+        background-image: url(../assets/svg/star.svg);
+      }
+
       .mobileShow {
         position: absolute;
         inset: 0 0 0 0;
@@ -501,8 +471,6 @@
 
     .card-body {
       &:first-child {
-        // background-color: rgb(195, 133, 66);
-        // background-image: linear-gradient(135deg,rgb(148,97,48),rgb(194,122,46));
         border-top-left-radius: 0.25rem;
         border-top-right-radius: 0.25rem;
         border-bottom-right-radius: 1.5625rem;
@@ -516,24 +484,11 @@
       }
     }
 
-    .buttonBox {
-      background-color: rgb(255, 231, 187);
-      padding: 0.3125rem 0.9375rem;
-      border-bottom-left-radius: 0.25rem;
-      border-bottom-right-radius: 0.25rem;
-    }
-
     ul li {
       color: $genshin_dark;
       background-color: $genshin_white;
       font-size: 0.75rem;
       white-space: nowrap;
     }
-  }
-
-  .upgradeCheat {
-    display: inline-block;
-    position: absolute;
-    right: 0.3125rem;
   }
 </style>
