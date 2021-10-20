@@ -19,7 +19,7 @@ IDB.version(1).stores({
 /**
  * ES6 version
  */
-const ArtifactsFunction = function(){
+const ArtifactsFunction = function() {
   // 定义私有属性
   const AUS_LIST = Symbol("AUS_LIST");
   const DELETE_HISTORY = Symbol("DELETE_HISTORY");
@@ -29,7 +29,7 @@ const ArtifactsFunction = function(){
   const COUNT_LIST = Symbol("COUNT_LIST");
   const LANGUAGE = Symbol("LANGUAGE");
 
-  class ArtifactsFunction_class {
+  return class ArtifactsFunction_class {
     #AUTHOR = "DioMao";
     #VERSION = "0.2.3";
     constructor() {
@@ -41,7 +41,7 @@ const ArtifactsFunction = function(){
       this[COUNT_LIST] = Object.create(null);
       this[LANGUAGE] = "origin";
     }
-  
+
     /**
      * 生成初始数据
      * @param {string} __part 指定位置，可为空
@@ -144,7 +144,7 @@ const ArtifactsFunction = function(){
       if (__storage) IDB.ARTIFACT_LIST.add(newArtifacts);
       return newArtifacts;
     }
-  
+
     /**
      * 批量生成（随机）
      * @param {number} count 生成数量
@@ -171,7 +171,7 @@ const ArtifactsFunction = function(){
       }
       if (count === 0) return true;
     }
-  
+
     /**
      * 升级强化
      * @param {string} __symbol 圣遗物UUID
@@ -205,6 +205,9 @@ const ArtifactsFunction = function(){
         }
         let addEntry = this.randomRate(currentEntryList, currentEntryRate);
         let addRate = this.randomEntryValue(addEntry);
+        if (__upLevel !== -1 && typeof __upLevel === "number" && Math.floor(__upLevel) < artiConst.val.entryValue[addEntry].length) {
+          addRate = artiConst.val.entryValue[addEntry][Math.floor(__upLevel)];
+        }
         currentArtifact.entry.push([addEntry, addRate]);
         currentArtifact.upgradeHistory.push([addEntry, addRate]);
       } else {
@@ -243,7 +246,7 @@ const ArtifactsFunction = function(){
       IDB.ARTIFACT_LIST.put(currentArtifact);
       return true;
     }
-  
+
     /**
      * 圣遗物得分计算
      * @param {string} __symbol 圣遗物UUID
@@ -328,7 +331,7 @@ const ArtifactsFunction = function(){
       }
       return totalScore;
     }
-  
+
     /**
      * 圣遗物重置初始状态
      * @param {string} __symbol 圣遗物UUID
@@ -351,7 +354,7 @@ const ArtifactsFunction = function(){
         return currentArtifact;
       }
     }
-  
+
     /**
      * 重置全部圣遗物状态
      */
@@ -365,7 +368,7 @@ const ArtifactsFunction = function(){
       }
       if (list.length > 0) IDB.ARTIFACT_LIST.bulkPut(list);
     }
-  
+
     /**
      * 删除指定数据
      * @param {string} symbol 圣遗物UUID
@@ -390,7 +393,7 @@ const ArtifactsFunction = function(){
         return true;
       }
     }
-  
+
     /**
      * 清空数据
      */
@@ -410,7 +413,7 @@ const ArtifactsFunction = function(){
         IDB.ARTIFACT_LIST.bulkDelete(list);
       }
     }
-  
+
     /**
      * 撤销删除（对deleteOne删除的数据生效）
      * @returns 结果
@@ -426,7 +429,7 @@ const ArtifactsFunction = function(){
       IDB.ARTIFACT_LIST.add(artifact);
       return true;
     }
-  
+
     /**
      * 更改countList
      * @param {string | array} key 键
@@ -449,7 +452,7 @@ const ArtifactsFunction = function(){
       });
       return true;
     }
-  
+
     /**
      * 强制刷新countList
      */
@@ -459,7 +462,7 @@ const ArtifactsFunction = function(){
         this.changeCount([val.part, val.mainEntry, val.set]);
       });
     }
-  
+
     /**
      * 圣遗物上锁/解锁
      * @param {string} symbol 圣遗物UUID
@@ -472,7 +475,7 @@ const ArtifactsFunction = function(){
       IDB.ARTIFACT_LIST.put(this[AUS_LIST][index]);
       return true;
     }
-  
+
     /**
      * 查找countList
      * @param {string} key 键
@@ -487,7 +490,7 @@ const ArtifactsFunction = function(){
         return 0;
       }
     }
-  
+
     /**
      * 对圣遗物列表排序
      * @param {string} rule 排序规则
@@ -587,7 +590,7 @@ const ArtifactsFunction = function(){
         return false;
       }
     }
-  
+
     /**
      * 根据symbol查询圣遗物所在位置（下标）
      * @param {string} symbol 圣遗物标识
@@ -598,7 +601,7 @@ const ArtifactsFunction = function(){
         return val.symbol === symbol;
       });
     }
-  
+
     /**
      * 处理并返回指定symbol的圣遗物数据
      * @param {string} symbol 圣遗物symbol
@@ -617,7 +620,7 @@ const ArtifactsFunction = function(){
         return this.translate(artifact, language);
       }
     }
-  
+
     /**
      * 移除isNew状态
      * @param {string} symbol 圣遗物标识
@@ -630,7 +633,7 @@ const ArtifactsFunction = function(){
       IDB.ARTIFACT_LIST.put(this[AUS_LIST][index]);
       return true;
     }
-  
+
     /**
      * 获取圣遗物名称
      * @param {string} symbol 圣遗物标识
@@ -655,9 +658,9 @@ const ArtifactsFunction = function(){
       }
       return "Can't get name.";
     }
-  
+
     /** 套装函数 **/
-  
+
     /**
      * 创建新的套装
      * @param {string} name 套装名
@@ -683,7 +686,7 @@ const ArtifactsFunction = function(){
       IDB.CUSTOM_SET.add(newSet);
       return true;
     }
-  
+
     /**
      * 更新套装名称
      * @param {number} index 需要改名的套装下标
@@ -703,7 +706,7 @@ const ArtifactsFunction = function(){
       IDB.CUSTOM_SET.put(this[SET_LIST][index]);
       return true;
     }
-  
+
     /**
      * 根据name获取套装序号 **如果有重名套装，则返回第一个序号**
      * @param {string} name 套装名称
@@ -714,7 +717,7 @@ const ArtifactsFunction = function(){
         return val.name === name;
       });
     }
-  
+
     /**
      * 根据name获取套装 **如果有重名套装，则返回第一个**
      * @param {string} name 套装名称
@@ -724,7 +727,7 @@ const ArtifactsFunction = function(){
         return val.name === name;
       });
     }
-  
+
     /**
      * 圣遗物套装-成套查询
      * @param {number} index 套装序号
@@ -748,7 +751,7 @@ const ArtifactsFunction = function(){
       }
       return res;
     }
-  
+
     /**
      * 更新套装
      * @param {number} index 需要更新的套装下标
@@ -787,7 +790,7 @@ const ArtifactsFunction = function(){
       }
       return true;
     }
-  
+
     /**
      * 删除指定套装（未使用，若要启用请重写）
      * @param {number} index 要删除的套装下标
@@ -812,7 +815,7 @@ const ArtifactsFunction = function(){
       this[SET_LIST].splice(index, 1);
       return true;
     }
-  
+
     /**
      * 移除套装指定位置的圣遗物
      * @param {number} index 要操作的套装下标
@@ -839,7 +842,7 @@ const ArtifactsFunction = function(){
       IDB.CUSTOM_SET.put(set);
       return true;
     }
-  
+
     /**
      * 同步人物装备信息（防止数据冲突）
      */
@@ -851,7 +854,7 @@ const ArtifactsFunction = function(){
         }
       }
     }
-  
+
     /**
      * 计算套装属性
      * @param {number} name 需要计算属性的套装名称
@@ -918,7 +921,7 @@ const ArtifactsFunction = function(){
       }
       return state;
     }
-  
+
     /**
      * 计算元素精通收益
      */
@@ -933,9 +936,9 @@ const ArtifactsFunction = function(){
       };
       return [formula(2.78, 1400, elementMastery), formula(16, 2000, elementMastery), formula(4.44, 1400, elementMastery)];
     }
-  
+
     /** 其他函数 **/
-  
+
     /**
      * 词条汉化-可调用
      * @param {string} word 需要翻译成中文的词条
@@ -959,7 +962,7 @@ const ArtifactsFunction = function(){
       }
       return false;
     }
-  
+
     /**
      * 圣遗物翻译&词条处理
      * @param {object} artifact 待处理的圣遗物数据
@@ -994,7 +997,7 @@ const ArtifactsFunction = function(){
       }
       return artifact;
     }
-  
+
     /**
      * 词条数值处理（展示用）
      * @param {string} entry 词条名称
@@ -1023,7 +1026,7 @@ const ArtifactsFunction = function(){
         }
       }
     }
-  
+
     /**
      * 根据数组随机概率
      * @param {array} __arr1  随机列表
@@ -1047,7 +1050,7 @@ const ArtifactsFunction = function(){
       }
       return __arr1[__arr1.length - 1];
     }
-  
+
     /**
      * UUID生成
      * @returns 生成的UUID
@@ -1061,7 +1064,7 @@ const ArtifactsFunction = function(){
       });
       return uuid;
     }
-  
+
     /**
      * 随机圣遗物套装
      * @returns 随机的圣遗物套装
@@ -1069,7 +1072,7 @@ const ArtifactsFunction = function(){
     randomSet() {
       return artiConst.val.setList[Math.floor(Math.random() * artiConst.val.setList.length)];
     }
-  
+
     /**
      * 随机主词条
      * @param {string} __part 位置
@@ -1092,7 +1095,7 @@ const ArtifactsFunction = function(){
           return false;
       }
     }
-  
+
     /**
      * 随机副词条数值
      * @param {string} __entry 词条名称
@@ -1101,7 +1104,7 @@ const ArtifactsFunction = function(){
       if (typeof __entry !== "string") throw new Error("Function randomEntryValue Error!Wrong parameter(Not string).");
       return artiConst.val.entryValue[__entry][Math.floor(Math.random() * artiConst.val.entryValue[__entry].length)];
     }
-  
+
     /**
      * 主词条合规验证
      * @param {string} __part 位置
@@ -1118,7 +1121,7 @@ const ArtifactsFunction = function(){
       }
       return false;
     }
-  
+
     /**
      * 自选副词条合规验证
      * @param {string} __mainEntry 主词条
@@ -1134,7 +1137,7 @@ const ArtifactsFunction = function(){
       }
       return true;
     }
-  
+
     /**
      * 数字千位分割（加逗号）
      * @param {number | string} val 待转化的数字
@@ -1143,7 +1146,7 @@ const ArtifactsFunction = function(){
     toThousands(val) {
       return (val || 0).toString().replace(/(\d)(?=(?:\d{3})+$)/g, "$1,");
     }
-  
+
     get MihoyoImYourDaddy() {
       for (let i = 0; i < this.AUSList.length; i++) {
         const artifact = this.AUSList[i];
@@ -1158,7 +1161,7 @@ const ArtifactsFunction = function(){
       }
       return "Yes,you are!";
     }
-  
+
     /**
      * get扩展（带参获取列表）
      * @param {string} language 语言
@@ -1204,7 +1207,7 @@ const ArtifactsFunction = function(){
       } else {
         filterSet = ["default"];
       }
-  
+
       language = language.toLowerCase();
       let AUSList = [];
       for (let item of this[AUS_LIST]) {
@@ -1222,39 +1225,39 @@ const ArtifactsFunction = function(){
       }
       return AUSList;
     }
-  
+
     // 获取版本号
     get version() {
       return this.#VERSION;
     }
-  
+
     get author() {
       return this.#AUTHOR;
     }
-  
+
     get language() {
       return this[LANGUAGE];
     }
-  
+
     get maxCount() {
       return this[LIST_LIMIT];
     }
-  
+
     get AUSList() {
       return this[AUS_LIST];
     }
-  
+
     get setList() {
       return this[SET_LIST];
     }
-  
+
     set language(val) {
       const lan = ["zh", "en", "origin"];
       if (typeof val === "string") {
         lan.indexOf(val.toLowerCase()) !== -1 ? (this[LANGUAGE] = val) : (this[LANGUAGE] = "origin");
       }
     }
-  
+
     set AUSList(val) {
       if (Array.isArray(val)) {
         if (val.length > this[LIST_LIMIT]) {
@@ -1266,7 +1269,7 @@ const ArtifactsFunction = function(){
         // console.log("%cSet new Artifacts list success.", "color:rgb(144,82,41)");
       }
     }
-  
+
     set setList(val) {
       if (Array.isArray(val)) {
         if (val.length > this[SET_LIST_LIMIT]) {
@@ -1278,11 +1281,8 @@ const ArtifactsFunction = function(){
         // console.log("%cSet new Sets list success.", "color:rgb(144,82,41)");
       }
     }
-  }
-
-  return ArtifactsFunction_class;
-}
-
+  };
+};
 
 const artiConst = new ArtifactData();
 const func = ArtifactsFunction();
@@ -1297,6 +1297,15 @@ console.log("%cArtifactsUpgradeSim is running.Learn more: https://github.com/Dio
 const initArtifactSim = function() {
   // 加载本地数据
   let storage = window.localStorage;
+  // 检测模拟器进程
+  if (storage.ISRUNNING) {
+    storage.ISRUNNING = Number.parseInt(storage.ISRUNNING) + 1;
+    if (Number.parseInt(storage.ISRUNNING) > 1) {
+      alert("检测到模拟器已在运行，建议关闭其他模拟器窗口，以免发生未知错误。");
+    }
+  } else {
+    storage.ISRUNNING = 1;
+  }
   if (!storage) {
     throw new Error("The browser does not support LocalStorage.");
   } else {
@@ -1336,6 +1345,10 @@ const initArtifactSim = function() {
         reject(err);
       });
   });
+};
+
+window.onbeforeunload = () => {
+  window.localStorage.ISRUNNING = Number.parseInt(window.localStorage.ISRUNNING) - 1;
 };
 
 export { ArtifactsSim, artiConst, IDB, initArtifactSim };

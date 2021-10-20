@@ -7,7 +7,7 @@
   </div>
   <!-- /loading -->
   <!-- nav -->
-  <nav class="navbar navbar-expand-lg navbar-light shadow-sm">
+  <nav class="navbar navbar-expand-lg shadow-sm">
     <div class="container-fluid">
       <div class="siteTitle position-relative">
         <a data-bs-toggle="offcanvas" href="#offcanMenu" aria-controls="offcanMenu">{{ title }}</a>

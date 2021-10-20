@@ -386,8 +386,7 @@
       border-radius: 0.25rem;
       margin: 0.25rem;
       width: 4rem;
-      height: 5rem;
-      transform: all 0.2s ease;
+      transition: all 0.2s ease;
 
       .avatarBox {
         position: relative;

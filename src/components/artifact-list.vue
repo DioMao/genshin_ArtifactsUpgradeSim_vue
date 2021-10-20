@@ -105,8 +105,6 @@
     mounted() {
       // 先记录scrollTop，调用vmList后会重置scrollTop值
       let scroll = this.$store.state.scrollTop;
-      // 读取语言
-      this.$i18n.locale = this.state.language;
       // 滚动监听
       this.$refs.listContainer.addEventListener("scroll", this.throttle(this.vmList));
       // 监听窗口大小

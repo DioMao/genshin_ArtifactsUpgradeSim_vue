@@ -17,8 +17,8 @@
 </template>
 
 <script>
-  import { getCurrentInstance, onMounted, ref, watch } from "vue";
-  import { useStore } from "vuex";
+  import { getCurrentInstance, ref, watch } from "vue";
+  // import { useStore } from "vuex";
 
   export default {
     name: "artifact-score",
@@ -34,27 +34,13 @@
     setup(props) {
       // 获取全局函数
       const globalProperties = getCurrentInstance().appContext.config.globalProperties;
-      const store = useStore().state;
+      // const store = useStore().state;
       const artifactFunc = globalProperties.$artifact;
       const artiConst = globalProperties.$artiConst.val;
-      const i18n = globalProperties.$i18n;
 
       const language = ref("");
       const currentEntry = ref([]);
       const symbol = ref("");
-      onMounted(() => {
-        // 读取语言设置
-        if (!window.localStorage) {
-          alert("浏览器不支持localstorage");
-          return false;
-        } else if (localStorage.userSetting !== "" && localStorage.userSetting !== undefined) {
-          language.value = JSON.parse(localStorage.userSetting).language;
-          i18n.locale = JSON.parse(localStorage.userSetting).language;
-        } else {
-          language.value = store.language;
-          i18n.locale = store.language;
-        }
-      });
 
       watch(
         () => props.artifact,

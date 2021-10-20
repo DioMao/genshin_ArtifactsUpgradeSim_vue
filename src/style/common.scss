@@ -1,3 +1,5 @@
+@charset "utf-8";
+
 // Colors
 $genshin_white: rgb(236, 229, 216);
 $genshin_dark: rgb(73, 83, 102);
@@ -208,6 +210,7 @@ body {
     content: "";
     position: absolute;
     pointer-events: none;
+    z-index: -1;
     inset: -0.0625rem;
     border: 0.125rem solid #ffffff;
     border-radius: 0.03125rem;
@@ -218,6 +221,7 @@ body {
     content: "";
     position: absolute;
     pointer-events: none;
+    z-index: -1;
     inset: -0.0625rem;
     border: 0.125rem solid #ffffff;
     border-radius: 0.3125rem;
@@ -228,6 +232,7 @@ body {
 // 点击时缩放
 .isClick {
   transform: scale(0.95);
+  transform-origin: center;
 }
 
 // bootstrap样式修改
@@ -340,7 +345,7 @@ body {
 
 .navbar {
   height: 3.5rem;
-  background-color: $genshin_dark;
+  background-color: rgb(76, 76, 76);
   width: 100%;
   z-index: 10;
 
@@ -538,7 +543,7 @@ body {
 @keyframes artifactSelect {
   0% {
     transform: rotate3d(0, 0, 0);
-    box-shadow: 0 0 0.5rem 0.1875rem #fff;
+    box-shadow: 0 0 0.25rem 0.125rem #fff;
   }
 
   50% {
@@ -548,7 +553,7 @@ body {
 
   100% {
     transform: rotate3d(0, 0, 0);
-    box-shadow: 0 0 0.5rem 0.1875rem #fff;
+    box-shadow: 0 0 0.25rem 0.125rem #fff;
   }
 }
 
@@ -765,7 +770,7 @@ body {
     overflow-y: scroll !important;
     position: fixed !important;
     z-index: 1;
-    padding-top: 0.9375rem !important;
+    padding: 0.9375rem 0 !important;
     top: 3.5rem !important;
     right: 6.25rem !important;
     width: 20rem !important;

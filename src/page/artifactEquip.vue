@@ -189,24 +189,20 @@
     },
     mounted() {
       // 读取语言设置
-      if (!window.localStorage) {
-        alert("浏览器不支持localstorage");
-        return false;
-      } else if (localStorage.userSetting !== "" && localStorage.userSetting !== undefined) {
-        this.language = JSON.parse(localStorage.userSetting)?.language;
-        this.$i18n.locale = JSON.parse(localStorage.userSetting).language;
-      }
+      this.language = this.$i18n.locale;
       // 当前圣遗物信息
       this.artifact = this.$artifact.getArtifact(this.symbol, JSON.parse(localStorage.userSetting).language);
-      if (this.language === "zh") {
-        this.artifactName = this.$artiConst.val.artifactSet_zh[this.artifact.set][this.artifact.part];
-      } else if (this.language === "en") {
-        let part = this.$artiConst.val.parts[this.$artiConst.val.parts_en.indexOf(this.artifact.part)];
-        this.artifactName = this.$artiConst.val.artifactSet[this.artifact.set][part];
-      }
-      // 如果已经被使用则将当前人物设置为使用者
-      if (this.artifact.equipped) {
-        this.selectCharacter = this.artifact.equipped;
+      if(this.artifact){
+        if (this.language === "zh") {
+          this.artifactName = this.$artiConst.val.artifactSet_zh[this.artifact.set][this.artifact.part];
+        } else if (this.language === "en") {
+          let part = this.$artiConst.val.parts[this.$artiConst.val.parts_en.indexOf(this.artifact.part)];
+          this.artifactName = this.$artiConst.val.artifactSet[this.artifact.set][part];
+        }
+        // 如果已经被使用则将当前人物设置为使用者
+        if (this.artifact.equipped) {
+          this.selectCharacter = this.artifact.equipped;
+        }
       }
     },
     watch: {

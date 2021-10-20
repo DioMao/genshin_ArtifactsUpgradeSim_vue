@@ -458,7 +458,9 @@
   import "bootstrap/js/dist/alert";
   import "bootstrap/js/dist/modal";
   import "bootstrap/js/dist/dropdown";
-  import { getCurrentInstance, readonly, ref } from "vue";
+
+  import { useStore } from "vuex";
+  import { getCurrentInstance, onMounted, readonly, ref } from "vue";
 
   export default {
     components: {
@@ -471,9 +473,13 @@
     setup() {
       // 获取全局函数
       const globalProperties = getCurrentInstance().appContext.config.globalProperties;
-      // const artifactFunc = globalProperties.$artifact;
+      const artifactFunc = globalProperties.$artifact;
       const artiConst = globalProperties.$artiConst.val;
+      const trans = globalProperties.$i18n;
       // const db = globalProperties.$db;
+      const store = useStore();
+
+      const ArtifactsList = ref([]);
       // 自选圣遗物副词条数值
       const cusEntryRate = ref({});
       // 自选圣遗物主词条对照表
@@ -491,39 +497,122 @@
         cusEntryRate.value[key] = artiConst.entryValue[key][artiConst.entryValue[key].length - 1];
       }
       const cusEntryList = readonly(cusEntryListProto);
+      // 自选圣遗物
+      const cusSet = ref("");
+      const cusPart = ref("");
+      const cusMainEntry = ref("");
+      const cusEntry = ref([]);
+
+      const showSymbol = ref("");
+
+      // 圣遗物相关
+      // 排序
+      const sortList = index => {
+        let sortMethod = ["lvasc", "lvdesc", "part", "main"];
+        userSetting.value.sortRule = sortMethod[index];
+        syncListData();
+      };
+      // 修改并保存当前展示圣遗物symbol
+      const changeShowSymbol = symbol => {
+        showSymbol.value = symbol;
+        store.state.selectHistory = symbol;
+      };
+      // 锁定/解锁
+      const lockChange = symbol => {
+        artifactFunc.lock(symbol);
+        syncListData();
+      };
+
+      // 同步数据
+      const syncListData = () => {
+        artifactFunc.sortList(userSetting.value.sortRule);
+        if (userSetting.value.language === "en" || userSetting.value.language === "zh") {
+          ArtifactsList.value = artifactFunc.getList(
+            userSetting.value.language,
+            userSetting.value.filterPart,
+            userSetting.value.filterMain,
+            userSetting.value.filterSet
+          );
+        } else {
+          ArtifactsList.value = artifactFunc.getList("origin", userSetting.value.filterPart, userSetting.value.filterMain, userSetting.value.filterSet);
+        }
+      };
+
+      // 设置相关
+      const userSetting = ref({
+        // 用户设置
+        scoreConfig: {
+          // 圣遗物得分设置
+          mode: "string",
+          strRule: "default",
+          arrRule: [],
+        },
+        language: "zh", // 语言
+        highScore: 35, // 高分圣遗物标准
+        sortRule: "lvdesc", // 排序规则
+        filterMain: "default", // 主词条筛选
+        filterPart: "default", // 位置筛选
+        filterSet: "default", // 套装筛选
+      });
+      const defaultSetting = JSON.stringify(userSetting.value);
+      // 保存设置
+      const changeSetting = () => {
+        // 语言选择
+        store.commit("language", userSetting.value.language);
+        trans.locale = store.state.language;
+        window.localStorage.language = store.state.language;
+        window.localStorage.userSetting = JSON.stringify(userSetting.value);
+      };
+      // 筛选器
+      const multFilter = (val, type = "part") => {
+        if (type === "all") {
+          userSetting.value.filterMain = "default";
+          userSetting.value.filterPart = "default";
+          userSetting.value.filterSet = "default";
+        }
+        if (type === "main") userSetting.value.filterMain = val;
+        if (type === "part") userSetting.value.filterPart = val;
+        if (type === "set") userSetting.value.filterSet = val;
+      };
+
+      onMounted(() => {
+        if (window.localStorage.userSetting === undefined) {
+          window.localStorage.userSetting = defaultSetting;
+        } else if (window.localStorage.userSetting !== "") {
+          let settingObj = JSON.parse(window.localStorage.getItem("userSetting"));
+          // 给设定分配值（读取本地设置）
+          Object.assign(userSetting.value, settingObj);
+        }
+        changeSetting();
+        // 初始化列表数据
+        syncListData();
+        showSymbol.value = store.state.selectHistory;
+      });
+
       return {
+        ArtifactsList,
         cusEntryRate,
         cusEntryList,
+        cusSet,
+        cusPart,
+        cusMainEntry,
+        cusEntry,
         setList,
+        showSymbol,
+        sortList,
+        changeShowSymbol,
+        lockChange,
+        userSetting,
+        changeSetting,
+        multFilter,
+        syncListData,
       };
     },
     data() {
       return {
         state: this.$store.state,
-        showSymbol: "", // 展示圣遗物的symbol
         showDetail: Object, // 右侧圣遗物展示详情
-        ArtifactsList: [], // 圣遗物列表
         cusCloseSwitch: true, // 自选圣遗物-生成后是否关闭modal窗
-        cusSet: "", // 自选圣遗物套装
-        cusPart: "", // 自选圣遗物位置
-        cusMainEntry: "", // 自选圣遗物主词条
-        cusEntry: [], // 自选圣遗物副词条
-        userSetting: {
-          // 用户设置
-          scoreConfig: {
-            // 圣遗物得分设置
-            mode: "string",
-            strRule: "default",
-            arrRule: [],
-          },
-          language: "zh", // 语言
-          highScore: 35, // 高分圣遗物标准
-          sortRule: "lvdesc", // 排序规则
-          filterMain: "default", // 主词条筛选
-          filterPart: "default", // 位置筛选
-          filterSet: "default", // 套装筛选
-        },
-        defaultSetting: "", // 初始设置
         alertFunc: {
           alertShow: false, // 是否显示提示框
           alertMsg: String, // 提示框内容
@@ -532,28 +621,6 @@
         },
         showMobileDetail: false,
       };
-    },
-    created() {
-      this.defaultSetting = JSON.stringify(this.userSetting);
-    },
-    mounted() {
-      // 读取本地设置
-      if (!window.localStorage) {
-        alert("浏览器不支持localstorage");
-        return false;
-      } else {
-        if (localStorage.userSetting === undefined) {
-          localStorage.userSetting = this.defaultSetting;
-        } else if (localStorage.userSetting !== "") {
-          let settingObj = JSON.parse(localStorage.getItem("userSetting"));
-          // 给设定分配值（读取本地设置）
-          Object.assign(this.userSetting, settingObj);
-        }
-      }
-      this.changeSetting();
-      // 初始化列表数据
-      this.syncListData();
-      this.showSymbol = this.$store.state.selectHistory;
     },
     computed: {
       language() {
@@ -618,7 +685,7 @@
         this.alertControl("自选圣遗物已生成！", 1500);
       },
       // 圣遗物升级
-      ArtifactUpgrade(symbol, entry = "",enhancedRank = -1) {
+      ArtifactUpgrade(symbol, entry = "", enhancedRank = -1) {
         let res = this.$artifact.upgrade(symbol, entry, Number.parseInt(enhancedRank)),
           qualityAlert = "";
         if (Number.parseFloat(enhancedRank) !== -1) qualityAlert = "已启用副词条自选提升幅度！";
@@ -676,18 +743,6 @@
         this.syncListData();
         this.alertControl("已重置全部未锁定圣遗物~", 1500);
       },
-      // 保存设置
-      changeSetting() {
-        // 语言选择
-        this.$store.commit("language", this.userSetting.language);
-        this.$i18n.locale = this.$store.state.language;
-        if (!window.localStorage) {
-          alert("浏览器不支持localstorage");
-          return false;
-        } else {
-          localStorage.userSetting = JSON.stringify(this.userSetting);
-        }
-      },
       // 清除本地数据
       clearStorge() {
         if (confirm("确定要清除模拟器所有数据吗？\n重置后会重新加载页面。")) {
@@ -705,9 +760,6 @@
         this.userSetting = JSON.parse(this.defaultSetting);
         this.alertControl("设置重置成功！", 1500);
       },
-      changeLanguage(language) {
-        this.userSetting.language = language;
-      },
       // 手机端显示圣遗物详情
       mobileshow() {
         this.showMobileDetail = true;
@@ -722,48 +774,6 @@
         this.alertFunc.alertClose = setTimeout(() => {
           this.alertFunc.alertShow = false;
         }, time);
-      },
-      // 筛选器
-      multFilter(val, type = "part") {
-        if (type === "all") {
-          this.userSetting.filterMain = "default";
-          this.userSetting.filterPart = "default";
-          this.userSetting.filterSet = "default";
-        }
-        if (type === "main") this.userSetting.filterMain = val;
-        if (type === "part") this.userSetting.filterPart = val;
-        if (type === "set") this.userSetting.filterSet = val;
-      },
-      // 排序
-      sortList(index) {
-        let sortMethod = ["lvasc", "lvdesc", "part", "main"];
-        this.userSetting.sortRule = sortMethod[index];
-        this.syncListData();
-      },
-      // 修改并保存当前展示圣遗物symbol
-      changeShowSymbol(symbol) {
-        this.showSymbol = symbol;
-        this.$store.state.selectHistory = symbol;
-        this.syncListData();
-      },
-      // 同步数据
-      syncListData() {
-        this.$artifact.sortList(this.userSetting.sortRule);
-        if (this.userSetting.language === "en" || this.userSetting.language === "zh") {
-          this.ArtifactsList = this.$artifact.getList(
-            this.userSetting.language,
-            this.userSetting.filterPart,
-            this.userSetting.filterMain,
-            this.userSetting.filterSet
-          );
-        } else {
-          this.ArtifactsList = this.$artifact.getList("origin", this.userSetting.filterPart, this.userSetting.filterMain, this.userSetting.filterSet);
-        }
-      },
-      // 锁定/解锁
-      lockChange(symbol) {
-        this.$artifact.lock(symbol);
-        this.syncListData();
       },
     },
   };
@@ -810,6 +820,7 @@
 
       div {
         width: 15%;
+        max-width: 7rem;
         text-align: center;
         opacity: 0.3;
         background-color: rgba(255, 255, 255, 1);
@@ -1041,7 +1052,6 @@
 
   #score,
   #score-2 {
-    float: right;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
   }
