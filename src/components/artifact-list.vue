@@ -8,65 +8,67 @@
       There's no artifact here.<br /><span @click="createArtifact">Random?</span><br /><span @click="changeLanguage('zh')">使用中文</span>
     </div>
     <!-- 渲染容器 -->
-    <div class="item-container" ref="itemContainer" :style="{ paddingTop: filltop + 'px', paddingBottom: fillbottom + 'px' }">
-      <div
-        v-for="(Artifacts, index) in ArtifactsRenderList"
-        :id="'artifact-' + index"
-        class="ArtifactsBox card rounded shawdow-sm"
-        :class="{ isSelect: Artifacts.symbol === showsymbol }"
-        :key="index"
-        @click="changeShowSymbol(Artifacts.symbol, Artifacts.isNew)"
-        @mousedown="clickMethod($event, true)"
-        @mouseup="clickMethod($event, false)"
-        @mouseleave="clickMethod($event, false)"
-      >
+    <div class="scroll-container" :style="{ minHeight: totalHeight + 'px' }">
+      <div class="item-container" ref="itemContainer" :style="{ transform: 'translateY(' + transY + 'px)' }">
         <div
-          class="card-body ArtifactsTitle"
-          :style="{
-            backgroundImage: 'url(' + imgUrl(Artifacts.symbol) + '),linear-gradient(135deg,rgb(159,96,42),rgb(207,122,38))',
-            borderRadius: '.25rem .25rem 1.5625rem',
-          }"
+          v-for="(Artifacts, index) in ArtifactsRenderList"
+          :id="'artifact-' + index"
+          class="ArtifactsBox card rounded shawdow-sm"
+          :class="{ isSelect: Artifacts.symbol === showsymbol }"
+          :key="index"
+          @click="changeShowSymbol(Artifacts.symbol, Artifacts.isNew)"
+          @mousedown="clickMethod($event, true)"
+          @mouseup="clickMethod($event, false)"
+          @mouseleave="clickMethod($event, false)"
         >
-          <div class="islock" v-if="Artifacts.lock">
-            <svg
-              t="1631861008451"
-              class="icon"
-              viewBox="0 0 1024 1024"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              p-id="4168"
-              width="0.625rem"
-              height="0.625rem"
-              fill="rgb(255,138,117)"
-            >
-              <path
-                d="M824 384h5.1c3.7-19.7 5.7-40 5.7-60.7C834.8 144.7 690 0 511.5 0S188.2 144.7 188.2 323.3c0 20.8 2 41 5.7 60.7h5.1c-39.8 0-72 32.2-72 72v496c0 39.8 32.2 72 72 72h625c39.8 0 72-32.2 72-72V456c0-39.8-32.2-72-72-72zM543.5 695.4V800c0 17.7-14.3 32-32 32s-32-14.3-32-32V695.4c-19.1-11.1-32-31.7-32-55.4 0-35.3 28.7-64 64-64s64 28.7 64 64c0 23.7-12.9 44.3-32 55.4zM267.6 384c-4.9-19.7-7.4-40-7.4-60.7 0-34 6.6-66.9 19.7-97.8 12.7-29.9 30.8-56.8 53.9-79.9s50-41.2 79.9-53.9C444.6 78.6 477.5 72 511.5 72s66.9 6.6 97.8 19.7c29.9 12.7 56.8 30.8 79.9 53.9 23.1 23.1 41.2 50 53.9 79.9 13.1 30.9 19.7 63.8 19.7 97.8 0 20.7-2.5 41-7.4 60.7H267.6z"
-                p-id="4169"
-              ></path>
-            </svg>
-          </div>
-          <div class="card-text" :style="{ fontSize: $i18n.locale === 'zh' ? '0.9rem' : '0.75rem', whiteSpace: 'nowrap' }">
-            {{ Artifacts.part }}
-          </div>
-          <div class="levelStar"></div>
-          <div class="card-text" style="color:rgb(223,185,170);white-space:nowrap" :style="{ fontSize: $i18n.locale === 'en' ? '0.5rem' : 'inherit' }">
-            {{ Artifacts.mainEntry }}
-          </div>
-          <div>
-            {{ Artifacts.mainEntryValue }} <span class="badge float-end fw-normal">+{{ Artifacts.level }}</span>
-          </div>
-          <!-- 移动端点击显示offcan窗口 -->
-          <a class="mobileShow" @click="mobileShow()"> </a>
-          <!-- 新圣遗物标识 -->
-          <div class="isNew" v-if="Artifacts.isNew">{{ $t("tips.new") }}</div>
-          <!-- 已被装备标识 -->
-          <div class="equipped" v-if="Artifacts.equipped">
-            <img :src="sideUrl(Artifacts.equipped)" alt="equipped" draggable="false" />
+          <div
+            class="card-body ArtifactsTitle"
+            :style="{
+              backgroundImage: 'url(' + imgUrl(Artifacts.symbol) + '),linear-gradient(135deg,rgb(159,96,42),rgb(207,122,38))',
+              borderRadius: '.25rem .25rem 1.5625rem',
+            }"
+          >
+            <div class="islock" v-if="Artifacts.lock">
+              <svg
+                t="1631861008451"
+                class="icon"
+                viewBox="0 0 1024 1024"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                p-id="4168"
+                width="0.625rem"
+                height="0.625rem"
+                fill="rgb(255,138,117)"
+              >
+                <path
+                  d="M824 384h5.1c3.7-19.7 5.7-40 5.7-60.7C834.8 144.7 690 0 511.5 0S188.2 144.7 188.2 323.3c0 20.8 2 41 5.7 60.7h5.1c-39.8 0-72 32.2-72 72v496c0 39.8 32.2 72 72 72h625c39.8 0 72-32.2 72-72V456c0-39.8-32.2-72-72-72zM543.5 695.4V800c0 17.7-14.3 32-32 32s-32-14.3-32-32V695.4c-19.1-11.1-32-31.7-32-55.4 0-35.3 28.7-64 64-64s64 28.7 64 64c0 23.7-12.9 44.3-32 55.4zM267.6 384c-4.9-19.7-7.4-40-7.4-60.7 0-34 6.6-66.9 19.7-97.8 12.7-29.9 30.8-56.8 53.9-79.9s50-41.2 79.9-53.9C444.6 78.6 477.5 72 511.5 72s66.9 6.6 97.8 19.7c29.9 12.7 56.8 30.8 79.9 53.9 23.1 23.1 41.2 50 53.9 79.9 13.1 30.9 19.7 63.8 19.7 97.8 0 20.7-2.5 41-7.4 60.7H267.6z"
+                  p-id="4169"
+                ></path>
+              </svg>
+            </div>
+            <div class="card-text" :style="{ fontSize: $i18n.locale === 'zh' ? '0.9rem' : '0.75rem', whiteSpace: 'nowrap' }">
+              {{ Artifacts.part }}
+            </div>
+            <div class="levelStar"></div>
+            <div class="card-text" style="color:rgb(223,185,170);white-space:nowrap" :style="{ fontSize: $i18n.locale === 'en' ? '0.5rem' : 'inherit' }">
+              {{ Artifacts.mainEntry }}
+            </div>
+            <div>
+              {{ Artifacts.mainEntryValue }} <span class="badge float-end fw-normal">+{{ Artifacts.level }}</span>
+            </div>
+            <!-- 移动端点击显示offcan窗口 -->
+            <a class="mobileShow" @click="mobileShow()"> </a>
+            <!-- 新圣遗物标识 -->
+            <div class="isNew" v-if="Artifacts.isNew">{{ $t("tips.new") }}</div>
+            <!-- 已被装备标识 -->
+            <div class="equipped" v-if="Artifacts.equipped">
+              <img :src="sideUrl(Artifacts.equipped)" alt="equipped" draggable="false" />
+            </div>
           </div>
         </div>
+        <!-- flex填充 -->
+        <div class="ArtifactsBox card rounded" v-for="i in fillCount" :key="i" style="visibility:hidden;"></div>
       </div>
-      <!-- flex填充 -->
-      <div class="ArtifactsBox card rounded" v-for="i in fillCount" :key="i" style="visibility:hidden;"></div>
     </div>
   </div>
 </template>
@@ -81,9 +83,9 @@
         ArtifactsRenderList: [],
         // 填充
         anchor: 0,
+        totalHeight: 0,
         fillCount: 0,
-        filltop: 0,
-        fillbottom: 0,
+        transY: 0,
         itemMax: 0,
         waiting: null,
       };
@@ -253,18 +255,14 @@
           renderRow = Math.ceil(viewH / itemH) * 3;
           // 计算列表总高度
           totalHeight = Math.ceil(this.rawdata.length / this.itemMax) * itemH;
+          this.totalHeight = totalHeight;
           // 滚动高度到达一定值时刷新列表
           if (Math.abs(this.anchor - scroll.scrollTop) > viewH) {
             this.anchor = scroll.scrollTop;
           }
           // 列表不够直接返回
           if (this.rawdata.length < renderRow * this.itemMax) {
-            this.filltop = 0;
-            if (this.rawdata.length - renderRow * this.itemMax >= 0) {
-              this.fillbottom = totalHeight - (this.ArtifactsRenderList.length / this.itemMax) * itemH;
-            } else {
-              this.fillbottom = 0;
-            }
+            this.transY = 0;
             this.ArtifactsRenderList = this.rawdata;
             this.changeFillCount();
             return;
@@ -284,16 +282,14 @@
               }
               // 更新渲染列表
               this.ArtifactsRenderList = renderList;
-              // 当滚动距离超出总高度时，重置上半填充
+              // 当滚动距离超出总高度时，重置偏移
               if (scroll.scrollTop > totalHeight) {
                 scroll.scrollTop = 0;
-                this.filltop = 0;
+                this.transY = 0;
               } else {
-                // 上半填充高度
-                this.filltop = topHideRow * itemH;
+                // 偏移高度
+                this.transY = topHideRow * itemH;
               }
-              // 下半填充高度
-              this.fillbottom = totalHeight - this.filltop - Math.ceil(renderList.length / this.itemMax) * itemH;
               this.changeFillCount();
               // 调试信息：
               // console.log("itemMax: " + this.itemMax + "\nitemOffsetTop: " + item.offsetTop +
@@ -301,23 +297,17 @@
               //     "\nrenderLength: " + this.ArtifactsRenderList.length + "\nScroll: " + scroll
               //     .scrollTop)
             } else {
-              this.filltop = 0;
+              this.transY = 0;
               // 确定渲染列表
               this.ArtifactsRenderList = this.rawdata.slice(0, renderRow * this.itemMax);
-              // 计算下方填充，列表数量大于渲染数量时计算，否则为0
-              if (this.rawdata.length - renderRow * this.itemMax >= 0) {
-                this.fillbottom = totalHeight - (this.ArtifactsRenderList.length / this.itemMax) * itemH;
-              } else {
-                this.fillbottom = 0;
-              }
               this.changeFillCount();
             }
           }
         } else {
           // 清空列表
           this.ArtifactsRenderList.length = 0;
-          this.filltop = 0;
-          this.fillbottom = 0;
+          this.totalHeight = 0;
+          this.transY = 0;
           this.changeFillCount();
           // 默认高度
           itemH = 8 * rem;

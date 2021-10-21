@@ -344,11 +344,11 @@
   }
 
   .containerUp {
-    position: fixed;
+    position: relative;
+    height: 100vh;
     background-image: linear-gradient(180deg, rgb(112, 53, 25), rgb(125, 83, 38));
-    top: 3.5rem;
+    padding-top: 3.5rem;
     width: 100%;
-    height: calc(100% - 3.5rem);
     user-select: none;
     overflow: hidden;
 
@@ -415,7 +415,7 @@
   .upgrade-button-box {
     position: absolute;
     z-index: 2;
-    bottom: 1.875rem;
+    bottom: 3vh;
     right: 3.125rem;
   }
 

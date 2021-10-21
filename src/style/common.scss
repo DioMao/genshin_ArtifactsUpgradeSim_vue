@@ -763,7 +763,7 @@ body {
 
   .main-container,
   .containerUp {
-    padding: 0 6.25rem !important;
+    padding: 3.5rem 6.25rem 3.75rem !important;
   }
 
   .ArtifactShowBox {
@@ -771,10 +771,9 @@ body {
     position: fixed !important;
     z-index: 1;
     padding: 0.9375rem 0 !important;
-    top: 3.5rem !important;
-    right: 6.25rem !important;
+    inset: 3.5rem 6.25rem auto auto !important;
     width: 20rem !important;
-    height: inherit !important;
+    height: calc(100% - 7.25rem) !important;
     background-color: rgba(255, 255, 255, 0.2);
 
     &::-webkit-scrollbar {
@@ -784,7 +783,7 @@ body {
 
   .extra-container {
     margin-left: 0 !important;
-    width: calc(100% - 32.5rem) !important;
+    width: calc(100% - 20rem) !important;
   }
 
   footer {

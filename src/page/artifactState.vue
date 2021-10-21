@@ -203,10 +203,10 @@
 
   .state-container {
     user-select: none;
-    position: fixed;
-    top: 3.5rem;
+    position: relative;
     width: 100%;
-    height: calc(100% - 3.5rem);
+    height: 100vh;
+    padding-top: 3.5rem;
     overflow-x: hidden;
     overflow-y: scroll;
     padding: 0 6.25rem;
@@ -462,7 +462,7 @@
   // 移动端兼容
   @media screen and (max-width: 56.875rem) {
     .state-container {
-      padding: 0;
+      padding: 3.5rem 0 0;
 
       .stateDetail {
         .stateValue {

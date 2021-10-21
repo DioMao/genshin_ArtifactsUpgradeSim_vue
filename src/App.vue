@@ -130,7 +130,7 @@
   }
 
   .navbar {
-    position: unset !important;
+    position: fixed !important;
   }
 
   #loading {

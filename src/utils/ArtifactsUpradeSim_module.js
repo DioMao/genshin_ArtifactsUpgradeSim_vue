@@ -57,7 +57,7 @@ const ArtifactsFunction = function() {
         console.log(`Warning - The maximum length of the artifacts list is ${this[LIST_LIMIT]}.`);
         return false;
       }
-      let newArtifacts = {
+      const newArtifacts = {
           symbol: "",
           level: 0,
           set: "none",
@@ -120,9 +120,9 @@ const ArtifactsFunction = function() {
       // 随机词条/+若自选词条数量不到3条则补至3条
       while (newArtifacts.entry.length < 3) {
         //临时词条库
-        let newEntry = this.randomRate(ArtifactEntry, ArtifactEntryRate),
-          newEntryRate = this.randomEntryValue(newEntry),
-          index = ArtifactEntry.indexOf(newEntry);
+        let newEntry = this.randomRate(ArtifactEntry, ArtifactEntryRate);
+        let newEntryRate = this.randomEntryValue(newEntry);
+        let index = ArtifactEntry.indexOf(newEntry);
         // 从临时词条库中移除已有词条，避免重复
         ArtifactEntry.splice(index, 1);
         ArtifactEntryRate.splice(index, 1);
@@ -130,7 +130,7 @@ const ArtifactsFunction = function() {
       }
       // 是否拥有初始四词条
       if (__entry.length === 0 && Math.random() < artiConst.val.extraEnrtyRate) {
-        let newEntry = this.randomRate(ArtifactEntry, ArtifactEntryRate);
+        const newEntry = this.randomRate(ArtifactEntry, ArtifactEntryRate);
         newArtifacts.entry[3] = [newEntry, this.randomEntryValue(newEntry)];
       }
       newArtifacts.symbol = this.generateUUID();
@@ -158,7 +158,7 @@ const ArtifactsFunction = function() {
     bulkCreate(count, __part = "", __main = "", __entry = [], __entryRate = [], _set = "") {
       if (typeof count !== "number") return false;
       count = Math.floor(count);
-      let res = [];
+      const res = [];
       while (count > 0 && this[AUS_LIST].length < this[LIST_LIMIT]) {
         res.push(this.createArtifact(__part, __main, __entry, __entryRate, _set, false));
         count--;
@@ -180,12 +180,12 @@ const ArtifactsFunction = function() {
      * @returns 升级结果
      */
     upgrade(__symbol, __entry = -1, __upLevel = -1) {
-      let index = this.getIndex(__symbol);
+      const index = this.getIndex(__symbol);
       if (index === -1) return false;
-      let currentArtifact = this[AUS_LIST][index],
-        currentEntry = [],
-        currentEntryList = [],
-        currentEntryRate = [];
+      const currentArtifact = this[AUS_LIST][index];
+      const currentEntry = [];
+      const currentEntryList = [];
+      const currentEntryRate = [];
       // 判断圣遗物是否满级
       if (currentArtifact.level >= 20) {
         // console.log("Upgrade failed,this Artifact is fully rated.");
@@ -255,7 +255,7 @@ const ArtifactsFunction = function() {
      */
     ArtifactScore(__symbol, __rule = "default") {
       if (typeof __symbol !== "string" || (typeof __rule !== "string" && !Array.isArray(__rule))) return 0;
-      let index = this.getIndex(__symbol);
+      const index = this.getIndex(__symbol);
       if (index === -1) {
         return 0;
       }
@@ -339,9 +339,9 @@ const ArtifactsFunction = function() {
      * @returns 返回操作结果
      */
     reset(__symbol, __storage = true) {
-      let index = this.getIndex(__symbol);
+      const index = this.getIndex(__symbol);
       if (index === -1) return false;
-      let currentArtifact = this[AUS_LIST][index];
+      const currentArtifact = this[AUS_LIST][index];
       if (currentArtifact.lock) {
         return false;
       } else {
@@ -361,7 +361,7 @@ const ArtifactsFunction = function() {
     resetAll() {
       const list = [];
       for (let item of this[AUS_LIST]) {
-        let res = this.reset(item.symbol, false);
+        const res = this.reset(item.symbol, false);
         if (res) {
           list.push(res);
         }
@@ -376,9 +376,9 @@ const ArtifactsFunction = function() {
      * @returns 操作结果
      */
     deleteOne(symbol, storage = true) {
-      let index = this.getIndex(symbol);
+      const index = this.getIndex(symbol);
       if (index === -1) return false;
-      let artifact = this[AUS_LIST][index];
+      const artifact = this[AUS_LIST][index];
       // 被锁定或被装备的圣遗物不能删除
       if (artifact.lock === true || artifact.equipped) {
         return false;
@@ -401,7 +401,7 @@ const ArtifactsFunction = function() {
       let index = 0,
         list = [];
       while (index !== this[AUS_LIST].length) {
-        let artifact = this[AUS_LIST][index];
+        const artifact = this[AUS_LIST][index];
         if (artifact.lock === false && !artifact.equipped) {
           list.push(this[AUS_LIST].splice(index, 1)[0].symbol);
         } else {
@@ -423,7 +423,7 @@ const ArtifactsFunction = function() {
         console.log("Undo false, history not found.");
         return false;
       }
-      let artifact = this[DELETE_HISTORY].pop();
+      const artifact = this[DELETE_HISTORY].pop();
       this[AUS_LIST].push(artifact);
       this.changeCount([artifact.part, artifact.mainEntry, artifact.set]);
       IDB.ARTIFACT_LIST.add(artifact);
@@ -438,7 +438,7 @@ const ArtifactsFunction = function() {
      */
     changeCount(key, range = 1) {
       if (typeof key !== "string" && !Array.isArray(key)) return false;
-      let countList = this[COUNT_LIST];
+      const countList = this[COUNT_LIST];
       if (typeof key === "string") {
         key = [key];
       }
@@ -470,7 +470,7 @@ const ArtifactsFunction = function() {
      */
     lock(symbol) {
       if (typeof symbol !== "string") return false;
-      let index = this.getIndex(symbol);
+      const index = this.getIndex(symbol);
       this[AUS_LIST][index].lock = !this[AUS_LIST][index].lock;
       IDB.ARTIFACT_LIST.put(this[AUS_LIST][index]);
       return true;
@@ -483,7 +483,7 @@ const ArtifactsFunction = function() {
      */
     getCount(key) {
       if (typeof key !== "string") return false;
-      let countList = this[COUNT_LIST];
+      const countList = this[COUNT_LIST];
       if (Object.prototype.hasOwnProperty.call(countList, key)) {
         return countList[key];
       } else {
@@ -609,7 +609,7 @@ const ArtifactsFunction = function() {
      * @returns 查询结果
      */
     getArtifact(symbol, language = "origin") {
-      let artifact = this[AUS_LIST].find(val => {
+      const artifact = this[AUS_LIST].find(val => {
         return val.symbol === symbol;
       });
       if (artifact === undefined) {
@@ -627,7 +627,7 @@ const ArtifactsFunction = function() {
      * @returns 操作结果
      */
     notNew(symbol) {
-      let index = this.getIndex(symbol);
+      const index = this.getIndex(symbol);
       if (index === -1) return false;
       this[AUS_LIST][index].isNew = false;
       IDB.ARTIFACT_LIST.put(this[AUS_LIST][index]);
@@ -730,17 +730,17 @@ const ArtifactsFunction = function() {
 
     /**
      * 圣遗物套装-成套查询
-     * @param {number} index 套装序号
+     * @param {string} name 套装名称
      * @returns 查询结果
      */
-    getSetBonus(index) {
-      if (typeof index !== "number" || index < 0 || index >= this[SET_LIST].length) return false;
-      index = Math.floor(index);
-      let set = this[SET_LIST][index];
-      let res = Object.create(null);
+    getSetBonus(name) {
+      const index = this.getSetIndex(name);
+      if (index === -1) return false;
+      const set = this[SET_LIST][index];
+      const res = Object.create(null);
       for (const key in set) {
         if (key === "name" || set[key] === "") continue;
-        let artifact = this[AUS_LIST][this.getIndex(set[key])];
+        const artifact = this[AUS_LIST][this.getIndex(set[key])];
         if (artifact) {
           if (Object.hasOwnProperty.call(res, artifact.set)) {
             res[artifact.set] += 1;
@@ -754,22 +754,22 @@ const ArtifactsFunction = function() {
 
     /**
      * 更新套装
-     * @param {number} index 需要更新的套装下标
+     * @param {string} name 需要更新的套装下标
      * @param {array} symbolArr 包含更新的部件symbol值的数组
      * @returns 操作结果
      */
-    updateSet(index, symbolArr) {
-      if (typeof index !== "number" || index >= this[SET_LIST].length || index < 0 || !Array.isArray(symbolArr)) return false;
-      index = Math.floor(index);
+    updateSet(name, symbolArr = []) {
+      const index = this.getSetIndex(name);
+      if (index === -1) return false;
       // 长度限制
       symbolArr = symbolArr.slice(0, 5);
-      let set = this[SET_LIST][index];
+      const set = this[SET_LIST][index];
       for (let symbol of symbolArr) {
-        let artifactIndex = this.getIndex(symbol);
+        const artifactIndex = this.getIndex(symbol);
         if (artifactIndex !== -1) {
-          let artifact = this[AUS_LIST][artifactIndex];
-          let oldset = this[SET_LIST][this.getSetIndex(artifact.equipped)];
-          let oldArtifact = this.getArtifact(set[artifact.part]);
+          const artifact = this[AUS_LIST][artifactIndex];
+          const oldset = this[SET_LIST][this.getSetIndex(artifact.equipped)];
+          const oldArtifact = this.getArtifact(set[artifact.part]);
           // 已有相同圣遗物则进入下个循环
           if (set[artifact.part] === symbol) continue;
           // 修改已有的圣遗物的使用者、圣遗物套装的symbol值
@@ -793,15 +793,15 @@ const ArtifactsFunction = function() {
 
     /**
      * 删除指定套装（未使用，若要启用请重写）
-     * @param {number} index 要删除的套装下标
+     * @param {string} name 要删除的套装下标
      * @param {boolean} setStorage 是否保存到localStorage（避免批量操作时频繁写入）
      * @returns 操作结果
      */
-    deleteSet(index) {
-      if (typeof index !== "number" || index < 0 || index >= this[SET_LIST].length) return false;
-      index = Math.floor(index);
+    deleteSet(name) {
+      const index = this.getSetIndex(name);
+      if (index === -1) return false;
       // 移除套装里所有装备的装备状态
-      let set = this[SET_LIST][index];
+      const set = this[SET_LIST][index];
       for (let key in set) {
         if (key === "name") continue;
         if (set[key] !== "") {
@@ -818,21 +818,21 @@ const ArtifactsFunction = function() {
 
     /**
      * 移除套装指定位置的圣遗物
-     * @param {number} index 要操作的套装下标
+     * @param {string} name 要操作的套装下标
      * @param {string | array} part 要移除的部位
      * @returns 操作结果
      */
-    removeSetItem(index, part) {
-      if (typeof index !== "number" || index < 0 || index >= this[SET_LIST].length) return false;
-      index = Math.floor(index);
+    removeSetItem(name, part) {
+      const index = this.getSetIndex(name);
+      if (index === -1) return false;
       //
       if (typeof part === "string") part = [part];
       if (!Array.isArray(part)) return false;
-      let set = this[SET_LIST][index];
+      const set = this[SET_LIST][index];
       // 遍历part进行匹配删除
       part.forEach(val => {
         if (artiConst.val.parts.indexOf(val) === -1) return;
-        let oldIndex = this.getIndex(set[val]);
+        const oldIndex = this.getIndex(set[val]);
         if (oldIndex > -1) {
           this[AUS_LIST][oldIndex].equipped = 0;
           IDB.ARTIFACT_LIST.put(this[AUS_LIST][oldIndex]);
@@ -850,7 +850,7 @@ const ArtifactsFunction = function() {
       // 遍历圣遗物列表
       for (let item of this[AUS_LIST]) {
         if (item.equipped) {
-          this.updateSet(Number.parseInt(this.getSetIndex(item.equipped)), [item.symbol]);
+          this.updateSet(item.equipped, [item.symbol]);
         }
       }
     }
@@ -862,18 +862,18 @@ const ArtifactsFunction = function() {
      */
     getSetState(name) {
       const index = this.getSetIndex(name);
-      let state = Object.create(null);
-      let entryList = Array.from(new Set([...artiConst.val.entryList, ...artiConst.val.mainEntryList]));
+      const state = Object.create(null);
+      const entryList = Array.from(new Set([...artiConst.val.entryList, ...artiConst.val.mainEntryList]));
       for (let entry of entryList) {
         state[entry] = 0;
       }
       if (index === -1) return state;
-      let set = this[SET_LIST][index];
+      const set = this[SET_LIST][index];
       // 遍历套装里每个部位的属性，并计算属性
       for (let key in set) {
         let symbol = set[key];
         if (symbol !== "" && artiConst.val.parts.includes(key)) {
-          let artifact = this.getArtifact(symbol);
+          const artifact = this.getArtifact(symbol);
           if (artifact) {
             // 主属性
             if (state[artifact.mainEntry]) {
@@ -971,7 +971,7 @@ const ArtifactsFunction = function() {
      */
     translate(item, language = "zh") {
       const lan = ["zh", "en"];
-      let artifact = JSON.parse(JSON.stringify(item));
+      const artifact = JSON.parse(JSON.stringify(item));
       if (typeof language !== "string" || lan.indexOf(language) === -1) return artifact;
       try {
         if (lan.indexOf(language) !== -1 && language !== "origin") {
@@ -1172,8 +1172,8 @@ const ArtifactsFunction = function() {
     getList(language = "origin", filterPart = "default", filterMain = "default", filterSet = "default") {
       const lan = ["zh", "en", "origin"];
       // 筛选符合条件的过滤属性
-      let arrFilter = function(arr, type) {
-        let res = [];
+      const arrFilter = function(arr, type) {
+        const res = [];
         for (let el of arr) {
           if (type === "main") {
             artiConst.val.mainEntryList.indexOf(el) >= 0 ? res.push(el) : null;
@@ -1209,7 +1209,7 @@ const ArtifactsFunction = function() {
       }
 
       language = language.toLowerCase();
-      let AUSList = [];
+      const AUSList = [];
       for (let item of this[AUS_LIST]) {
         // 筛选符合条件的圣遗物
         if (
@@ -1296,16 +1296,7 @@ console.log("%cArtifactsUpgradeSim is running.Learn more: https://github.com/Dio
  */
 const initArtifactSim = function() {
   // 加载本地数据
-  let storage = window.localStorage;
-  // 检测模拟器进程
-  if (storage.ISRUNNING) {
-    storage.ISRUNNING = Number.parseInt(storage.ISRUNNING) + 1;
-    if (Number.parseInt(storage.ISRUNNING) > 1) {
-      alert("检测到模拟器已在运行，建议关闭其他模拟器窗口，以免发生未知错误。");
-    }
-  } else {
-    storage.ISRUNNING = 1;
-  }
+  const storage = window.localStorage;
   if (!storage) {
     throw new Error("The browser does not support LocalStorage.");
   } else {
@@ -1320,6 +1311,7 @@ const initArtifactSim = function() {
       alert("模拟器版本更新，如果遇到错误，请尝试清除浏览器缓存!");
       storage.ArtifactsSimVersion = ArtifactsSim.version;
     }
+    storage.removeItem("ISRUNNING");
   }
   return new Promise((resolve, reject) => {
     // 初始化套装列表
@@ -1336,7 +1328,7 @@ const initArtifactSim = function() {
         ArtifactsSim.enforceUpdateCount();
         // 读取套装列表
         for (let item of setList) {
-          let index = ArtifactsSim.getSetIndex(item.name);
+          const index = ArtifactsSim.getSetIndex(item.name);
           ArtifactsSim.setList[index] = item;
         }
         resolve(true);
@@ -1345,10 +1337,6 @@ const initArtifactSim = function() {
         reject(err);
       });
   });
-};
-
-window.onbeforeunload = () => {
-  window.localStorage.ISRUNNING = Number.parseInt(window.localStorage.ISRUNNING) - 1;
 };
 
 export { ArtifactsSim, artiConst, IDB, initArtifactSim };

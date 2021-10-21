@@ -130,7 +130,7 @@
 
       // 替换圣遗物
       const chengeArtifact = () => {
-        artifactFunc.updateSet(Number.parseInt(setIndex.value), [artifact.value.symbol]);
+        artifactFunc.updateSet(selectCharacter.value, [artifact.value.symbol]);
         // 更新artifact和oldArtifact
         artifact.value = artifactFunc.getArtifact(props.symbol, language.value);
         // isSame判定
@@ -192,7 +192,7 @@
       this.language = this.$i18n.locale;
       // 当前圣遗物信息
       this.artifact = this.$artifact.getArtifact(this.symbol, JSON.parse(localStorage.userSetting).language);
-      if(this.artifact){
+      if (this.artifact) {
         if (this.language === "zh") {
           this.artifactName = this.$artiConst.val.artifactSet_zh[this.artifact.set][this.artifact.part];
         } else if (this.language === "en") {
@@ -272,7 +272,7 @@
         if (val.set === artifactNow.set) {
           this.setBonusChange = {};
         } else {
-          let oldSet = this.$artifact.getSetBonus(Number.parseInt(this.setIndex));
+          let oldSet = this.$artifact.getSetBonus(this.selectCharacter);
           // 计算更换圣遗物后的情况
           if (Object.prototype.hasOwnProperty.call(oldSet, artifactNow.set)) {
             if (oldSet[artifactNow.set] === 1 || oldSet[artifactNow.set] === 3) {
@@ -291,7 +291,7 @@
       removeArtifact() {
         let artifact = this.$artifact.getArtifact(this.symbol);
         let part = artifact.part;
-        this.$artifact.removeSetItem(Number.parseInt(this.setIndex), [part]);
+        this.$artifact.removeSetItem(this.selectCharacter, [part]);
         // 更新artifact和oldArtifact
         this.artifact = this.$artifact.getArtifact(artifact.symbol, this.language);
         // isSame判定
@@ -316,10 +316,10 @@
 
   .set_container {
     user-select: none;
-    position: fixed;
+    position: relative;
     top: 3.5rem;
     width: 100%;
-    height: calc(100% - 3.5rem);
+    height: calc(100vh - 3.5rem);
     overflow: hidden;
   }
 

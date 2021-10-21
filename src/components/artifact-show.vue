@@ -189,7 +189,7 @@
       // 套装激活情况
       setActive() {
         if (this.showdetail.equipped) {
-          let setBonus = this.$artifact.getSetBonus(this.$artifact.getSetIndex(this.showdetail.equipped));
+          let setBonus = this.$artifact.getSetBonus(this.showdetail.equipped);
           for (let key in setBonus) {
             const count = setBonus[key];
             let setName = key;

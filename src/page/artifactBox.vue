@@ -210,7 +210,14 @@
         </a>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
           <li>
-            <router-link class="dropdown-item" to="/state-Albedo">{{ $t("handle.characterStateList") }}</router-link>
+            <router-link class="dropdown-item" to="/state-Albedo">
+              <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
+                <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                <path fill-rule="evenodd" d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z" />
+                <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
+              </svg>
+              {{ $t("handle.characterStateList") }}</router-link
+            >
           </li>
           <li>
             <a class="dropdown-item" href="javascript:void(0)" @click="undoDel">
@@ -423,29 +430,7 @@
     </div>
   </div>
   <!-- 关于信息 -->
-  <div class="modal fade" id="about" tabindex="-1" aria-labelledby="about" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="about">{{ $t("msg.about") }}</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body about-bg">
-          <div>Version: {{ $artifact.version }}</div>
-          <div>Author: <a href="https://github.com/DioMao" target="_blank">DioMao</a></div>
-          <div>Frameworks:</div>
-          <div class="fs-sm">Vue3 <br />Vue-router4 <br />Vuex4 <br />Bootstrap5 <br />Vue-i18n@9.1.7<br />Dexie</div>
-          <div>Artifacts Images:</div>
-          <div class="fs-sm">
-            <a href="https://genshin-impact.fandom.com/" target="blank">Genshin Impact Wiki</a>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-genshin-dark" data-bs-dismiss="modal"><span class="circleinbox"></span>{{ $t("handle.confirm") }}</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <about></about>
 </template>
 
 <script>
@@ -454,6 +439,7 @@
   import popup from "../components/popup";
   import artifactList from "../components/artifact-list";
   import artifactScore from "../components/artifact-score";
+  import about from "../components/about";
   // bootstrap相关
   import "bootstrap/js/dist/alert";
   import "bootstrap/js/dist/modal";
@@ -469,13 +455,15 @@
       popup,
       artifactList,
       artifactScore,
+      about,
     },
     setup() {
       // 获取全局函数
       const globalProperties = getCurrentInstance().appContext.config.globalProperties;
       const artifactFunc = globalProperties.$artifact;
       const artiConst = globalProperties.$artiConst.val;
-      const trans = globalProperties.$i18n;
+      const i18n = globalProperties.$i18n;
+      const t = globalProperties.$t;
       // const db = globalProperties.$db;
       const store = useStore();
 
@@ -506,6 +494,62 @@
       const showSymbol = ref("");
 
       // 圣遗物相关
+      // 随机生成圣遗物
+      const createArtifact = () => {
+        artifactFunc.createArtifact();
+        // this.$artifact.bulkCreate(100);
+        alertControl("随机圣遗物已生成！", 1500);
+        syncListData();
+      };
+      // 批量随机生成
+      const batchCreate = count => {
+        artifactFunc.bulkCreate(count);
+      };
+      // 自选圣遗物
+      const cusCreatArtifact = () => {
+        const cusEntryValue = [];
+        const _cusEntry = [];
+        for (let i = 0; i < cusEntry.value.length; i++) {
+          _cusEntry.push(cusEntry.value[i]);
+          cusEntryValue.push(cusEntryRate.value[_cusEntry[i]]);
+        }
+        artifactFunc.createArtifact(cusPart.value, cusMainEntry.value, _cusEntry, cusEntryValue, cusSet.value);
+        alertControl("自选圣遗物已生成！", 1500);
+        syncListData();
+      };
+      // 圣遗物升级
+      const ArtifactUpgrade = (symbol, entry = "", enhancedRank = -1) => {
+        let res = artifactFunc.upgrade(symbol, entry, Number.parseInt(enhancedRank));
+        let qualityAlert = "";
+        if (Number.parseFloat(enhancedRank) !== -1) qualityAlert = "已启用副词条自选提升幅度！";
+        syncListData();
+        if (res === true) {
+          alertControl(t("handle.upSuccess") + `！${qualityAlert}`, 1500);
+        } else {
+          alertControl(t("handle.maxLv"), 1500, "warning");
+        }
+      };
+      // 初始化圣遗物
+      const initArtifact = symbol => {
+        let res = artifactFunc.reset(symbol);
+        if (res) {
+          alertControl("重置圣遗物成功~再试试手气吧", 1500);
+        } else {
+          alertControl("该圣遗物已锁定！", 1500, "warning");
+        }
+        syncListData();
+      };
+      // 删除圣遗物
+      const deleteArtifact = symbol => {
+        let res = artifactFunc.deleteOne(symbol);
+        if (res) {
+          showSymbol.value = "";
+          alertControl("删除圣遗物成功！", 1500);
+        } else {
+          alertControl("该圣遗物已锁定！", 1500, "warning");
+        }
+        syncListData();
+      };
       // 排序
       const sortList = index => {
         let sortMethod = ["lvasc", "lvdesc", "part", "main"];
@@ -521,6 +565,11 @@
       const lockChange = symbol => {
         artifactFunc.lock(symbol);
         syncListData();
+      };
+      // 手机端显示圣遗物详情
+      const showMobileDetail = ref(false);
+      const mobileshow = () => {
+        showMobileDetail.value = true;
       };
 
       // 同步数据
@@ -559,7 +608,7 @@
       const changeSetting = () => {
         // 语言选择
         store.commit("language", userSetting.value.language);
-        trans.locale = store.state.language;
+        i18n.locale = store.state.language;
         window.localStorage.language = store.state.language;
         window.localStorage.userSetting = JSON.stringify(userSetting.value);
       };
@@ -573,6 +622,25 @@
         if (type === "main") userSetting.value.filterMain = val;
         if (type === "part") userSetting.value.filterPart = val;
         if (type === "set") userSetting.value.filterSet = val;
+      };
+
+      // 提示框相关
+      const alertFunc = ref({
+        alertShow: false, // 是否显示提示框
+        alertMsg: "", // 提示框内容
+        alertClose: Function, // 定时关闭提示框
+        alertState: "success", // 提示框类型
+      });
+      // 操作提示-提示框
+      // state值： success/primary/warning/danger
+      const alertControl = (msg, time = 2000, state = "success") => {
+        alertFunc.value.alertMsg = msg;
+        alertFunc.value.alertState = state;
+        alertFunc.value.alertShow = true;
+        clearTimeout(alertFunc.value.alertClose);
+        alertFunc.value.alertClose = setTimeout(() => {
+          alertFunc.value.alertShow = false;
+        }, time);
       };
 
       onMounted(() => {
@@ -599,13 +667,23 @@
         cusEntry,
         setList,
         showSymbol,
+        createArtifact,
+        batchCreate,
+        cusCreatArtifact,
+        ArtifactUpgrade,
+        initArtifact,
+        deleteArtifact,
         sortList,
         changeShowSymbol,
         lockChange,
+        showMobileDetail,
+        mobileshow,
         userSetting,
         changeSetting,
         multFilter,
         syncListData,
+        alertFunc,
+        alertControl,
       };
     },
     data() {
@@ -613,13 +691,6 @@
         state: this.$store.state,
         showDetail: Object, // 右侧圣遗物展示详情
         cusCloseSwitch: true, // 自选圣遗物-生成后是否关闭modal窗
-        alertFunc: {
-          alertShow: false, // 是否显示提示框
-          alertMsg: String, // 提示框内容
-          alertClose: Function, // 定时关闭提示框
-          alertState: "success", // 提示框类型
-        },
-        showMobileDetail: false,
       };
     },
     computed: {
@@ -661,51 +732,6 @@
       },
     },
     methods: {
-      // 随机生成圣遗物
-      createArtifact() {
-        this.$artifact.createArtifact();
-        // this.$artifact.bulkCreate(100);
-        this.syncListData();
-        this.alertControl("随机圣遗物已生成！", 1500);
-      },
-      // 批量随机生成
-      batchCreate(count) {
-        this.$artifact.bulkCreate(count);
-      },
-      // 自选圣遗物
-      cusCreatArtifact() {
-        let cusEntryValue = [],
-          cusEntry = [];
-        for (let i = 0; i < this.cusEntry.length; i++) {
-          cusEntry.push(this.cusEntry[i]);
-          cusEntryValue.push(this.cusEntryRate[cusEntry[i]]);
-        }
-        this.$artifact.createArtifact(this.cusPart, this.cusMainEntry, cusEntry, cusEntryValue, this.cusSet);
-        this.syncListData();
-        this.alertControl("自选圣遗物已生成！", 1500);
-      },
-      // 圣遗物升级
-      ArtifactUpgrade(symbol, entry = "", enhancedRank = -1) {
-        let res = this.$artifact.upgrade(symbol, entry, Number.parseInt(enhancedRank)),
-          qualityAlert = "";
-        if (Number.parseFloat(enhancedRank) !== -1) qualityAlert = "已启用副词条自选提升幅度！";
-        this.syncListData();
-        if (res === true) {
-          this.alertControl(this.$t("handle.upSuccess") + `！${qualityAlert}`, 1500);
-        } else {
-          this.alertControl(this.$t("handle.maxLv"), 1500, "warning");
-        }
-      },
-      // 初始化圣遗物
-      initArtifact(symbol) {
-        let res = this.$artifact.reset(symbol);
-        this.syncListData();
-        if (res) {
-          this.alertControl("重置圣遗物成功~再试试手气吧", 1500);
-        } else {
-          this.alertControl("该圣遗物已锁定！", 1500, "warning");
-        }
-      },
       // 清除结果列表
       ArtifactClear() {
         if (this.$artifact.AUSList.length === 0) {
@@ -714,17 +740,6 @@
           this.showSymbol = "";
           this.$artifact.deleteAll();
           this.syncListData();
-        }
-      },
-      // 删除圣遗物
-      deleteArtifact(symbol) {
-        let res = this.$artifact.deleteOne(symbol);
-        this.syncListData();
-        if (res) {
-          this.showSymbol = "";
-          this.alertControl("删除圣遗物成功！", 1500);
-        } else {
-          this.alertControl("该圣遗物已锁定！", 1500, "warning");
         }
       },
       // 撤销删除
@@ -760,21 +775,6 @@
         this.userSetting = JSON.parse(this.defaultSetting);
         this.alertControl("设置重置成功！", 1500);
       },
-      // 手机端显示圣遗物详情
-      mobileshow() {
-        this.showMobileDetail = true;
-      },
-      // 操作提示-提示框
-      // state值： success/primary/warning/danger
-      alertControl(msg, time = 2000, state = "success") {
-        this.alertFunc.alertMsg = msg;
-        this.alertFunc.alertState = state;
-        this.alertFunc.alertShow = true;
-        clearTimeout(this.alertFunc.alertClose);
-        this.alertFunc.alertClose = setTimeout(() => {
-          this.alertFunc.alertShow = false;
-        }, time);
-      },
     },
   };
 </script>
@@ -791,13 +791,16 @@
   // box界面css
 
   .main-container {
-    position: fixed;
+    position: relative;
+    // position: fixed;
     overflow: hidden;
+    height: 100vh;
     background-color: rgb(180, 170, 150);
-    top: 3.5rem;
+    // top: 3.5rem;
     width: 100%;
-    height: calc(100% - 7.25rem);
+    // height: calc(100% - 7.25rem);
     user-select: none;
+    padding: 3.5rem 0 3.75rem;
 
     .main-container-bg {
       position: absolute;
@@ -809,11 +812,11 @@
     }
 
     .partFilterBox {
-      position: fixed;
+      position: sticky;
       display: flex;
       overflow: hidden;
       background-color: rgba(255, 255, 255, 0.3);
-      width: calc(100% - 32.5rem);
+      width: calc(100% - 20rem);
       height: 2.5rem;
       align-items: center;
       justify-content: space-around;
@@ -902,8 +905,7 @@
   }
 
   .extra-container {
-    position: absolute;
-    top: 2.5rem;
+    height: calc(100% - 2.5rem);
     width: 100%;
     bottom: 0;
   }
@@ -930,7 +932,7 @@
 
   footer {
     position: fixed !important;
-    z-index: 1;
+    z-index: 10;
     background-color: #d2cab0;
     width: 100%;
     height: 3.75rem;
@@ -1063,12 +1065,5 @@
     z-index: 20;
     color: $genshin_gold;
     font-size: 1rem;
-  }
-
-  .about-bg {
-    background-image: url(../assets/images/genshin_emoji/Icon_Emoji_024_Keqing_Good_Night.png);
-    background-repeat: no-repeat;
-    background-size: 10rem;
-    background-position: 90% center;
   }
 </style>

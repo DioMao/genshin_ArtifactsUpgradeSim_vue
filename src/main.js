@@ -27,6 +27,7 @@ app
 initArtifactSim()
   .then(() => {
     app.mount("#app");
+    window.scrollTo(0,1)
   })
   .catch(err => {
     console.log(err);
