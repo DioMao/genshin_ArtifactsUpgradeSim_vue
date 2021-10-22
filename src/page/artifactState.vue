@@ -206,10 +206,9 @@
     position: relative;
     width: 100%;
     height: 100vh;
-    padding-top: 3.5rem;
     overflow-x: hidden;
     overflow-y: scroll;
-    padding: 0 6.25rem;
+    padding: 3.5rem 6.25rem 0;
   }
 
   // 各属性背景色

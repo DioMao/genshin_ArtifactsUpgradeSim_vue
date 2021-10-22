@@ -659,6 +659,22 @@ const ArtifactsFunction = function() {
       return "Can't get name.";
     }
 
+    /**
+     * 下载数据（本地备份）
+     */
+    dataDownload() {
+      const data = JSON.stringify(this[AUS_LIST]);
+      const blob = new Blob([data], { type: "text/json" });
+      const e = new MouseEvent("click", {});
+      const a = document.createElement("a");
+      a.download = `artifacts_sim_data_${this.#VERSION}.json`;
+      a.href = window.URL.createObjectURL(blob);
+      a.dataset.downloadurl = ["text/json", a.download, a.href].join(":");
+      a.dispatchEvent(e);
+    }
+
+    
+
     /** 套装函数 **/
 
     /**

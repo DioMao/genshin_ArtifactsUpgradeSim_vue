@@ -97,7 +97,7 @@ initArtifactSim().then(() => {
 
 示例：
 ```
-ArtifactsSim.creatArtifact("cup","fire",["ATKPer","critRate","critDMG","elementMastery"],[5.8,3.9,7.8,23],"Emblem of Severed Fate", true);
+ArtifactsSim.creatArtifact("Goblet","Geo",["ATKPer","critRate","critDMG","elementMastery"],[5.8,3.9,7.8,23],"Emblem of Severed Fate", true);
 ```
 返回值为对象:
 

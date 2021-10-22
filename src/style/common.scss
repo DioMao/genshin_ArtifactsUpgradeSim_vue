@@ -345,7 +345,7 @@ body {
 
 .navbar {
   height: 3.5rem;
-  background-color: rgb(76, 76, 76);
+  background-color: rgba(0, 0, 0, 0.5);
   width: 100%;
   z-index: 10;
 
@@ -741,8 +741,7 @@ body {
   .artifactDetailBox {
     position: fixed !important;
     height: 45% !important;
-    top: 3.625rem !important;
-    inset: auto !important;
+    inset: 3.625rem auto auto !important;
     width: 100%;
     overflow-y: scroll;
 
@@ -789,5 +788,10 @@ body {
   footer {
     padding-left: 3.125rem !important;
     padding-right: 3.125rem !important;
+  }
+
+  // 套装界面
+  .character-container {
+    top: 3.5rem;
   }
 }

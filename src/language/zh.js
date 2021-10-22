@@ -10,6 +10,17 @@ module.exports = {
     higher: "较高",
     highest: "最高",
   },
+  alert: {
+    random: "随机圣遗物已生成！",
+    custom: "自选圣遗物已生成！",
+    cheating: "已启用副词条自选提升幅度！",
+    init: "重置圣遗物成功~再试试手气吧！",
+    initAll: "已重置全部未锁定圣遗物！",
+    isLocked: "该圣遗物已锁定！",
+    delete: "删除圣遗物成功！",
+    emptyList: "当前列表已经空了哦！",
+    
+  },
   msg: {
     language: "语言",
     settings: "设置",

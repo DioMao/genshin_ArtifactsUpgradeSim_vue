@@ -135,12 +135,10 @@
 
   #loading {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     z-index: 2000;
     background-color: #fff;
+    transition: 0.5s all linear;
 
     .loading-box {
       position: absolute;

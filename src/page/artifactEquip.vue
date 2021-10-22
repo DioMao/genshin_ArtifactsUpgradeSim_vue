@@ -317,9 +317,8 @@
   .set_container {
     user-select: none;
     position: relative;
-    top: 3.5rem;
     width: 100%;
-    height: calc(100vh - 3.5rem);
+    height: 100vh;
     overflow: hidden;
   }
 
@@ -414,7 +413,7 @@
     .artifactDetailBox {
       position: absolute;
       z-index: 4;
-      inset: 3.5rem 3rem 3.5rem auto;
+      inset: 7rem 3rem 3.5rem auto;
 
       .comparedBox {
         position: relative;

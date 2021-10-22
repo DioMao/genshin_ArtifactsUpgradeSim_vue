@@ -178,16 +178,24 @@
       </button>
       <ul class="dropdown-menu sortList" aria-labelledby="sort">
         <li>
-          <a class="dropdown-item" href="javascript:void(0)" @click="sortList(0)">{{ $t("msg.lvasc") }}</a>
+          <a class="dropdown-item" href="javascript:void(0)" @click="sortList(0)" :class="{ isActived: userSetting.sortRule === 'lvasc' }">
+            {{ $t("msg.lvasc") }}
+          </a>
         </li>
         <li>
-          <a class="dropdown-item" href="javascript:void(0)" @click="sortList(1)">{{ $t("msg.lvdesc") }}</a>
+          <a class="dropdown-item" href="javascript:void(0)" @click="sortList(1)" :class="{ isActived: userSetting.sortRule === 'lvdesc' }">
+            {{ $t("msg.lvdesc") }}
+          </a>
         </li>
         <li>
-          <a class="dropdown-item" href="javascript:void(0)" @click="sortList(2)">{{ $t("msg.sortByPart") }}</a>
+          <a class="dropdown-item" href="javascript:void(0)" @click="sortList(2)" :class="{ isActived: userSetting.sortRule === 'part' }">
+            {{ $t("msg.sortByPart") }}
+          </a>
         </li>
         <li>
-          <a class="dropdown-item" href="javascript:void(0)" @click="sortList(3)">{{ $t("msg.sortByMainEntry") }}</a>
+          <a class="dropdown-item" href="javascript:void(0)" @click="sortList(3)" :class="{ isActived: userSetting.sortRule === 'main' }">
+            {{ $t("msg.sortByMainEntry") }}
+          </a>
         </li>
       </ul>
       <button id="create" @click="createArtifact" class="btn btn-genshin" :style="{ fontSize: $i18n.locale === 'en' ? '0.9rem' : 'inherit' }">
@@ -381,6 +389,8 @@
           <button type="button" class="btn btn-genshin-dark btn-sm mt-3" @click="clearStorge">{{ $t("msg.clearStorage") }}</button>
           <br />
           <button type="button" class="btn btn-genshin-dark btn-sm mt-3" @click="resetSetting">{{ $t("msg.resetSetting") }}</button>
+          <!-- <br />
+          <button type="button" class="btn btn-genshin-dark btn-sm mt-3" @click="$artifact.dataDownload()">Data Download(test)</button> -->
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-genshin-dark" data-bs-dismiss="modal"><span class="circleinbox"></span>{{ $t("handle.confirm") }}</button>
@@ -497,8 +507,8 @@
       // 随机生成圣遗物
       const createArtifact = () => {
         artifactFunc.createArtifact();
-        // this.$artifact.bulkCreate(100);
-        alertControl("随机圣遗物已生成！", 1500);
+        // aritfactFunc.bulkCreate(100);
+        alertControl(t("alert.random"), 1500);
         syncListData();
       };
       // 批量随机生成
@@ -514,14 +524,14 @@
           cusEntryValue.push(cusEntryRate.value[_cusEntry[i]]);
         }
         artifactFunc.createArtifact(cusPart.value, cusMainEntry.value, _cusEntry, cusEntryValue, cusSet.value);
-        alertControl("自选圣遗物已生成！", 1500);
+        alertControl(t("alert.custom"), 1500);
         syncListData();
       };
       // 圣遗物升级
       const ArtifactUpgrade = (symbol, entry = "", enhancedRank = -1) => {
         let res = artifactFunc.upgrade(symbol, entry, Number.parseInt(enhancedRank));
         let qualityAlert = "";
-        if (Number.parseFloat(enhancedRank) !== -1) qualityAlert = "已启用副词条自选提升幅度！";
+        if (Number.parseFloat(enhancedRank) !== -1) qualityAlert = t("alert.cheating");
         syncListData();
         if (res === true) {
           alertControl(t("handle.upSuccess") + `！${qualityAlert}`, 1500);
@@ -533,10 +543,16 @@
       const initArtifact = symbol => {
         let res = artifactFunc.reset(symbol);
         if (res) {
-          alertControl("重置圣遗物成功~再试试手气吧", 1500);
+          alertControl(t("alert.init"), 1500);
         } else {
-          alertControl("该圣遗物已锁定！", 1500, "warning");
+          alertControl(t("alert.isLocked"), 1500, "warning");
         }
+        syncListData();
+      };
+      // 初始化全部圣遗物
+      const resetAll = () => {
+        artifactFunc.resetAll();
+        alertControl(t("alert.initAll"), 1500);
         syncListData();
       };
       // 删除圣遗物
@@ -544,11 +560,21 @@
         let res = artifactFunc.deleteOne(symbol);
         if (res) {
           showSymbol.value = "";
-          alertControl("删除圣遗物成功！", 1500);
+          alertControl(t("alert.delete"), 1500);
         } else {
-          alertControl("该圣遗物已锁定！", 1500, "warning");
+          alertControl(t("alert.isLocked"), 1500, "warning");
         }
         syncListData();
+      };
+      // 清除结果列表
+      const ArtifactClear = () => {
+        if (artifactFunc.AUSList.length === 0) {
+          alertControl(t("alert.emptyList"), 1500, "warning");
+        } else if (confirm("确认要清空圣遗物吗？\n**会保留上锁的圣遗物**\n请注意，此操作不可恢复！")) {
+          showSymbol.value = "";
+          artifactFunc.deleteAll();
+          syncListData();
+        }
       };
       // 排序
       const sortList = index => {
@@ -672,7 +698,9 @@
         cusCreatArtifact,
         ArtifactUpgrade,
         initArtifact,
+        resetAll,
         deleteArtifact,
+        ArtifactClear,
         sortList,
         changeShowSymbol,
         lockChange,
@@ -732,16 +760,6 @@
       },
     },
     methods: {
-      // 清除结果列表
-      ArtifactClear() {
-        if (this.$artifact.AUSList.length === 0) {
-          this.alertControl("当前列表已经空了哦！", 1500, "warning");
-        } else if (confirm("确认要清空圣遗物吗？\n**会保留上锁的圣遗物**\n请注意，此操作不可恢复！")) {
-          this.showSymbol = "";
-          this.$artifact.deleteAll();
-          this.syncListData();
-        }
-      },
       // 撤销删除
       undoDel() {
         let res = this.$artifact.undoDel();
@@ -751,12 +769,6 @@
         } else {
           this.alertControl("没有可以撤销的数据！", 1500, "primary");
         }
-      },
-      // 初始化全部圣遗物
-      resetAll() {
-        this.$artifact.resetAll();
-        this.syncListData();
-        this.alertControl("已重置全部未锁定圣遗物~", 1500);
       },
       // 清除本地数据
       clearStorge() {
@@ -792,13 +804,11 @@
 
   .main-container {
     position: relative;
-    // position: fixed;
-    overflow: hidden;
     height: 100vh;
     background-color: rgb(180, 170, 150);
-    // top: 3.5rem;
+    background-position: center;
+    background-size: cover;
     width: 100%;
-    // height: calc(100% - 7.25rem);
     user-select: none;
     padding: 3.5rem 0 3.75rem;
 
@@ -850,7 +860,7 @@
       position: fixed;
       bottom: 4.5rem;
       left: -5.5rem;
-      z-index: 30;
+      z-index: 10;
       color: rgb(102, 112, 122);
       background-color: #fff;
       padding: 0.5rem 1rem;
@@ -955,7 +965,8 @@
     padding: 0.375rem 0;
   }
 
-  .filterList {
+  .filterList,
+  .sortList {
     height: 26.875rem;
     overflow-y: scroll;
     background-color: rgba(61, 69, 86, 0.98) !important;
@@ -1015,16 +1026,7 @@
   }
 
   .sortList {
-    background-color: rgb(61, 69, 86) !important;
-
-    li a {
-      &:hover {
-        color: $genshin_white;
-        background-color: rgba(72, 81, 98, 0.5) !important;
-      }
-
-      color: $genshin_white;
-    }
+    height: unset;
   }
 
   .dropdown-footer {

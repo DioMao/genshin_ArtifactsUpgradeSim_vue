@@ -261,16 +261,16 @@
           }
           this.showUpdate = true;
         } else {
-          this.alertControl("当前圣遗物已满级~", 1500, "warning");
+          this.alertControl(this.$t("handle.upSuccess"), 1500, "warning");
         }
       },
       // 初始化圣遗物
       initArtifact() {
         let res = this.$artifact.reset(this.symbol);
         if (res) {
-          this.alertControl("重置圣遗物成功~再试试手气吧", 1500);
+          this.alertControl(this.$t("alert.init"), 1500);
         } else {
-          this.alertControl("该圣遗物已锁定！", 1500, "warning");
+          this.alertControl(this.$t("alert.isLocked"), 1500, "warning");
         }
       },
       // 主词条展示优化
@@ -332,10 +332,10 @@
   }
 
   .upgradeMax {
-    position: absolute;
+    position: fixed;
     width: 12.5rem;
     z-index: 2;
-    bottom: 2rem;
+    bottom: 3rem;
     right: 5rem;
     color: #fff;
     font-size: 0.9rem;
@@ -413,9 +413,9 @@
   }
 
   .upgrade-button-box {
-    position: absolute;
+    position: fixed;
     z-index: 2;
-    bottom: 3vh;
+    bottom: 3rem;
     right: 3.125rem;
   }
 
