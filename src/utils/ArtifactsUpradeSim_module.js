@@ -663,17 +663,76 @@ const ArtifactsFunction = function() {
      * 下载数据（本地备份）
      */
     dataDownload() {
+      const date = new Date();
       const data = JSON.stringify(this[AUS_LIST]);
       const blob = new Blob([data], { type: "text/json" });
       const e = new MouseEvent("click", {});
       const a = document.createElement("a");
-      a.download = `artifacts_sim_data_${this.#VERSION}.json`;
+      a.download = `artifacts_data_${this.#VERSION}_${date.getFullYear()}_${date.getMonth() +
+        1}_${date.getDate()}_${date.getHours()}${date.getMinutes()}${date.getSeconds()}.json`;
       a.href = window.URL.createObjectURL(blob);
       a.dataset.downloadurl = ["text/json", a.download, a.href].join(":");
       a.dispatchEvent(e);
     }
 
-    
+    /**
+     * 上传文件处理（更新圣遗物列表）
+     * @param {Object} file 上传的文件
+     */
+    uploadFile(file) {
+      if (file) {
+        if (file.size > 20000000) {
+          alert("文件过大");
+          return;
+        }
+        if (file.name.slice(-4).toLowerCase() !== "json") {
+          alert("请上传.json文件");
+          return;
+        }
+        const fileReader = new FileReader();
+        fileReader.readAsText(file, "utf-8");
+        fileReader.onload = res => {
+          this.dataUpdate(JSON.parse(res.target.result));
+        };
+      } else {
+        alert("还没有选择文件");
+      }
+    }
+
+    /**
+     * 圣遗物列表更新
+     * @param {array} data 圣遗物列表
+     */
+    dataUpdate(data) {
+      if (Array.isArray(data)) {
+        if (data.length > this[LIST_LIMIT]) {
+          data.length = this[LIST_LIMIT];
+          console.log(`Warning - The maximum length of the artifacts list is ${this[LIST_LIMIT]}.`);
+        }
+        // 数据验证
+        const dataAttr = ["symbol", "level", "set", "part", "mainEntry", "mainEntryValue", "entry", "initEntry", "upgradeHistory", "lock", "isNew", "equipped"];
+        for (let index in data) {
+          const item = data[index];
+          if (typeof item !== "object") {
+            alert("Data format error!");
+            return false;
+          }
+          for (let attr of dataAttr) {
+            if (!Object.prototype.hasOwnProperty.call(item, attr)) {
+              alert("Data format error!");
+              return false;
+            }
+          }
+        }
+        this[AUS_LIST].length = 0;
+        this[AUS_LIST] = data;
+        this.enforceUpdateCount();
+        this.asyncSetList();
+        IDB.ARTIFACT_LIST.clear().then(() => {
+          IDB.ARTIFACT_LIST.bulkAdd(this[AUS_LIST]);
+        });
+      }
+    }
 
     /** 套装函数 **/
 
@@ -1282,6 +1341,7 @@ const ArtifactsFunction = function() {
         }
         this[AUS_LIST].length = 0;
         this[AUS_LIST] = val;
+        this.enforceUpdateCount();
         // console.log("%cSet new Artifacts list success.", "color:rgb(144,82,41)");
       }
     }
@@ -1341,7 +1401,6 @@ const initArtifactSim = function() {
         const setList = res[1];
         // 初始化圣遗物列表
         ArtifactsSim.AUSList = artifactList;
-        ArtifactsSim.enforceUpdateCount();
         // 读取套装列表
         for (let item of setList) {
           const index = ArtifactsSim.getSetIndex(item.name);

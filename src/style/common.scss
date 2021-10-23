@@ -170,6 +170,134 @@ body {
   border: solid 0.125rem rgb(216, 204, 180);
 }
 
+.genshin-setting-box {
+  position: relative;
+  z-index: 1;
+  background-color: rgb(215, 210, 203);
+  height: 2rem;
+  border-radius: 2rem;
+  padding: 0.625rem 0.75rem 0;
+  overflow: hidden;
+
+  .genshin-setting-title {
+    float: left;
+    font-size: 0.875rem;
+    line-height: 0.875rem;
+    color: $genshin_dark;
+  }
+
+  .genshin-setting-set {
+    position: absolute;
+    display: block;
+    top: 0;
+    right: 0;
+    height: 100%;
+    font-size: 0.875rem;
+    line-height: 0.875rem;
+    color: $genshin_dark;
+    background-color: rgb(202, 190, 171);
+    min-width: 7rem;
+    border-radius: 0 2rem 2rem 0;
+    text-align: center;
+    transition: all 0.2s linear;
+
+    .genshin-setting-button-box {
+      height: 100%;
+      width: 100%;
+
+      .genshin-setting-button {
+        display: inline-block;
+        height: 100%;
+        width: 100%;
+        text-decoration: none;
+        color: $genshin_dark;
+        padding: 0.625rem 0.75rem 0;
+
+        &::after {
+          position: absolute;
+          right: 0.5rem;
+          top: 0.8125rem;
+        }
+      }
+
+      ul {
+        border-radius: 1.25rem;
+        background-color: $genshin_dark;
+        padding: 0.5rem 0;
+        max-height: 16rem;
+
+        li {
+          padding: 0 0.25rem;
+          border-radius: 1.5625rem;
+
+          .dropdown-item {
+            color: $genshin_white;
+            border-radius: 1.5625rem;
+
+            &:hover {
+              background-color: rgb(96, 105, 121);
+            }
+
+            span {
+              display: block;
+              float: right;
+            }
+          }
+
+          .itemSelected {
+            &::before {
+              content: "✔";
+              display: block;
+              float: right;
+            }
+          }
+        }
+      }
+    }
+
+    &::before {
+      content: "✦";
+      display: block;
+      position: absolute;
+      font-size: 2.5rem;
+      top: 0.625rem;
+      left: -1rem;
+      color: rgb(204, 187, 153);
+    }
+
+    &::after {
+      content: "✦";
+      display: block;
+      position: absolute;
+      font-size: 2.5rem;
+      top: 0.625rem;
+      left: -2.75rem;
+      color: rgb(211, 201, 179);
+    }
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    z-index: -1;
+    inset: -0.0625rem;
+    border-radius: 2rem;
+  }
+
+  &:hover {
+    filter: brightness(1.05);
+  }
+
+  &:hover::after {
+    border: 0.125rem solid #ffffff;
+  }
+}
+
+.genshin-setting-nodropdown {
+  z-index: unset;
+}
+
 //新物品标识
 .isNew {
   position: absolute;

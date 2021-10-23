@@ -66,6 +66,7 @@
         <span :class="setActive >= 2 ? 'setActived' : 'setInactivated'">{{ $t("term.Set2") }}: {{ setDetail.Set2 }}</span>
         <span :class="setActive >= 4 ? 'setActived' : 'setInactivated'">{{ $t("term.Set4") }}: {{ setDetail.Set4 }}</span>
       </div>
+      <div class="bottomBg"></div>
     </div>
     <div class="aEquipped" v-if="showdetail.equipped">
       <img :src="sideUrl" alt="side_avatar" draggable="false" />
@@ -287,8 +288,9 @@
       overflow: hidden;
       font-size: 0.8125rem;
       height: 8.4375rem;
-      padding: 0.5625rem 1.125rem;
-      background-image: linear-gradient(to bottom right, rgba(110, 72, 72, 0.5) 15%, rgba(255, 175, 45, 0.7)), url(../assets/images/item_bg.png);
+      padding: 0.3125rem 1.125rem 0.5625rem;
+      background-image: linear-gradient(to bottom right, rgba(110, 72, 72, 0.5) 15%, rgba(225, 125, 40, 0.5), rgba(255, 175, 45, 0.7) 95%),
+        url(../assets/images/item_bg.png);
       background-size: auto 8.25rem, 100%;
       background-position-y: 0, 0;
 
@@ -335,9 +337,10 @@
     }
 
     .aContent {
+      position: relative;
       min-height: 16rem;
       font-size: 0.875rem;
-      padding: 0.9375rem 1.125rem;
+      padding: 0.6875rem 1.125rem 2.5rem;
       background-color: #ece5d8;
 
       .badge {
@@ -348,7 +351,7 @@
       }
 
       ul {
-        margin-top: 0.625rem;
+        margin-top: 0.375rem;
         margin-bottom: 0;
         list-style-type: none;
         padding: 0;
@@ -372,6 +375,7 @@
           display: block;
           line-height: 1rem;
           margin-top: 0.25rem;
+          z-index: 2;
         }
 
         .setInactivated {
@@ -405,6 +409,15 @@
             width: 0.75rem;
           }
         }
+      }
+
+      .bottomBg {
+        position: absolute;
+        inset: auto 0 0 0;
+        height: 3.5rem;
+        width: 100%;
+        background-image: url(../assets/svg/star_2.svg);
+        background-size: 1.75rem;
       }
 
       .unlock,

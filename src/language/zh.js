@@ -19,7 +19,6 @@ module.exports = {
     isLocked: "该圣遗物已锁定！",
     delete: "删除圣遗物成功！",
     emptyList: "当前列表已经空了哦！",
-    
   },
   msg: {
     language: "语言",
@@ -30,6 +29,7 @@ module.exports = {
     about: "关于",
     set: "套装",
     clearList: "清空列表",
+    clear: "清除",
     resetAll: "全部重置",
     undoDel: "撤销删除",
     part: "位置",
@@ -56,6 +56,11 @@ module.exports = {
     setChange: "套装属性变更",
     noChanges: "无变化",
     characterAttrChange: "角色属性变更",
+    downloadData: "下载圣遗物数据",
+    uploadData: "上传圣遗物数据",
+    settingResetSuccess: "设置重置成功",
+    undoSuccess: "撤销成功",
+    undoFail: "没有可撤销数据",
   },
   score: {
     preset: "预设模式",
@@ -81,6 +86,8 @@ module.exports = {
     commonHandle: "通用操作",
     targetedEnhanced: "精准强化",
     enhancedRank: "强化幅度",
+    download: "下载",
+    upload: "上传",
   },
   term: {
     artifacts: "圣遗物",

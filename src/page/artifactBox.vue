@@ -379,18 +379,75 @@
             <label class="form-check-label" for="listModeRadio">{{ $t("msg.brief") }}</label>
             <input class="form-check-input" type="checkbox" id="listModeRadio" v-model="userSetting['listBriefMode']" />
           </div> -->
-          <div class="mt-3">
-            <div>{{ $t("msg.language") }}</div>
-            <select class="form-select form-select-sm" v-model="userSetting.language">
-              <option value="en">English</option>
-              <option value="zh">简体中文</option>
-            </select>
+          <!-- 语言选择 -->
+          <div class="genshin-setting-box">
+            <span class="genshin-setting-title">{{ $t("msg.language") }}</span>
+            <span class="genshin-setting-set">
+              <div class="dropdown genshin-setting-button-box" style="display:inline-block;">
+                <a
+                  class="dropdown-toggle genshin-setting-button"
+                  href="javascript:void(0)"
+                  role="button"
+                  id="dropdownSettingLanguage"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  {{ language === "zh" ? "简体中文" : "English" }}
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                  <li>
+                    <a class="dropdown-item" @click="userSetting.language = 'zh'" :class="{ itemSelected: userSetting.language === 'zh' }">简体中文</a>
+                    <a class="dropdown-item" @click="userSetting.language = 'en'" :class="{ itemSelected: userSetting.language === 'en' }">English</a>
+                  </li>
+                </ul>
+              </div>
+            </span>
           </div>
-          <button type="button" class="btn btn-genshin-dark btn-sm mt-3" @click="clearStorge">{{ $t("msg.clearStorage") }}</button>
-          <br />
-          <button type="button" class="btn btn-genshin-dark btn-sm mt-3" @click="resetSetting">{{ $t("msg.resetSetting") }}</button>
-          <!-- <br />
-          <button type="button" class="btn btn-genshin-dark btn-sm mt-3" @click="$artifact.dataDownload()">Data Download(test)</button> -->
+          <!-- 清除本地数据 -->
+          <div class="genshin-setting-box genshin-setting-nodropdown mt-2">
+            <span class="genshin-setting-title">{{ $t("msg.clearStorage") }}</span>
+            <span class="genshin-setting-set">
+              <div class="genshin-setting-button-box" style="display:inline-block;">
+                <a class="genshin-setting-button" href="javascript:void(0)" role="button" @click="clearStorge">
+                  {{ $t("msg.clear") }}
+                </a>
+              </div>
+            </span>
+          </div>
+          <!-- 恢复默认设置 -->
+          <div class="genshin-setting-box genshin-setting-nodropdown mt-2">
+            <span class="genshin-setting-title">{{ $t("msg.resetSetting") }}</span>
+            <span class="genshin-setting-set">
+              <div class="genshin-setting-button-box" style="display:inline-block;">
+                <a class="genshin-setting-button" href="javascript:void(0)" role="button" @click="resetSetting">
+                  {{ $t("handle.confirm") }}
+                </a>
+              </div>
+            </span>
+          </div>
+          <!-- 下载数据到本地 -->
+          <div class="genshin-setting-box genshin-setting-nodropdown mt-2">
+            <span class="genshin-setting-title">{{ $t("msg.downloadData") }}</span>
+            <span class="genshin-setting-set">
+              <div class="genshin-setting-button-box" style="display:inline-block;">
+                <a class="genshin-setting-button" href="javascript:void(0)" role="button" @click="$artifact.dataDownload()">
+                  {{ $t("handle.download") }}
+                </a>
+              </div>
+            </span>
+          </div>
+          <!-- 上传数据 -->
+          <div class="genshin-setting-box genshin-setting-nodropdown mt-2">
+            <span class="genshin-setting-title">{{ $t("msg.uploadData") }}</span>
+            <span class="genshin-setting-set">
+              <div class="genshin-setting-button-box" style="display:inline-block;">
+                <a class="genshin-setting-button" href="javascript:void(0)" role="button" @click="uploadClick">
+                  {{ $t("handle.upload") }}
+                </a>
+              </div>
+            </span>
+          </div>
+          <input class="form-control form-control-sm hide" ref="uploadData" id="uploadData" type="file" @change="uploadData" />
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-genshin-dark" data-bs-dismiss="modal"><span class="circleinbox"></span>{{ $t("handle.confirm") }}</button>
@@ -566,6 +623,16 @@
         }
         syncListData();
       };
+      // 撤销删除
+      const undoDel = () => {
+        let res = artifactFunc.undoDel();
+        if (res === true) {
+          alertControl(t("msg.undoSuccess"), 1500);
+        } else {
+          alertControl(t("msg.undoFail"), 1500, "primary");
+        }
+        syncListData();
+      };
       // 清除结果列表
       const ArtifactClear = () => {
         if (artifactFunc.AUSList.length === 0) {
@@ -638,6 +705,13 @@
         window.localStorage.language = store.state.language;
         window.localStorage.userSetting = JSON.stringify(userSetting.value);
       };
+      // 恢复默认设置
+      const resetSetting = () => {
+        window.localStorage.removeItem("userSetting");
+        window.localStorage.userSetting = defaultSetting;
+        userSetting.value = JSON.parse(defaultSetting);
+        alertControl(t("msg.settingResetSuccess"), 1500);
+      };
       // 筛选器
       const multFilter = (val, type = "part") => {
         if (type === "all") {
@@ -700,6 +774,7 @@
         initArtifact,
         resetAll,
         deleteArtifact,
+        undoDel,
         ArtifactClear,
         sortList,
         changeShowSymbol,
@@ -708,6 +783,7 @@
         mobileshow,
         userSetting,
         changeSetting,
+        resetSetting,
         multFilter,
         syncListData,
         alertFunc,
@@ -760,16 +836,6 @@
       },
     },
     methods: {
-      // 撤销删除
-      undoDel() {
-        let res = this.$artifact.undoDel();
-        this.syncListData();
-        if (res === true) {
-          this.alertControl("撤销删除成功！", 1500);
-        } else {
-          this.alertControl("没有可以撤销的数据！", 1500, "primary");
-        }
-      },
       // 清除本地数据
       clearStorge() {
         if (confirm("确定要清除模拟器所有数据吗？\n重置后会重新加载页面。")) {
@@ -780,12 +846,34 @@
           location.reload();
         }
       },
-      // 恢复默认设置
-      resetSetting() {
-        localStorage.removeItem("userSetting");
-        localStorage.userSetting = this.defaultSetting;
-        this.userSetting = JSON.parse(this.defaultSetting);
-        this.alertControl("设置重置成功！", 1500);
+      // 上传数据（模拟点击）
+      uploadClick() {
+        const inputDom = this.$refs.uploadData;
+        const click = new MouseEvent("click", {});
+        inputDom.dispatchEvent(click);
+      },
+      // 上传本地数据
+      uploadData() {
+        const inputDom = this.$refs.uploadData;
+        const file = inputDom.files[0];
+        if (file) {
+          if (file.size > 20000000) {
+            alert("文件过大");
+            return;
+          }
+          if (file.name.slice(-4).toLowerCase() !== "json") {
+            alert("请上传.json文件");
+            return;
+          }
+          const fileReader = new FileReader();
+          fileReader.readAsText(file, "utf-8");
+          fileReader.onload = res => {
+            this.$artifact.dataUpdate(JSON.parse(res.target.result));
+            this.syncListData();
+          };
+        } else {
+          alert("还没有选择文件");
+        }
       },
     },
   };

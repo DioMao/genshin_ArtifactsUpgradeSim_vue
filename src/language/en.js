@@ -29,6 +29,7 @@ module.exports = {
     about: "About",
     set: "Set",
     clearList: "Clear List",
+    clear: "Clear",
     resetAll: "Reset All",
     undoDel: "Undo Del",
     part: "Part",
@@ -55,6 +56,11 @@ module.exports = {
     setChange: "Set Bonus Changes",
     noChanges: "No Changes",
     characterAttrChange: "Character Attribute Changes",
+    downloadData: "Download Artifacts Data",
+    uploadData: "Upload Artifacts Data",
+    settingResetSuccess: "Setting reset success",
+    undoSuccess: "Undo success",
+    undoFail: "No data that can be undone",
   },
   score: {
     preset: "Preset",
@@ -80,6 +86,8 @@ module.exports = {
     commonHandle: "Quick Handle",
     targetedEnhanced: "Targeted Enhanced",
     enhancedRank: "Enhanced Rank",
+    download: "Download",
+    upload: "Upload",
   },
   term: {
     artifacts: "Artifacts",
