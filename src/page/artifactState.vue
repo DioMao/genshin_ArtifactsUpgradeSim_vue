@@ -19,10 +19,15 @@
     </svg>
     {{ $t("handle.back") }}
   </button>
+  <div class="equip-box" :class="{ 'equip-box-hide': !equipShow }" @click="equipShow = !equipShow">
+    <div>{{ $t("msg.equipped") }}:</div>
+    <character-equip :character="selectCharacter"></character-equip>
+  </div>
   <div class="state-container" :class="'bg-' + characterElement">
     <!-- 人物展示 -->
     <div class="characterDetail">
       <div class="characterName">{{ $t("element." + characterElement) }} / {{ $t("name." + selectCharacter) }}</div>
+      <div class="btn btn-genshin show-button" @click="equipShow = !equipShow">{{ $t("msg.equipped") }}</div>
     </div>
     <character-list mode="banner" @character="characterChange" :characterprop="selectCharacter"></character-list>
     <!-- 属性展示 -->
@@ -80,6 +85,7 @@
   import { getCurrentInstance, onMounted, ref, watch } from "vue";
   // import { useStore } from "vuex";
   import characterList from "../components/character-list";
+  import characterEquip from "../components/character-equip";
   export default {
     props: {
       name: {
@@ -89,6 +95,7 @@
     },
     components: {
       characterList,
+      characterEquip,
     },
     setup(props) {
       const globalProperties = getCurrentInstance().appContext.config.globalProperties;
@@ -179,6 +186,9 @@
       // console.log(artifactFunc.setState(props.name));
       // console.log(store);
 
+      // 装备显示/隐藏
+      const equipShow = ref(false);
+
       return {
         characterArtifact,
         selectCharacter,
@@ -188,6 +198,7 @@
         elementalType,
         characterChange,
         EMBonus,
+        equipShow,
       };
     },
   };
@@ -209,6 +220,25 @@
     overflow-x: hidden;
     overflow-y: scroll;
     padding: 3.5rem 6.25rem 0;
+  }
+
+  .show-button {
+    font-size: 0.875rem;
+    height: 2rem;
+    margin-right: 0.5rem;
+  }
+
+  .equip-box {
+    position: fixed;
+    top: 12rem;
+    z-index: 10;
+    background-color: rgb(255, 255, 255);
+    padding: 0.5rem;
+    transition: all 0.2s linear;
+  }
+
+  .equip-box-hide {
+    transform: translateX(-101%);
   }
 
   // 各属性背景色
@@ -243,6 +273,9 @@
   .characterDetail {
     position: relative;
     width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
     .characterName {
       position: relative;
@@ -362,7 +395,7 @@
         background-image: url(../assets/images/stats_icon/Icon_Healing.png);
       }
     }
-    
+
     .stat-energyRecharge {
       &::after {
         background-image: url(../assets/images/stats_icon/Icon_energyRecharge.png);

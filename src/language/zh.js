@@ -9,6 +9,7 @@ module.exports = {
     lower: "较低",
     higher: "较高",
     highest: "最高",
+    random: "随机",
   },
   alert: {
     random: "随机圣遗物已生成！",
@@ -61,6 +62,7 @@ module.exports = {
     settingResetSuccess: "设置重置成功",
     undoSuccess: "撤销成功",
     undoFail: "没有可撤销数据",
+    equipped: "当前装备",
   },
   score: {
     preset: "预设模式",

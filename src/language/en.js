@@ -9,6 +9,7 @@ module.exports = {
     lower: "Lower",
     higher: "Higher",
     highest: "Highest",
+    random: "Random",
   },
   alert: {
     random: "Randomly generated artifact.",
@@ -61,6 +62,7 @@ module.exports = {
     settingResetSuccess: "Setting reset success",
     undoSuccess: "Undo success",
     undoFail: "No data that can be undone",
+    equipped: "Artifacts Equipped",
   },
   score: {
     preset: "Preset",

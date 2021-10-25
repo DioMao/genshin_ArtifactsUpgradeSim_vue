@@ -1,3 +1,8 @@
+/**
+ * Copyrigth 2021-2022 DioMao (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/graphs/contributors)
+ * Licensed under GPL3.0 (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/master/LICENSE)
+ */
+
 import { createApp } from "vue";
 import store from "./store/store";
 import router from "./router/router";
@@ -27,7 +32,7 @@ app
 initArtifactSim()
   .then(() => {
     app.mount("#app");
-    window.scrollTo(0,1)
+    window.scrollTo(0, 1);
   })
   .catch(err => {
     console.log(err);

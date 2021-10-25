@@ -298,6 +298,7 @@
         <div class="modal-body">
           <label for="cutArtifactSet" class="form-label">{{ $t("msg.set") }}</label>
           <select id="cutArtifactSet" class="form-select form-select-sm mb-3" v-model="cusSet">
+            <option value="default">{{ $t("tips.random") }}</option>
             <option v-for="(set, index) in setList" :key="set" :value="set"> {{ $t("setList[" + index + "]") }}</option>
           </select>
           <label for="cutArtifactPart" class="form-label">{{ $t("msg.part") }}</label>
@@ -310,10 +311,12 @@
               cusMainEntry = '';
             "
           >
+            <option value="default">{{ $t("tips.random") }}</option>
             <option v-for="part in $artiConst.val.parts" :key="part" :value="part"> {{ $t("term." + part) }}</option>
           </select>
           <label class="form-label" v-show="cusPart !== 'default' && cusPart !== ''">{{ $t("msg.mainEntry") }}</label>
           <select class="form-select form-select-sm mb-3" v-if="cusPart !== 'default' && cusPart !== ''" v-model="cusMainEntry" @change="cusEntry.length = 0">
+            <option value="">{{ $t("tips.random") }}</option>
             <option v-for="partModal in cusEntryList[cusPart]" :key="partModal" :value="partModal"> {{ $t("term." + partModal) }}</option>
           </select>
           <label class="form-label" v-show="cusPart !== 'default' && cusMainEntry !== ''">{{ $t("handle.chooseEntry") }}</label>
@@ -553,8 +556,8 @@
       }
       const cusEntryList = readonly(cusEntryListProto);
       // 自选圣遗物
-      const cusSet = ref("");
-      const cusPart = ref("");
+      const cusSet = ref("default");
+      const cusPart = ref("default");
       const cusMainEntry = ref("");
       const cusEntry = ref([]);
 

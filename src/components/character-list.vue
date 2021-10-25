@@ -59,9 +59,7 @@
             <img src="../assets/images/Background_Symbol.png" alt="symbol" draggable="false" />
             <img :src="avatarSrc(character.name)" :alt="character.name" draggable="false" />
           </div>
-          <div class="elementBox">
-            <img :src="elementSrc(character.element[0])" :alt="character.element[0]" draggable="false" />
-          </div>
+          <img class="elementImg" :src="elementSrc(character.element[0])" :alt="character.element[0]" draggable="false" />
           <div class="lvBox">Lv. 90</div>
         </div>
         <div class="fillItem" v-for="i in fillCount" :key="'fill_' + i"></div>
@@ -407,21 +405,16 @@
         }
       }
 
-      .elementBox {
+      .elementImg {
         position: absolute;
-        top: -0.25rem;
+        top: 0.0625rem;
         left: 0.0625rem;
         width: 1rem;
         height: 1rem;
-
-        img {
-          height: 100%;
-          width: 100%;
-        }
       }
 
       .star_5 {
-        background-image: linear-gradient(135deg, rgb(150, 102, 46), rgb(230, 138, 39));
+        background-image: linear-gradient(135deg, rgb(165, 95, 30), rgb(200, 115, 15));
       }
 
       .star_4 {
