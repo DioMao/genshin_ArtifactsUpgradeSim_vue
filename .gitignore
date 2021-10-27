@@ -25,3 +25,6 @@ pnpm-debug.log*
 # css
 src/style/common.css
 src/style/common.min.css
+
+#Electron-builder output
+/dist_electron

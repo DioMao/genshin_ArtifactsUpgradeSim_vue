@@ -1,6 +1,6 @@
 <template>
   <div class="ArtifactShow">
-    <div class="aTitle">{{ artifactName }}</div>
+    <div class="aTitle" :style="{fontSize: language==='en'?'0.875rem':'inherit'}">{{ artifactName }}</div>
     <div class="titleLine">
       <img class="leftArrow" src="../assets/images/artifact_arrow.png" alt="artifactArrow" draggable="false" />
       <img class="rightArrow" src="../assets/images/artifact_arrow.png" alt="artifactArrow" draggable="false" />

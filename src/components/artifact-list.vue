@@ -50,7 +50,7 @@
               {{ Artifacts.part }}
             </div>
             <div class="levelStar"></div>
-            <div class="card-text" style="color:rgb(223,185,170);white-space:nowrap" :style="{ fontSize: $i18n.locale === 'en' ? '0.5rem' : 'inherit' }">
+            <div class="card-text" style="color:rgb(223,185,170);white-space:nowrap" :style="{ fontSize: $i18n.locale === 'en' ? '0.75rem' : 'inherit' }">
               {{ Artifacts.mainEntry }}
             </div>
             <div>
