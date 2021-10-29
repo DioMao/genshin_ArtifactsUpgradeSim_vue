@@ -253,9 +253,6 @@
       };
     },
     watch: {
-      // characterprop(val) {
-      //   this.selectCharacter = val;
-      // },
       characterList() {
         if (this.mode !== "banner") this.fillFunc();
       },
