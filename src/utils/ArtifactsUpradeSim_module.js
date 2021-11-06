@@ -1415,4 +1415,5 @@ const initArtifactSim = function() {
   });
 };
 
+export default ArtifactsSim;
 export { ArtifactsSim, artiConst, IDB, initArtifactSim };
