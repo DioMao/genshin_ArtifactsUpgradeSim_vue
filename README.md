@@ -2,8 +2,11 @@
 
 部分界面：
 
-![image](https://raw.githubusercontent.com/DioMao/genshin_ArtifactsUpgradeSim_vue/master/screenshot/screenshot_1.jpg)
 ![image](https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/master/screenshot/screenshot_1.jpg)
+![image](https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/master/screenshot/screenshot_2.jpg)
+![image](https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/master/screenshot/screenshot_3.jpg)
+![image](https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/master/screenshot/screenshot_4.jpg)
+![image](https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/master/screenshot/screenshot_5.jpg)
 
 ## Project setup 项目初始化
 ```
