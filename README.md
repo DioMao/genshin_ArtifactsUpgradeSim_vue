@@ -1,5 +1,10 @@
 # ArtifactsUpgradeSim | 圣遗物强化模拟器
 
+部分界面：
+
+![image](https://raw.githubusercontent.com/DioMao/genshin_ArtifactsUpgradeSim_vue/master/screenshot/screenshot_1.jpg)
+![image](https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/master/screenshot/screenshot_1.jpg)
+
 ## Project setup 项目初始化
 ```
 npm install
