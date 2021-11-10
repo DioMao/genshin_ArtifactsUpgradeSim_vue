@@ -1,6 +1,8 @@
 <template>
   <div class="score_container">
-    <div>{{ $t("msg.entryScore") }}(beta)：{{ ArtifactRate(symbol) }}</div>
+    <div>
+      {{ $t("msg.entryScore") }}(beta)：<span class="float-end" :class="{highscore: isHighScore}">{{ ArtifactRate(symbol) }}</span>
+    </div>
     <div class="splitLine"></div>
     <div class="scoreSheetBox">
       <div class="SheetItem" v-for="(entry, index) in currentEntry" :key="'entry' + index">
@@ -17,7 +19,7 @@
 </template>
 
 <script>
-  import { getCurrentInstance, ref, watch } from "vue";
+  import { computed, getCurrentInstance, ref, watch } from "vue";
   // import { useStore } from "vuex";
 
   export default {
@@ -29,6 +31,9 @@
       },
       artifact: {
         default: "",
+      },
+      highscore: {
+        default: 35,
       },
     },
     setup(props) {
@@ -52,6 +57,10 @@
         }
       );
 
+      const isHighScore = computed(()=>{
+        return Number.parseFloat(ArtifactRate(symbol.value)) >= Number.parseFloat(props.highscore);
+      })
+
       // 圣遗物评分
       const ArtifactRate = symbol => {
         return artifactFunc.ArtifactScore(symbol, props.rule).toFixed(2);
@@ -68,6 +77,7 @@
         language,
         currentEntry,
         symbol,
+        isHighScore,
         ArtifactRate,
         entryProgess,
       };
@@ -93,6 +103,10 @@
       border-radius: 0.25rem;
       border: solid 0.125rem rgb(242, 238, 231);
     }
+  }
+
+  .hightScore {
+    color: $genshin_orange_red;
   }
 
   .splitLine {

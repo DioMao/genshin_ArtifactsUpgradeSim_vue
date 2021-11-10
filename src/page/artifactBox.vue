@@ -61,6 +61,7 @@
         <artifact-score
           :rule="userSetting.scoreConfig.mode === 'string' ? userSetting.scoreConfig.strRule : userSetting.scoreConfig.arrRule"
           :artifact="JSON.stringify($artifact.getArtifact(showSymbol))"
+          :highscore="userSetting.highScore"
         >
         </artifact-score>
         <button id="score" class="btn btn-genshin-dark btn-sm" data-bs-toggle="modal" data-bs-target="#scoreSet">{{ $t("msg.scoreSetting") }}</button>
@@ -94,6 +95,7 @@
         <artifact-score
           :rule="userSetting.scoreConfig.mode === 'string' ? userSetting.scoreConfig.strRule : userSetting.scoreConfig.arrRule"
           :artifact="JSON.stringify($artifact.getArtifact(showSymbol))"
+          :highscore="userSetting.highScore"
         >
         </artifact-score>
         <button id="score-2" class="btn btn-genshin-dark btn-sm" data-bs-toggle="modal" data-bs-target="#scoreSet">{{ $t("msg.scoreSetting") }}</button>
