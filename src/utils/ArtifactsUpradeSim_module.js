@@ -5,7 +5,7 @@
  */
 "use strict";
 import { ArtifactData } from "./ArtifactsData";
-import Dexie from "./dexie";
+import Dexie from "dexie";
 
 /**
  * 创建indexedDB
