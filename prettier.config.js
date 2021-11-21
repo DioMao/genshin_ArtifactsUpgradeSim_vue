@@ -4,7 +4,8 @@ module.exports = {
   semi: true,
   singleQuote: true,
   vueIndentScriptAndStyle: true,
-  arrowParens: 'avoid'
+  arrowParens: 'avoid',
+  quoteProps: 'consistent' // as-needed, consistent, preserve
   // overrides: [
   //   {
   //     files: ['*.css', '*.sass', '*.less', '*.scss'],

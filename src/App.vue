@@ -65,31 +65,31 @@
 </template>
 
 <script>
-  import "bootstrap/js/dist/offcanvas";
+  import 'bootstrap/js/dist/offcanvas';
   // import {getCurrentInstance} from "vue";
 
   export default {
     data() {
       return {
-        title: "",
+        title: '',
         loadProgress: 0,
         isLoad: false, // 加载界面显示（isLoad表示页面加载是否完成）
         // 预载图片列表
-        imgList: [require("@/assets/images/genshin-symbol.png"), require("@/assets/images/fog.png"), require("@/assets/images/item_bg.png")],
+        imgList: [require('@/assets/images/genshin-symbol.png'), require('@/assets/images/fog.png'), require('@/assets/images/item_bg.png')]
       };
     },
     mounted() {
-      this.title = this.$t("title");
+      this.title = this.$t('title');
       this.loading();
     },
     computed: {
       language() {
         return this.$store.state.language;
-      },
+      }
     },
     watch: {
       language() {
-        this.title = this.$t("title");
+        this.title = this.$t('title');
       },
       loadProgress(val) {
         let that = this;
@@ -99,7 +99,7 @@
             that.isLoad = true;
           }, 500);
         }
-      },
+      }
     },
     methods: {
       loading() {
@@ -118,8 +118,8 @@
             this.loadProgress += 25;
           };
         }
-      },
-    },
+      }
+    }
   };
 </script>
 
@@ -182,7 +182,7 @@
       color: rgb(165, 88, 67);
 
       &::after {
-        content: "";
+        content: '';
         display: block;
         width: 100%;
         height: 0.125rem;

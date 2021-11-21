@@ -3,16 +3,16 @@
  * Licensed under GPL3.0 (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/master/LICENSE)
  */
 
-import { createApp } from "vue";
-import store from "./store/store";
-import router from "./router/router";
-import App from "./App.vue";
+import { createApp } from 'vue';
+import store from './store/store';
+import router from './router/router';
+import App from './App.vue';
 // import * as echarts from 'echarts'
-import axios from "axios";
-import i18n from "./language";
-import { ArtifactsSim, artiConst, IDB, initArtifactSim } from "./utils/ArtifactsUpradeSim_module";
+import axios from 'axios';
+import i18n from './language';
+import { ArtifactsSim, artiConst, IDB, initArtifactSim } from './utils/ArtifactsUpgradeSim_module';
 // 全局样式
-import "bootstrap/dist/css/bootstrap.min.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 // 创建实例
 const app = createApp(App);
@@ -31,12 +31,12 @@ app
 // 初始化模拟器数据后挂载实例
 initArtifactSim()
   .then(() => {
-    app.mount("#app");
+    app.mount('#app');
     window.scrollTo(0, 1);
   })
   .catch(err => {
     console.log(err);
-    if (confirm("Initialization failed, please try to clear local cache.\n数据初始化失败，请尝试清除本地缓存。")) {
+    if (confirm('Initialization failed, please try to clear local cache.\n数据初始化失败，请尝试清除本地缓存。')) {
       // 清除缓存
       window.localStorage.clear();
       IDB.delete();
