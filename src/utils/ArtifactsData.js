@@ -158,7 +158,9 @@ export class ArtifactData {
         'Tenacity of the Millelith',
         'Pale Flame',
         "Shimenawa's Reminiscence",
-        'Emblem of Severed Fate'
+        'Emblem of Severed Fate',
+        'Husk of Opulent Dreams',
+        'Ocean-Hued Clam'
       ],
       setList_zh: [
         '冰风迷途的勇士',
@@ -178,7 +180,9 @@ export class ArtifactData {
         '千岩牢固',
         '苍白之火',
         '追忆之注连',
-        '绝缘之旗印'
+        '绝缘之旗印',
+        '华馆梦醒形骸记',
+        '海染砗磲'
       ],
       artifactSet: {
         'Bizzard Strayer': {
@@ -349,6 +353,25 @@ export class ArtifactData {
           Goblet: 'Scarlet Vessel',
           Set2: 'Energy Recharge +20%.',
           Set4: 'Increases Elemental Burst DMG by 25% of Energy Recharge. A maximum of 75% bonus DMG can be obtained inthis way.'
+        },
+        'Husk of Opulent Dreams': {
+          Plume: 'Plume of Luxury',
+          Flower: 'Bloom Times',
+          Sands: 'Song of Life',
+          Circlet: 'Skeletal Hat',
+          Goblet: 'Calabash of Awakening',
+          Set2: 'DEF +30%.',
+          Set4:
+            'A character equipped with this Artifact set will obtain the Curiosity effect in the following conditions: When on the field, the character gains 1 stack after hitting an opponent with a Geo attack, triggering a maximum of once every 0.3s. When off the field, the character gains 1 stack every 3s. Curiosity can stack up to 4 times, each providing 6% DEF and a 6% Geo DMG Bonus. When 6 seconds pass without gaining a Curiosity stack, 1 stack is lost.'
+        },
+        'Ocean-Hued Clam': {
+          Plume: "Deep Palace's Plume",
+          Flower: 'Sea-Dyed Blossom',
+          Sands: 'Cowry of Parting',
+          Circlet: 'Crown of Watatsumi',
+          Goblet: 'Pearl Cage',
+          Set2: 'Healing Bonus +15%.',
+          Set4: 'A ch'
         }
       },
       artifactSet_zh: {
@@ -515,6 +538,26 @@ export class ArtifactData {
           空之杯: '绯花之壶',
           Set2: '元素充能效率提高20%。',
           Set4: '基于元素充能效率的25%，提高元素爆发造成的伤害。至多通过这种方式获得75%提升。'
+        },
+        华馆梦醒形骸记: {
+          死之羽: '华馆之羽',
+          生之花: '荣花之期',
+          时之沙: '众生之谣',
+          理之冠: '形骸之笠',
+          空之杯: '梦醒之瓢',
+          Set2: '防御力提高30%。',
+          Set4:
+            '装备此圣遗物套装的角色在以下情况下，将获得「问答」效果：在场上用岩元素攻击命中敌人后获得一层，每0.3秒至多触发一次；在队伍后台中，每3秒获得一层。问答至多叠加4层，每层能提供6%防御力与6%岩元素伤害加成。每6秒，若未获得问答效果，将损失一层。'
+        },
+        海染砗磲: {
+          死之羽: '渊宫之羽',
+          生之花: '明威之镡',
+          时之沙: '离别之贝',
+          理之冠: '海祇之冠',
+          空之杯: '真珠之笼',
+          Set2: '治疗加成提高15%。',
+          Set4:
+            '4件套:装备此圣遗物套装的角色对队伍中的角色进行治疗时，将产生持续3秒的海染泡沫，记录治疗的生命值回复量（包括溢出值）。持续时间结束时，海染泡沫将会爆炸，对周围的敌人造成90%累计回复量的伤害(该伤害结算方式同感电、超导等元素反应，但不受元素精通、等级或反应伤害加成效果影响)。每3.5秒至多产生一个海染泡沫；海染泡沫至多记录30000点回复量，含溢出部分的治疗量；自己的队伍中同时至多存在一个海染泡沫。装备此圣遗物套装的角色处于队伍后台时，依然能触发该效果。'
         }
       },
       // 圣遗物套装效果
@@ -536,7 +579,9 @@ export class ArtifactData {
         'Tenacity of the Millelith': { 2: { HPPer: 20 }, 4: null },
         'Pale Flame': { 2: { Physical: 25 }, 4: null },
         "Shimenawa's Reminiscence": { 2: { ATKPer: 18 }, 4: null },
-        'Emblem of Severed Fate': { 2: { energyRecharge: 20 }, 4: null }
+        'Emblem of Severed Fate': { 2: { energyRecharge: 20 }, 4: null },
+        'Husk of Opulent Dreams': { 2: { DEFPer: 30 }, 4: null },
+        'Ocean-Hued Clam': { 2: { Healing: 15 }, 4: null }
       },
       // 每级升级经验
       exp: [3000, 3725, 4425, 5150, 5900, 6675, 7500, 8350, 9225, 10125, 11050, 12025, 13025, 15150, 17600, 20375, 23500, 27050, 31050, 35575],

@@ -184,6 +184,8 @@ module.exports = {
     "Pale Flame",
     "Shimenawa's Reminiscence",
     "Emblem of Severed Fate",
+    "Husk of Opulent Dreams",
+    "Ocean-Hued Clam"
   ],
   name: {
     Albedo: "Albedo",
