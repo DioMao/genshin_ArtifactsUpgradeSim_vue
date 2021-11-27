@@ -139,6 +139,20 @@ abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ./;'\<>?:{}|!@#$%^&*()`~-=+_
 华饰之兜
 绯花之壶
 
+华馆梦醒形骸记
+华馆之羽
+荣花之期
+众生之谣
+形骸之笠
+梦醒之瓢
+
+海染砗磲
+渊宫之羽
+明威之镡
+离别之贝
+海祇之冠
+真珠之笼
+
 # ARTIFACT_PARTS_ZH
 
 死之羽 生之花 时之沙 理之冠 空之杯

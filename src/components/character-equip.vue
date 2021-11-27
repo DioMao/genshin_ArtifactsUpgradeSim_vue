@@ -49,7 +49,7 @@
       const artifactName = symbol => artifactFunc.getArtifactName(symbol);
       const setUrl = symbol => {
         let item = artifactFunc.getArtifact(symbol),
-          src = require("../assets/images/Artifacts/" + item.set.replace(/\s+/g, "") + "/" + item.part + ".png");
+          src = require(`../assets/images/Artifacts/${item.set.replace(/\s+/g, "")}/${item.part}.png`);
         return src;
       };
 

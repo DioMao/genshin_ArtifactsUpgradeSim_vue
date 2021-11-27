@@ -3,7 +3,7 @@
   <div class="main-container">
     <img class="main-container-bg" src="../assets/images/genshin-symbol.png" alt="background_image" draggable="false" />
     <div class="countShow float-end">
-      {{ $t("term.artifacts") }}
+      {{ $t('term.artifacts') }}
       <span :style="{ color: $artifact.AUSList.length === $artifact.maxCount ? 'red' : '' }">{{ $artifact.AUSList.length }}/{{ $artifact.maxCount }}</span>
     </div>
     <popup :show="true">
@@ -15,17 +15,17 @@
         <img src="../assets/images/Icon_Artifacts.png" alt="default" draggable="false" />
       </div>
       <div v-for="part in $artiConst.val.parts" :key="part" @click="userSetting.filterPart = part" :class="{ part_actived: userSetting.filterPart === part }">
-        <img :src="require('../assets/images/Icon_' + part + '.png')" :alt="part" draggable="false" />
+        <img :src="require(`../assets/images/Icon_${part}.png`)" :alt="part" draggable="false" />
       </div>
     </div>
     <!-- 筛选提示框 -->
     <div class="filterBox" :class="userSetting.filterMain !== 'default' || userSetting.filterSet !== 'default' ? 'filterBoxShow' : ''">
-      <div style="display:inline-block;">{{ $t("msg.filter") }}</div>
+      <div style="display:inline-block;">{{ $t('msg.filter') }}</div>
       <div class="filterMain" v-show="userSetting.filterMain !== 'default'" @click="userSetting.filterMain = 'default'">
-        {{ $t("term." + userSetting.filterMain) }}
+        {{ $t('term.' + userSetting.filterMain) }}
       </div>
       <div class="filterSet" v-show="userSetting.filterSet !== 'default'" @click="userSetting.filterSet = 'default'">
-        {{ $t("setList[" + (setList.indexOf(userSetting.filterSet) !== -1 ? setList.indexOf(userSetting.filterSet) : 0) + "]") }}
+        {{ $t('setList[' + (setList.indexOf(userSetting.filterSet) !== -1 ? setList.indexOf(userSetting.filterSet) : 0) + ']') }}
       </div>
     </div>
     <!-- 圣遗物列表 -->
@@ -64,14 +64,14 @@
           :highscore="userSetting.highScore"
         >
         </artifact-score>
-        <button id="score" class="btn btn-genshin-dark btn-sm" data-bs-toggle="modal" data-bs-target="#scoreSet">{{ $t("msg.scoreSetting") }}</button>
+        <button id="score" class="btn btn-genshin-dark btn-sm" data-bs-toggle="modal" data-bs-target="#scoreSet">{{ $t('msg.scoreSetting') }}</button>
       </div>
     </div>
   </div>
   <!-- 手机端圣遗物展示 -->
   <div class="ArtifactShowMobile" :class="{ MobileShow: showMobileDetail }">
     <div class="offcanvas-header">
-      <h5 class="offcanvas-title">{{ $t("msg.artifactDetail") }}</h5>
+      <h5 class="offcanvas-title">{{ $t('msg.artifactDetail') }}</h5>
       <button type="button" class="btn-close text-reset" @click="showMobileDetail = false"></button>
     </div>
     <div class="offcanvas-body">
@@ -98,7 +98,7 @@
           :highscore="userSetting.highScore"
         >
         </artifact-score>
-        <button id="score-2" class="btn btn-genshin-dark btn-sm" data-bs-toggle="modal" data-bs-target="#scoreSet">{{ $t("msg.scoreSetting") }}</button>
+        <button id="score-2" class="btn btn-genshin-dark btn-sm" data-bs-toggle="modal" data-bs-target="#scoreSet">{{ $t('msg.scoreSetting') }}</button>
       </div>
     </div>
   </div>
@@ -130,12 +130,12 @@
             @click="multFilter('default', 'all')"
             :class="{ isActived: userSetting.filterMain === 'default' && userSetting.filterSet === 'default' }"
           >
-            {{ $t("msg.default") }}
+            {{ $t('msg.default') }}
             <span class="ms-5 float-end">{{ $artifact.AUSList.length }}</span>
           </a>
         </li>
         <!-- 套装筛选 -->
-        <li class="filterLable">{{ $t("msg.set") }}</li>
+        <li class="filterLable">{{ $t('msg.set') }}</li>
         <li v-for="(set, index) in setList" :key="set">
           <a
             class="dropdown-item"
@@ -143,12 +143,12 @@
             @click="multFilter(set, 'set')"
             :class="{ disabled: $artifact.getCount(set) === 0, isActived: userSetting.filterSet === set }"
             :style="{ color: $artifact.getCount(set) > 0 ? '' : '#a8a8a8' }"
-            >{{ $t("setList[" + index + "]") }}
+            >{{ $t('setList[' + index + ']') }}
             <span class="ms-5 float-end">{{ $artifact.getCount(set) }}</span>
           </a>
         </li>
         <!-- 主属性筛选 -->
-        <li class="filterLable">{{ $t("msg.mainEntry") }}</li>
+        <li class="filterLable">{{ $t('msg.mainEntry') }}</li>
         <li v-for="mainEntryF in $artiConst.val.mainEntryList" :key="mainEntryF">
           <a
             class="dropdown-item"
@@ -156,11 +156,11 @@
             @click="multFilter(mainEntryF, 'main')"
             :class="{ disabled: $artifact.getCount(mainEntryF) === 0, isActived: userSetting.filterMain === mainEntryF }"
             :style="{ color: $artifact.getCount(mainEntryF) > 0 ? '' : '#a8a8a8' }"
-            >{{ $t("term." + mainEntryF) }}
+            >{{ $t('term.' + mainEntryF) }}
             <span class="ms-5 float-end">{{ $artifact.getCount(mainEntryF) }}</span>
           </a>
         </li>
-        <li class="filterTip">{{ $t("msg.filter") }}</li>
+        <li class="filterTip">{{ $t('msg.filter') }}</li>
       </ul>
       <button id="sort" class="btn me-auto btn-genshin" data-bs-toggle="dropdown" aria-expanded="false">
         <svg
@@ -181,30 +181,30 @@
       <ul class="dropdown-menu sortList" aria-labelledby="sort">
         <li>
           <a class="dropdown-item" href="javascript:void(0)" @click="sortList(0)" :class="{ isActived: userSetting.sortRule === 'lvasc' }">
-            {{ $t("msg.lvasc") }}
+            {{ $t('msg.lvasc') }}
           </a>
         </li>
         <li>
           <a class="dropdown-item" href="javascript:void(0)" @click="sortList(1)" :class="{ isActived: userSetting.sortRule === 'lvdesc' }">
-            {{ $t("msg.lvdesc") }}
+            {{ $t('msg.lvdesc') }}
           </a>
         </li>
         <li>
           <a class="dropdown-item" href="javascript:void(0)" @click="sortList(2)" :class="{ isActived: userSetting.sortRule === 'part' }">
-            {{ $t("msg.sortByPart") }}
+            {{ $t('msg.sortByPart') }}
           </a>
         </li>
         <li>
           <a class="dropdown-item" href="javascript:void(0)" @click="sortList(3)" :class="{ isActived: userSetting.sortRule === 'main' }">
-            {{ $t("msg.sortByMainEntry") }}
+            {{ $t('msg.sortByMainEntry') }}
           </a>
         </li>
       </ul>
       <button id="create" @click="createArtifact" class="btn btn-genshin" :style="{ fontSize: $i18n.locale === 'en' ? '0.9rem' : 'inherit' }">
-        <span class="circleinbox"></span>{{ $t("msg.random") }}
+        <span class="circleinbox"></span>{{ $t('msg.random') }}
       </button>
       <button class="btn btn-genshin" :style="{ fontSize: $i18n.locale === 'en' ? '0.9rem' : 'inherit' }" data-bs-toggle="modal" data-bs-target="#cusArtifact">
-        <span class="squareinbox"></span>{{ $t("msg.custom") }}
+        <span class="squareinbox"></span>{{ $t('msg.custom') }}
       </button>
 
       <div class="dropdown" style="display:inline-block;">
@@ -216,7 +216,7 @@
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
-          {{ $t("msg.more") }}
+          {{ $t('msg.more') }}
         </a>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
           <li>
@@ -226,7 +226,7 @@
                 <path fill-rule="evenodd" d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z" />
                 <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
               </svg>
-              {{ $t("handle.characterStateList") }}</router-link
+              {{ $t('handle.characterStateList') }}</router-link
             >
           </li>
           <li>
@@ -237,7 +237,7 @@
                   d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5z"
                 />
               </svg>
-              {{ $t("msg.undoDel") }}
+              {{ $t('msg.undoDel') }}
             </a>
           </li>
           <li>
@@ -246,7 +246,7 @@
                 <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" />
                 <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />
               </svg>
-              {{ $t("msg.resetAll") }}
+              {{ $t('msg.resetAll') }}
             </a>
           </li>
           <li>
@@ -256,7 +256,7 @@
                   d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"
                 />
               </svg>
-              {{ $t("msg.clearList") }}
+              {{ $t('msg.clearList') }}
             </a>
           </li>
           <li>
@@ -269,7 +269,7 @@
                   d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"
                 />
               </svg>
-              {{ $t("msg.settings") }}
+              {{ $t('msg.settings') }}
             </a>
           </li>
           <li>
@@ -282,7 +282,7 @@
                   d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"
                 />
               </svg>
-              {{ $t("msg.about") }}
+              {{ $t('msg.about') }}
             </a>
           </li>
         </ul>
@@ -294,16 +294,16 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="cusArtifactLabel">{{ $t("msg.optional") }}</h5>
+          <h5 class="modal-title" id="cusArtifactLabel">{{ $t('msg.optional') }}</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <label for="cutArtifactSet" class="form-label">{{ $t("msg.set") }}</label>
+          <label for="cutArtifactSet" class="form-label">{{ $t('msg.set') }}</label>
           <select id="cutArtifactSet" class="form-select form-select-sm mb-3" v-model="cusSet">
-            <option value="default">{{ $t("tips.random") }}</option>
-            <option v-for="(set, index) in setList" :key="set" :value="set"> {{ $t("setList[" + index + "]") }}</option>
+            <option value="default">{{ $t('tips.random') }}</option>
+            <option v-for="(set, index) in setList" :key="set" :value="set"> {{ $t('setList[' + index + ']') }}</option>
           </select>
-          <label for="cutArtifactPart" class="form-label">{{ $t("msg.part") }}</label>
+          <label for="cutArtifactPart" class="form-label">{{ $t('msg.part') }}</label>
           <select
             id="cutArtifactPart"
             class="form-select form-select-sm mb-3"
@@ -313,15 +313,15 @@
               cusMainEntry = '';
             "
           >
-            <option value="default">{{ $t("tips.random") }}</option>
-            <option v-for="part in $artiConst.val.parts" :key="part" :value="part"> {{ $t("term." + part) }}</option>
+            <option value="default">{{ $t('tips.random') }}</option>
+            <option v-for="part in $artiConst.val.parts" :key="part" :value="part"> {{ $t('term.' + part) }}</option>
           </select>
-          <label class="form-label" v-show="cusPart !== 'default' && cusPart !== ''">{{ $t("msg.mainEntry") }}</label>
+          <label class="form-label" v-show="cusPart !== 'default' && cusPart !== ''">{{ $t('msg.mainEntry') }}</label>
           <select class="form-select form-select-sm mb-3" v-if="cusPart !== 'default' && cusPart !== ''" v-model="cusMainEntry" @change="cusEntry.length = 0">
-            <option value="">{{ $t("tips.random") }}</option>
-            <option v-for="partModal in cusEntryList[cusPart]" :key="partModal" :value="partModal"> {{ $t("term." + partModal) }}</option>
+            <option value="">{{ $t('tips.random') }}</option>
+            <option v-for="partModal in cusEntryList[cusPart]" :key="partModal" :value="partModal"> {{ $t('term.' + partModal) }}</option>
           </select>
-          <label class="form-label" v-show="cusPart !== 'default' && cusMainEntry !== ''">{{ $t("handle.chooseEntry") }}</label>
+          <label class="form-label" v-show="cusPart !== 'default' && cusMainEntry !== ''">{{ $t('handle.chooseEntry') }}</label>
           <div class="d-flex justify-content-between flex-wrap">
             <div
               class="form-check mb-2"
@@ -344,7 +344,7 @@
                 style="white-space:nowrap"
                 :style="{ fontSize: $store.state.attr_sm_en.indexOf(entry) !== -1 && $i18n.locale === 'en' ? '0.6rem' : 'inherit' }"
               >
-                {{ $t("term." + entry) }}
+                {{ $t('term.' + entry) }}
               </label>
               <select
                 class="form-select form-select-sm mt-1 mb-1 col-md-6 ms-auto"
@@ -361,11 +361,11 @@
         <div class="modal-footer">
           <div class="form-check form-switch me-auto">
             <input class="form-check-input" type="checkbox" id="cusCloseSwitch" v-model="cusCloseSwitch" checked />
-            <label class="form-check-label" for="cusCloseSwitch">{{ $t("handle.confirmAndClose") }}</label>
+            <label class="form-check-label" for="cusCloseSwitch">{{ $t('handle.confirmAndClose') }}</label>
           </div>
-          <button type="button" class="btn btn-genshin-dark" data-bs-dismiss="modal"><span class="xinbox"></span>{{ $t("handle.close") }}</button>
+          <button type="button" class="btn btn-genshin-dark" data-bs-dismiss="modal"><span class="xinbox"></span>{{ $t('handle.close') }}</button>
           <button type="button" class="btn btn-genshin-dark" @click="cusCreatArtifact" :data-bs-dismiss="cusCloseSwitch ? 'modal' : null">
-            <span class="circleinbox"></span>{{ $t("handle.confirm") }}
+            <span class="circleinbox"></span>{{ $t('handle.confirm') }}
           </button>
         </div>
       </div>
@@ -376,7 +376,7 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="userSetting">{{ $t("msg.settings") }}</h5>
+          <h5 class="modal-title" id="userSetting">{{ $t('msg.settings') }}</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -386,7 +386,7 @@
           </div> -->
           <!-- 语言选择 -->
           <div class="genshin-setting-box">
-            <span class="genshin-setting-title">{{ $t("msg.language") }}</span>
+            <span class="genshin-setting-title">{{ $t('msg.language') }}</span>
             <span class="genshin-setting-set">
               <div class="dropdown genshin-setting-button-box" style="display:inline-block;">
                 <a
@@ -397,7 +397,7 @@
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  {{ language === "zh" ? "简体中文" : "English" }}
+                  {{ language === 'zh' ? '简体中文' : 'English' }}
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                   <li>
@@ -410,44 +410,44 @@
           </div>
           <!-- 清除本地数据 -->
           <div class="genshin-setting-box genshin-setting-nodropdown mt-2">
-            <span class="genshin-setting-title">{{ $t("msg.clearStorage") }}</span>
+            <span class="genshin-setting-title">{{ $t('msg.clearStorage') }}</span>
             <span class="genshin-setting-set">
               <div class="genshin-setting-button-box" style="display:inline-block;">
                 <a class="genshin-setting-button" href="javascript:void(0)" role="button" @click="clearStorge">
-                  {{ $t("msg.clear") }}
+                  {{ $t('msg.clear') }}
                 </a>
               </div>
             </span>
           </div>
           <!-- 恢复默认设置 -->
           <div class="genshin-setting-box genshin-setting-nodropdown mt-2">
-            <span class="genshin-setting-title">{{ $t("msg.resetSetting") }}</span>
+            <span class="genshin-setting-title">{{ $t('msg.resetSetting') }}</span>
             <span class="genshin-setting-set">
               <div class="genshin-setting-button-box" style="display:inline-block;">
                 <a class="genshin-setting-button" href="javascript:void(0)" role="button" @click="resetSetting">
-                  {{ $t("handle.confirm") }}
+                  {{ $t('handle.confirm') }}
                 </a>
               </div>
             </span>
           </div>
           <!-- 下载数据到本地 -->
           <div class="genshin-setting-box genshin-setting-nodropdown mt-2">
-            <span class="genshin-setting-title">{{ $t("msg.downloadData") }}</span>
+            <span class="genshin-setting-title">{{ $t('msg.downloadData') }}</span>
             <span class="genshin-setting-set">
               <div class="genshin-setting-button-box" style="display:inline-block;">
                 <a class="genshin-setting-button" href="javascript:void(0)" role="button" @click="$artifact.dataDownload()">
-                  {{ $t("handle.download") }}
+                  {{ $t('handle.download') }}
                 </a>
               </div>
             </span>
           </div>
           <!-- 上传数据 -->
           <div class="genshin-setting-box genshin-setting-nodropdown mt-2">
-            <span class="genshin-setting-title">{{ $t("msg.uploadData") }}</span>
+            <span class="genshin-setting-title">{{ $t('msg.uploadData') }}</span>
             <span class="genshin-setting-set">
               <div class="genshin-setting-button-box" style="display:inline-block;">
                 <a class="genshin-setting-button" href="javascript:void(0)" role="button" @click="uploadClick">
-                  {{ $t("handle.upload") }}
+                  {{ $t('handle.upload') }}
                 </a>
               </div>
             </span>
@@ -455,7 +455,7 @@
           <input class="form-control form-control-sm hide" ref="uploadData" id="uploadData" type="file" @change="uploadData" />
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-genshin-dark" data-bs-dismiss="modal"><span class="circleinbox"></span>{{ $t("handle.confirm") }}</button>
+          <button type="button" class="btn btn-genshin-dark" data-bs-dismiss="modal"><span class="circleinbox"></span>{{ $t('handle.confirm') }}</button>
         </div>
       </div>
     </div>
@@ -465,7 +465,7 @@
     <div class="modal-dialog modal-sm modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="scoreSetting">{{ $t("msg.scoreSetting") }}</h5>
+          <h5 class="modal-title" id="scoreSetting">{{ $t('msg.scoreSetting') }}</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -476,24 +476,24 @@
           <div class="mb-3">
             <input class="form-check-input" type="radio" name="scoreMode" id="scoreMode1" value="string" v-model="userSetting.scoreConfig.mode" />
             <label class="form-check-label me-5" for="scoreMode1">
-              {{ $t("score.preset") }}
+              {{ $t('score.preset') }}
             </label>
             <input class="form-check-input" type="radio" name="scoreMode" id="scoreMode2" value="array" v-model="userSetting.scoreConfig.mode" />
             <label class="form-check-label" for="scoreMode2">
-              {{ $t("score.optional") }}
+              {{ $t('score.optional') }}
             </label>
           </div>
           <div v-show="userSetting.scoreConfig.mode === 'string'">
             <select class="form-select form-select-sm" name="scoreString" id="scoreString" v-model="userSetting.scoreConfig.strRule">
-              <option value="default">{{ $t("msg.default") }}</option>
-              <option v-for="config in $artiConst.val.scoreList" :key="config" :value="config"> {{ $artifact.toChinese(config, "score") }}</option>
+              <option value="default">{{ $t('msg.default') }}</option>
+              <option v-for="config in $artiConst.val.scoreList" :key="config" :value="config"> {{ $artifact.toChinese(config, 'score') }}</option>
             </select>
           </div>
           <div class="justify-content-between flex-wrap" style="display:flex;" v-show="userSetting.scoreConfig.mode === 'array'">
             <div class="form-check" style="width:40%;" v-for="config in $artiConst.val.scoreList" :key="config">
               <input class="form-check-input" type="checkbox" :value="config" :id="'score-' + config" v-model="userSetting.scoreConfig.arrRule" />
               <label class="form-check-label" :for="'score-' + config">
-                {{ $artifact.toChinese(config, "score") }}
+                {{ $artifact.toChinese(config, 'score') }}
               </label>
             </div>
           </div>
@@ -506,19 +506,19 @@
 </template>
 
 <script>
-  import demoAlert from "../components/demo-alert";
-  import artifactShow from "../components/artifact-show";
-  import popup from "../components/popup";
-  import artifactList from "../components/artifact-list";
-  import artifactScore from "../components/artifact-score";
-  import about from "../components/about";
+  import demoAlert from '../components/demo-alert';
+  import artifactShow from '../components/artifact-show';
+  import popup from '../components/popup';
+  import artifactList from '../components/artifact-list';
+  import artifactScore from '../components/artifact-score';
+  import about from '../components/about';
   // bootstrap相关
-  import "bootstrap/js/dist/alert";
-  import "bootstrap/js/dist/modal";
-  import "bootstrap/js/dist/dropdown";
+  import 'bootstrap/js/dist/alert';
+  import 'bootstrap/js/dist/modal';
+  import 'bootstrap/js/dist/dropdown';
 
-  import { useStore } from "vuex";
-  import { getCurrentInstance, onMounted, readonly, ref } from "vue";
+  import { useStore } from 'vuex';
+  import { getCurrentInstance, onBeforeUnmount, onMounted, readonly, ref } from 'vue';
 
   export default {
     components: {
@@ -527,7 +527,7 @@
       popup,
       artifactList,
       artifactScore,
-      about,
+      about
     },
     setup() {
       // 获取全局函数
@@ -548,7 +548,7 @@
         Flower: artiConst.Flower,
         Sands: artiConst.Sands,
         Circlet: artiConst.Circlet,
-        Goblet: artiConst.Goblet,
+        Goblet: artiConst.Goblet
       });
       // 套装列表
       const setList = ref(artiConst.setList);
@@ -558,19 +558,19 @@
       }
       const cusEntryList = readonly(cusEntryListProto);
       // 自选圣遗物
-      const cusSet = ref("default");
-      const cusPart = ref("default");
-      const cusMainEntry = ref("");
+      const cusSet = ref('default');
+      const cusPart = ref('default');
+      const cusMainEntry = ref('');
       const cusEntry = ref([]);
 
-      const showSymbol = ref("");
+      const showSymbol = ref('');
 
       // 圣遗物相关
       // 随机生成圣遗物
       const createArtifact = () => {
         artifactFunc.createArtifact();
         // aritfactFunc.bulkCreate(100);
-        alertControl(t("alert.random"), 1500);
+        alertControl(t('alert.random'), 1500);
         syncListData();
       };
       // 批量随机生成
@@ -586,45 +586,45 @@
           cusEntryValue.push(cusEntryRate.value[_cusEntry[i]]);
         }
         artifactFunc.createArtifact(cusPart.value, cusMainEntry.value, _cusEntry, cusEntryValue, cusSet.value);
-        alertControl(t("alert.custom"), 1500);
+        alertControl(t('alert.custom'), 1500);
         syncListData();
       };
       // 圣遗物升级
-      const ArtifactUpgrade = (symbol, entry = "", enhancedRank = -1) => {
+      const ArtifactUpgrade = (symbol, entry = '', enhancedRank = -1) => {
         let res = artifactFunc.upgrade(symbol, entry, Number.parseInt(enhancedRank));
-        let qualityAlert = "";
-        if (Number.parseFloat(enhancedRank) !== -1) qualityAlert = t("alert.cheating");
+        let qualityAlert = '';
+        if (Number.parseFloat(enhancedRank) !== -1) qualityAlert = t('alert.cheating');
         syncListData();
         if (res === true) {
-          alertControl(t("handle.upSuccess") + `！${qualityAlert}`, 1500);
+          alertControl(t('handle.upSuccess') + `！${qualityAlert}`, 1500);
         } else {
-          alertControl(t("handle.maxLv"), 1500, "warning");
+          alertControl(t('handle.maxLv'), 1500, 'warning');
         }
       };
       // 初始化圣遗物
       const initArtifact = symbol => {
         let res = artifactFunc.reset(symbol);
         if (res) {
-          alertControl(t("alert.init"), 1500);
+          alertControl(t('alert.init'), 1500);
         } else {
-          alertControl(t("alert.isLocked"), 1500, "warning");
+          alertControl(t('alert.isLocked'), 1500, 'warning');
         }
         syncListData();
       };
       // 初始化全部圣遗物
       const resetAll = () => {
         artifactFunc.resetAll();
-        alertControl(t("alert.initAll"), 1500);
+        alertControl(t('alert.initAll'), 1500);
         syncListData();
       };
       // 删除圣遗物
       const deleteArtifact = symbol => {
         let res = artifactFunc.deleteOne(symbol);
         if (res) {
-          showSymbol.value = "";
-          alertControl(t("alert.delete"), 1500);
+          showSymbol.value = '';
+          alertControl(t('alert.delete'), 1500);
         } else {
-          alertControl(t("alert.isLocked"), 1500, "warning");
+          alertControl(t('alert.isLocked'), 1500, 'warning');
         }
         syncListData();
       };
@@ -632,25 +632,25 @@
       const undoDel = () => {
         let res = artifactFunc.undoDel();
         if (res === true) {
-          alertControl(t("msg.undoSuccess"), 1500);
+          alertControl(t('msg.undoSuccess'), 1500);
         } else {
-          alertControl(t("msg.undoFail"), 1500, "primary");
+          alertControl(t('msg.undoFail'), 1500, 'primary');
         }
         syncListData();
       };
       // 清除结果列表
       const ArtifactClear = () => {
         if (artifactFunc.AUSList.length === 0) {
-          alertControl(t("alert.emptyList"), 1500, "warning");
-        } else if (confirm("确认要清空圣遗物吗？\n**会保留上锁的圣遗物**\n请注意，此操作不可恢复！")) {
-          showSymbol.value = "";
+          alertControl(t('alert.emptyList'), 1500, 'warning');
+        } else if (confirm('确认要清空圣遗物吗？\n**会保留上锁的圣遗物**\n请注意，此操作不可恢复！')) {
+          showSymbol.value = '';
           artifactFunc.deleteAll();
           syncListData();
         }
       };
       // 排序
       const sortList = index => {
-        let sortMethod = ["lvasc", "lvdesc", "part", "main"];
+        let sortMethod = ['lvasc', 'lvdesc', 'part', 'main'];
         userSetting.value.sortRule = sortMethod[index];
         syncListData();
       };
@@ -673,7 +673,7 @@
       // 同步数据
       const syncListData = () => {
         artifactFunc.sortList(userSetting.value.sortRule);
-        if (userSetting.value.language === "en" || userSetting.value.language === "zh") {
+        if (userSetting.value.language === 'en' || userSetting.value.language === 'zh') {
           ArtifactsList.value = artifactFunc.getList(
             userSetting.value.language,
             userSetting.value.filterPart,
@@ -681,7 +681,7 @@
             userSetting.value.filterSet
           );
         } else {
-          ArtifactsList.value = artifactFunc.getList("origin", userSetting.value.filterPart, userSetting.value.filterMain, userSetting.value.filterSet);
+          ArtifactsList.value = artifactFunc.getList('origin', userSetting.value.filterPart, userSetting.value.filterMain, userSetting.value.filterSet);
         }
       };
 
@@ -690,55 +690,55 @@
         // 用户设置
         scoreConfig: {
           // 圣遗物得分设置
-          mode: "string",
-          strRule: "default",
-          arrRule: [],
+          mode: 'string',
+          strRule: 'default',
+          arrRule: []
         },
-        language: "zh", // 语言
+        language: 'zh', // 语言
         highScore: 35, // 高分圣遗物标准
-        sortRule: "lvdesc", // 排序规则
-        filterMain: "default", // 主词条筛选
-        filterPart: "default", // 位置筛选
-        filterSet: "default", // 套装筛选
+        sortRule: 'lvdesc', // 排序规则
+        filterMain: 'default', // 主词条筛选
+        filterPart: 'default', // 位置筛选
+        filterSet: 'default' // 套装筛选
       });
       const defaultSetting = JSON.stringify(userSetting.value);
       // 保存设置
       const changeSetting = () => {
         // 语言选择
-        store.commit("language", userSetting.value.language);
+        store.commit('language', userSetting.value.language);
         i18n.locale = store.state.language;
         window.localStorage.language = store.state.language;
         window.localStorage.userSetting = JSON.stringify(userSetting.value);
       };
       // 恢复默认设置
       const resetSetting = () => {
-        window.localStorage.removeItem("userSetting");
+        window.localStorage.removeItem('userSetting');
         window.localStorage.userSetting = defaultSetting;
         userSetting.value = JSON.parse(defaultSetting);
-        alertControl(t("msg.settingResetSuccess"), 1500);
+        alertControl(t('msg.settingResetSuccess'), 1500);
       };
       // 筛选器
-      const multFilter = (val, type = "part") => {
-        if (type === "all") {
-          userSetting.value.filterMain = "default";
-          userSetting.value.filterPart = "default";
-          userSetting.value.filterSet = "default";
+      const multFilter = (val, type = 'part') => {
+        if (type === 'all') {
+          userSetting.value.filterMain = 'default';
+          userSetting.value.filterPart = 'default';
+          userSetting.value.filterSet = 'default';
         }
-        if (type === "main") userSetting.value.filterMain = val;
-        if (type === "part") userSetting.value.filterPart = val;
-        if (type === "set") userSetting.value.filterSet = val;
+        if (type === 'main') userSetting.value.filterMain = val;
+        if (type === 'part') userSetting.value.filterPart = val;
+        if (type === 'set') userSetting.value.filterSet = val;
       };
 
       // 提示框相关
       const alertFunc = ref({
         alertShow: false, // 是否显示提示框
-        alertMsg: "", // 提示框内容
+        alertMsg: '', // 提示框内容
         alertClose: Function, // 定时关闭提示框
-        alertState: "success", // 提示框类型
+        alertState: 'success' // 提示框类型
       });
       // 操作提示-提示框
       // state值： success/primary/warning/danger
-      const alertControl = (msg, time = 2000, state = "success") => {
+      const alertControl = (msg, time = 2000, state = 'success') => {
         alertFunc.value.alertMsg = msg;
         alertFunc.value.alertState = state;
         alertFunc.value.alertShow = true;
@@ -748,11 +748,57 @@
         }, time);
       };
 
+      // 键盘事件
+      const keyboardEvent = e => {
+        const pressKey = e.key;
+        switch (pressKey) {
+          // a键新增圣遗物
+          case 'a':
+          case 'A':
+            createArtifact();
+            break;
+          // 1 - 6 筛选圣遗物位置
+          case '1':
+            userSetting.value.filterPart = 'default';
+            break;
+          case '2':
+            userSetting.value.filterPart = 'Plume';
+            break;
+          case '3':
+            userSetting.value.filterPart = 'Flower';
+            break;
+          case '4':
+            userSetting.value.filterPart = 'Sands';
+            break;
+          case '5':
+            userSetting.value.filterPart = 'Circlet';
+            break;
+          case '6':
+            userSetting.value.filterPart = 'Goblet';
+            break;
+          // Backspace / Delete 删除选中的圣遗物
+          case 'Backspace':
+          case 'Delete':
+            if (showSymbol.value !== '') deleteArtifact(showSymbol.value);
+            break;
+          case 'Enter':
+            if (showSymbol.value !== '') ArtifactUpgrade(showSymbol.value);
+            break;
+          case 'r':
+          case 'R':
+            if (showSymbol.value !== '') initArtifact(showSymbol.value);
+            break;
+          default:
+            console.log(e);
+            break;
+        }
+      };
+
       onMounted(() => {
         if (window.localStorage.userSetting === undefined) {
           window.localStorage.userSetting = defaultSetting;
-        } else if (window.localStorage.userSetting !== "") {
-          let settingObj = JSON.parse(window.localStorage.getItem("userSetting"));
+        } else if (window.localStorage.userSetting !== '') {
+          let settingObj = JSON.parse(window.localStorage.getItem('userSetting'));
           // 给设定分配值（读取本地设置）
           Object.assign(userSetting.value, settingObj);
         }
@@ -760,6 +806,12 @@
         // 初始化列表数据
         syncListData();
         showSymbol.value = store.state.selectHistory;
+        // 键盘事件
+        window.addEventListener('keydown', keyboardEvent);
+      });
+
+      onBeforeUnmount(() => {
+        window.removeEventListener('keydown', keyboardEvent);
       });
 
       return {
@@ -792,58 +844,58 @@
         multFilter,
         syncListData,
         alertFunc,
-        alertControl,
+        alertControl
       };
     },
     data() {
       return {
         state: this.$store.state,
         showDetail: Object, // 右侧圣遗物展示详情
-        cusCloseSwitch: true, // 自选圣遗物-生成后是否关闭modal窗
+        cusCloseSwitch: true // 自选圣遗物-生成后是否关闭modal窗
       };
     },
     computed: {
       language() {
         return this.state.language;
-      },
+      }
     },
     watch: {
       showSymbol(val) {
-        if (val === "") {
+        if (val === '') {
           return;
         }
         this.showDetail = this.$artifact.getArtifact(val, this.userSetting.language);
       },
       ArtifactsList() {
-        if (this.showSymbol !== "") this.showDetail = this.$artifact.getArtifact(this.showSymbol, this.userSetting.language);
+        if (this.showSymbol !== '') this.showDetail = this.$artifact.getArtifact(this.showSymbol, this.userSetting.language);
       },
       userSetting: {
         handler(val) {
           if (
-            this.showSymbol !== "" &&
-            val.filterPart !== "default" &&
+            this.showSymbol !== '' &&
+            val.filterPart !== 'default' &&
             this.$artifact.AUSList[this.$artifact.getIndex(this.showSymbol)].part !== val.filterPart
           )
-            this.showSymbol = "";
+            this.showSymbol = '';
           if (
-            this.showSymbol !== "" &&
-            val.filterMain !== "default" &&
+            this.showSymbol !== '' &&
+            val.filterMain !== 'default' &&
             this.$artifact.AUSList[this.$artifact.getIndex(this.showSymbol)].mainEntry !== val.filterMain
           )
-            this.showSymbol = "";
+            this.showSymbol = '';
           this.changeSetting();
           this.syncListData();
         },
-        deep: true,
+        deep: true
       },
       language(val) {
         this.userSetting.language = val;
-      },
+      }
     },
     methods: {
       // 清除本地数据
       clearStorge() {
-        if (confirm("确定要清除模拟器所有数据吗？\n重置后会重新加载页面。")) {
+        if (confirm('确定要清除模拟器所有数据吗？\n重置后会重新加载页面。')) {
           localStorage.clear();
           this.$artifact.AUSList.length = 0;
           this.ArtifactsList.length = 0;
@@ -854,7 +906,7 @@
       // 上传数据（模拟点击）
       uploadClick() {
         const inputDom = this.$refs.uploadData;
-        const click = new MouseEvent("click", {});
+        const click = new MouseEvent('click', {});
         inputDom.dispatchEvent(click);
       },
       // 上传本地数据
@@ -863,24 +915,24 @@
         const file = inputDom.files[0];
         if (file) {
           if (file.size > 20000000) {
-            alert("文件过大");
+            alert('文件过大');
             return;
           }
-          if (file.name.slice(-4).toLowerCase() !== "json") {
-            alert("请上传.json文件");
+          if (file.name.slice(-4).toLowerCase() !== 'json') {
+            alert('请上传.json文件');
             return;
           }
           const fileReader = new FileReader();
-          fileReader.readAsText(file, "utf-8");
+          fileReader.readAsText(file, 'utf-8');
           fileReader.onload = res => {
             this.$artifact.dataUpdate(JSON.parse(res.target.result));
             this.syncListData();
           };
         } else {
-          alert("还没有选择文件");
+          alert('还没有选择文件');
         }
-      },
-    },
+      }
+    }
   };
 </script>
 
@@ -973,7 +1025,7 @@
         margin-left: 0.3rem;
 
         &::after {
-          content: "×";
+          content: '×';
           display: inline-block;
           text-align: center;
           height: 0.8rem;
@@ -1143,7 +1195,7 @@
   }
 
   #dropdownMenuLink::after {
-    content: "";
+    content: '';
     clear: both;
   }
 

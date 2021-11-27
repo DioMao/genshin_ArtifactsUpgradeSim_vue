@@ -511,6 +511,7 @@ const ArtifactsFunction = function() {
             main_a = artiConst.val.mainEntryList.indexOf(val_a.mainEntry),
             main_b = artiConst.val.mainEntryList.indexOf(val_b.mainEntry);
           if (rule === "lvasc" || rule === "lvdesc") {
+            // NOTE:2.3版本更新游戏内默认排序：品质>等级>套装>位置>词条数量
             // 排序优先级：先按照等级升/降序，再按照套装降序，再按照位置升序，最后按主属性升序
             if ((val_a.level > val_b.level && rule === "lvasc") || (val_a.level < val_b.level && rule === "lvdesc")) {
               return 1;

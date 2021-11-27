@@ -185,14 +185,14 @@
     mounted() {
       if (this.$artifact.getIndex(this.symbol) === -1) {
         this.Artifact = this.$artifact.getArtifact(this.symbol);
-        this.setUrl = require("../assets/images/Artifacts/" + this.Artifact.set.replace(/\s+/g, "") + "/" + this.Artifact.part + ".png");
+        this.setUrl = require(`../assets/images/Artifacts/${this.Artifact.set.replace(/\s+/g, "")}/${this.Artifact.part}.png`);
       } else {
         // 验证圣遗物是否存在，否则跳转回列表（防止url直接访问出错）
         if (this.$artifact.getArtifact(this.symbol) === undefined) {
           this.$router.replace("/");
         } else {
           this.Artifact = this.$artifact.getArtifact(this.symbol);
-          this.setUrl = require("../assets/images/Artifacts/" + this.Artifact.set.replace(/\s+/g, "") + "/" + this.Artifact.part + ".png");
+          this.setUrl = require(`../assets/images/Artifacts/${this.Artifact.set.replace(/\s+/g, "")}/${this.Artifact.part}.png`);
         }
       }
       // 读取语言设置

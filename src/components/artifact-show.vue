@@ -162,14 +162,14 @@
       },
       setUrl() {
         let item = this.$artifact.getArtifact(this.symbol),
-          src = require("../assets/images/Artifacts/" + item.set.replace(/\s+/g, "") + "/" + item.part + ".png");
+          src = require(`../assets/images/Artifacts/${item.set.replace(/\s+/g, "")}/${item.part}.png`);
         return src;
       },
       sideUrl() {
         if (this.showdetail.equipped) {
           let src;
           try {
-            src = require("../assets/images/avatars_side/" + this.showdetail.equipped.replace(/\s+/g, "_") + "_side.png");
+            src = require(`../assets/images/avatars_side/${this.showdetail.equipped.replace(/\s+/g, "_")}_side.png`);
             return src;
           } catch {
             src = require("../assets/images/genshin_emoji/Icon_Emoji_003_Paimon_Hehe.png");
@@ -248,7 +248,7 @@
       height: 1.875rem;
       color: #fff;
       line-height: 2.0625rem;
-      padding-left: 1.125rem;
+      padding-left: 1rem;
       background-color: #bc6832;
     }
 
@@ -288,7 +288,7 @@
       overflow: hidden;
       font-size: 0.8125rem;
       height: 8.4375rem;
-      padding: 0.3125rem 1.125rem 0.5625rem;
+      padding: 0.3125rem 1rem 0.5625rem;
       background-image: linear-gradient(to bottom right, rgba(110, 72, 72, 0.5) 15%, rgba(225, 125, 40, 0.5), rgba(255, 175, 45, 0.7) 95%),
         url(../assets/images/item_bg.png);
       background-size: auto 8.25rem, 100%;
@@ -340,7 +340,7 @@
       position: relative;
       min-height: 16rem;
       font-size: 0.875rem;
-      padding: 0.6875rem 1.125rem 2.5rem;
+      padding: 0.6875rem 1rem 2.5rem;
       background-color: #ece5d8;
 
       .badge {
