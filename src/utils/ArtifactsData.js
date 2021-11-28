@@ -32,7 +32,7 @@ export class ArtifactData {
         elementMastery: [16.3333, 18.5, 21, 23.3333]
       },
       // 初始4词条概率
-      extraEnrtyRate: 0.3,
+      extraEnrtyRate: 0.25,
       // 部件列表
       parts: ['Plume', 'Flower', 'Sands', 'Circlet', 'Goblet'],
       parts_en: ['Plume of Death', 'Flower of Life', 'Sands of Eon', 'Circlet of Logos', 'Goblet of Eonothem'],
@@ -101,7 +101,7 @@ export class ArtifactData {
         '物理伤害加成'
       ],
       // 部件主词条概率
-      hourglassRate: [0.26, 0.26, 0.26, 0.1, 0.1],
+      hourglassRate: [0.25, 0.25, 0.25, 0.1, 0.1],
       hatRate: [0.1, 0.1, 0.22, 0.22, 0.22, 0.04, 0.1],
       cupRate: [0.21, 0.21, 0.21, 0.025, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05],
       // 圣遗物主词条属性
@@ -737,7 +737,7 @@ export class ArtifactData {
           rarity: 5,
           element: ['Dendro'],
           weapon: 'bow',
-          sex: 'none',
+          sex: 'male',
           nation: 'other'
         },
         {
@@ -746,7 +746,7 @@ export class ArtifactData {
           rarity: 5,
           element: ['Dendro'],
           weapon: 'bow',
-          sex: 'none',
+          sex: 'female',
           nation: 'other'
         },
         {

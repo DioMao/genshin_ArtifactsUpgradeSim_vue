@@ -1,15 +1,15 @@
 <template>
-  <demo-alert :state="alertFunc.alertState" :show="alertFunc.alertShow">{{ alertFunc.alertMsg }}</demo-alert>
+  <DemoAlert :state="alertFunc.alertState" :show="alertFunc.alertShow">{{ alertFunc.alertMsg }}</DemoAlert>
   <div class="main-container">
     <img class="main-container-bg" src="../assets/images/genshin-symbol.png" alt="background_image" draggable="false" />
     <div class="countShow float-end">
       {{ $t('term.artifacts') }}
       <span :style="{ color: $artifact.AUSList.length === $artifact.maxCount ? 'red' : '' }">{{ $artifact.AUSList.length }}/{{ $artifact.maxCount }}</span>
     </div>
-    <popup :show="true">
+    <Popup :show="true">
       <template #title>Tips:</template>
       <template #content>This is content.</template>
-    </popup>
+    </Popup>
     <div class="partFilterBox">
       <div @click="userSetting.filterPart = 'default'" :class="{ part_actived: userSetting.filterPart === 'default' }">
         <img src="../assets/images/Icon_Artifacts.png" alt="default" draggable="false" />
@@ -30,7 +30,7 @@
     </div>
     <!-- 圣遗物列表 -->
     <div class="extra-container">
-      <artifact-list
+      <ArtifactList
         :rawdata="ArtifactsList"
         :showsymbol="showSymbol"
         @sync="syncListData"
@@ -39,11 +39,11 @@
         @alert="alertControl"
         @mobileshow="mobileshow"
       >
-      </artifact-list>
+      </ArtifactList>
     </div>
     <!-- 右侧圣遗物展示详情 -->
     <div class="ArtifactShowBox">
-      <artifact-show
+      <ArtifactShow
         @upgrade="ArtifactUpgrade"
         @init="initArtifact"
         @del="deleteArtifact"
@@ -55,15 +55,15 @@
         :showButton="true"
         v-if="showSymbol !== ''"
       >
-      </artifact-show>
+      </ArtifactShow>
       <div class="ms-3 mt-3 me-3" v-show="showSymbol !== ''">
         <!-- 圣遗物评分组件 -->
-        <artifact-score
+        <ArtifactScore
           :rule="userSetting.scoreConfig.mode === 'string' ? userSetting.scoreConfig.strRule : userSetting.scoreConfig.arrRule"
           :artifact="JSON.stringify($artifact.getArtifact(showSymbol))"
           :highscore="userSetting.highScore"
         >
-        </artifact-score>
+        </ArtifactScore>
         <button id="score" class="btn btn-genshin-dark btn-sm" data-bs-toggle="modal" data-bs-target="#scoreSet">{{ $t('msg.scoreSetting') }}</button>
       </div>
     </div>
@@ -76,7 +76,7 @@
     </div>
     <div class="offcanvas-body">
       <div>
-        <artifact-show
+        <ArtifactShow
           @upgrade="ArtifactUpgrade"
           @init="initArtifact"
           @del="deleteArtifact"
@@ -88,16 +88,16 @@
           :showButton="true"
           v-if="showSymbol !== ''"
         >
-        </artifact-show>
+        </ArtifactShow>
       </div>
       <div class="mt-3" v-show="showSymbol !== ''">
         <!-- 圣遗物评分组件 -->
-        <artifact-score
+        <ArtifactScore
           :rule="userSetting.scoreConfig.mode === 'string' ? userSetting.scoreConfig.strRule : userSetting.scoreConfig.arrRule"
           :artifact="JSON.stringify($artifact.getArtifact(showSymbol))"
           :highscore="userSetting.highScore"
         >
-        </artifact-score>
+        </ArtifactScore>
         <button id="score-2" class="btn btn-genshin-dark btn-sm" data-bs-toggle="modal" data-bs-target="#scoreSet">{{ $t('msg.scoreSetting') }}</button>
       </div>
     </div>
@@ -461,57 +461,19 @@
     </div>
   </div>
   <!-- 评分设置 -->
-  <div class="modal fade" id="scoreSet" tabindex="-1" aria-labelledby="scoreSetting" aria-hidden="true">
-    <div class="modal-dialog modal-sm modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="scoreSetting">{{ $t('msg.scoreSetting') }}</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="mb-3">
-            <label for="highScoreRange" class="form-label">高分圣遗物标准: {{ userSetting.highScore }}</label>
-            <input type="range" class="form-range" min="20" max="50" id="highScoreRange" v-model="userSetting.highScore" />
-          </div>
-          <div class="mb-3">
-            <input class="form-check-input" type="radio" name="scoreMode" id="scoreMode1" value="string" v-model="userSetting.scoreConfig.mode" />
-            <label class="form-check-label me-5" for="scoreMode1">
-              {{ $t('score.preset') }}
-            </label>
-            <input class="form-check-input" type="radio" name="scoreMode" id="scoreMode2" value="array" v-model="userSetting.scoreConfig.mode" />
-            <label class="form-check-label" for="scoreMode2">
-              {{ $t('score.optional') }}
-            </label>
-          </div>
-          <div v-show="userSetting.scoreConfig.mode === 'string'">
-            <select class="form-select form-select-sm" name="scoreString" id="scoreString" v-model="userSetting.scoreConfig.strRule">
-              <option value="default">{{ $t('msg.default') }}</option>
-              <option v-for="config in $artiConst.val.scoreList" :key="config" :value="config"> {{ $artifact.toChinese(config, 'score') }}</option>
-            </select>
-          </div>
-          <div class="justify-content-between flex-wrap" style="display:flex;" v-show="userSetting.scoreConfig.mode === 'array'">
-            <div class="form-check" style="width:40%;" v-for="config in $artiConst.val.scoreList" :key="config">
-              <input class="form-check-input" type="checkbox" :value="config" :id="'score-' + config" v-model="userSetting.scoreConfig.arrRule" />
-              <label class="form-check-label" :for="'score-' + config">
-                {{ $artifact.toChinese(config, 'score') }}
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <ScoreSetting></ScoreSetting>
   <!-- 关于信息 -->
-  <about></about>
+  <About></About>
 </template>
 
 <script>
-  import demoAlert from '../components/demo-alert';
-  import artifactShow from '../components/artifact-show';
-  import popup from '../components/popup';
-  import artifactList from '../components/artifact-list';
-  import artifactScore from '../components/artifact-score';
-  import about from '../components/about';
+  import DemoAlert from '../components/demo-alert.vue';
+  import ArtifactShow from '../components/artifact-show.vue';
+  import Popup from '../components/popup.vue';
+  import ArtifactList from '../components/artifact-list.vue';
+  import ArtifactScore from '../components/artifact-score.vue';
+  import ScoreSetting from '../components/score-setting.vue'
+  import About from '../components/about.vue';
   // bootstrap相关
   import 'bootstrap/js/dist/alert';
   import 'bootstrap/js/dist/modal';
@@ -522,12 +484,13 @@
 
   export default {
     components: {
-      demoAlert,
-      artifactShow,
-      popup,
-      artifactList,
-      artifactScore,
-      about
+      DemoAlert,
+      ArtifactShow,
+      Popup,
+      ArtifactList,
+      ArtifactScore,
+      ScoreSetting,
+      About
     },
     setup() {
       // 获取全局函数
@@ -651,7 +614,7 @@
       // 排序
       const sortList = index => {
         let sortMethod = ['lvasc', 'lvdesc', 'part', 'main'];
-        userSetting.value.sortRule = sortMethod[index];
+        store.commit('changeSetting', { ...userSetting, sortRule: sortMethod[index] });
         syncListData();
       };
       // 修改并保存当前展示圣遗物symbol
@@ -672,61 +635,40 @@
 
       // 同步数据
       const syncListData = () => {
-        artifactFunc.sortList(userSetting.value.sortRule);
-        if (userSetting.value.language === 'en' || userSetting.value.language === 'zh') {
-          ArtifactsList.value = artifactFunc.getList(
-            userSetting.value.language,
-            userSetting.value.filterPart,
-            userSetting.value.filterMain,
-            userSetting.value.filterSet
-          );
+        artifactFunc.sortList(userSetting.sortRule);
+        if (userSetting.language === 'en' || userSetting.language === 'zh') {
+          ArtifactsList.value = artifactFunc.getList(userSetting.language, userSetting.filterPart, userSetting.filterMain, userSetting.filterSet);
         } else {
-          ArtifactsList.value = artifactFunc.getList('origin', userSetting.value.filterPart, userSetting.value.filterMain, userSetting.value.filterSet);
+          ArtifactsList.value = artifactFunc.getList('origin', userSetting.filterPart, userSetting.filterMain, userSetting.filterSet);
         }
       };
 
       // 设置相关
-      const userSetting = ref({
-        // 用户设置
-        scoreConfig: {
-          // 圣遗物得分设置
-          mode: 'string',
-          strRule: 'default',
-          arrRule: []
-        },
-        language: 'zh', // 语言
-        highScore: 35, // 高分圣遗物标准
-        sortRule: 'lvdesc', // 排序规则
-        filterMain: 'default', // 主词条筛选
-        filterPart: 'default', // 位置筛选
-        filterSet: 'default' // 套装筛选
-      });
-      const defaultSetting = JSON.stringify(userSetting.value);
+      const userSetting = store.state.userSetting;
+      const defaultSetting = JSON.stringify(userSetting);
       // 保存设置
       const changeSetting = () => {
         // 语言选择
-        store.commit('language', userSetting.value.language);
+        store.commit('language', userSetting.language);
         i18n.locale = store.state.language;
         window.localStorage.language = store.state.language;
-        window.localStorage.userSetting = JSON.stringify(userSetting.value);
+        window.localStorage.userSetting = JSON.stringify(userSetting);
       };
       // 恢复默认设置
       const resetSetting = () => {
         window.localStorage.removeItem('userSetting');
         window.localStorage.userSetting = defaultSetting;
-        userSetting.value = JSON.parse(defaultSetting);
+        store.commit('changeSetting', JSON.parse(defaultSetting));
         alertControl(t('msg.settingResetSuccess'), 1500);
       };
       // 筛选器
       const multFilter = (val, type = 'part') => {
         if (type === 'all') {
-          userSetting.value.filterMain = 'default';
-          userSetting.value.filterPart = 'default';
-          userSetting.value.filterSet = 'default';
+          store.commit({ ...userSetting, filterMain: 'default', filterPart: 'default', filterSet: 'default' });
         }
-        if (type === 'main') userSetting.value.filterMain = val;
-        if (type === 'part') userSetting.value.filterPart = val;
-        if (type === 'set') userSetting.value.filterSet = val;
+        if (type === 'main') store.commit({ ...userSetting, filterMain: val });
+        if (type === 'part') store.commit({ ...userSetting, filterPart: val });
+        if (type === 'set') store.commit({ ...userSetting, filterSet: val });
       };
 
       // 提示框相关
@@ -759,22 +701,22 @@
             break;
           // 1 - 6 筛选圣遗物位置
           case '1':
-            userSetting.value.filterPart = 'default';
+            store.commit({ ...userSetting, filterPart: 'default' });
             break;
           case '2':
-            userSetting.value.filterPart = 'Plume';
+            store.commit({ ...userSetting, filterPart: 'Plume' });
             break;
           case '3':
-            userSetting.value.filterPart = 'Flower';
+            store.commit({ ...userSetting, filterPart: 'Flower' });
             break;
           case '4':
-            userSetting.value.filterPart = 'Sands';
+            store.commit({ ...userSetting, filterPart: 'Sands' });
             break;
           case '5':
-            userSetting.value.filterPart = 'Circlet';
+            store.commit({ ...userSetting, filterPart: 'Circlet' });
             break;
           case '6':
-            userSetting.value.filterPart = 'Goblet';
+            store.commit({ ...userSetting, filterPart: 'Goblet' });
             break;
           // Backspace / Delete 删除选中的圣遗物
           case 'Backspace':
@@ -800,7 +742,9 @@
         } else if (window.localStorage.userSetting !== '') {
           let settingObj = JSON.parse(window.localStorage.getItem('userSetting'));
           // 给设定分配值（读取本地设置）
-          Object.assign(userSetting.value, settingObj);
+          // TODO: 这里vuex操作尚未改成commit形式 
+          Object.assign(userSetting, settingObj);
+          // store.commit({ ...userSetting, settingObj });
         }
         changeSetting();
         // 初始化列表数据

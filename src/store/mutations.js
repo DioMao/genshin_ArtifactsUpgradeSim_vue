@@ -5,4 +5,7 @@ export default {
   saveScroll(state, val) {
     state.scrollTop = val;
   },
+  changeSetting(state, val) {
+    state.userSetting = val;
+  }
 };
