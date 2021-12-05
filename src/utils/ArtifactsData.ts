@@ -3,16 +3,19 @@
  * Copyrigth 2021-2022 DioMao (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/graphs/contributors)
  * Licensed under GPL3.0 (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/master/LICENSE)
  */
-'use strict';
+import {ArtifactsDataType} from './ArtifactsUpgradeSimTypes'
 
 // 常量数据
 export class ArtifactData {
-  #AUTHOR = 'DioMao';
+  private __ArtifactConstList__: ArtifactsDataType;
+  private AUTHOR: string;
+
   constructor() {
-    const mainVal_1 = [7, 14.9, 22.8, 30.8, 38.7, 46.6],
-      mainVal_2 = [8.7, 18.6, 28.6, 38.5, 48.4, 58.3];
+    const mainVal_1 = [7, 14.9, 22.8, 30.8, 38.7, 46.6];
+    const mainVal_2 = [8.7, 18.6, 28.6, 38.5, 48.4, 58.3];
     //ATK = [47,60,73,86,100,,,139,152,166];
     //ATKPer = [7,9,11,12.9,14.9,16.9,18.9,20.9,22.8,24.8,26.8,28.8,30.8]
+    this.AUTHOR = 'DioMao';
     this.__ArtifactConstList__ = {
       // 词缀条目
       entryList: ['CRITRate', 'CRITDMG', 'ATK', 'ATKPer', 'DEF', 'DEFPer', 'HP', 'HPPer', 'energyRecharge', 'elementMastery'],
@@ -371,7 +374,8 @@ export class ArtifactData {
           Circlet: 'Crown of Watatsumi',
           Goblet: 'Pearl Cage',
           Set2: 'Healing Bonus +15%.',
-          Set4: 'When the character equipping this artifact set heals a character in the party, a Sea-Dyed Foam will appear for 3 seconds, accumulating the amount of HP recovered from healing (including overflow healing). At the end of the duration, the Sea-Dyed Foam will explode, dealing DMG to nearby opponents based on 90% of the accumulated healing. (This DMG is calculated similarly to Reactions such as Electro-Charged, and Superconduct, but it is not affected by Elemental Mastery, Character Levels, or Reaction DMG Bonuses). Only one Sea-Dyed Foam can be produced every 3.5 seconds. Each Sea-Dyed Foam can accumulate up to 30,000 HP (including overflow healing). There can be no more than one Sea-Dyed Foam active at any given time. This effect can still be triggered even when the character who is using this artifact set is not on the field.'
+          Set4:
+            'When the character equipping this artifact set heals a character in the party, a Sea-Dyed Foam will appear for 3 seconds, accumulating the amount of HP recovered from healing (including overflow healing). At the end of the duration, the Sea-Dyed Foam will explode, dealing DMG to nearby opponents based on 90% of the accumulated healing. (This DMG is calculated similarly to Reactions such as Electro-Charged, and Superconduct, but it is not affected by Elemental Mastery, Character Levels, or Reaction DMG Bonuses). Only one Sea-Dyed Foam can be produced every 3.5 seconds. Each Sea-Dyed Foam can accumulate up to 30,000 HP (including overflow healing). There can be no more than one Sea-Dyed Foam active at any given time. This effect can still be triggered even when the character who is using this artifact set is not on the field.'
         }
       },
       artifactSet_zh: {
@@ -1001,7 +1005,7 @@ export class ArtifactData {
     const nope = () => {
       throw new Error('Error!This data is read only!');
     };
-    const read_only = obj =>
+    const read_only = (obj: ArtifactsDataType) =>
       new Proxy(obj, {
         set: nope,
         defineProperty: nope,
@@ -1017,6 +1021,6 @@ export class ArtifactData {
   }
 
   get author() {
-    return this.#AUTHOR;
+    return this.AUTHOR;
   }
 }

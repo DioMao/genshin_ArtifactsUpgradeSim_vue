@@ -1,4 +1,4 @@
-export default {
+export default <VuexStateType>{
   scrollTop: 0,
   selectHistory: '',
   language: 'zh',
@@ -21,4 +21,27 @@ export default {
   },
   // 需要改小字体的属性(英语环境下)
   attr_sm_en: ['energyRecharge', 'Healing', 'elementMastery', 'Hydro', 'Pyro', 'Electro', 'Geo', 'Anemo', 'Cryo', 'Physical']
+};
+
+export type VuexStateType = {
+  [key: string]: any;
+  language: string;
+  selectHistory: string;
+  userSetting: UserSettingType;
+};
+
+export type UserSettingType = {
+  scoreConfig: ScoreConfigType;
+  language: string;
+  highScore: number;
+  sortRule: string;
+  filterMain: string | string[];
+  filterPart: string | string[];
+  filterSet: string | string[];
+};
+
+export type ScoreConfigType = {
+  mode: string;
+  strRule: string;
+  arrRule: string[];
 };

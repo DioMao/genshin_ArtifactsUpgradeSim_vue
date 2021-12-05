@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createRouter, createWebHashHistory } from "vue-router";
 
 import artifactBox from "@/page/artifactBox";

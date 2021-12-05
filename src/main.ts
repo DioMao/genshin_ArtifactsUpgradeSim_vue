@@ -4,11 +4,14 @@
  */
 
 import { createApp } from 'vue';
+// @ts-ignore
 import store from './store/store';
+// @ts-ignore
 import router from './router/router';
 import App from './App.vue';
 // import * as echarts from 'echarts'
 import axios from 'axios';
+// @ts-ignore
 import i18n from './language';
 import { ArtifactsSim, artiConst, IDB, initArtifactSim } from './utils/ArtifactsUpgradeSim_module';
 // 全局样式
@@ -34,7 +37,7 @@ initArtifactSim()
     app.mount('#app');
     window.scrollTo(0, 1);
   })
-  .catch(err => {
+  .catch((err: any) => {
     console.log(err);
     if (confirm('Initialization failed, please try to clear local cache.\n数据初始化失败，请尝试清除本地缓存。')) {
       // 清除缓存
