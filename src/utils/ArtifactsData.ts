@@ -3,11 +3,11 @@
  * Copyrigth 2021-2022 DioMao (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/graphs/contributors)
  * Licensed under GPL3.0 (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/master/LICENSE)
  */
-import {ArtifactsDataType} from './ArtifactsUpgradeSimTypes'
+import { ArtifactNameSpace } from './ArtifactsUpgradeSimTypes';
 
 // 常量数据
 export class ArtifactData {
-  private __ArtifactConstList__: ArtifactsDataType;
+  readonly __ArtifactConstList__: ArtifactNameSpace.ArtifactsDataType;
   private AUTHOR: string;
 
   constructor() {
@@ -1005,7 +1005,7 @@ export class ArtifactData {
     const nope = () => {
       throw new Error('Error!This data is read only!');
     };
-    const read_only = (obj: ArtifactsDataType) =>
+    const read_only = (obj: ArtifactNameSpace.ArtifactsDataType) =>
       new Proxy(obj, {
         set: nope,
         defineProperty: nope,

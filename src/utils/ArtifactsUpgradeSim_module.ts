@@ -5,7 +5,7 @@
  */
 import { ArtifactData } from './ArtifactsData';
 import Dexie, { Table } from 'dexie';
-import { ArtifactsFormat, CharacterSetFormat } from './ArtifactsUpgradeSimTypes';
+import { ArtifactNameSpace } from './ArtifactsUpgradeSimTypes';
 
 /**
  * 创建indexedDB
@@ -42,15 +42,15 @@ const IDB: any = new ArtifactsIDB();
  */
 class ArtifactsFunction_class {
   // Private variable
-  private AUS_LIST: ArtifactsFormat[] = [];
-  private DELETE_HISTORY: ArtifactsFormat[] = [];
-  private SET_LIST: any[] = [];
-  private LIST_LIMIT: number = 2000;
-  private SET_LIST_LIMIT: number = 100;
+  private AUS_LIST: ArtifactNameSpace.ArtifactsFormat[] = [];
+  private DELETE_HISTORY: ArtifactNameSpace.ArtifactsFormat[] = [];
+  private SET_LIST: ArtifactNameSpace.CharacterSetFormat[] = [];
   private COUNT_LIST: any = Object.create(null);
   private LANGUAGE: string = 'origin';
-  private AUTHOR: string = 'DioMao';
-  private VERSION: string = '0.2.3';
+  readonly LIST_LIMIT: number = 2000;
+  readonly SET_LIST_LIMIT: number = 100;
+  readonly AUTHOR: string = 'DioMao';
+  readonly VERSION: string = '0.2.3';
 
   constructor() {}
 
@@ -67,16 +67,16 @@ class ArtifactsFunction_class {
   createArtifact(
     part: string = '',
     main: string = '',
-    entry: any[] = [],
-    entryRate: any[] = [],
+    entry: string[] = [],
+    entryRate: number[] = [],
     artifactSet: string = '',
     storage: boolean = true
-  ): ArtifactsFormat | boolean {
+  ): ArtifactNameSpace.ArtifactsFormat | boolean {
     if (this.AUS_LIST.length >= this.LIST_LIMIT) {
       console.log(`Warning - The maximum length of the artifacts list is ${this.LIST_LIMIT}.`);
       return false;
     }
-    const newArtifacts: ArtifactsFormat = {
+    const newArtifacts: ArtifactNameSpace.ArtifactsFormat = {
         symbol: '',
         level: 0,
         rarity: 5,
@@ -109,7 +109,7 @@ class ArtifactsFunction_class {
     if (typeof main === 'string' && artiConst.val.mainEntryList.indexOf(main) !== -1 && this.mainEntryVerify(newArtifacts.part, main)) {
       newArtifacts.mainEntry = main;
     } else {
-      newArtifacts.mainEntry = this.randomMainEntry(newArtifacts.part);
+      newArtifacts.mainEntry = this.randomMainEntry(<ArtifactNameSpace.ArtifactPartType>newArtifacts.part);
     }
     // 主属性数值
     newArtifacts.mainEntryValue = artiConst.val.mainEntryValueList[newArtifacts.mainEntry][0];
@@ -132,7 +132,7 @@ class ArtifactsFunction_class {
         ArtifactEntryRate.splice(index, 1);
         // 判断自选副词条数值是否合规
         if (entryRate.length === 0 || artiConst.val.entryValue[cusEntry].indexOf(cusEntryRate) === -1) {
-          cusEntryRate = this.randomEntryValue(entry as any);
+          cusEntryRate = this.randomEntryValue(cusEntry);
         }
         newArtifacts.entry.push([cusEntry, cusEntryRate]);
       }
@@ -441,7 +441,7 @@ class ArtifactsFunction_class {
       console.log('Undo false, history not found.');
       return false;
     }
-    const artifact = <ArtifactsFormat>this.DELETE_HISTORY.pop();
+    const artifact = <ArtifactNameSpace.ArtifactsFormat>this.DELETE_HISTORY.pop();
     this.AUS_LIST.push(artifact);
     this.changeCount([artifact.part, artifact.mainEntry, artifact.set]);
     IDB.ARTIFACT_LIST.add(artifact);
@@ -454,7 +454,7 @@ class ArtifactsFunction_class {
    * @param {number} range 增加的值（为负数时则减少）
    * @returns 操作结果 true/false
    */
-  changeCount(key: any, range: number = 1) {
+  changeCount(key: string | string[], range: number = 1) {
     if (typeof key !== 'string' && !Array.isArray(key)) return false;
     const countList = this.COUNT_LIST;
     if (typeof key === 'string') {
@@ -515,12 +515,12 @@ class ArtifactsFunction_class {
    * @param {array} list 需要排序的列表
    * @returns 排序结果（失败才有返回值）
    */
-  sortList(rule: string = 'lvasc', list: any = this.AUS_LIST) {
+  sortList(rule: string = 'lvasc', list: ArtifactNameSpace.ArtifactsFormat[] = this.AUS_LIST) {
     if (typeof rule !== 'string' || this.AUS_LIST.length === 0) return false;
     if (rule === 'main') rule = 'mainEntry';
     // 这里使用try-catch是为了版本兼容性，避免对以前的版本数据进行排序时出现错误
     try {
-      list.sort((val_a: any, val_b: any) => {
+      list.sort((val_a, val_b) => {
         const set_a = artiConst.val.setList.indexOf(val_a.set);
         const set_b = artiConst.val.setList.indexOf(val_b.set);
         const part_a = artiConst.val.parts.indexOf(val_a.part);
@@ -602,6 +602,7 @@ class ArtifactsFunction_class {
           }
           return 0;
         }
+        return 0;
       });
       return list;
     } catch (error) {
@@ -627,7 +628,7 @@ class ArtifactsFunction_class {
    * @param {string} language 目标语言(默认不处理)
    * @returns 查询结果
    */
-  getArtifact(symbol: string, language: string = 'origin') {
+  getArtifact(symbol: string, language: string = 'origin'): ArtifactNameSpace.ArtifactsFormat | undefined {
     const artifact = this.AUS_LIST.find(val => {
       return val.symbol === symbol;
     });
@@ -722,7 +723,7 @@ class ArtifactsFunction_class {
    * 圣遗物列表更新
    * @param {array} data 圣遗物列表
    */
-  dataUpdate(data: any) {
+  dataUpdate(data: ArtifactNameSpace.ArtifactsFormat[]) {
     if (Array.isArray(data)) {
       if (data.length > this.LIST_LIMIT) {
         data.length = this.LIST_LIMIT;
@@ -769,7 +770,7 @@ class ArtifactsFunction_class {
     } else {
       name = 'unnamed';
     }
-    const newSet: CharacterSetFormat = Object.create(null);
+    const newSet: ArtifactNameSpace.CharacterSetFormat = Object.create(null);
     newSet.name = name;
     newSet.Plume = '';
     newSet.Flower = '';
@@ -816,7 +817,7 @@ class ArtifactsFunction_class {
    * 根据name获取套装 **如果有重名套装，则返回第一个**
    * @param {string} name 套装名称
    */
-  getSet(name = '') {
+  getSet(name: string = '') {
     return this.SET_LIST.find(val => {
       return val.name === name;
     });
@@ -824,11 +825,11 @@ class ArtifactsFunction_class {
 
   /**
    * 圣遗物套装-成套查询
-   * @param {number} name 套装名称
+   * @param {string} name 套装名称
    * @returns 查询结果
    */
-  getSetBonus(name: number) {
-    const index = this.getSetIndex(name as any);
+  getSetBonus(name: string) {
+    const index = this.getSetIndex(name);
     if (index === -1) return false;
     const set = this.SET_LIST[index];
     const res = Object.create(null);
@@ -976,7 +977,7 @@ class ArtifactsFunction_class {
             state[artifact.mainEntry] = artifact.mainEntryValue;
           }
           // 副词条
-          artifact.entry.forEach((val: any) => {
+          artifact.entry.forEach(val => {
             if (state[val[0]]) {
               state[val[0]] = (state[val[0]] * 10000 + val[1] * 10000) / 10000;
             } else {
@@ -990,8 +991,8 @@ class ArtifactsFunction_class {
       }
     }
     // 获取套装属性加成
-    const setBonus = this.getSetBonus(index);
-    const bonusFunc = (key: any, count: any) => {
+    const setBonus = this.getSetBonus(name);
+    const bonusFunc = (key: string, count: number) => {
       const setBonus = artiConst.val.setBonus[key][count];
       // 如果存在N件套效果
       if (setBonus) {
@@ -1063,7 +1064,7 @@ class ArtifactsFunction_class {
    * @param {string} language 目标语言(默认中文)
    * @returns 处理后的圣遗物数据
    */
-  translate(item: any, language: string = 'zh') {
+  translate(item: ArtifactNameSpace.ArtifactsFormat, language: string = 'zh') {
     const lan = ['zh', 'en'];
     const artifact = JSON.parse(JSON.stringify(item));
     if (typeof language !== 'string' || lan.indexOf(language) === -1) return artifact;
@@ -1080,7 +1081,7 @@ class ArtifactsFunction_class {
           artifact.part = artiConst.val.parts_en[artiConst.val.parts.indexOf(artifact.part)];
         }
         // 副词条数值处理
-        artifact.entry.forEach((e: any) => {
+        artifact.entry.forEach((e: string[]) => {
           e[1] = this.entryValFormat(e[0], e[1]);
           if (language === 'zh') e[0] = this.toChinese(e[0], 'entry');
           if (language === 'en') e[0] = artiConst.val.entryList_en[artiConst.val.entryList.indexOf(e[0])];
@@ -1099,12 +1100,9 @@ class ArtifactsFunction_class {
    * @param {boolean} 是否转为百分数（没有对应词条名称时生效）
    * @returns 处理后的词条数值
    */
-  entryValFormat(entry: string, entryValue: string | number, isPercent: boolean = true) {
+  entryValFormat(entry: string, entryValue: string | number, isPercent: boolean = true): string {
     const nonPercent = ['ATK', 'HP', 'DEF', 'elementMastery'],
       entryList = artiConst.val.mainEntryList.concat(artiConst.val.entryList);
-    if (typeof entry !== 'string' || (typeof entryValue !== 'string' && typeof entryValue !== 'number')) {
-      return false;
-    }
     if (entryList.indexOf(entry) > -1) {
       if (nonPercent.indexOf(entry) !== -1) {
         entryValue = this.toThousands(Number.parseFloat(<string>entryValue).toFixed(0));
@@ -1126,8 +1124,7 @@ class ArtifactsFunction_class {
    * @param {array} __arr1  随机列表
    * @param {array} __arr2  随机概率（对应arr1）
    */
-  randomRate(__arr1: any[], __arr2: any[]) {
-    if (!Array.isArray(__arr1) || !Array.isArray(__arr2)) throw new Error('Function RandomRate Warning!Wrong parameter.');
+  randomRate(__arr1: string[], __arr2: number[]) {
     if (__arr1.length !== __arr2.length) throw new Error('Function RandomRate Warning!Array length different!');
     let __rand = Math.random(),
       __rate = 0,
@@ -1171,8 +1168,7 @@ class ArtifactsFunction_class {
    * 随机主词条
    * @param {string} __part 位置
    */
-  randomMainEntry(__part: string) {
-    if (typeof __part !== 'string') throw new Error('Function randomMainEntry Error!Wrong parameter(Not string).');
+  randomMainEntry(__part: ArtifactNameSpace.ArtifactPartType): string {
     switch (__part) {
       case 'Plume':
         return 'ATK';
@@ -1185,9 +1181,9 @@ class ArtifactsFunction_class {
       case 'Goblet':
         return this.randomRate(artiConst.val.Goblet, artiConst.val.cupRate);
       default:
-        console.log('Error! -randomMainEntry-');
-        return false;
+        break;
     }
+    return '';
   }
 
   /**
@@ -1222,7 +1218,7 @@ class ArtifactsFunction_class {
    * @param {array} __entryArr 副词条数组
    * @returns
    */
-  entryVerify(__mainEntry: string, __entryArr: any[]) {
+  entryVerify(__mainEntry: string, __entryArr: string[]) {
     if (typeof __mainEntry !== 'string' || !Array.isArray(__entryArr)) throw new Error('Function entryVerify Error!Wrong parameter.');
     for (let i = 0; i < __entryArr.length; i++) {
       if (__mainEntry === __entryArr[i] || artiConst.val.entryList.indexOf(__entryArr[i]) === -1) {
@@ -1241,21 +1237,6 @@ class ArtifactsFunction_class {
     return (val || 0).toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,');
   }
 
-  get MihoyoImYourDaddy() {
-    for (let i = 0; i < this.AUSList.length; i++) {
-      const artifact = this.AUSList[i];
-      for (let j = 0; j < artifact.entry.length; j++) {
-        const entry = artifact.entry[j];
-        if (entry[0] === 'CRITRate' || entry[0] === 'CRITDMG') {
-          while (artifact.level < 20) {
-            this.upgrade(<any>i, entry[0], 3);
-          }
-        }
-      }
-    }
-    return 'Yes,you are!';
-  }
-
   /**
    * get扩展（带参获取列表）
    * @param {string} language 语言
@@ -1264,10 +1245,15 @@ class ArtifactsFunction_class {
    * @param {string | array} filterSet 套装筛选
    * @returns 处理后的结果
    */
-  getList(language: string = 'origin', filterPart: string | any[] = 'default', filterMain: string | any[] = 'default', filterSet: string | any[] = 'default') {
+  getList(
+    language: string = 'origin',
+    filterPart: string | string[] = 'default',
+    filterMain: string | string[] = 'default',
+    filterSet: string | string[] = 'default'
+  ) {
     const lan = ['zh', 'en', 'origin'];
     // 筛选符合条件的过滤属性
-    const arrFilter = function(arr: any[], type: string) {
+    const arrFilter = function(arr: string[], type: string) {
       const res = [];
       for (const el of arr) {
         if (type === 'main') {

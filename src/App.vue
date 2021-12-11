@@ -84,6 +84,7 @@
     },
     computed: {
       language() {
+        // @ts-ignore
         return this.$store.state.language;
       }
     },

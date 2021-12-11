@@ -1,11 +1,11 @@
-// @ts-nocheck
+
 import { createRouter, createWebHashHistory } from "vue-router";
 
-import artifactBox from "@/page/artifactBox";
-import artifactUpgrade from "@/page/artifactUpgrade";
-import artifactEquip from "@/page/artifactEquip";
-import artifactState from "@/page/artifactState";
-import notFound from "@/page/404";
+import artifactBox from "@/page/artifactBox.vue";
+import artifactUpgrade from "@/page/artifactUpgrade.vue";
+import artifactEquip from "@/page/artifactEquip.vue";
+import artifactState from "@/page/artifactState.vue";
+import notFound from "@/page/404.vue";
 
 const router = createRouter({
   history: createWebHashHistory(),

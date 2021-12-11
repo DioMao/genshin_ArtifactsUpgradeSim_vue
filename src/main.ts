@@ -4,14 +4,11 @@
  */
 
 import { createApp } from 'vue';
-// @ts-ignore
 import store from './store/store';
-// @ts-ignore
 import router from './router/router';
 import App from './App.vue';
 // import * as echarts from 'echarts'
 import axios from 'axios';
-// @ts-ignore
 import i18n from './language';
 import { ArtifactsSim, artiConst, IDB, initArtifactSim } from './utils/ArtifactsUpgradeSim_module';
 // 全局样式
