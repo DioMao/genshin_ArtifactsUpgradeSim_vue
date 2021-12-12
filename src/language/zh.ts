@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   title: '圣遗物强化模拟器',
   tips: {
     new: '新',

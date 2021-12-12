@@ -84,8 +84,8 @@
 <script>
   import { getCurrentInstance, onMounted, ref, watch } from "vue";
   // import { useStore } from "vuex";
-  import characterList from "../components/character-list";
-  import characterEquip from "../components/character-equip";
+  import characterList from "../components/character-list.vue";
+  import characterEquip from "../components/character-equip.vue";
   export default {
     props: {
       name: {

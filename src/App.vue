@@ -68,6 +68,10 @@
   import 'bootstrap/js/dist/offcanvas';
   // import {getCurrentInstance} from "vue";
 
+  const image_1 = new URL(`assets/images/genshin-symbol.png`, import.meta.url).href;
+  const image_2 = new URL(`assets/images/fog.png`, import.meta.url).href;
+  const image_3 = new URL(`assets/images/item_bg.png`, import.meta.url).href;
+
   export default {
     data() {
       return {
@@ -75,7 +79,7 @@
         loadProgress: 0,
         isLoad: false, // 加载界面显示（isLoad表示页面加载是否完成）
         // 预载图片列表
-        imgList: [require('@/assets/images/genshin-symbol.png'), require('@/assets/images/fog.png'), require('@/assets/images/item_bg.png')]
+        imgList: [image_1, image_2, image_3]
       };
     },
     mounted() {

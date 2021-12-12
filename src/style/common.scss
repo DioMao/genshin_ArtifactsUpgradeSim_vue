@@ -16,7 +16,7 @@ $genshin_brown_red: rgb(171, 102, 82);
 
 @font-face {
   font-family: "genshin-font";
-  src: url(~@/style/genshin_mini_artifact.ttf);
+  src: url(src/style/genshin_mini_artifact.ttf);
 }
 
 body {
@@ -388,7 +388,7 @@ body {
   position: relative;
   border-radius: 1.5625rem;
   margin-right: 0 !important;
-  background-image: url(~@/assets/images/close.png);
+  background-image: url(src/assets/images/close.png);
   background-size: 1.6875rem;
   background-color: $genshin_white;
   background-repeat: no-repeat;

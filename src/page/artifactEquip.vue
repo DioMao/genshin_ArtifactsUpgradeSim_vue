@@ -92,8 +92,8 @@
 </template>
 
 <script>
-  import artifactShow from "../components/artifact-show";
-  import characterList from "../components/character-list";
+  import artifactShow from "../components/artifact-show.vue";
+  import characterList from "../components/character-list.vue";
   import "@/style/stars.css";
   import { getCurrentInstance, ref, watch } from "vue";
   import { useRouter } from "vue-router";

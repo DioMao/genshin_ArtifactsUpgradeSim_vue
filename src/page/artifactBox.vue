@@ -15,7 +15,7 @@
         <img src="../assets/images/Icon_Artifacts.png" alt="default" draggable="false" />
       </div>
       <div v-for="part in $artiConst.val.parts" :key="part" @click="userSetting.filterPart = part" :class="{ part_actived: userSetting.filterPart === part }">
-        <img :src="require(`../assets/images/Icon_${part}.png`)" :alt="part" draggable="false" />
+        <img :src="filterImage(part)" :alt="part" draggable="false" />
       </div>
     </div>
     <!-- 筛选提示框 -->
@@ -670,6 +670,9 @@
         if (type === 'part') store.commit({ ...userSetting, filterPart: val });
         if (type === 'set') store.commit({ ...userSetting, filterSet: val });
       };
+      const filterImage = (part) =>{
+        return new URL(`../assets/images/Icon_${part}.png`, import.meta.url).href;
+      };
 
       // 提示框相关
       const alertFunc = ref({
@@ -786,6 +789,7 @@
         changeSetting,
         resetSetting,
         multFilter,
+        filterImage,
         syncListData,
         alertFunc,
         alertControl

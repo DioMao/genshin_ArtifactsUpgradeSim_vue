@@ -142,7 +142,7 @@
 </template>
 
 <script>
-  import demoAlert from "@/components/demo-alert";
+  import demoAlert from "@/components/demo-alert.vue";
   import "@/style/stars.css";
 
   export default {
@@ -185,14 +185,18 @@
     mounted() {
       if (this.$artifact.getIndex(this.symbol) === -1) {
         this.Artifact = this.$artifact.getArtifact(this.symbol);
-        this.setUrl = require(`../assets/images/Artifacts/${this.Artifact.set.replace(/\s+/g, "")}/${this.Artifact.part}.png`);
+          this.setUrl = new URL(`../assets/images/Artifacts/${this.Artifact.set.replace(/\s+/g, "")}/${this.Artifact.part}.png`, import.meta.url).href;
+        
+        // this.setUrl = require(`../assets/images/Artifacts/${this.Artifact.set.replace(/\s+/g, "")}/${this.Artifact.part}.png`);
       } else {
         // 验证圣遗物是否存在，否则跳转回列表（防止url直接访问出错）
         if (this.$artifact.getArtifact(this.symbol) === undefined) {
           this.$router.replace("/");
         } else {
           this.Artifact = this.$artifact.getArtifact(this.symbol);
-          this.setUrl = require(`../assets/images/Artifacts/${this.Artifact.set.replace(/\s+/g, "")}/${this.Artifact.part}.png`);
+          this.setUrl = new URL(`../assets/images/Artifacts/${this.Artifact.set.replace(/\s+/g, "")}/${this.Artifact.part}.png`, import.meta.url).href;
+
+          // this.setUrl = require(`../assets/images/Artifacts/${this.Artifact.set.replace(/\s+/g, "")}/${this.Artifact.part}.png`);
         }
       }
       // 读取语言设置

@@ -1,17 +1,8 @@
-.DS_Store
 node_modules
-/dist
-
-
-# local env files
-.env.local
-.env.*.local
-
-# Log files
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
+.DS_Store
+dist
+dist-ssr
+*.local
 
 # Editor directories and files
 .idea
@@ -21,10 +12,3 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
-
-# css
-src/style/common.css
-src/style/common.min.css
-
-#Electron-builder output
-/dist_electron

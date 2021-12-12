@@ -210,7 +210,8 @@
       // 人物头像链接处理
       const avatarSrc = name => {
         try {
-          let src = require(`../assets/images/character/Character_${name.replace(/\s+/g, "_")}_Thumb.png`);
+ let src = new URL(`../assets/images/character/Character_${name.replace(/\s+/g, "_")}_Thumb.png`, import.meta.url).href;
+          // let src = require(`../assets/images/character/Character_${name.replace(/\s+/g, "_")}_Thumb.png`);
           return src;
         } catch (error) {
           return "";
@@ -220,10 +221,13 @@
       const avatarSideSrc = name => {
         let src;
         try {
-          src = require(`../assets/images/avatars_side/${name.replace(/\s+/g, "_")}_side.png`);
+          src = new URL(`../assets/images/avatars_side/${name.replace(/\s+/g, "_")}_side.png`, import.meta.url).href;
+          // src = require(`../assets/images/avatars_side/${name.replace(/\s+/g, "_")}_side.png`);
           return src;
         } catch {
-          src = require("../assets/images/genshin_emoji/Icon_Emoji_003_Paimon_Hehe.png");
+          src = new URL("../assets/images/genshin_emoji/Icon_Emoji_003_Paimon_Hehe.png", import.meta.url).href;
+
+          // src = require("../assets/images/genshin_emoji/Icon_Emoji_003_Paimon_Hehe.png");
           return src;
         }
       };

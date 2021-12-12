@@ -2,8 +2,6 @@ export default <VuexStateType>{
   scrollTop: 0,
   selectHistory: '',
   language: 'zh',
-  // 图片位置
-  symbolSrc: require('../assets/images/genshin-symbol.png'),
   // 用户设置
   userSetting: {
     // 圣遗物得分设置
