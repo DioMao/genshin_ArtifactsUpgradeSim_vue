@@ -50,7 +50,7 @@
               {{ Artifacts.part }}
             </div>
             <div class="levelStar"></div>
-            <div class="card-text" style="color:rgb(223,185,170);white-space:nowrap" :style="{ fontSize: $i18n.locale === 'en' ? '0.75rem' : 'inherit' }">
+            <div class="card-text" style="color: rgb(223, 185, 170); white-space: nowrap" :style="{ fontSize: $i18n.locale === 'en' ? '0.75rem' : 'inherit' }">
               {{ Artifacts.mainEntry }}
             </div>
             <div>
@@ -59,7 +59,7 @@
             <!-- 移动端点击显示offcan窗口 -->
             <a class="mobileShow" @click="mobileShow()"> </a>
             <!-- 新圣遗物标识 -->
-            <div class="isNew" v-if="Artifacts.isNew">{{ $t("tips.new") }}</div>
+            <div class="isNew" v-if="Artifacts.isNew">{{ $t('tips.new') }}</div>
             <!-- 已被装备标识 -->
             <div class="equipped" v-if="Artifacts.equipped">
               <img :src="sideUrl(Artifacts.equipped)" alt="equipped" draggable="false" />
@@ -67,7 +67,7 @@
           </div>
         </div>
         <!-- flex填充 -->
-        <div class="ArtifactsBox card rounded" v-for="i in fillCount" :key="i" style="visibility:hidden;"></div>
+        <div class="ArtifactsBox card rounded" v-for="i in fillCount" :key="i" style="visibility: hidden"></div>
       </div>
     </div>
   </div>
@@ -75,7 +75,7 @@
 
 <script>
   export default {
-    name: "artifact-list",
+    name: 'artifact-list',
     data() {
       return {
         state: this.$store.state,
@@ -101,16 +101,16 @@
       // 当前圣遗物symbol
       showsymbol: {
         type: String,
-        default: "",
+        default: '',
       },
     },
     mounted() {
       // 先记录scrollTop，调用vmList后会重置scrollTop值
       let scroll = this.$store.state.scrollTop;
       // 滚动监听
-      this.$refs.listContainer.addEventListener("scroll", this.throttle(this.vmList));
+      this.$refs.listContainer.addEventListener('scroll', this.throttle(this.vmList));
       // 监听窗口大小
-      window.addEventListener("resize", this.vmList);
+      window.addEventListener('resize', this.vmList);
       // 返回界面时回到记录位置
       this.$nextTick(() => {
         this.vmList();
@@ -119,10 +119,10 @@
     },
     beforeUnmount() {
       // 移除监听器
-      this.$refs.listContainer.removeEventListener("scroll", this.throttle(this.vmList));
-      window.removeEventListener("resize", this.vmList);
+      this.$refs.listContainer.removeEventListener('scroll', this.throttle(this.vmList));
+      window.removeEventListener('resize', this.vmList);
       // 卸载前记录列表滚动条位置
-      this.$store.commit("saveScroll", this.$refs.listContainer.scrollTop);
+      this.$store.commit('saveScroll', this.$refs.listContainer.scrollTop);
     },
     watch: {
       rawdata: {
@@ -156,35 +156,33 @@
             }
           }
         }
-        this.$emit("changeshowsymbol", symbol);
+        this.$emit('changeshowsymbol', symbol);
       },
       createArtifact() {
-        this.$emit("create");
+        this.$emit('create');
       },
       mobileShow() {
-        this.$emit("mobileshow");
+        this.$emit('mobileshow');
       },
       // 选择语言
       changeLanguage(language) {
-        this.$store.commit("language", language);
+        this.$store.commit('language', language);
         this.$i18n.locale = language;
         this.syncListData();
       },
       // 数据同步
       syncListData() {
-        this.$emit("sync");
+        this.$emit('sync');
       },
       // 图片动态路径
       imgUrl(symbol) {
         try {
           let item = this.$artifact.getArtifact(symbol),
-  src = new URL(`../assets/images/Artifacts/${item.set.replace(/\s+/g, "")}/${item.part}.png`, import.meta.url).href;
-
-            // src = require(`../assets/images/Artifacts/${item.set.replace(/\s+/g, "")}/${item.part}.png`);
+            src = new URL(`../assets/images/Artifacts/${item.set.replace(/\s+/g, '')}/${item.part}.png`, import.meta.url).href;
           return src;
         } catch (error) {
           console.log(error);
-          return "";
+          return '';
         }
       },
       // 图片动态路径-侧面头像
@@ -192,25 +190,21 @@
         if (equipped) {
           let src;
           try {
-  src = new URL(`../assets/images/avatars_side/${equipped.replace(/\s+/g, "_")}_side.png`, import.meta.url).href;
-            
-            // src = require(`../assets/images/avatars_side/${equipped.replace(/\s+/g, "_")}_side.png`);
+            src = new URL(`../assets/images/avatars_side/${equipped.replace(/\s+/g, '_')}_side.png`, import.meta.url).href;
             return src;
           } catch {
-  src = new URL("../assets/images/genshin_emoji/Icon_Emoji_003_Paimon_Hehe.png", import.meta.url).href;
-
-            // src = require("../assets/images/genshin_emoji/Icon_Emoji_003_Paimon_Hehe.png");
+            src = new URL('../assets/images/genshin_emoji/Icon_Emoji_003_Paimon_Hehe.png', import.meta.url).href;
             return src;
           }
         }
-        return "";
+        return '';
       },
       // 点击效果
       clickMethod(event, type) {
         if (type) {
-          event.currentTarget.classList.add("isClick");
+          event.currentTarget.classList.add('isClick');
         } else {
-          event.currentTarget.classList.remove("isClick");
+          event.currentTarget.classList.remove('isClick');
         }
       },
       // 填充（flex）
@@ -221,7 +215,7 @@
       // 节流函数
       throttle(fn) {
         this.waiting = null;
-        return function() {
+        return function () {
           if (!this.waiting) {
             this.waiting = setTimeout(() => {
               fn.apply(this, arguments);
@@ -234,7 +228,7 @@
       vmList() {
         // console.log("vmlist");
         const scroll = this.$refs.listContainer;
-        const rem = Number.parseFloat(window.getComputedStyle(document.getElementsByTagName("html")[0]).fontSize.slice(0, -2));
+        const rem = Number.parseFloat(window.getComputedStyle(document.getElementsByTagName('html')[0]).fontSize.slice(0, -2));
         // 计算渲染数量
         let viewH = scroll.offsetHeight;
         // 获取1rem
@@ -249,7 +243,7 @@
         }
         // 计算单个item高度
         if (this.rawdata.length > 0) {
-          let item = document.getElementsByClassName("ArtifactsBox")[0];
+          let item = document.getElementsByClassName('ArtifactsBox')[0];
           let totalHeight = 0;
           // 获取item高度
           try {
@@ -397,7 +391,7 @@
     background-color: $genshin_white !important;
 
     &:hover::after {
-      content: "";
+      content: '';
       pointer-events: none;
       position: absolute;
       z-index: -1;

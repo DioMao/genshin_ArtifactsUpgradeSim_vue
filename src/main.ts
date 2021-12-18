@@ -11,6 +11,7 @@ import App from './App.vue';
 import axios from 'axios';
 import i18n from './language';
 import { ArtifactsSim, artiConst, IDB, initArtifactSim } from './utils/ArtifactsUpgradeSim_module';
+import { ArtifactNameSpace } from './utils/ArtifactsUpgradeSimTypes';
 // 全局样式
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -23,10 +24,7 @@ app.config.globalProperties.$artifact = ArtifactsSim;
 app.config.globalProperties.$db = IDB;
 app.config.globalProperties.$artiConst = artiConst;
 
-app
-  .use(router)
-  .use(store)
-  .use(i18n);
+app.use(router).use(store).use(i18n);
 
 // 初始化模拟器数据后挂载实例
 initArtifactSim()
@@ -34,7 +32,7 @@ initArtifactSim()
     app.mount('#app');
     window.scrollTo(0, 1);
   })
-  .catch((err: any) => {
+  .catch(err => {
     console.log(err);
     if (confirm('Initialization failed, please try to clear local cache.\n数据初始化失败，请尝试清除本地缓存。')) {
       // 清除缓存

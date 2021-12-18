@@ -19,13 +19,13 @@
 </template>
 
 <script>
-  import { computed, getCurrentInstance } from "vue";
+  import { computed, getCurrentInstance } from 'vue';
   export default {
-    name: "character-equip",
+    name: 'character-equip',
     props: {
       character: {
         type: String,
-        default: "",
+        default: '',
       },
     },
     setup(props) {
@@ -36,11 +36,11 @@
 
       const equipArtifact = computed(() => {
         // 当前人物装备
-        let characterSet = artifactFunc.getSet(props.character) || { name: "", Plume: "", Flower: "", Sands: "", Circlet: "", Goblet: "" };
+        let characterSet = artifactFunc.getSet(props.character) || { name: '', Plume: '', Flower: '', Sands: '', Circlet: '', Goblet: '' };
         let artifacts_obj = {};
         for (let key in characterSet) {
           const symbol = characterSet[key];
-          if (key === "name") continue;
+          if (key === 'name') continue;
           artifacts_obj[key] = artifactFunc.getArtifact(symbol);
         }
         return artifacts_obj;
@@ -49,9 +49,7 @@
       const artifactName = symbol => artifactFunc.getArtifactName(symbol);
       const setUrl = symbol => {
         let item = artifactFunc.getArtifact(symbol),
-  src = new URL(`../assets/images/Artifacts/${item.set.replace(/\s+/g, "")}/${item.part}.png`, import.meta.url).href;
-
-          // src = require(`../assets/images/Artifacts/${item.set.replace(/\s+/g, "")}/${item.part}.png`);
+          src = new URL(`../assets/images/Artifacts/${item.set.replace(/\s+/g, '')}/${item.part}.png`, import.meta.url).href;
         return src;
       };
 

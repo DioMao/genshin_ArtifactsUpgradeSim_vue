@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="about">{{ $t("msg.about") }}</h5>
+          <h5 class="modal-title" id="about">{{ $t('msg.about') }}</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body about-bg">
@@ -27,16 +27,16 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-genshin-dark" data-bs-dismiss="modal"><span class="circleinbox"></span>{{ $t("handle.confirm") }}</button>
+          <button type="button" class="btn btn-genshin-dark" data-bs-dismiss="modal"><span class="circleinbox"></span>{{ $t('handle.confirm') }}</button>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
   export default {
-    name: "about",
+    name: 'about',
     setup() {},
   };
 </script>

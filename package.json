@@ -1,6 +1,6 @@
 {
   "name": "artifacts_sim_vite",
-  "version": "0.0.0",
+  "version": "0.2.3",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
@@ -19,6 +19,7 @@
     "vuex": "^4.0.2"
   },
   "devDependencies": {
+    "@types/node": "^17.0.0",
     "@vitejs/plugin-vue": "^1.10.2",
     "node-sass": "^7.0.0",
     "sass": "^1.45.0",
