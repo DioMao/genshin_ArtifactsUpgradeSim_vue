@@ -614,7 +614,7 @@
       // 排序
       const sortList = index => {
         let sortMethod = ['lvasc', 'lvdesc', 'part', 'main'];
-        store.commit('changeSetting', { ...userSetting, sortRule: sortMethod[index] });
+        userSetting.sortRule = sortMethod[index];
         syncListData();
       };
       // 修改并保存当前展示圣遗物symbol
@@ -658,13 +658,15 @@
       const resetSetting = () => {
         window.localStorage.removeItem('userSetting');
         window.localStorage.userSetting = defaultSetting;
-        Object.assign(userSetting, JSON.parse(defaultSetting))
+        Object.assign(userSetting, JSON.parse(defaultSetting));
         alertControl(t('msg.settingResetSuccess'), 1500);
       };
       // 筛选器
       const multFilter = (val, type = 'part') => {
         if (type === 'all') {
-          store.commit({ ...userSetting, filterMain: 'default', filterPart: 'default', filterSet: 'default' });
+          userSetting.filterMain = 'default';
+          userSetting.filterPart = 'default';
+          userSetting.filterSet = 'default';
         }
         if (type === 'main') userSetting.filterMain = val;
         if (type === 'part') userSetting.filterPart = val;
@@ -744,7 +746,6 @@
           // 给设定分配值（读取本地设置）
           // TODO: 这里vuex操作尚未改成commit形式
           Object.assign(userSetting, settingObj);
-          // store.commit({ ...userSetting, settingObj });
         }
         changeSetting();
         // 初始化列表数据
