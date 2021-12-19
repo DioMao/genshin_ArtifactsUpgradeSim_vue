@@ -1,5 +1,5 @@
 /**
- * ArtifactsUpgradeSim v0.2.3 module
+ * ArtifactsUpgradeSim v0.2.4 module
  * Copyrigth 2021-2022 DioMao (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/graphs/contributors)
  * Licensed under GPL3.0 (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/master/LICENSE)
  */
@@ -24,8 +24,8 @@ export interface CUSTOM_SET {
 }
 
 class ArtifactsIDB extends Dexie {
-  ARTIFACT_LIST!: ARTIFACT_LIST;
-  CUSTOM_SET!: CUSTOM_SET;
+  ARTIFACT_LIST!: Table<ARTIFACT_LIST>;
+  CUSTOM_SET!: Table<CUSTOM_SET>;
 
   constructor() {
     super('ARTIFACT_DB_MAO');
@@ -35,7 +35,7 @@ class ArtifactsIDB extends Dexie {
     });
   }
 }
-const IDB: any = new ArtifactsIDB();
+const IDB = new ArtifactsIDB();
 
 /**
  * ES6 version
@@ -50,7 +50,7 @@ class ArtifactsFunction_class {
   readonly LIST_LIMIT: number = 2000;
   readonly SET_LIST_LIMIT: number = 100;
   readonly AUTHOR: string = 'DioMao';
-  readonly VERSION: string = '0.2.3';
+  readonly VERSION: string = '0.2.4';
 
   constructor() {}
 
@@ -177,9 +177,9 @@ class ArtifactsFunction_class {
    */
   bulkCreate(count: number, part: string = '', main: string = '', entry: string[] = [], entryRate: number[] = [], artifactSet: string = '') {
     count = Math.floor(count);
-    const res = [];
+    const res: ArtifactNameSpace.ArtifactsFormat[] = [];
     while (count > 0 && this.AUS_LIST.length < this.LIST_LIMIT) {
-      res.push(this.createArtifact(part, main, entry, entryRate, artifactSet, false));
+      res.push(<ArtifactNameSpace.ArtifactsFormat>this.createArtifact(part, main, entry, entryRate, artifactSet, false));
       count--;
     }
     IDB.ARTIFACT_LIST.bulkAdd(res).then(() => {
@@ -778,7 +778,7 @@ class ArtifactsFunction_class {
     newSet.Circlet = '';
     newSet.Goblet = '';
     this.SET_LIST.push(newSet);
-    IDB.CUSTOM_SET.add(newSet);
+    IDB.CUSTOM_SET.put(newSet);
     return true;
   }
 
@@ -1404,11 +1404,11 @@ const initArtifactSim = function() {
         const artifactList = res[0];
         const setList = res[1];
         // 初始化圣遗物列表
-        ArtifactsSim.AUSList = artifactList;
+        ArtifactsSim.AUSList = <ArtifactNameSpace.ArtifactsFormat[]>artifactList;
         // 读取套装列表
         for (const item of setList) {
           const index = ArtifactsSim.getSetIndex(item.name);
-          ArtifactsSim.setList[index] = item;
+          ArtifactsSim.setList[index] = <ArtifactNameSpace.CharacterSetFormat>item;
         }
         resolve(true);
       })

@@ -1,5 +1,5 @@
 /**
- * ArtifactsUpgradeSim v0.2.3 module_data
+ * ArtifactsUpgradeSim v0.2.4 module_data
  * Copyrigth 2021-2022 DioMao (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/graphs/contributors)
  * Licensed under GPL3.0 (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/master/LICENSE)
  */
@@ -610,6 +610,15 @@ export class ArtifactData {
           nation: 'other'
         },
         {
+          name: 'Arataki Itto',
+          name_zh: '荒泷一斗',
+          rarity: 5,
+          element: ['Geo'],
+          weapon: 'bow',
+          sex: 'male',
+          nation: 'Inazuma'
+        },
+        {
           name: 'Diluc',
           name_zh: '迪卢克',
           rarity: 5,
@@ -851,6 +860,15 @@ export class ArtifactData {
           weapon: 'bow',
           sex: 'female',
           nation: 'Mondstadt'
+        },
+        {
+          name: 'Gorou',
+          name_zh: '五郎',
+          rarity: 4,
+          element: ['Geo'],
+          weapon: 'bow',
+          sex: 'male',
+          nation: 'Inazuma'
         },
         {
           name: 'Kaeya',

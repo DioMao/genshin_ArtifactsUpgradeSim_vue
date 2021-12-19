@@ -103,11 +103,17 @@ export namespace ArtifactNameSpace {
     name: string;
     name_zh: string;
     rarity: number;
-    element: string[];
-    weapon: string;
+    element: ElementsType[];
+    weapon: WeaponType;
     sex: 'male' | 'female' | 'unknown';
-    nation: string;
+    nation: NationsType;
   };
 
   export type ArtifactPartType = 'Plume' | 'Flower' | 'Sands' | 'Circlet' | 'Goblet';
+
+  export type ElementsType = 'Hydro' | 'Pyro' | 'Electro' | 'Geo' | 'Anemo' | 'Cryo' | 'Physical' | 'Dendro';
+
+  export type NationsType = 'other' | 'Mondstadt' | 'Liyue' | 'Inazuma' | 'Snezhnaya';
+
+  export type WeaponType = 'sword' | 'bow' | 'catalyst' | 'claymore' | 'polearm';
 }

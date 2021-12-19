@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   title: '圣遗物强化模拟器',
   tips: {
     new: '新',
@@ -191,6 +191,7 @@ module.exports = {
   name: {
     'Albedo': '阿贝多',
     'Aloy': '埃洛伊',
+    'Arataki Itto': '荒泷一斗',
     'Diluc': '迪卢克',
     'Eula': '优菈',
     'Ganyu': '甘雨',
@@ -218,6 +219,7 @@ module.exports = {
     'Chongyun': '重云',
     'Diona': '迪奥娜',
     'Fischl': '菲谢尔',
+    'Gorou': '五郎',
     'Kaeya': '凯亚',
     'Kujou Sara': '九条裟罗',
     'Lisa': '丽莎',

@@ -1,5 +1,11 @@
 ## 用于提取字体子集
 
+## 另需提取的文件：
+#  utils/ArtifactsData.ts
+#  language/en.ts
+#  language/zh.ts
+#  app.vue
+
 # NUM
 1234567890
 

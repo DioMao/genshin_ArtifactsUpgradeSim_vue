@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   title: 'Artifacts Sim',
   tips: {
     new: 'New',
@@ -191,6 +191,7 @@ module.exports = {
   name: {
     'Albedo': 'Albedo',
     'Aloy': 'Aloy',
+    'Arataki Itto': 'Arataki Itto',
     'Diluc': 'Diluc',
     'Eula': 'Eula',
     'Ganyu': 'Ganyu',
@@ -218,6 +219,7 @@ module.exports = {
     'Chongyun': 'Chongyun',
     'Diona': 'Diona',
     'Fischl': 'Fischl',
+    'Gorou': 'Gorou',
     'Kaeya': 'Kaeya',
     'Kujou Sara': 'Kujou Sara',
     'Lisa': 'Lisa',

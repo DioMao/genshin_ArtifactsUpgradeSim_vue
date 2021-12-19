@@ -472,7 +472,7 @@
   import Popup from '../components/popup.vue';
   import ArtifactList from '../components/artifact-list.vue';
   import ArtifactScore from '../components/artifact-score.vue';
-  import ScoreSetting from '../components/score-setting.vue'
+  import ScoreSetting from '../components/score-setting.vue';
   import About from '../components/about.vue';
   // bootstrap相关
   import 'bootstrap/js/dist/alert';
@@ -658,7 +658,7 @@
       const resetSetting = () => {
         window.localStorage.removeItem('userSetting');
         window.localStorage.userSetting = defaultSetting;
-        store.commit('changeSetting', JSON.parse(defaultSetting));
+        Object.assign(userSetting, JSON.parse(defaultSetting))
         alertControl(t('msg.settingResetSuccess'), 1500);
       };
       // 筛选器
@@ -666,9 +666,9 @@
         if (type === 'all') {
           store.commit({ ...userSetting, filterMain: 'default', filterPart: 'default', filterSet: 'default' });
         }
-        if (type === 'main') store.commit({ ...userSetting, filterMain: val });
-        if (type === 'part') store.commit({ ...userSetting, filterPart: val });
-        if (type === 'set') store.commit({ ...userSetting, filterSet: val });
+        if (type === 'main') userSetting.filterMain = val;
+        if (type === 'part') userSetting.filterPart = val;
+        if (type === 'set') userSetting.filterSet = val;
       };
 
       // 提示框相关
@@ -701,22 +701,22 @@
             break;
           // 1 - 6 筛选圣遗物位置
           case '1':
-            store.commit({ ...userSetting, filterPart: 'default' });
+            userSetting.filterPart = 'default';
             break;
           case '2':
-            store.commit({ ...userSetting, filterPart: 'Plume' });
+            userSetting.filterPart = 'Plume';
             break;
           case '3':
-            store.commit({ ...userSetting, filterPart: 'Flower' });
+            userSetting.filterPart = 'Flower';
             break;
           case '4':
-            store.commit({ ...userSetting, filterPart: 'Sands' });
+            userSetting.filterPart = 'Sands';
             break;
           case '5':
-            store.commit({ ...userSetting, filterPart: 'Circlet' });
+            userSetting.filterPart = 'Circlet';
             break;
           case '6':
-            store.commit({ ...userSetting, filterPart: 'Goblet' });
+            userSetting.filterPart = 'Goblet';
             break;
           // Backspace / Delete 删除选中的圣遗物
           case 'Backspace':
@@ -742,7 +742,7 @@
         } else if (window.localStorage.userSetting !== '') {
           let settingObj = JSON.parse(window.localStorage.getItem('userSetting'));
           // 给设定分配值（读取本地设置）
-          // TODO: 这里vuex操作尚未改成commit形式 
+          // TODO: 这里vuex操作尚未改成commit形式
           Object.assign(userSetting, settingObj);
           // store.commit({ ...userSetting, settingObj });
         }
