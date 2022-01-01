@@ -1,0 +1,9 @@
+# Ignore artifacts:
+build
+coverage
+public
+dist
+dist_electron
+
+# README
+*.md

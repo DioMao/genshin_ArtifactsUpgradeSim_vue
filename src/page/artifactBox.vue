@@ -4,23 +4,23 @@
     <img class="main-container-bg" src="../assets/images/genshin-symbol.png" alt="background_image" draggable="false" />
     <div class="countShow float-end">
       {{ $t('term.artifacts') }}
-      <span :style="{ color: $artifact.AUSList.length === $artifact.maxCount ? 'red' : '' }">{{ $artifact.AUSList.length }}/{{ $artifact.maxCount }}</span>
+      <span :style="{color: $artifact.AUSList.length === $artifact.maxCount ? 'red' : ''}">{{ $artifact.AUSList.length }}/{{ $artifact.maxCount }}</span>
     </div>
     <Popup :show="true">
       <template #title>Tips:</template>
       <template #content>This is content.</template>
     </Popup>
     <div class="partFilterBox">
-      <div @click="userSetting.filterPart = 'default'" :class="{ part_actived: userSetting.filterPart === 'default' }">
+      <div @click="userSetting.filterPart = 'default'" :class="{part_actived: userSetting.filterPart === 'default'}">
         <img src="../assets/images/Icon_Artifacts.png" alt="default" draggable="false" />
       </div>
-      <div v-for="part in $artiConst.val.parts" :key="part" @click="userSetting.filterPart = part" :class="{ part_actived: userSetting.filterPart === part }">
+      <div v-for="part in $artiConst.val.parts" :key="part" @click="userSetting.filterPart = part" :class="{part_actived: userSetting.filterPart === part}">
         <img :src="require(`../assets/images/Icon_${part}.png`)" :alt="part" draggable="false" />
       </div>
     </div>
     <!-- 筛选提示框 -->
     <div class="filterBox" :class="userSetting.filterMain !== 'default' || userSetting.filterSet !== 'default' ? 'filterBoxShow' : ''">
-      <div style="display:inline-block;">{{ $t('msg.filter') }}</div>
+      <div style="display: inline-block">{{ $t('msg.filter') }}</div>
       <div class="filterMain" v-show="userSetting.filterMain !== 'default'" @click="userSetting.filterMain = 'default'">
         {{ $t('term.' + userSetting.filterMain) }}
       </div>
@@ -69,7 +69,7 @@
     </div>
   </div>
   <!-- 手机端圣遗物展示 -->
-  <div class="ArtifactShowMobile" :class="{ MobileShow: showMobileDetail }">
+  <div class="ArtifactShowMobile" :class="{MobileShow: showMobileDetail}">
     <div class="offcanvas-header">
       <h5 class="offcanvas-title">{{ $t('msg.artifactDetail') }}</h5>
       <button type="button" class="btn-close text-reset" @click="showMobileDetail = false"></button>
@@ -128,7 +128,7 @@
             class="dropdown-item"
             href="javascript:void(0)"
             @click="multFilter('default', 'all')"
-            :class="{ isActived: userSetting.filterMain === 'default' && userSetting.filterSet === 'default' }"
+            :class="{isActived: userSetting.filterMain === 'default' && userSetting.filterSet === 'default'}"
           >
             {{ $t('msg.default') }}
             <span class="ms-5 float-end">{{ $artifact.AUSList.length }}</span>
@@ -141,8 +141,8 @@
             class="dropdown-item"
             href="javascript:void(0)"
             @click="multFilter(set, 'set')"
-            :class="{ disabled: $artifact.getCount(set) === 0, isActived: userSetting.filterSet === set }"
-            :style="{ color: $artifact.getCount(set) > 0 ? '' : '#a8a8a8' }"
+            :class="{disabled: $artifact.getCount(set) === 0, isActived: userSetting.filterSet === set}"
+            :style="{color: $artifact.getCount(set) > 0 ? '' : '#a8a8a8'}"
             >{{ $t('setList[' + index + ']') }}
             <span class="ms-5 float-end">{{ $artifact.getCount(set) }}</span>
           </a>
@@ -154,8 +154,8 @@
             class="dropdown-item"
             href="javascript:void(0)"
             @click="multFilter(mainEntryF, 'main')"
-            :class="{ disabled: $artifact.getCount(mainEntryF) === 0, isActived: userSetting.filterMain === mainEntryF }"
-            :style="{ color: $artifact.getCount(mainEntryF) > 0 ? '' : '#a8a8a8' }"
+            :class="{disabled: $artifact.getCount(mainEntryF) === 0, isActived: userSetting.filterMain === mainEntryF}"
+            :style="{color: $artifact.getCount(mainEntryF) > 0 ? '' : '#a8a8a8'}"
             >{{ $t('term.' + mainEntryF) }}
             <span class="ms-5 float-end">{{ $artifact.getCount(mainEntryF) }}</span>
           </a>
@@ -180,34 +180,34 @@
       </button>
       <ul class="dropdown-menu sortList" aria-labelledby="sort">
         <li>
-          <a class="dropdown-item" href="javascript:void(0)" @click="sortList(0)" :class="{ isActived: userSetting.sortRule === 'lvasc' }">
+          <a class="dropdown-item" href="javascript:void(0)" @click="sortList(0)" :class="{isActived: userSetting.sortRule === 'lvasc'}">
             {{ $t('msg.lvasc') }}
           </a>
         </li>
         <li>
-          <a class="dropdown-item" href="javascript:void(0)" @click="sortList(1)" :class="{ isActived: userSetting.sortRule === 'lvdesc' }">
+          <a class="dropdown-item" href="javascript:void(0)" @click="sortList(1)" :class="{isActived: userSetting.sortRule === 'lvdesc'}">
             {{ $t('msg.lvdesc') }}
           </a>
         </li>
         <li>
-          <a class="dropdown-item" href="javascript:void(0)" @click="sortList(2)" :class="{ isActived: userSetting.sortRule === 'part' }">
+          <a class="dropdown-item" href="javascript:void(0)" @click="sortList(2)" :class="{isActived: userSetting.sortRule === 'part'}">
             {{ $t('msg.sortByPart') }}
           </a>
         </li>
         <li>
-          <a class="dropdown-item" href="javascript:void(0)" @click="sortList(3)" :class="{ isActived: userSetting.sortRule === 'main' }">
+          <a class="dropdown-item" href="javascript:void(0)" @click="sortList(3)" :class="{isActived: userSetting.sortRule === 'main'}">
             {{ $t('msg.sortByMainEntry') }}
           </a>
         </li>
       </ul>
-      <button id="create" @click="createArtifact" class="btn btn-genshin" :style="{ fontSize: $i18n.locale === 'en' ? '0.9rem' : 'inherit' }">
+      <button id="create" @click="createArtifact" class="btn btn-genshin" :style="{fontSize: $i18n.locale === 'en' ? '0.9rem' : 'inherit'}">
         <span class="circleinbox"></span>{{ $t('msg.random') }}
       </button>
-      <button class="btn btn-genshin" :style="{ fontSize: $i18n.locale === 'en' ? '0.9rem' : 'inherit' }" data-bs-toggle="modal" data-bs-target="#cusArtifact">
+      <button class="btn btn-genshin" :style="{fontSize: $i18n.locale === 'en' ? '0.9rem' : 'inherit'}" data-bs-toggle="modal" data-bs-target="#cusArtifact">
         <span class="squareinbox"></span>{{ $t('msg.custom') }}
       </button>
 
-      <div class="dropdown" style="display:inline-block;">
+      <div class="dropdown" style="display: inline-block">
         <a
           class="btn btn-genshin dropdown-toggle"
           href="javascript:void(0)"
@@ -301,7 +301,7 @@
           <label for="cutArtifactSet" class="form-label">{{ $t('msg.set') }}</label>
           <select id="cutArtifactSet" class="form-select form-select-sm mb-3" v-model="cusSet">
             <option value="default">{{ $t('tips.random') }}</option>
-            <option v-for="(set, index) in setList" :key="set" :value="set"> {{ $t('setList[' + index + ']') }}</option>
+            <option v-for="(set, index) in setList" :key="set" :value="set">{{ $t('setList[' + index + ']') }}</option>
           </select>
           <label for="cutArtifactPart" class="form-label">{{ $t('msg.part') }}</label>
           <select
@@ -314,18 +314,18 @@
             "
           >
             <option value="default">{{ $t('tips.random') }}</option>
-            <option v-for="part in $artiConst.val.parts" :key="part" :value="part"> {{ $t('term.' + part) }}</option>
+            <option v-for="part in $artiConst.val.parts" :key="part" :value="part">{{ $t('term.' + part) }}</option>
           </select>
           <label class="form-label" v-show="cusPart !== 'default' && cusPart !== ''">{{ $t('msg.mainEntry') }}</label>
           <select class="form-select form-select-sm mb-3" v-if="cusPart !== 'default' && cusPart !== ''" v-model="cusMainEntry" @change="cusEntry.length = 0">
             <option value="">{{ $t('tips.random') }}</option>
-            <option v-for="partModal in cusEntryList[cusPart]" :key="partModal" :value="partModal"> {{ $t('term.' + partModal) }}</option>
+            <option v-for="partModal in cusEntryList[cusPart]" :key="partModal" :value="partModal">{{ $t('term.' + partModal) }}</option>
           </select>
           <label class="form-label" v-show="cusPart !== 'default' && cusMainEntry !== ''">{{ $t('handle.chooseEntry') }}</label>
           <div class="d-flex justify-content-between flex-wrap">
             <div
               class="form-check mb-2"
-              style="width:40%;"
+              style="width: 40%"
               v-for="entry in $artiConst.val.entryList"
               :key="entry"
               v-show="cusPart !== 'default' && cusMainEntry !== '' && cusMainEntry !== entry"
@@ -341,8 +341,8 @@
               <label
                 class="form-check-label"
                 :for="entry + 'Check'"
-                style="white-space:nowrap"
-                :style="{ fontSize: $store.state.attr_sm_en.indexOf(entry) !== -1 && $i18n.locale === 'en' ? '0.6rem' : 'inherit' }"
+                style="white-space: nowrap"
+                :style="{fontSize: $store.state.attr_sm_en.indexOf(entry) !== -1 && $i18n.locale === 'en' ? '0.6rem' : 'inherit'}"
               >
                 {{ $t('term.' + entry) }}
               </label>
@@ -352,8 +352,8 @@
                 :disabled="cusEntry.length === 4 && cusEntry.indexOf(entry) === -1"
               >
                 <option v-for="entryValueModal in $artiConst.val.entryValue[entry]" :key="entryValueModal" :value="entryValueModal">
-                  {{ $artifact.entryValFormat(entry, entryValueModal) }}</option
-                >
+                  {{ $artifact.entryValFormat(entry, entryValueModal) }}
+                </option>
               </select>
             </div>
           </div>
@@ -388,7 +388,7 @@
           <div class="genshin-setting-box">
             <span class="genshin-setting-title">{{ $t('msg.language') }}</span>
             <span class="genshin-setting-set">
-              <div class="dropdown genshin-setting-button-box" style="display:inline-block;">
+              <div class="dropdown genshin-setting-button-box" style="display: inline-block">
                 <a
                   class="dropdown-toggle genshin-setting-button"
                   href="javascript:void(0)"
@@ -401,8 +401,8 @@
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                   <li>
-                    <a class="dropdown-item" @click="userSetting.language = 'zh'" :class="{ itemSelected: userSetting.language === 'zh' }">简体中文</a>
-                    <a class="dropdown-item" @click="userSetting.language = 'en'" :class="{ itemSelected: userSetting.language === 'en' }">English</a>
+                    <a class="dropdown-item" @click="userSetting.language = 'zh'" :class="{itemSelected: userSetting.language === 'zh'}">简体中文</a>
+                    <a class="dropdown-item" @click="userSetting.language = 'en'" :class="{itemSelected: userSetting.language === 'en'}">English</a>
                   </li>
                 </ul>
               </div>
@@ -412,7 +412,7 @@
           <div class="genshin-setting-box genshin-setting-nodropdown mt-2">
             <span class="genshin-setting-title">{{ $t('msg.clearStorage') }}</span>
             <span class="genshin-setting-set">
-              <div class="genshin-setting-button-box" style="display:inline-block;">
+              <div class="genshin-setting-button-box" style="display: inline-block">
                 <a class="genshin-setting-button" href="javascript:void(0)" role="button" @click="clearStorge">
                   {{ $t('msg.clear') }}
                 </a>
@@ -423,7 +423,7 @@
           <div class="genshin-setting-box genshin-setting-nodropdown mt-2">
             <span class="genshin-setting-title">{{ $t('msg.resetSetting') }}</span>
             <span class="genshin-setting-set">
-              <div class="genshin-setting-button-box" style="display:inline-block;">
+              <div class="genshin-setting-button-box" style="display: inline-block">
                 <a class="genshin-setting-button" href="javascript:void(0)" role="button" @click="resetSetting">
                   {{ $t('handle.confirm') }}
                 </a>
@@ -434,7 +434,7 @@
           <div class="genshin-setting-box genshin-setting-nodropdown mt-2">
             <span class="genshin-setting-title">{{ $t('msg.downloadData') }}</span>
             <span class="genshin-setting-set">
-              <div class="genshin-setting-button-box" style="display:inline-block;">
+              <div class="genshin-setting-button-box" style="display: inline-block">
                 <a class="genshin-setting-button" href="javascript:void(0)" role="button" @click="$artifact.dataDownload()">
                   {{ $t('handle.download') }}
                 </a>
@@ -445,7 +445,7 @@
           <div class="genshin-setting-box genshin-setting-nodropdown mt-2">
             <span class="genshin-setting-title">{{ $t('msg.uploadData') }}</span>
             <span class="genshin-setting-set">
-              <div class="genshin-setting-button-box" style="display:inline-block;">
+              <div class="genshin-setting-button-box" style="display: inline-block">
                 <a class="genshin-setting-button" href="javascript:void(0)" role="button" @click="uploadClick">
                   {{ $t('handle.upload') }}
                 </a>
@@ -479,8 +479,8 @@
   import 'bootstrap/js/dist/modal';
   import 'bootstrap/js/dist/dropdown';
 
-  import { useStore } from 'vuex';
-  import { getCurrentInstance, onBeforeUnmount, onMounted, readonly, ref } from 'vue';
+  import {useStore} from 'vuex';
+  import {getCurrentInstance, onBeforeUnmount, onMounted, readonly, ref} from 'vue';
 
   export default {
     components: {
@@ -490,7 +490,7 @@
       ArtifactList,
       ArtifactScore,
       ScoreSetting,
-      About
+      About,
     },
     setup() {
       // 获取全局函数
@@ -511,7 +511,7 @@
         Flower: artiConst.Flower,
         Sands: artiConst.Sands,
         Circlet: artiConst.Circlet,
-        Goblet: artiConst.Goblet
+        Goblet: artiConst.Goblet,
       });
       // 套装列表
       const setList = ref(artiConst.setList);
@@ -678,7 +678,7 @@
         alertShow: false, // 是否显示提示框
         alertMsg: '', // 提示框内容
         alertClose: Function, // 定时关闭提示框
-        alertState: 'success' // 提示框类型
+        alertState: 'success', // 提示框类型
       });
       // 操作提示-提示框
       // state值： success/primary/warning/danger
@@ -789,20 +789,20 @@
         multFilter,
         syncListData,
         alertFunc,
-        alertControl
+        alertControl,
       };
     },
     data() {
       return {
         state: this.$store.state,
         showDetail: Object, // 右侧圣遗物展示详情
-        cusCloseSwitch: true // 自选圣遗物-生成后是否关闭modal窗
+        cusCloseSwitch: true, // 自选圣遗物-生成后是否关闭modal窗
       };
     },
     computed: {
       language() {
         return this.state.language;
-      }
+      },
     },
     watch: {
       showSymbol(val) {
@@ -831,11 +831,11 @@
           this.changeSetting();
           this.syncListData();
         },
-        deep: true
+        deep: true,
       },
       language(val) {
         this.userSetting.language = val;
-      }
+      },
     },
     methods: {
       // 清除本地数据
@@ -876,8 +876,8 @@
         } else {
           alert('还没有选择文件');
         }
-      }
-    }
+      },
+    },
   };
 </script>
 

@@ -10,17 +10,17 @@ export default <VuexStateType>{
     scoreConfig: {
       mode: 'string',
       strRule: 'default',
-      arrRule: []
+      arrRule: [],
     },
     language: 'zh', // 语言
     highScore: 35, // 高分圣遗物标准
     sortRule: 'lvdesc', // 排序规则
     filterMain: 'default', // 主词条筛选
     filterPart: 'default', // 位置筛选
-    filterSet: 'default' // 套装筛选
+    filterSet: 'default', // 套装筛选
   },
   // 需要改小字体的属性(英语环境下)
-  attr_sm_en: ['energyRecharge', 'Healing', 'elementMastery', 'Hydro', 'Pyro', 'Electro', 'Geo', 'Anemo', 'Cryo', 'Physical']
+  attr_sm_en: ['energyRecharge', 'Healing', 'elementMastery', 'Hydro', 'Pyro', 'Electro', 'Geo', 'Anemo', 'Cryo', 'Physical'],
 };
 
 export type VuexStateType = {

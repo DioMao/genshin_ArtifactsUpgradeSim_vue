@@ -3,14 +3,14 @@
  * Licensed under GPL3.0 (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/master/LICENSE)
  */
 
-import { createApp } from 'vue';
+import {createApp} from 'vue';
 import store from './store/store';
 import router from './router/router';
 import App from './App.vue';
 // import * as echarts from 'echarts'
 import axios from 'axios';
 import i18n from './language';
-import { ArtifactsSim, artiConst, IDB, initArtifactSim } from './utils/ArtifactsUpgradeSim_module';
+import {ArtifactsSim, artiConst, IDB, initArtifactSim} from './utils/ArtifactsUpgradeSim_module';
 // 全局样式
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -23,10 +23,7 @@ app.config.globalProperties.$artifact = ArtifactsSim;
 app.config.globalProperties.$db = IDB;
 app.config.globalProperties.$artiConst = artiConst;
 
-app
-  .use(router)
-  .use(store)
-  .use(i18n);
+app.use(router).use(store).use(i18n);
 
 // 初始化模拟器数据后挂载实例
 initArtifactSim()

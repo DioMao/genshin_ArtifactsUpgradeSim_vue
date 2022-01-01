@@ -1,4 +1,4 @@
-import {VuexStateType} from './state'
+import {VuexStateType} from './state';
 
 export default {
   language(state: VuexStateType, val: string) {
@@ -9,5 +9,5 @@ export default {
   },
   changeSetting(state: VuexStateType, val: any) {
     state.userSetting = val;
-  }
+  },
 };

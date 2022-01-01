@@ -1,13 +1,13 @@
 <template>
   <div class="container404">
-    <div class="msg">{{ $t("tips.notFound") }}</div>
+    <div class="msg">{{ $t('tips.notFound') }}</div>
     <div class="aniBox">
-      <div ref="anicontainer" :class="{ jellohorizontal: animation }" @click="animation = true">
+      <div ref="anicontainer" :class="{jellohorizontal: animation}" @click="animation = true">
         <img src="../assets/images/genshin_emoji/Icon_Emoji_005_Paimon_Surprised.png" alt="404 not found" draggable="false" />
       </div>
     </div>
     <router-link to="/">
-      {{ $t("tips.toHome") }}
+      {{ $t('tips.toHome') }}
     </router-link>
   </div>
 </template>
@@ -21,11 +21,11 @@
     },
     mounted() {
       // 读取语言
-      this.$i18n.locale = this.$store.state.language || "en";
-      this.$refs.anicontainer.addEventListener("animationend", this.anima, false);
+      this.$i18n.locale = this.$store.state.language || 'en';
+      this.$refs.anicontainer.addEventListener('animationend', this.anima, false);
     },
     beforeUnmount() {
-      this.$refs.anicontainer.removeEventListener("animationend", this.anima, false);
+      this.$refs.anicontainer.removeEventListener('animationend', this.anima, false);
     },
     methods: {
       anima() {

@@ -9,16 +9,19 @@
 ![image](https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/master/screenshot/screenshot_5.jpg)
 
 ## Project setup 项目初始化
+
 ```
 npm install
 ```
 
 ### Compiles and hot-reloads for development 本地运行
+
 ```
 npm run dev
 ```
 
 ### Compiles and minifies for production 编译
+
 ```
 npm run build
 ```
@@ -28,33 +31,33 @@ npm run build
 ---
 
 摸鱼的小项目，含有以下问题：
-- 各种奇怪的bug
+
+- 各种奇怪的 bug
 - 更新缓慢
 - 界面简陋
 - 功能不齐
 
 ---
 
-**如果觉得还凑合，就点个免费的Star吧~**
+**如果觉得还凑合，就点个免费的 Star 吧~**
 
 ### 注意事项：
 
-- **下载前请注意：本模拟器使用了Vue3，因此不支持IE浏览器。**
+- **下载前请注意：本模拟器使用了 Vue3，因此不支持 IE 浏览器。**
 
-- **开发和调试时仅使用了chrome，因此不保证在所有浏览器都能正常使用。理论上来讲chrome、Edge、Firefox、QQ浏览器都能正常运行。**
+- **开发和调试时仅使用了 chrome，因此不保证在所有浏览器都能正常使用。理论上来讲 chrome、Edge、Firefox、QQ 浏览器都能正常运行。**
 
-- **编译版本是可以直接本地运行的。如果不想自己编译，可以直接下载已编译的demo版本:**
+- **编译版本是可以直接本地运行的。如果不想自己编译，可以直接下载已编译的 demo 版本:**
 
-<a href="https://github.com/DioMao/artifacts_sim_demo.git" target="_blank">Github路线</a>
+<a href="https://github.com/DioMao/artifacts_sim_demo.git" target="_blank">Github 路线</a>
 
-<a href="https://gitee.com/juanweimao/artifacts_sim_demo.git" target="_blank">gitee路线（国内首选）</a>
-
+<a href="https://gitee.com/juanweimao/artifacts_sim_demo.git" target="_blank">gitee 路线（国内首选）</a>
 
 **概率数据来自于网络和自测，仅供娱乐。**
 
 ---
 
-#### Demo预览（可能落后于当前版本）：
+#### Demo 预览（可能落后于当前版本）：
 
 GIt: https://diomao.github.io/artifacts_sim_demo
 
@@ -64,11 +67,12 @@ GIt: https://diomao.github.io/artifacts_sim_demo
 
 #### 引入方法：
 
-1. ~~直接使用\<script\>标签引入ArtifactsUpradeSim.js~~。暂未提供新版js
+1. ~~直接使用\<script\>标签引入 ArtifactsUpradeSim.js~~。暂未提供新版 js
 
-2. Vue3项目：将ArtifactsUpradeSim_module.js、ArtifactsData.js、dexie.js放入src/utils文件里。
+2. Vue3 项目：将 ArtifactsUpradeSim_module.js、ArtifactsData.js、dexie.js 放入 src/utils 文件里。
 
-在main.js中全局引入：
+在 main.js 中全局引入：
+
 ```
 import { ArtifactsSim, artiConst, initArtifactSim } from "./utils/ArtifactsUpradeSim_module";
 
@@ -81,11 +85,11 @@ initArtifactSim().then(() => {
 })
 ```
 
-或在组件中通过import按需引入。
+或在组件中通过 import 按需引入。
 
-在JavaScript中使用ArtifactsSim调用，Vue全局引入则使用$artifact调用，以下文档以JavaScript版为例：
+在 JavaScript 中使用 ArtifactsSim 调用，Vue 全局引入则使用$artifact 调用，以下文档以 JavaScript 版为例：
 
-## v0.2.3文档
+## v0.2.3 文档
 
 ### 一、 圣遗物部分
 
@@ -100,16 +104,18 @@ initArtifactSim().then(() => {
 - entry: array，可选，圣遗物的副词条，至多四条，超过四条则全部随机生成。自选副词条不满三条时会随机选择可用副词条补至三条。
 - entryRate: array，可选，圣遗物的副词条的数值。
 - set: string，可选，指定圣遗物套装。
-- storage: boolean，可选，默认true，是否保存到本地。批量操作时建议禁用，最后统一写入。
+- storage: boolean，可选，默认 true，是否保存到本地。批量操作时建议禁用，最后统一写入。
 - **若有无效参数，则该项会随机选择。**
 
 示例：
+
 ```
 ArtifactsSim.creatArtifact("Goblet","Geo",["ATKPer","critRate","critDMG","elementMastery"],[5.8,3.9,7.8,23],"Emblem of Severed Fate", true);
 ```
+
 返回值为对象:
 
-```  
+```
 {
     symbol: "",                     标识(UUID)
     level: 0,                       等级
@@ -140,11 +146,11 @@ ArtifactsSim.creatArtifact("Goblet","Geo",["ATKPer","critRate","critDMG","elemen
 
 参数说明：
 
-- language: String，可选，默认则不处理，可选值为zh(中文)和en(英文)。
+- language: String，可选，默认则不处理，可选值为 zh(中文)和 en(英文)。
 - filterPart: string | array，可选，默认则不处理。筛选指定位置的圣遗物。
 - filterMain: string | array，可选，默认则不处理。筛选指定主属性的圣遗物。
 - filterSuit: string | array，可选，默认则不处理。筛选指定套装的圣遗物。
-- **可以同时使用多个filter。**
+- **可以同时使用多个 filter。**
 
 3. 获取指定圣遗物：
 
@@ -153,17 +159,17 @@ ArtifactsSim.creatArtifact("Goblet","Geo",["ATKPer","critRate","critDMG","elemen
 参数说明：
 
 - symbol: string，必选，指定圣遗物标识。
-- language: string，可选，默认则不处理。可选值为zh(中文)和en(英文)。
+- language: string，可选，默认则不处理。可选值为 zh(中文)和 en(英文)。
 
-####  3. 圣遗物强化
+#### 3. 圣遗物强化
 
 > ArtifactsSim.upgrade(symbol, entry, level)
 
 参数说明:
 
-- symbol: string，必选，对应ArtifactsSim.result中存储的圣遗物标识。
+- symbol: string，必选，对应 ArtifactsSim.result 中存储的圣遗物标识。
 - entry: string，可选，指定强化的副词条，若不存在则会随机强化；词条不满四条时会优先补满四词条。
-- level: number,可选，强化词条的数值档位。例如爆伤有四档数值，0-3表示从低到高的四档数值。
+- level: number,可选，强化词条的数值档位。例如爆伤有四档数值，0-3 表示从低到高的四档数值。
 
 #### 4.圣遗物得分计算
 
@@ -171,16 +177,17 @@ ArtifactsSim.creatArtifact("Goblet","Geo",["ATKPer","critRate","critDMG","elemen
 
 参数说明：
 
-- symbol: string，必选，对应ArtifactsSim.result中存储的圣遗物标识。
+- symbol: string，必选，对应 ArtifactsSim.result 中存储的圣遗物标识。
 - rule: [string | array]，可选，圣遗物评分规则。默认评分为攻击+双暴得分。
 
-当rule为字符串时，从如下数组中选择一个：
-> 
+当 rule 为字符串时，从如下数组中选择一个：
+
+>
+
     scoreList = ["atk","crit","def","hp","er","em"]
     // 对应 ["攻击得分","双暴得分","防御得分","生命得分","充能得分","精通得分"]
 
-当rule为数组时，选择一个或多个组成数组，如["crit","def","hp"]。
-
+当 rule 为数组时，选择一个或多个组成数组，如["crit","def","hp"]。
 
 #### 5. 删除指定圣遗物
 
@@ -188,7 +195,7 @@ ArtifactsSim.creatArtifact("Goblet","Geo",["ATKPer","critRate","critDMG","elemen
 
 参数说明:
 
-- symbol: string，必选，对应ArtifactsSim.result中存储的圣遗物标识。
+- symbol: string，必选，对应 ArtifactsSim.result 中存储的圣遗物标识。
 
 #### 6. 重置圣遗物
 
@@ -196,7 +203,7 @@ ArtifactsSim.creatArtifact("Goblet","Geo",["ATKPer","critRate","critDMG","elemen
 
 参数说明:
 
-- symbol: string，必选，对应ArtifactsSim.result中存储的圣遗物标识。
+- symbol: string，必选，对应 ArtifactsSim.result 中存储的圣遗物标识。
 
 全部重置:
 
@@ -206,19 +213,19 @@ ArtifactsSim.creatArtifact("Goblet","Geo",["ATKPer","critRate","critDMG","elemen
 
 > ArtifactsSim.lock(symbol)
 
-改变该圣遗物的锁定状态，返回值为boolean，成功true/失败false。
+改变该圣遗物的锁定状态，返回值为 boolean，成功 true/失败 false。
 
 参数说明:
 
-- symbol: string，必选，对应ArtifactsSim.result中存储的圣遗物标识。
+- symbol: string，必选，对应 ArtifactsSim.result 中存储的圣遗物标识。
 
-#### 8. 移除圣遗物new状态
+#### 8. 移除圣遗物 new 状态
 
 > ArtifactsSim.notNew(symbol)
 
 参数说明:
 
-- symbol: string，必选，对应ArtifactsSim.result中存储的圣遗物标识。
+- symbol: string，必选，对应 ArtifactsSim.result 中存储的圣遗物标识。
 
 #### 9. 获取指定套装名称/位置/主属性的圣遗物数量
 
@@ -236,13 +243,15 @@ ArtifactsSim.creatArtifact("Goblet","Geo",["ATKPer","critRate","critDMG","elemen
 
 参数说明:
 
-- rule: String，必选，排序规则。rule可选值：
+- rule: String，必选，排序规则。rule 可选值：
+
 ```
 lvasc: 按等级升序排序
 lvdesc: 按等级降序排序
 part: 按圣遗物部位排序
 mainEntry: 按圣遗物主属性排序
 ```
+
 ### 二、 人物装备部分
 
 #### 1. 获取人物-装备列表
@@ -294,8 +303,8 @@ mainEntry: 按圣遗物主属性排序
 参数说明:
 
 - name: string，人物名称。
-- symbolArr: array，含圣遗物symbol值的数组，数组长度限制为5。
-- **关于symbolArr的补充说明：数组中的圣遗物会依次遍历，因此数组中如果有相同部位的圣遗物（如有三个Plume），那么相同部位的圣遗物只有最后一个被装备。**
+- symbolArr: array，含圣遗物 symbol 值的数组，数组长度限制为 5。
+- **关于 symbolArr 的补充说明：数组中的圣遗物会依次遍历，因此数组中如果有相同部位的圣遗物（如有三个 Plume），那么相同部位的圣遗物只有最后一个被装备。**
 
 #### 5. 移除人物装备
 

@@ -9,7 +9,7 @@ export default {
     lower: '较低',
     higher: '较高',
     highest: '最高',
-    random: '随机'
+    random: '随机',
   },
   alert: {
     random: '随机圣遗物已生成！',
@@ -19,7 +19,7 @@ export default {
     initAll: '已重置全部未锁定圣遗物！',
     isLocked: '该圣遗物已锁定！',
     delete: '删除圣遗物成功！',
-    emptyList: '当前列表已经空了哦！'
+    emptyList: '当前列表已经空了哦！',
   },
   msg: {
     language: '语言',
@@ -62,12 +62,12 @@ export default {
     settingResetSuccess: '设置重置成功',
     undoSuccess: '撤销成功',
     undoFail: '没有可撤销数据',
-    equipped: '当前装备'
+    equipped: '当前装备',
   },
   score: {
     preset: '预设模式',
     optional: '自选模式',
-    HighScoreStandard: '高分圣遗物标准'
+    HighScoreStandard: '高分圣遗物标准',
   },
   handle: {
     upgrade: '强化',
@@ -90,7 +90,7 @@ export default {
     targetedEnhanced: '精准强化',
     enhancedRank: '强化幅度',
     download: '下载',
-    upload: '上传'
+    upload: '上传',
   },
   term: {
     artifacts: '圣遗物',
@@ -136,7 +136,7 @@ export default {
     incomingHealing: '受治疗加成',
     CD: '冷却缩减',
     Shield: '护盾强效',
-    stamina: '体力上限'
+    stamina: '体力上限',
   },
   // 展示用
   term_sp: {
@@ -164,7 +164,7 @@ export default {
     Geo: '岩元素伤害加成',
     Anemo: '风元素伤害加成',
     Cryo: '冰元素伤害加成',
-    Physical: '物理伤害加成'
+    Physical: '物理伤害加成',
   },
   setList: [
     '冰风迷途的勇士',
@@ -186,7 +186,7 @@ export default {
     '追忆之注连',
     '绝缘之旗印',
     '华馆梦醒形骸记',
-    '海染砗磲'
+    '海染砗磲',
   ],
   name: {
     'Albedo': '阿贝多',
@@ -233,7 +233,7 @@ export default {
     'Thoma': '托马',
     'Xingqiu': '行秋',
     'Xinyan': '辛焱',
-    'Yanfei': '烟绯'
+    'Yanfei': '烟绯',
   },
   weaponType: {
     weapon: '武器',
@@ -241,7 +241,7 @@ export default {
     bow: '弓',
     claymore: '双手剑',
     polearm: '长柄武器',
-    catalyst: '法器'
+    catalyst: '法器',
   },
   element: {
     element: '元素',
@@ -251,7 +251,7 @@ export default {
     Geo: '岩元素',
     Anemo: '风元素',
     Cryo: '冰元素',
-    Dendro: '草元素'
+    Dendro: '草元素',
   },
   nation: {
     nation: '地区',
@@ -259,6 +259,6 @@ export default {
     Mondstadt: '蒙德',
     Liyue: '璃月',
     Inazuma: '稻妻',
-    Snezhnaya: '至冬'
-  }
+    Snezhnaya: '至冬',
+  },
 };

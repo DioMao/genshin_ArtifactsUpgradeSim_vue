@@ -18,26 +18,26 @@
           p-id="634"
         ></path>
       </svg>
-      {{ $t("handle.back") }}
+      {{ $t('handle.back') }}
     </button>
     <!-- 角色列表 -->
     <character-list @character="characterChange" :characterprop="selectCharacter">
       <button
         class="btn btn-genshin btn-switch"
-        :class="{ disable: selectCharacter === '' }"
+        :class="{disable: selectCharacter === ''}"
         :disabled="selectCharacter === ''"
         @click="chengeArtifact()"
         v-show="!isSame"
       >
         <span class="circleinbox"></span>
-        {{ $t("handle.switch") }}
+        {{ $t('handle.switch') }}
       </button>
       <button class="btn btn-genshin-dark btn-remove" v-show="isSame" @click="removeArtifact()">
         <span class="xinbox"></span>
-        {{ $t("handle.remove") }}
+        {{ $t('handle.remove') }}
       </button>
       <button class="btn btn-genshin btn-detail" :disabled="selectCharacter === ''" @click="$router.push('/state-' + selectCharacter)">
-        <span class="squareinbox"></span>{{ $t("handle.stateDetail") }}
+        <span class="squareinbox"></span>{{ $t('handle.stateDetail') }}
       </button>
     </character-list>
     <!-- 圣遗物变更信息 -->
@@ -67,22 +67,22 @@
         <div class="comparedBox" v-show="!(this.oldArtifact === undefined) && !isSame">
           <div class="oldName">{{ oldArtifactName }}</div>
           <div class="newName"><img src="../assets/images/Arrow.png" alt="Arrow" draggable="false" /> {{ artifactName }}</div>
-          <div class="setChange">{{ $t("msg.setChange") }}</div>
+          <div class="setChange">{{ $t('msg.setChange') }}</div>
           <div class="setChangeInfo">
-            <span v-if="JSON.stringify(setBonusChange) === '{}'">{{ $t("msg.noChanges") }}</span>
+            <span v-if="JSON.stringify(setBonusChange) === '{}'">{{ $t('msg.noChanges') }}</span>
             <span v-for="(value, key) in setBonusChange" :key="key" :class="value[1] ? 'getBonus' : 'lostBonus'">
-              {{ $t("setList[" + $artiConst.val.setList.indexOf(key) + "]") + "(" + value[0] + "): " + setBonusDetail(key, value[0]) }}
+              {{ $t('setList[' + $artiConst.val.setList.indexOf(key) + ']') + '(' + value[0] + '): ' + setBonusDetail(key, value[0]) }}
             </span>
           </div>
-          <div class="attrChange">{{ $t("msg.characterAttrChange") }}</div>
+          <div class="attrChange">{{ $t('msg.characterAttrChange') }}</div>
           <div class="attrChangeList">
             <div class="attrChangeInfo" v-for="(value, key) in changeList" :key="key">
               <span class="attrDot">•</span>
-              <span class="attrName">{{ $t("term_sp." + key) }}</span>
+              <span class="attrName">{{ $t('term_sp.' + key) }}</span>
               <span class="valueChange" :class="value > 0 ? 'value_up' : 'value_down'">{{ formatValue(key, value) }}</span>
             </div>
             <div class="attrChangeInfo" v-if="JSON.stringify(changeList) === '{}'">
-              {{ $t("msg.noChanges") }}
+              {{ $t('msg.noChanges') }}
             </div>
           </div>
         </div>
@@ -92,14 +92,14 @@
 </template>
 
 <script>
-  import artifactShow from "../components/artifact-show";
-  import characterList from "../components/character-list";
-  import "@/style/stars.css";
-  import { getCurrentInstance, ref, watch } from "vue";
-  import { useRouter } from "vue-router";
+  import artifactShow from '../components/artifact-show';
+  import characterList from '../components/character-list';
+  import '@/style/stars.css';
+  import {getCurrentInstance, ref, watch} from 'vue';
+  import {useRouter} from 'vue-router';
 
   export default {
-    props: ["symbol"],
+    props: ['symbol'],
     components: {
       artifactShow,
       characterList,
@@ -117,14 +117,14 @@
       const artifact = ref({});
       // 是否与当前人物装备的圣遗物相同
       const isSame = ref(false);
-      const selectCharacter = ref("");
+      const selectCharacter = ref('');
       // 人物筛选条件
-      const language = ref("origin");
+      const language = ref('origin');
 
       // 数值处理
       const formatValue = (key, value) => {
         let res = artifactFunc.entryValFormat(key, value);
-        if (res.indexOf("-") === -1) res = "+" + res;
+        if (res.indexOf('-') === -1) res = '+' + res;
         return res;
       };
 
@@ -147,12 +147,12 @@
 
       // 套装信息
       const setBonusDetail = (key, count) => {
-        let artifactSet = "artifactSet";
-        if (language.value === "zh") {
-          artifactSet += "_zh";
+        let artifactSet = 'artifactSet';
+        if (language.value === 'zh') {
+          artifactSet += '_zh';
         }
-        key = trans("setList[" + artiConst.setList.indexOf(key) + "]");
-        count = "Set" + count;
+        key = trans('setList[' + artiConst.setList.indexOf(key) + ']');
+        count = 'Set' + count;
         return artiConst[artifactSet][key][count];
       };
 
@@ -160,7 +160,7 @@
         // symbol
         let artifact = await db.ARTIFACT_LIST.get(val[0]);
         if (artifact === undefined) {
-          router.replace("/");
+          router.replace('/');
         }
       });
       return {
@@ -178,8 +178,8 @@
     },
     data() {
       return {
-        artifactName: "none", // 当前圣遗物名称
-        oldArtifactName: "none", // 已装备的圣遗物名称
+        artifactName: 'none', // 当前圣遗物名称
+        oldArtifactName: 'none', // 已装备的圣遗物名称
         oldArtifact: undefined, // 人物已装备的圣遗物数据
         setBonusChange: {}, // 圣遗物套装变化情况
         fillCount: 0, // 填充（flex）
@@ -193,9 +193,9 @@
       // 当前圣遗物信息
       this.artifact = this.$artifact.getArtifact(this.symbol, JSON.parse(localStorage.userSetting).language);
       if (this.artifact) {
-        if (this.language === "zh") {
+        if (this.language === 'zh') {
           this.artifactName = this.$artiConst.val.artifactSet_zh[this.artifact.set][this.artifact.part];
-        } else if (this.language === "en") {
+        } else if (this.language === 'en') {
           let part = this.$artiConst.val.parts[this.$artiConst.val.parts_en.indexOf(this.artifact.part)];
           this.artifactName = this.$artiConst.val.artifactSet[this.artifact.set][part];
         }
@@ -210,7 +210,7 @@
         this.fillFunc();
       },
       selectCharacter(val) {
-        if (val === "") {
+        if (val === '') {
           this.oldArtifact = undefined;
           this.setIndex = -1;
           this.isSame = false;
@@ -238,14 +238,14 @@
           index = this.$artifact.getIndex(this.symbol),
           artifactNow = this.$artifact.AUSList[index],
           // artiConst = this.$artiConst.val,
-          compareFunc = function(arr, type) {
+          compareFunc = function (arr, type) {
             for (let i in arr) {
               let entry = arr[i][0],
                 entryValue = arr[i][1];
               if (Object.prototype.hasOwnProperty.call(that.changeList, entry)) {
-                type === "new" ? (that.changeList[entry] += entryValue) : (that.changeList[entry] -= entryValue);
+                type === 'new' ? (that.changeList[entry] += entryValue) : (that.changeList[entry] -= entryValue);
               } else {
-                type === "new" ? (that.changeList[entry] = entryValue) : (that.changeList[entry] = -entryValue);
+                type === 'new' ? (that.changeList[entry] = entryValue) : (that.changeList[entry] = -entryValue);
               }
             }
           };
@@ -260,8 +260,8 @@
           this.changeList[artifactNow.mainEntry] = artifactNow.mainEntryValue;
         }
         // 副词条对比
-        compareFunc(val.entry, "old");
-        compareFunc(artifactNow.entry, "new");
+        compareFunc(val.entry, 'old');
+        compareFunc(artifactNow.entry, 'new');
         // 去掉为数值零的数据（无变化的数据不展示）
         for (let key in this.changeList) {
           if (this.changeList[key] === 0) {
@@ -339,7 +339,7 @@
 
     .dropdown-genshin-toggle {
       &::after {
-        content: "";
+        content: '';
         display: block;
         position: absolute;
         top: 0.875rem;
@@ -379,7 +379,7 @@
 
         .itemSelected {
           &::before {
-            content: "✔";
+            content: '✔';
             display: block;
             float: right;
           }
@@ -457,7 +457,7 @@
             color: rgb(152, 254, 135);
 
             &::before {
-              content: "✔";
+              content: '✔';
               position: absolute;
               left: -0.5rem;
             }
@@ -468,7 +468,7 @@
             color: $genshin_orange_red;
 
             &::before {
-              content: "✘";
+              content: '✘';
               position: absolute;
               left: -0.5rem;
             }

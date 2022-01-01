@@ -14,7 +14,8 @@
     "local": "vue-cli-service serve --mode local",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
-    "report": "vue-cli-service build --report"
+    "report": "vue-cli-service build --report",
+    "prepare": "husky install"
   },
   "main": "background.js",
   "dependencies": {
@@ -46,6 +47,8 @@
     "electron-devtools-installer": "^3.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.0.0",
+    "husky": "^7.0.0",
+    "prettier": "2.5.1",
     "sass": "^1.41.1",
     "sass-loader": "^7.3.0",
     "sass-resources-loader": "^2.2.4",

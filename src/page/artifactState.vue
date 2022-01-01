@@ -17,29 +17,29 @@
         p-id="634"
       ></path>
     </svg>
-    {{ $t("handle.back") }}
+    {{ $t('handle.back') }}
   </button>
-  <div class="equip-box" :class="{ 'equip-box-hide': !equipShow }" @click="equipShow = !equipShow">
-    <div>{{ $t("msg.equipped") }}:</div>
+  <div class="equip-box" :class="{'equip-box-hide': !equipShow}" @click="equipShow = !equipShow">
+    <div>{{ $t('msg.equipped') }}:</div>
     <character-equip :character="selectCharacter"></character-equip>
   </div>
   <div class="state-container" :class="'bg-' + characterElement">
     <!-- 人物展示 -->
     <div class="characterDetail">
-      <div class="characterName">{{ $t("element." + characterElement) }} / {{ $t("name." + selectCharacter) }}</div>
-      <div class="btn btn-genshin show-button" @click="equipShow = !equipShow">{{ $t("msg.equipped") }}</div>
+      <div class="characterName">{{ $t('element.' + characterElement) }} / {{ $t('name.' + selectCharacter) }}</div>
+      <div class="btn btn-genshin show-button" @click="equipShow = !equipShow">{{ $t('msg.equipped') }}</div>
     </div>
     <character-list mode="banner" @character="characterChange" :characterprop="selectCharacter"></character-list>
     <!-- 属性展示 -->
     <div class="stateShowBox">
       <!-- 基础属性 -->
-      <div class="stateTitle">{{ $t("term.baseStats") }}</div>
+      <div class="stateTitle">{{ $t('term.baseStats') }}</div>
       <div class="stateDetail" v-for="(value, key) in baseStats" :key="key" :class="'stat-' + key">
         <span class="stateName">
-          {{ $t("term." + key) }}
+          {{ $t('term.' + key) }}
         </span>
         <span class="stateValue" v-if="key !== 'elementMastery'">
-          +{{ $artifact.entryValFormat(key, value[0]) + " & +" + Number.parseFloat(value[1]).toFixed(0) }}
+          +{{ $artifact.entryValFormat(key, value[0]) + ' & +' + Number.parseFloat(value[1]).toFixed(0) }}
         </span>
         <span class="stateValue" v-else> +{{ $artifact.entryValFormat(key, value) }} </span>
         <span class="EMBonusDetail" v-if="key === 'elementMastery' && $i18n.locale === 'zh'">{{
@@ -56,24 +56,24 @@
         }}</span>
       </div>
       <div class="stateDetail stat-stamina">
-        <span class="stateName">{{ $t("term.stamina") }}</span>
+        <span class="stateName">{{ $t('term.stamina') }}</span>
         <span class="stateValue">240</span>
       </div>
       <!-- 进阶属性 -->
-      <div class="stateTitle">{{ $t("term.advanceStats") }}</div>
-      <div class="for-nth-child" style="display:none;"></div>
+      <div class="stateTitle">{{ $t('term.advanceStats') }}</div>
+      <div class="for-nth-child" style="display: none"></div>
       <div class="stateDetail" v-for="(value, key) in advanceStats" :key="key" :class="'stat-' + key">
         <span class="stateName">
-          {{ $t("term." + key) }}
+          {{ $t('term.' + key) }}
         </span>
         <span class="stateValue"> +{{ $artifact.entryValFormat(key, value) }} </span>
       </div>
       <!-- 元素属性 -->
-      <div class="stateTitle">{{ $t("term.elementalType") }}</div>
-      <div class="for-nth-child" style="display:none;"></div>
+      <div class="stateTitle">{{ $t('term.elementalType') }}</div>
+      <div class="for-nth-child" style="display: none"></div>
       <div class="stateDetail" v-for="(value, key) in elementalType" :key="key" :class="'stat-' + key">
         <span class="stateName">
-          {{ $t("term." + key) }}
+          {{ $t('term.' + key) }}
         </span>
         <span class="stateValue"> +{{ $artifact.entryValFormat(key, value) }} </span>
       </div>
@@ -82,15 +82,15 @@
 </template>
 
 <script>
-  import { getCurrentInstance, onMounted, ref, watch } from "vue";
+  import {getCurrentInstance, onMounted, ref, watch} from 'vue';
   // import { useStore } from "vuex";
-  import characterList from "../components/character-list";
-  import characterEquip from "../components/character-equip";
+  import characterList from '../components/character-list';
+  import characterEquip from '../components/character-equip';
   export default {
     props: {
       name: {
         type: String,
-        default: "",
+        default: '',
       },
     },
     components: {
@@ -107,8 +107,8 @@
       const characterArtifact = ref(artifactFunc.getSet(props.name));
       const selectCharacter = ref(props.name);
       const characterElement = ref([]);
-      const baseStats = ref({ HPPer: [0, 0], ATKPer: [0, 0], DEFPer: [0, 0], elementMastery: 0 });
-      const advanceStats = ref({ CRITRate: 0, CRITDMG: 0, Healing: 0, incomingHealing: 0, energyRecharge: 0, CD: 0, Shield: 0 });
+      const baseStats = ref({HPPer: [0, 0], ATKPer: [0, 0], DEFPer: [0, 0], elementMastery: 0});
+      const advanceStats = ref({CRITRate: 0, CRITDMG: 0, Healing: 0, incomingHealing: 0, energyRecharge: 0, CD: 0, Shield: 0});
       const elementalType = ref({
         Pyro: 0,
         PyroRES: 0,
@@ -154,24 +154,24 @@
 
       // 属性值计算+格式化
       const calcStats = () => {
-        const baseList = ["ATK", "ATKPer", "DEF", "DEFPer", "HP", "HPPer", "elementMastery"];
-        const advanceList = ["CRITRate", "CRITDMG", "Healing", "incomingHealing", "energyRecharge", "CD", "Shield"];
+        const baseList = ['ATK', 'ATKPer', 'DEF', 'DEFPer', 'HP', 'HPPer', 'elementMastery'];
+        const advanceList = ['CRITRate', 'CRITDMG', 'Healing', 'incomingHealing', 'energyRecharge', 'CD', 'Shield'];
         const totalStats = artifactFunc.getSetState(selectCharacter.value);
         EMBonus.value = artifactFunc.calcEMBonus(totalStats.elementMastery);
         for (let key in totalStats) {
           const stat = totalStats[key];
           if (baseList.includes(key)) {
-            if (key === "ATK") {
+            if (key === 'ATK') {
               baseStats.value.ATKPer[1] = stat;
-            } else if (key === "ATKPer") {
+            } else if (key === 'ATKPer') {
               baseStats.value.ATKPer[0] = stat;
-            } else if (key === "HP") {
+            } else if (key === 'HP') {
               baseStats.value.HPPer[1] = stat;
-            } else if (key === "HPPer") {
+            } else if (key === 'HPPer') {
               baseStats.value.HPPer[0] = stat;
-            } else if (key === "DEF") {
+            } else if (key === 'DEF') {
               baseStats.value.DEFPer[1] = stat;
-            } else if (key === "DEFPer") {
+            } else if (key === 'DEFPer') {
               baseStats.value.DEFPer[0] = stat;
             } else {
               baseStats.value[key] = stat;
@@ -329,7 +329,7 @@
       }
 
       &::before {
-        content: "";
+        content: '';
         position: absolute;
         inset: 0;
         border: solid 0.1875rem transparentize($genshin_gray_light, 1);
@@ -341,7 +341,7 @@
       }
 
       &::after {
-        content: "";
+        content: '';
         display: block;
         position: absolute;
         z-index: 3;

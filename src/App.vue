@@ -2,7 +2,7 @@
   <!-- loading -->
   <div id="loading" :class="isLoad ? 'hide' : ''">
     <div class="loading-box">
-      <div class="loading-progress" :style="{ width: loadProgress + '%' }"></div>
+      <div class="loading-progress" :style="{width: loadProgress + '%'}"></div>
     </div>
   </div>
   <!-- /loading -->
@@ -33,9 +33,7 @@
         </div>
         <p>本模拟器采用本地存储，不上传任何数据。</p>
         <h4>1. 自选圣遗物说明</h4>
-        <p>
-          自选圣遗物时，依次选择套装、位置、主词条和副词条。未选择的属性会随机生成。
-        </p>
+        <p>自选圣遗物时，依次选择套装、位置、主词条和副词条。未选择的属性会随机生成。</p>
         <p>
           自选圣遗物时，副词条可以留空，这种情况会生成主属性符合且随机副词条的圣遗物。自选了副词条但不足3条时，模拟器会随机选择符合条件的副词条补至3条，且不会生成第四副词条。
         </p>
@@ -47,17 +45,11 @@
         <p>3) 高分圣遗物标准</p>
         <p>自定高分圣遗物标准，可选区间为20到50分。</p>
         <h4>3. 删除和清空列表</h4>
-        <p>
-          单独删除圣遗物是可以撤销的。清空列表比较大力，生效了就不能找回了。
-        </p>
+        <p>单独删除圣遗物是可以撤销的。清空列表比较大力，生效了就不能找回了。</p>
         <h4>4. 列表模式【已废弃】</h4>
-        <p>
-          出于性能和界面美观考虑，已移除详细列表模式。
-        </p>
+        <p>出于性能和界面美观考虑，已移除详细列表模式。</p>
         <h4>5. 副词条提升幅度</h4>
-        <p>
-          副词条一共分四个档位，每次升级时会随机选择，设置里可以自选提升幅度。比如选择4，则每次强化提升数值的都是最大值。
-        </p>
+        <p>副词条一共分四个档位，每次升级时会随机选择，设置里可以自选提升幅度。比如选择4，则每次强化提升数值的都是最大值。</p>
       </div>
     </div>
   </div>
@@ -75,7 +67,7 @@
         loadProgress: 0,
         isLoad: false, // 加载界面显示（isLoad表示页面加载是否完成）
         // 预载图片列表
-        imgList: [require('@/assets/images/genshin-symbol.png'), require('@/assets/images/fog.png'), require('@/assets/images/item_bg.png')]
+        imgList: [require('@/assets/images/genshin-symbol.png'), require('@/assets/images/fog.png'), require('@/assets/images/item_bg.png')],
       };
     },
     mounted() {
@@ -86,7 +78,7 @@
       language() {
         // @ts-ignore
         return this.$store.state.language;
-      }
+      },
     },
     watch: {
       language() {
@@ -95,18 +87,18 @@
       loadProgress(val) {
         let that = this;
         if (val == 100) {
-          setTimeout(function() {
+          setTimeout(function () {
             // that.loadProgress = 100;
             that.isLoad = true;
           }, 500);
         }
-      }
+      },
     },
     methods: {
       loading() {
         let that = this;
         // 确认字体加载状态
-        document.fonts.ready.then(function() {
+        document.fonts.ready.then(function () {
           that.loadProgress += 25;
         });
         for (let src of this.imgList) {
@@ -119,8 +111,8 @@
             this.loadProgress += 25;
           };
         }
-      }
-    }
+      },
+    },
   };
 </script>
 

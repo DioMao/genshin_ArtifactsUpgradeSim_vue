@@ -15,12 +15,12 @@ $genshin_brown_white: rgb(217, 213, 203);
 $genshin_brown_red: rgb(171, 102, 82);
 
 @font-face {
-  font-family: "genshin-font";
+  font-family: 'genshin-font';
   src: url(~@/style/genshin_mini_font.ttf);
 }
 
 body {
-  font-family: "genshin-font" !important;
+  font-family: 'genshin-font' !important;
 }
 
 ::-webkit-scrollbar {
@@ -51,7 +51,7 @@ body {
   border-radius: 1.5625rem !important;
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     inset: -0.1875rem;
     display: block;
@@ -74,7 +74,7 @@ body {
   border-radius: 1.5625rem !important;
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     inset: -0.1875rem;
     display: block;
@@ -101,7 +101,7 @@ body {
   background-color: rgb(48, 48, 48);
 
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     inset: 0.3125rem;
     border: solid 0.125rem rgb(245, 195, 50);
@@ -121,7 +121,7 @@ body {
   border-radius: 0.125rem;
 
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     inset: 0.25rem;
     border: solid 0.125rem rgb(245, 195, 50);
@@ -139,7 +139,7 @@ body {
   background-color: rgb(48, 48, 48);
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     width: 0;
     height: 1rem;
@@ -151,7 +151,7 @@ body {
   }
 
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     width: 0;
     height: 1rem;
@@ -245,7 +245,7 @@ body {
 
           .itemSelected {
             &::before {
-              content: "✔";
+              content: '✔';
               display: block;
               float: right;
             }
@@ -255,7 +255,7 @@ body {
     }
 
     &::before {
-      content: "✦";
+      content: '✦';
       display: block;
       position: absolute;
       font-size: 2.5rem;
@@ -265,7 +265,7 @@ body {
     }
 
     &::after {
-      content: "✦";
+      content: '✦';
       display: block;
       position: absolute;
       font-size: 2.5rem;
@@ -276,7 +276,7 @@ body {
   }
 
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     pointer-events: none;
     z-index: -1;
@@ -312,7 +312,7 @@ body {
   line-height: 1rem;
 
   &::before {
-    content: "✦";
+    content: '✦';
     position: absolute;
     z-index: 3;
     top: -0.5rem;
@@ -321,7 +321,7 @@ body {
   }
 
   &::after {
-    content: "✦";
+    content: '✦';
     position: absolute;
     z-index: 3;
     bottom: -0.5625rem;
@@ -334,7 +334,7 @@ body {
 // 选择状态标识
 .isSelect {
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     pointer-events: none;
     z-index: -1;
@@ -345,7 +345,7 @@ body {
   }
 
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     pointer-events: none;
     z-index: -1;
@@ -375,7 +375,7 @@ body {
   background-color: rgb(69, 77, 92);
 
   &::after {
-    content: "";
+    content: '';
     pointer-events: none;
     position: absolute;
     inset: 0.1875rem;
@@ -395,7 +395,7 @@ body {
   opacity: 1;
 
   &::after {
-    content: "";
+    content: '';
     pointer-events: none;
     position: absolute;
     inset: -0.1875rem;
@@ -418,7 +418,7 @@ body {
   background-color: rgb(249, 246, 242);
 
   &::after {
-    content: "";
+    content: '';
     pointer-events: none;
     position: absolute;
     inset: 0.1875rem;

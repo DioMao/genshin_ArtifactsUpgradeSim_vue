@@ -9,7 +9,7 @@ export default {
     lower: 'Lower',
     higher: 'Higher',
     highest: 'Highest',
-    random: 'Random'
+    random: 'Random',
   },
   alert: {
     random: 'Randomly generated artifact.',
@@ -19,7 +19,7 @@ export default {
     initAll: 'Init all artifacts(unlock) success.',
     isLocked: 'This artifact is locked.',
     delete: 'Delete artifact successed.',
-    emptyList: 'Artifacts list is empty.'
+    emptyList: 'Artifacts list is empty.',
   },
   msg: {
     language: 'language',
@@ -62,12 +62,12 @@ export default {
     settingResetSuccess: 'Setting reset success',
     undoSuccess: 'Undo success',
     undoFail: 'No data that can be undone',
-    equipped: 'Artifacts Equipped'
+    equipped: 'Artifacts Equipped',
   },
   score: {
     preset: 'Preset',
     optional: 'Optional',
-    HighScoreStandard: 'High Score Standard:'
+    HighScoreStandard: 'High Score Standard:',
   },
   handle: {
     upgrade: 'Enhance',
@@ -90,7 +90,7 @@ export default {
     targetedEnhanced: 'Targeted Enhanced',
     enhancedRank: 'Enhanced Rank',
     download: 'Download',
-    upload: 'Upload'
+    upload: 'Upload',
   },
   term: {
     artifacts: 'Artifacts',
@@ -136,7 +136,7 @@ export default {
     incomingHealing: 'Incoming Healing Bonus',
     CD: 'CD Reduction',
     Shield: 'Shield Strength',
-    stamina: 'Max Stamina'
+    stamina: 'Max Stamina',
   },
   // used to display
   term_sp: {
@@ -164,7 +164,7 @@ export default {
     Geo: 'Geo DMG Bonus',
     Anemo: 'Anemo DMG Bonus',
     Cryo: 'Cryo DMG Bonus',
-    Physical: 'Physical DMG Bonus'
+    Physical: 'Physical DMG Bonus',
   },
   setList: [
     'Bizzard Strayer',
@@ -186,7 +186,7 @@ export default {
     "Shimenawa's Reminiscence",
     'Emblem of Severed Fate',
     'Husk of Opulent Dreams',
-    'Ocean-Hued Clam'
+    'Ocean-Hued Clam',
   ],
   name: {
     'Albedo': 'Albedo',
@@ -233,7 +233,7 @@ export default {
     'Thoma': 'Thoma',
     'Xingqiu': 'Xingqiu',
     'Xinyan': 'Xinyan',
-    'Yanfei': 'Yanfei'
+    'Yanfei': 'Yanfei',
   },
   weaponType: {
     weapon: 'Weapon',
@@ -241,7 +241,7 @@ export default {
     bow: 'bow',
     claymore: 'Claymore',
     polearm: 'Polearm',
-    catalyst: 'Catalyst'
+    catalyst: 'Catalyst',
   },
   element: {
     element: 'Element',
@@ -251,7 +251,7 @@ export default {
     Geo: 'Geo',
     Anemo: 'Anemo',
     Cryo: 'Cryo',
-    Dendro: 'Dendro'
+    Dendro: 'Dendro',
   },
   nation: {
     nation: 'Nation',
@@ -259,6 +259,6 @@ export default {
     Mondstadt: 'Mondstadt',
     Liyue: 'Liyue',
     Inazuma: 'Inazuma',
-    Snezhnaya: 'Snezhnaya'
-  }
+    Snezhnaya: 'Snezhnaya',
+  },
 };

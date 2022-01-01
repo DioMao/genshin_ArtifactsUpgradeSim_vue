@@ -3,9 +3,9 @@
  * Copyrigth 2021-2022 DioMao (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/graphs/contributors)
  * Licensed under GPL3.0 (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/master/LICENSE)
  */
-import { ArtifactData } from './ArtifactsData';
-import Dexie, { Table } from 'dexie';
-import { ArtifactNameSpace } from './ArtifactsUpgradeSimTypes';
+import {ArtifactData} from './ArtifactsData';
+import Dexie, {Table} from 'dexie';
+import {ArtifactNameSpace} from './ArtifactsUpgradeSimTypes';
 
 /**
  * 创建indexedDB
@@ -31,7 +31,7 @@ class ArtifactsIDB extends Dexie {
     super('ARTIFACT_DB_MAO');
     this.version(1).stores({
       ARTIFACT_LIST: 'symbol, level, set, part, mainEntry, equipped',
-      CUSTOM_SET: 'name'
+      CUSTOM_SET: 'name',
     });
   }
 }
@@ -89,7 +89,7 @@ class ArtifactsFunction_class {
         upgradeHistory: [],
         lock: false,
         isNew: true,
-        equipped: 0
+        equipped: 0,
       },
       ArtifactEntry = [],
       ArtifactEntryRate = [];
@@ -685,11 +685,12 @@ class ArtifactsFunction_class {
   dataDownload() {
     const date = new Date();
     const data = JSON.stringify(this.AUS_LIST);
-    const blob = new Blob([data], { type: 'text/json' });
+    const blob = new Blob([data], {type: 'text/json'});
     const e = new MouseEvent('click', {});
     const a = document.createElement('a');
-    a.download = `artifacts_data_${this.VERSION}_${date.getFullYear()}_${date.getMonth() +
-      1}_${date.getDate()}_${date.getHours()}${date.getMinutes()}${date.getSeconds()}.json`;
+    a.download = `artifacts_data_${this.VERSION}_${date.getFullYear()}_${
+      date.getMonth() + 1
+    }_${date.getDate()}_${date.getHours()}${date.getMinutes()}${date.getSeconds()}.json`;
     a.href = window.URL.createObjectURL(blob);
     a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
     a.dispatchEvent(e);
@@ -1148,7 +1149,7 @@ class ArtifactsFunction_class {
    */
   generateUUID() {
     let d = new Date().getTime();
-    const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       const r = (d + Math.random() * 16) % 16 | 0;
       d = Math.floor(d / 16);
       return (c == 'x' ? r : (r & 0x3) | 0x8).toString(16);
@@ -1253,7 +1254,7 @@ class ArtifactsFunction_class {
   ) {
     const lan = ['zh', 'en', 'origin'];
     // 筛选符合条件的过滤属性
-    const arrFilter = function(arr: string[], type: string) {
+    const arrFilter = function (arr: string[], type: string) {
       const res = [];
       for (const el of arr) {
         if (type === 'main') {
@@ -1374,7 +1375,7 @@ console.log('%cArtifactsUpgradeSim is running.Learn more: https://github.com/Dio
 /**
  * 模拟器初始化
  */
-const initArtifactSim = function() {
+const initArtifactSim = function () {
   // 加载本地数据
   const storage = window.localStorage;
   if (!storage) {
@@ -1419,4 +1420,4 @@ const initArtifactSim = function() {
 };
 
 export default ArtifactsSim;
-export { ArtifactsSim, artiConst, IDB, initArtifactSim };
+export {ArtifactsSim, artiConst, IDB, initArtifactSim};

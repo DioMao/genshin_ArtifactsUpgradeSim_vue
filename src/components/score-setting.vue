@@ -24,11 +24,11 @@
           <div v-show="userSetting.scoreConfig.mode === 'string'">
             <select class="form-select form-select-sm" name="scoreString" id="scoreString" v-model="userSetting.scoreConfig.strRule">
               <option value="default">{{ $t('msg.default') }}</option>
-              <option v-for="config in $artiConst.val.scoreList" :key="config" :value="config"> {{ $artifact.toChinese(config, 'score') }}</option>
+              <option v-for="config in $artiConst.val.scoreList" :key="config" :value="config">{{ $artifact.toChinese(config, 'score') }}</option>
             </select>
           </div>
-          <div class="justify-content-between flex-wrap" style="display:flex;" v-show="userSetting.scoreConfig.mode === 'array'">
-            <div class="form-check" style="width:40%;" v-for="config in $artiConst.val.scoreList" :key="config">
+          <div class="justify-content-between flex-wrap" style="display: flex" v-show="userSetting.scoreConfig.mode === 'array'">
+            <div class="form-check" style="width: 40%" v-for="config in $artiConst.val.scoreList" :key="config">
               <input class="form-check-input" type="checkbox" :value="config" :id="'score-' + config" v-model="userSetting.scoreConfig.arrRule" />
               <label class="form-check-label" :for="'score-' + config">
                 {{ $artifact.toChinese(config, 'score') }}
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-  import { useStore } from 'vuex';
+  import {useStore} from 'vuex';
 
   export default {
     name: 'score-setting',
@@ -50,9 +50,9 @@
       const store = useStore();
       const userSetting = store.state.userSetting;
       return {
-        userSetting
+        userSetting,
       };
-    }
+    },
   };
 </script>
 

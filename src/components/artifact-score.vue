@@ -1,17 +1,17 @@
 <template>
   <div class="score_container">
     <div>
-      {{ $t("msg.entryScore") }}(beta)：<span class="float-end" :class="{highscore: isHighScore}">{{ ArtifactRate(symbol) }}</span>
+      {{ $t('msg.entryScore') }}(beta)：<span class="float-end" :class="{highscore: isHighScore}">{{ ArtifactRate(symbol) }}</span>
     </div>
     <div class="splitLine"></div>
     <div class="scoreSheetBox">
       <div class="SheetItem" v-for="(entry, index) in currentEntry" :key="'entry' + index">
         <div class="sheetTitle">
-          {{ $t("term." + entry[0]) }}
-          <span class="percentShow">{{ entryProgess(entry[0], entry[1]) + "%" }}</span>
+          {{ $t('term.' + entry[0]) }}
+          <span class="percentShow">{{ entryProgess(entry[0], entry[1]) + '%' }}</span>
         </div>
         <div class="progress_genshin">
-          <div class="progress_bar_genshin" :style="{ width: entryProgess(entry[0], entry[1]) + '%' }"></div>
+          <div class="progress_bar_genshin" :style="{width: entryProgess(entry[0], entry[1]) + '%'}"></div>
         </div>
       </div>
     </div>
@@ -19,18 +19,18 @@
 </template>
 
 <script>
-  import { computed, getCurrentInstance, ref, watch } from "vue";
+  import {computed, getCurrentInstance, ref, watch} from 'vue';
   // import { useStore } from "vuex";
 
   export default {
-    name: "artifact-score",
+    name: 'artifact-score',
     props: {
       rule: {
         type: [String, Array],
-        default: "default",
+        default: 'default',
       },
       artifact: {
-        default: "",
+        default: '',
       },
       highscore: {
         default: 35,
@@ -43,23 +43,23 @@
       const artifactFunc = globalProperties.$artifact;
       const artiConst = globalProperties.$artiConst.val;
 
-      const language = ref("");
+      const language = ref('');
       const currentEntry = ref([]);
-      const symbol = ref("");
+      const symbol = ref('');
 
       watch(
         () => props.artifact,
         val => {
-          if (val !== "" && val !== undefined) {
+          if (val !== '' && val !== undefined) {
             currentEntry.value = JSON.parse(val).entry;
             symbol.value = JSON.parse(val).symbol;
           }
         }
       );
 
-      const isHighScore = computed(()=>{
+      const isHighScore = computed(() => {
         return Number.parseFloat(ArtifactRate(symbol.value)) >= Number.parseFloat(props.highscore);
-      })
+      });
 
       // 圣遗物评分
       const ArtifactRate = symbol => {
@@ -96,7 +96,7 @@
     margin: 0 auto;
 
     &::before {
-      content: "";
+      content: '';
       pointer-events: none;
       position: absolute;
       inset: 0.25rem;

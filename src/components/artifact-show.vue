@@ -1,6 +1,6 @@
 <template>
   <div class="ArtifactShow">
-    <div class="aTitle" :style="{fontSize: language==='en'?'0.875rem':'inherit'}">{{ artifactName }}</div>
+    <div class="aTitle" :style="{fontSize: language === 'en' ? '0.875rem' : 'inherit'}">{{ artifactName }}</div>
     <div class="titleLine">
       <img class="leftArrow" src="../assets/images/artifact_arrow.png" alt="artifactArrow" draggable="false" />
       <img class="rightArrow" src="../assets/images/artifact_arrow.png" alt="artifactArrow" draggable="false" />
@@ -13,7 +13,7 @@
         <img :src="setUrl" :alt="showdetail.part" draggable="false" />
       </div>
       <div class="levelStar">
-        <span v-for="i in 5" :key="i" style="margin-right: 3px;">
+        <span v-for="i in 5" :key="i" style="margin-right: 3px">
           <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="#FFCC32" class="bi bi-star-fill" viewBox="0 0 16 16">
             <path
               d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
@@ -59,55 +59,55 @@
         </svg>
       </span>
       <ul>
-        <li v-for="entry in showdetail.entry" :key="entry">·{{ entry[0] + "+" + entry[1] }}</li>
+        <li v-for="entry in showdetail.entry" :key="entry">·{{ entry[0] + '+' + entry[1] }}</li>
       </ul>
       <div class="setName">{{ showdetail.set }}:</div>
       <div class="setBonusDetail">
-        <span :class="setActive >= 2 ? 'setActived' : 'setInactivated'">{{ $t("term.Set2") }}: {{ setDetail.Set2 }}</span>
-        <span :class="setActive >= 4 ? 'setActived' : 'setInactivated'">{{ $t("term.Set4") }}: {{ setDetail.Set4 }}</span>
+        <span :class="setActive >= 2 ? 'setActived' : 'setInactivated'">{{ $t('term.Set2') }}: {{ setDetail.Set2 }}</span>
+        <span :class="setActive >= 4 ? 'setActived' : 'setInactivated'">{{ $t('term.Set4') }}: {{ setDetail.Set4 }}</span>
       </div>
       <div class="bottomBg"></div>
     </div>
     <div class="aEquipped" v-if="showdetail.equipped">
       <img :src="sideUrl" alt="side_avatar" draggable="false" />
       <span v-show="language === 'en'">Equipped: </span>
-      <span>{{ $t("name." + showdetail.equipped).replace(/\s+/g, "") }}</span>
+      <span>{{ $t('name.' + showdetail.equipped).replace(/\s+/g, '') }}</span>
       <span v-show="language === 'zh'">已装备</span>
     </div>
     <div v-if="showButton">
       <div class="actionBox mt-2 mb-2 d-flex justify-content-between">
-        <div class="btn btn-genshin" @click="toPath(symbol, 'equip')"><span class="squareinbox"></span> {{ $t("handle.equip") }}</div>
-        <div class="btn btn-genshin btn-toupgrade" @click="toPath(symbol, 'artifact')"><span class="circleinbox"></span>{{ $t("msg.toUpgradePage") }}</div>
+        <div class="btn btn-genshin" @click="toPath(symbol, 'equip')"><span class="squareinbox"></span> {{ $t('handle.equip') }}</div>
+        <div class="btn btn-genshin btn-toupgrade" @click="toPath(symbol, 'artifact')"><span class="circleinbox"></span>{{ $t('msg.toUpgradePage') }}</div>
       </div>
       <div class="aButtonBox mt-3 msg-box">
-        <h4>◆ {{ $t("handle.commonHandle") }}</h4>
+        <h4>◆ {{ $t('handle.commonHandle') }}</h4>
         <div class="firstLine mb-2">
           <button class="btn btn-genshin btn-sm" @click="upgrade" :disabled="showdetail.level >= 20">
-            {{ $t("msg.upgrade") }}
+            {{ $t('msg.upgrade') }}
           </button>
-          <button class="btn btn-genshin btn-sm" @click="init" :disabled="showdetail.lock || showdetail.level === 0">{{ $t("msg.reset") }}</button>
+          <button class="btn btn-genshin btn-sm" @click="init" :disabled="showdetail.lock || showdetail.level === 0">{{ $t('msg.reset') }}</button>
           <button class="btn btn-genshin btn-sm del" :disabled="showdetail.lock" @click="del">
             <span class="mobileShow" @click="close"></span>
-            {{ $t("msg.delete") }}
+            {{ $t('msg.delete') }}
           </button>
         </div>
-        <h4>◆ {{ $t("handle.targetedEnhanced") }}</h4>
+        <h4>◆ {{ $t('handle.targetedEnhanced') }}</h4>
         <div>
           <div class="entryUp" v-for="(entry, index) in showdetail.entry" :key="entry[0] + index">
             <span> • {{ entry[0] }}+{{ entry[1] }} </span>
             <button class="btn btn-genshin btn-sm" @click="upgrade(index)" :disabled="showdetail.level >= 20">
-              {{ $t("msg.upgrade") }}
+              {{ $t('msg.upgrade') }}
             </button>
           </div>
         </div>
-        <h4>◆ {{ $t("handle.enhancedRank") }}</h4>
+        <h4>◆ {{ $t('handle.enhancedRank') }}</h4>
         <div>
           <select class="form-select" v-model="enhancedRank">
-            <option value="-1">{{ $t("msg.random") }}</option>
-            <option value="0">{{ $t("tips.lowest") }}</option>
-            <option value="1">{{ $t("tips.lower") }}</option>
-            <option value="2">{{ $t("tips.higher") }}</option>
-            <option value="3">{{ $t("tips.highest") }}</option>
+            <option value="-1">{{ $t('msg.random') }}</option>
+            <option value="0">{{ $t('tips.lowest') }}</option>
+            <option value="1">{{ $t('tips.lower') }}</option>
+            <option value="2">{{ $t('tips.higher') }}</option>
+            <option value="3">{{ $t('tips.highest') }}</option>
           </select>
         </div>
       </div>
@@ -117,7 +117,7 @@
 
 <script>
   export default {
-    name: "artifact-show",
+    name: 'artifact-show',
     data() {
       return {
         enhancedRank: -1,
@@ -128,14 +128,14 @@
         type: [Object, Function],
         default() {
           return {
-            symbol: "",
+            symbol: '',
             level: 0,
-            set: "none",
-            part: "none",
-            mainEntry: "none",
+            set: 'none',
+            part: 'none',
+            mainEntry: 'none',
             mainEntryValue: 0,
             entry: [],
-            initEntry: "",
+            initEntry: '',
             upgradeHistory: [],
             creationDate: Date.now(),
             lock: false,
@@ -145,7 +145,7 @@
       },
       language: {
         type: String,
-        default: "origin",
+        default: 'origin',
       },
       showButton: {
         type: Boolean,
@@ -153,7 +153,7 @@
       },
       symbol: {
         type: String,
-        default: "",
+        default: '',
       },
     },
     computed: {
@@ -162,25 +162,25 @@
       },
       setUrl() {
         let item = this.$artifact.getArtifact(this.symbol),
-          src = require(`../assets/images/Artifacts/${item.set.replace(/\s+/g, "")}/${item.part}.png`);
+          src = require(`../assets/images/Artifacts/${item.set.replace(/\s+/g, '')}/${item.part}.png`);
         return src;
       },
       sideUrl() {
         if (this.showdetail.equipped) {
           let src;
           try {
-            src = require(`../assets/images/avatars_side/${this.showdetail.equipped.replace(/\s+/g, "_")}_side.png`);
+            src = require(`../assets/images/avatars_side/${this.showdetail.equipped.replace(/\s+/g, '_')}_side.png`);
             return src;
           } catch {
-            src = require("../assets/images/genshin_emoji/Icon_Emoji_003_Paimon_Hehe.png");
+            src = require('../assets/images/genshin_emoji/Icon_Emoji_003_Paimon_Hehe.png');
             return src;
           }
         }
-        return "";
+        return '';
       },
       setDetail() {
         let artifactSet;
-        if (this.language === "zh") {
+        if (this.language === 'zh') {
           artifactSet = this.$artiConst.val.artifactSet_zh;
         } else {
           artifactSet = this.$artiConst.val.artifactSet;
@@ -194,7 +194,7 @@
           for (let key in setBonus) {
             const count = setBonus[key];
             let setName = key;
-            if (this.language === "zh") {
+            if (this.language === 'zh') {
               setName = this.$artiConst.val.setList_zh[this.$artiConst.val.setList.indexOf(key)];
             }
             if (setName === this.showdetail.set) {
@@ -207,23 +207,23 @@
     },
     methods: {
       upgrade(entry = -1) {
-        this.$emit("upgrade", this.symbol, entry, this.enhancedRank);
+        this.$emit('upgrade', this.symbol, entry, this.enhancedRank);
       },
       init() {
-        this.$emit("init", this.symbol);
+        this.$emit('init', this.symbol);
       },
       del() {
-        this.$emit("del", this.symbol);
+        this.$emit('del', this.symbol);
       },
       lockChange() {
-        this.$emit("lock", this.symbol);
+        this.$emit('lock', this.symbol);
       },
       close() {
-        this.$emit("close");
+        this.$emit('close');
       },
       toPath(symbol, type) {
-        if (symbol !== "") {
-          this.$router.push("/" + type + "-" + symbol);
+        if (symbol !== '') {
+          this.$router.push('/' + type + '-' + symbol);
         } else {
           void 0;
         }
@@ -380,7 +380,7 @@
 
         .setInactivated {
           &::before {
-            content: "";
+            content: '';
             display: block;
             position: absolute;
             top: 0.0625rem;
@@ -397,7 +397,7 @@
           color: $genshin_green;
 
           &::before {
-            content: "";
+            content: '';
             display: block;
             position: absolute;
             top: 0.0625rem;
@@ -484,7 +484,7 @@
         color: rgb(165, 88, 67);
 
         &::after {
-          content: "";
+          content: '';
           display: block;
           width: 100%;
           height: 0.125rem;

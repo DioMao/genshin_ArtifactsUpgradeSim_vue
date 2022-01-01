@@ -6,7 +6,7 @@
         class="character-banner-show"
         v-for="character in characterList"
         :key="character"
-        :class="{ bannerSelect: character.name === selectCharacter, bannerHover: character.name !== selectCharacter }"
+        :class="{bannerSelect: character.name === selectCharacter, bannerHover: character.name !== selectCharacter}"
         @click="selectCharacter = character.name"
       >
         <img :src="avatarSideSrc(character.name)" :alt="character.name" draggable="false" />
@@ -23,22 +23,22 @@
       </button>
       <ul class="dropdown-menu dropdown-menu-lg-end">
         <li @click="filterCharacter = 'default'">
-          <a class="dropdown-item" :class="{ itemSelected: filterCharacter === 'default' }">{{ $t("msg.default") }}</a>
+          <a class="dropdown-item" :class="{itemSelected: filterCharacter === 'default'}">{{ $t('msg.default') }}</a>
         </li>
         <!-- 属性筛选 -->
-        <li class="filterLable">{{ $t("element.element") }}</li>
+        <li class="filterLable">{{ $t('element.element') }}</li>
         <li v-for="element in artiConst.elementType" :key="element" @click="filterCharacter = element">
-          <a class="dropdown-item" :class="{ itemSelected: filterCharacter === element }">{{ $t("element." + element) }}</a>
+          <a class="dropdown-item" :class="{itemSelected: filterCharacter === element}">{{ $t('element.' + element) }}</a>
         </li>
         <!-- 武器筛选 -->
-        <li class="filterLable">{{ $t("weaponType.weapon") }}</li>
+        <li class="filterLable">{{ $t('weaponType.weapon') }}</li>
         <li v-for="weapon in artiConst.weaponType" :key="weapon" @click="filterCharacter = weapon">
-          <a class="dropdown-item" :class="{ itemSelected: filterCharacter === weapon }">{{ $t("weaponType." + weapon) }}</a>
+          <a class="dropdown-item" :class="{itemSelected: filterCharacter === weapon}">{{ $t('weaponType.' + weapon) }}</a>
         </li>
         <!-- 地区筛选 -->
-        <li class="filterLable">{{ $t("nation.nation") }}</li>
+        <li class="filterLable">{{ $t('nation.nation') }}</li>
         <li v-for="nation in artiConst.nation" :key="nation" @click="filterCharacter = nation">
-          <a class="dropdown-item" :class="{ itemSelected: filterCharacter === nation }">{{ $t("nation." + nation) }}</a>
+          <a class="dropdown-item" :class="{itemSelected: filterCharacter === nation}">{{ $t('nation.' + nation) }}</a>
         </li>
       </ul>
     </div>
@@ -49,13 +49,13 @@
           class="characterShow"
           v-for="character in characterList"
           :key="character"
-          :class="{ isSelect: selectCharacter === character.name }"
+          :class="{isSelect: selectCharacter === character.name}"
           @click="selectCharacter = character.name"
           @mousedown="clickMethod($event, true)"
           @mouseup="clickMethod($event, false)"
           @mouseleave="clickMethod($event, false)"
         >
-          <div class="avatarBox" :class="{ star_5: character.rarity === 5, star_4: character.rarity === 4, star_sp: character.name === 'Aloy' }">
+          <div class="avatarBox" :class="{star_5: character.rarity === 5, star_4: character.rarity === 4, star_sp: character.name === 'Aloy'}">
             <img src="../assets/images/Background_Symbol.png" alt="symbol" draggable="false" />
             <img :src="avatarSrc(character.name)" :alt="character.name" draggable="false" />
           </div>
@@ -77,25 +77,25 @@
 </template>
 
 <script>
-  import { getCurrentInstance, ref, computed, watch, onMounted, nextTick } from "vue";
-  import BScroll from "@better-scroll/core";
-  import MouseWheel from "@better-scroll/mouse-wheel";
-  import ScrollBar from "@better-scroll/scroll-bar";
+  import {getCurrentInstance, ref, computed, watch, onMounted, nextTick} from 'vue';
+  import BScroll from '@better-scroll/core';
+  import MouseWheel from '@better-scroll/mouse-wheel';
+  import ScrollBar from '@better-scroll/scroll-bar';
   BScroll.use(MouseWheel).use(ScrollBar);
 
   export default {
-    name: "character-list",
+    name: 'character-list',
     props: {
       characterprop: {
         type: String,
-        default: "",
+        default: '',
       },
       mode: {
         type: String,
-        default: "list",
+        default: 'list',
       },
     },
-    emits: ["character"],
+    emits: ['character'],
     setup(props, context) {
       // 获取全局函数
       const globalProperties = getCurrentInstance().appContext.config.globalProperties;
@@ -105,9 +105,9 @@
 
       // 人物列表
       const characterList = ref([]);
-      const selectCharacter = ref(props.characterprop || "");
+      const selectCharacter = ref(props.characterprop || '');
       watch(selectCharacter, val => {
-        context.emit("character", val);
+        context.emit('character', val);
       });
       watch(
         () => props.characterprop,
@@ -116,29 +116,29 @@
         }
       );
       // 人物筛选条件
-      const filterCharacter = ref("default");
+      const filterCharacter = ref('default');
       watch(filterCharacter, val => {
         let filter = val;
-        if (filter === "default") {
+        if (filter === 'default') {
           characterList.value = artiConst.character;
         } else {
           let res = [],
             type;
           if (artiConst.elementType.indexOf(filter) > -1) {
-            type = "element";
+            type = 'element';
           } else if (artiConst.weaponType.indexOf(filter) > -1) {
-            type = "weapon";
+            type = 'weapon';
           } else if (artiConst.nation.indexOf(filter) > -1) {
-            type = "nation";
+            type = 'nation';
           }
           artiConst.character.forEach(el => {
-            if (type === "element" && el["element"].indexOf(filter) > -1) {
+            if (type === 'element' && el['element'].indexOf(filter) > -1) {
               res.push(el);
             } else if (el[type] === filter) res.push(el);
           });
           characterList.value = res;
         }
-        selectCharacter.value = "";
+        selectCharacter.value = '';
       });
       // 填充（flex）
       const fillCount = ref(0);
@@ -154,8 +154,8 @@
         // better scroll初始化
         nextTick(() => {
           // banner模式
-          if (props.mode === "banner") {
-            bannerScroll.value = new BScroll(document.querySelector(".banner-wrapper"), {
+          if (props.mode === 'banner') {
+            bannerScroll.value = new BScroll(document.querySelector('.banner-wrapper'), {
               probeType: 3,
               scrollX: true,
               scrollY: false,
@@ -168,14 +168,14 @@
             });
           } else {
             // 列表模式
-            listScroll.value = new BScroll(document.querySelector(".list-wrapper"), {
+            listScroll.value = new BScroll(document.querySelector('.list-wrapper'), {
               probeType: 3,
               scrollX: false,
               click: true,
               bounceTime: 500,
               mouseWheel: true,
               scrollbar: {
-                customElements: [document.getElementById("vertical")],
+                customElements: [document.getElementById('vertical')],
                 fade: false,
               },
               // 兼容touch与鼠标事件（针对平板等设备）
@@ -187,43 +187,43 @@
       });
 
       const filterShow = computed(() => {
-        if (filterCharacter.value === "default") {
-          return trans("msg.default");
+        if (filterCharacter.value === 'default') {
+          return trans('msg.default');
         } else if (artiConst.elementType.indexOf(filterCharacter.value) > -1) {
-          return trans("element." + filterCharacter.value);
+          return trans('element.' + filterCharacter.value);
         } else if (artiConst.weaponType.indexOf(filterCharacter.value) > -1) {
-          return trans("weaponType." + filterCharacter.value);
+          return trans('weaponType.' + filterCharacter.value);
         } else if (artiConst.nation.indexOf(filterCharacter.value) > -1) {
-          return trans("nation." + filterCharacter.value);
+          return trans('nation.' + filterCharacter.value);
         }
-        return "-NOT FOUND THIS STRING-";
+        return '-NOT FOUND THIS STRING-';
       });
 
       // 点击效果
       const clickMethod = (event, type) => {
         if (type) {
-          event.currentTarget.classList.add("isClick");
+          event.currentTarget.classList.add('isClick');
         } else {
-          event.currentTarget.classList.remove("isClick");
+          event.currentTarget.classList.remove('isClick');
         }
       };
       // 人物头像链接处理
       const avatarSrc = name => {
         try {
-          let src = require(`../assets/images/character/Character_${name.replace(/\s+/g, "_")}_Thumb.png`);
+          let src = require(`../assets/images/character/Character_${name.replace(/\s+/g, '_')}_Thumb.png`);
           return src;
         } catch (error) {
-          return "";
+          return '';
         }
       };
       // 人物侧面头像链接
       const avatarSideSrc = name => {
         let src;
         try {
-          src = require(`../assets/images/avatars_side/${name.replace(/\s+/g, "_")}_side.png`);
+          src = require(`../assets/images/avatars_side/${name.replace(/\s+/g, '_')}_side.png`);
           return src;
         } catch {
-          src = require("../assets/images/genshin_emoji/Icon_Emoji_003_Paimon_Hehe.png");
+          src = require('../assets/images/genshin_emoji/Icon_Emoji_003_Paimon_Hehe.png');
           return src;
         }
       };
@@ -233,7 +233,7 @@
           let src = require(`../assets/images/elements/Element_${name}.png`);
           return src;
         } catch (error) {
-          return "";
+          return '';
         }
       };
 
@@ -254,14 +254,14 @@
     },
     watch: {
       characterList() {
-        if (this.mode !== "banner") this.fillFunc();
+        if (this.mode !== 'banner') this.fillFunc();
       },
     },
     methods: {
       // 计算填充
       fillFunc() {
         let boxWidth = this.$refs.characterBox.offsetWidth;
-        const rem = Number.parseFloat(window.getComputedStyle(document.getElementsByTagName("html")[0]).fontSize.slice(0, -2));
+        const rem = Number.parseFloat(window.getComputedStyle(document.getElementsByTagName('html')[0]).fontSize.slice(0, -2));
         this.itemMax = Math.floor(boxWidth / (4.5 * rem));
         this.fillCount = this.itemMax - (this.characterList.length % this.itemMax);
         if (this.fillCount === this.itemMax) this.fillCount = 0;
@@ -294,7 +294,7 @@
         text-align: center;
 
         &::before {
-          content: "";
+          content: '';
           display: block;
           height: 3rem;
           width: 3rem;
@@ -452,7 +452,7 @@
 
     .dropdown-genshin-toggle {
       &::after {
-        content: "";
+        content: '';
         display: block;
         position: absolute;
         top: 0.875rem;
@@ -492,7 +492,7 @@
 
         .itemSelected {
           &::before {
-            content: "✔";
+            content: '✔';
             display: block;
             float: right;
           }

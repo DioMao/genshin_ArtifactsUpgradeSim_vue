@@ -9,14 +9,14 @@
       </div>
     </div>
     <div class="popup-image" v-if="image !== ''">
-      <div class="isNew">{{ $t("tips.new") }}</div>
+      <div class="isNew">{{ $t('tips.new') }}</div>
     </div>
   </div>
 </template>
 
 <script>
   export default {
-    name: "popup",
+    name: 'popup',
     data() {
       return {
         isShow: false,
@@ -26,7 +26,7 @@
       // 图片src
       image: {
         type: String,
-        default: "",
+        default: '',
       },
       // 是否添加新标签
       new: {
