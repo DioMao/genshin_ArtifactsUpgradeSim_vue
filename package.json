@@ -59,6 +59,10 @@
   },
   "eslintConfig": {
     "root": true,
+    "globals": {
+      "defineProps": "readonly",
+      "defineEmits": "readonly"
+    },
     "env": {
       "node": true
     },
@@ -71,7 +75,15 @@
       "parser": "@typescript-eslint/parser"
     },
     "rules": {
-      "vue/html-end-tags": "error"
+      "vue/html-end-tags": "error",
+      "no-unused-vars": [
+        "off",
+        {
+          "vars": "all",
+          "args": "after-used",
+          "ignoreRestSiblings": false
+        }
+      ]
     }
   },
   "browserslist": [

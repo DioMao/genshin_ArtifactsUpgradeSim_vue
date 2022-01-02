@@ -3,7 +3,7 @@
  * Licensed under GPL3.0 (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/master/LICENSE)
  */
 
-import {createApp} from 'vue';
+import {createApp, ComponentCustomProperties} from 'vue';
 import store from './store/store';
 import router from './router/router';
 import App from './App.vue';
@@ -42,3 +42,13 @@ initArtifactSim()
   });
 
 // router.isReady().then(app.mount("#app"));
+
+// declare
+declare module '@vue/runtime-core' {
+  interface ComponentCustomProperties {
+    $axios: typeof axios;
+    $artifact: typeof ArtifactsSim;
+    $db: typeof IDB;
+    $artiConst: typeof artiConst;
+  }
+}

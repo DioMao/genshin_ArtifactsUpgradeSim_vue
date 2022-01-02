@@ -98,7 +98,7 @@
       characterEquip,
     },
     setup(props) {
-      const globalProperties = getCurrentInstance().appContext.config.globalProperties;
+      const globalProperties = getCurrentInstance().proxy;
       const artifactFunc = globalProperties.$artifact;
       const artiConst = globalProperties.$artiConst.val;
       // const db = globalProperties.$db;

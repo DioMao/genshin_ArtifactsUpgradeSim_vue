@@ -30,7 +30,7 @@
     },
     setup(props) {
       // 获取全局函数
-      const globalProperties = getCurrentInstance().appContext.config.globalProperties;
+      const globalProperties = getCurrentInstance().proxy;
       // const store = useStore().state;
       const artifactFunc = globalProperties.$artifact;
 

@@ -53,7 +53,13 @@
       <!-- 圣遗物信息 -->
       <div class="artifactDetailBox">
         <!-- 圣遗物信息（当前人物没有装备或正在使用该圣遗物时显示） -->
-        <artifact-show
+        <ArtifactDetailCard
+          :artifact="artifact"
+          @lock="lockChange"
+          v-if="JSON.stringify(artifact) !== '{}'"
+          v-show="this.oldArtifact === undefined || isSame"
+        />
+        <!-- <artifact-show
           :showdetail="artifact"
           :language="language"
           :showButton="false"
@@ -61,8 +67,7 @@
           @lock="lockChange"
           v-if="JSON.stringify(artifact) !== '{}'"
           v-show="this.oldArtifact === undefined || isSame"
-        >
-        </artifact-show>
+        /> -->
         <!-- 属性变更信息（更换不同圣遗物时显示） -->
         <div class="comparedBox" v-show="!(this.oldArtifact === undefined) && !isSame">
           <div class="oldName">{{ oldArtifactName }}</div>
@@ -92,6 +97,7 @@
 </template>
 
 <script>
+  import ArtifactDetailCard from '@/components/ArtifactPart/ArtifactDetailCard.vue';
   import artifactShow from '../components/artifact-show';
   import characterList from '../components/character-list';
   import '@/style/stars.css';
@@ -101,12 +107,13 @@
   export default {
     props: ['symbol'],
     components: {
-      artifactShow,
+      // artifactShow,
       characterList,
+      ArtifactDetailCard,
     },
     setup(props) {
       // 获取全局函数
-      const globalProperties = getCurrentInstance().appContext.config.globalProperties;
+      const globalProperties = getCurrentInstance().proxy;
       const artifactFunc = globalProperties.$artifact;
       const artiConst = globalProperties.$artiConst.val;
       const trans = globalProperties.$t;

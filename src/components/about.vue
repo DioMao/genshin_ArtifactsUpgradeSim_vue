@@ -34,12 +34,7 @@
   </div>
 </template>
 
-<script>
-  export default {
-    name: 'about',
-    setup() {},
-  };
-</script>
+<script lang="ts" setup></script>
 
 <style lang="scss" scoped>
   .about-bg {
