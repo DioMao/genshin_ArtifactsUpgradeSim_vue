@@ -41,19 +41,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts" setup>
   import {useStore} from 'vuex';
 
-  export default {
-    name: 'score-setting',
-    setup() {
-      const store = useStore();
-      const userSetting = store.state.userSetting;
-      return {
-        userSetting,
-      };
-    },
-  };
+  const store = useStore();
+  const userSetting = store.state.userSetting;
 </script>
 
 <style lang="scss" scoped></style>

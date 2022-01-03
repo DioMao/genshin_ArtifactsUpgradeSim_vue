@@ -18,70 +18,56 @@
   </div>
 </template>
 
-<script>
-  import {computed, getCurrentInstance, ref, watch} from 'vue';
+<script lang="ts" setup>
+  import {computed, getCurrentInstance, ref, watch, withDefaults} from 'vue';
   // import { useStore } from "vuex";
 
-  export default {
-    name: 'artifact-score',
-    props: {
-      rule: {
-        type: [String, Array],
-        default: 'default',
-      },
-      artifact: {
-        default: '',
-      },
-      highscore: {
-        default: 35,
-      },
-    },
-    setup(props) {
-      // 获取全局函数
-      const globalProperties = getCurrentInstance().proxy;
-      // const store = useStore().state;
-      const artifactFunc = globalProperties.$artifact;
-      const artiConst = globalProperties.$artiConst.val;
+  export interface ArtifactScoreProps {
+    rule?: string | string[];
+    artifact?: string;
+    highscore?: number;
+  }
 
-      const language = ref('');
-      const currentEntry = ref([]);
-      const symbol = ref('');
+  const props = withDefaults(defineProps<ArtifactScoreProps>(), {
+    // @ts-ignore
+    rule: 'default',
+    artifact: '',
+    highscore: 35,
+  });
+  // 获取全局函数
+  const globalProperties = getCurrentInstance()!.proxy;
+  // const store = useStore().state;
+  const artifactFunc = globalProperties!.$artifact;
+  const artiConst = globalProperties!.$artiConst.val;
 
-      watch(
-        () => props.artifact,
-        val => {
-          if (val !== '' && val !== undefined) {
-            currentEntry.value = JSON.parse(val).entry;
-            symbol.value = JSON.parse(val).symbol;
-          }
-        }
-      );
+  const language = ref('');
+  const currentEntry = ref([]);
+  const symbol = ref('');
 
-      const isHighScore = computed(() => {
-        return Number.parseFloat(ArtifactRate(symbol.value)) >= Number.parseFloat(props.highscore);
-      });
+  watch(
+    () => props.artifact,
+    val => {
+      if (val !== '' && val !== undefined) {
+        currentEntry.value = JSON.parse(val).entry;
+        symbol.value = JSON.parse(val).symbol;
+      }
+    }
+  );
 
-      // 圣遗物评分
-      const ArtifactRate = symbol => {
-        return artifactFunc.ArtifactScore(symbol, props.rule).toFixed(2);
-      };
-      // 进度条
-      const entryProgess = (entry, value) => {
-        let entryValueList = artiConst.entryValue[entry];
-        if (entryValueList !== undefined) {
-          return Math.floor((value / (entryValueList[entryValueList.length - 1] * 6)) * 100);
-        }
-      };
+  const isHighScore = computed(() => {
+    return Number.parseFloat(ArtifactRate(symbol.value)) >= props.highscore!;
+  });
 
-      return {
-        language,
-        currentEntry,
-        symbol,
-        isHighScore,
-        ArtifactRate,
-        entryProgess,
-      };
-    },
+  // 圣遗物评分
+  const ArtifactRate = (symbol: string) => {
+    return artifactFunc.ArtifactScore(symbol, props.rule).toFixed(2);
+  };
+  // 进度条
+  const entryProgess = (entry: string, value: number) => {
+    let entryValueList = artiConst.entryValue[entry];
+    if (entryValueList !== undefined) {
+      return Math.floor((value / (entryValueList[entryValueList.length - 1] * 6)) * 100);
+    }
   };
 </script>
 

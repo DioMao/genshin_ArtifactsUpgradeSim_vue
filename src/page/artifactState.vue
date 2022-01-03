@@ -21,7 +21,7 @@
   </button>
   <div class="equip-box" :class="{'equip-box-hide': !equipShow}" @click="equipShow = !equipShow">
     <div>{{ $t('msg.equipped') }}:</div>
-    <character-equip :character="selectCharacter"></character-equip>
+    <CharacterEquip :character="selectCharacter"></CharacterEquip>
   </div>
   <div class="state-container" :class="'bg-' + characterElement">
     <!-- 人物展示 -->
@@ -85,7 +85,7 @@
   import {getCurrentInstance, onMounted, ref, watch} from 'vue';
   // import { useStore } from "vuex";
   import characterList from '../components/character-list';
-  import characterEquip from '../components/character-equip';
+  import CharacterEquip from '@/components/CharacterPart/CharacterEquip.vue';
   export default {
     props: {
       name: {
@@ -95,7 +95,7 @@
     },
     components: {
       characterList,
-      characterEquip,
+      CharacterEquip,
     },
     setup(props) {
       const globalProperties = getCurrentInstance().proxy;

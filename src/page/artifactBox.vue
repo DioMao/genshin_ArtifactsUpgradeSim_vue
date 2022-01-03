@@ -461,9 +461,9 @@
     </div>
   </div>
   <!-- 评分设置 -->
-  <ScoreSetting></ScoreSetting>
+  <ScoreSetting />
   <!-- 关于信息 -->
-  <About></About>
+  <About />
 </template>
 
 <script>
@@ -471,9 +471,9 @@
   import ArtifactShow from '../components/artifact-show.vue';
   import Popup from '../components/popup.vue';
   import ArtifactList from '../components/artifact-list.vue';
-  import ArtifactScore from '../components/artifact-score.vue';
+  import ArtifactScore from '../components/ArtifactPart/ArtifactScore.vue';
   import ScoreSetting from '../components/score-setting.vue';
-  import About from '../components/about.vue';
+  import About from '../components/About.vue';
   // bootstrap相关
   import 'bootstrap/js/dist/alert';
   import 'bootstrap/js/dist/modal';

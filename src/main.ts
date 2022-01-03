@@ -3,7 +3,7 @@
  * Licensed under GPL3.0 (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/master/LICENSE)
  */
 
-import {createApp, ComponentCustomProperties} from 'vue';
+import {createApp} from 'vue';
 import store from './store/store';
 import router from './router/router';
 import App from './App.vue';

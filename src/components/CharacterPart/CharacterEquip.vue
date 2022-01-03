@@ -3,14 +3,14 @@
     <div v-for="(artifact, key) in equipArtifact" :key="'character_equip_' + key">
       <div class="artifact-equip-box" v-if="artifact">
         <div class="genshin-item-box star-5">
-          <img src="../assets/images/Background_Symbol.png" alt="symbol" draggable="false" />
+          <img src="@/assets/images/Background_Symbol.png" alt="symbol" draggable="false" />
           <img :src="setUrl(artifact.symbol)" :alt="artifact.symbol" draggable="false" />
         </div>
         <div class="lvBox">+{{ artifact.level }}</div>
       </div>
       <div class="artifact-equip-box" v-else>
         <div class="genshin-item-box none-box">
-          <img src="../assets/images/Background_Symbol.png" alt="symbol" draggable="false" />
+          <img src="@/assets/images/Background_Symbol.png" alt="symbol" draggable="false" />
         </div>
         <div class="lvBox">&nbsp;</div>
       </div>
@@ -18,47 +18,32 @@
   </div>
 </template>
 
-<script>
+<script lang="ts" setup>
   import {computed, getCurrentInstance} from 'vue';
-  export default {
-    name: 'character-equip',
-    props: {
-      character: {
-        type: String,
-        default: '',
-      },
-    },
-    setup(props) {
-      // 获取全局函数
-      const globalProperties = getCurrentInstance().proxy;
-      // const store = useStore().state;
-      const artifactFunc = globalProperties.$artifact;
 
-      const equipArtifact = computed(() => {
-        // 当前人物装备
-        let characterSet = artifactFunc.getSet(props.character) || {name: '', Plume: '', Flower: '', Sands: '', Circlet: '', Goblet: ''};
-        let artifacts_obj = {};
-        for (let key in characterSet) {
-          const symbol = characterSet[key];
-          if (key === 'name') continue;
-          artifacts_obj[key] = artifactFunc.getArtifact(symbol);
-        }
-        return artifacts_obj;
-      });
+  const props = defineProps<{character: string}>();
+  // 获取全局函数
+  const globalProperties = getCurrentInstance()!.proxy;
+  // const store = useStore().state;
+  const artifactFunc = globalProperties!.$artifact;
 
-      const artifactName = symbol => artifactFunc.getArtifactName(symbol);
-      const setUrl = symbol => {
-        let item = artifactFunc.getArtifact(symbol),
-          src = require(`../assets/images/Artifacts/${item.set.replace(/\s+/g, '')}/${item.part}.png`);
-        return src;
-      };
+  const equipArtifact = computed(() => {
+    // 当前人物装备
+    let characterSet = artifactFunc.getSet(props.character) || {name: '', Plume: '', Flower: '', Sands: '', Circlet: '', Goblet: ''};
+    let artifacts_obj: {[key: string]: any} = {};
+    for (let key in characterSet) {
+      const symbol = characterSet[key];
+      if (key === 'name') continue;
+      artifacts_obj[key] = artifactFunc.getArtifact(symbol);
+    }
+    return artifacts_obj;
+  });
 
-      return {
-        equipArtifact,
-        artifactName,
-        setUrl,
-      };
-    },
+  // const artifactName = (symbol: string) => artifactFunc.getArtifactName(symbol);
+  const setUrl = (symbol: string) => {
+    let item = artifactFunc.getArtifact(symbol),
+      src = require(`@/assets/images/Artifacts/${item!.set.replace(/\s+/g, '')}/${item!.part}.png`);
+    return src;
   };
 </script>
 
