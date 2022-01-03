@@ -1,5 +1,5 @@
 /**
- * ArtifactsUpgradeSim v0.2.4 module
+ * ArtifactsUpgradeSim v0.2.5 module
  * Copyrigth 2021-2022 DioMao (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/graphs/contributors)
  * Licensed under GPL3.0 (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/master/LICENSE)
  */
@@ -50,7 +50,7 @@ class ArtifactsFunction_class {
   readonly LIST_LIMIT: number = 2000;
   readonly SET_LIST_LIMIT: number = 100;
   readonly AUTHOR: string = 'DioMao';
-  readonly VERSION: string = '0.2.4';
+  readonly VERSION: string = '0.2.5';
 
   constructor() {}
 
@@ -779,7 +779,7 @@ class ArtifactsFunction_class {
     newSet.Circlet = '';
     newSet.Goblet = '';
     this.SET_LIST.push(newSet);
-    IDB.CUSTOM_SET.put(newSet);
+    IDB.CUSTOM_SET.add(newSet);
     return true;
   }
 
@@ -956,7 +956,7 @@ class ArtifactsFunction_class {
    * @param {string} name 需要计算属性的套装名称
    * @returns 套装属性
    */
-  getSetState(name: string) {
+  getSetState(name: string): {[key: string]: number} {
     const index = this.getSetIndex(name);
     const state = Object.create(null);
     const entryList = Array.from(new Set([...artiConst.val.entryList, ...artiConst.val.mainEntryList]));

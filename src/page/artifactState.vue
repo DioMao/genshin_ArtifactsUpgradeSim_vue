@@ -21,7 +21,7 @@
   </button>
   <div class="equip-box" :class="{'equip-box-hide': !equipShow}" @click="equipShow = !equipShow">
     <div>{{ $t('msg.equipped') }}:</div>
-    <CharacterEquip :character="selectCharacter"></CharacterEquip>
+    <CharacterEquip :character="selectCharacter" />
   </div>
   <div class="state-container" :class="'bg-' + characterElement">
     <!-- 人物展示 -->
@@ -29,7 +29,7 @@
       <div class="characterName">{{ $t('element.' + characterElement) }} / {{ $t('name.' + selectCharacter) }}</div>
       <div class="btn btn-genshin show-button" @click="equipShow = !equipShow">{{ $t('msg.equipped') }}</div>
     </div>
-    <character-list mode="banner" @character="characterChange" :characterprop="selectCharacter"></character-list>
+    <character-list mode="banner" @character="characterChange" :characterprop="selectCharacter" />
     <!-- 属性展示 -->
     <div class="stateShowBox">
       <!-- 基础属性 -->
@@ -84,7 +84,7 @@
 <script>
   import {getCurrentInstance, onMounted, ref, watch} from 'vue';
   // import { useStore } from "vuex";
-  import characterList from '../components/character-list';
+  import CharacterList from '@/components/character-list.vue';
   import CharacterEquip from '@/components/CharacterPart/CharacterEquip.vue';
   export default {
     props: {
@@ -94,7 +94,7 @@
       },
     },
     components: {
-      characterList,
+      CharacterList,
       CharacterEquip,
     },
     setup(props) {
@@ -338,6 +338,7 @@
 
       &:hover::before {
         border: solid 0.1875rem $genshin_gray_light;
+        transition: 0s;
       }
 
       &::after {
