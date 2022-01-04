@@ -3,7 +3,7 @@
     <div class="msg">{{ $t('tips.notFound') }}</div>
     <div class="aniBox">
       <div ref="anicontainer" :class="{jellohorizontal: animation}" @click="animation = true">
-        <img src="../assets/images/genshin_emoji/Icon_Emoji_005_Paimon_Surprised.png" alt="404 not found" draggable="false" />
+        <img src="@/assets/images/genshin_emoji/Icon_Emoji_005_Paimon_Surprised.png" alt="404 not found" draggable="false" />
       </div>
     </div>
     <router-link to="/">

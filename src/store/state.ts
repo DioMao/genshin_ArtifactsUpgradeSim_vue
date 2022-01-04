@@ -3,7 +3,7 @@ export default <VuexStateType>{
   selectHistory: '',
   language: 'zh',
   // 图片位置
-  symbolSrc: require('../assets/images/genshin-symbol.png'),
+  symbolSrc: require('@/assets/images/genshin-symbol.png'),
   // 用户设置
   userSetting: {
     // 圣遗物得分设置

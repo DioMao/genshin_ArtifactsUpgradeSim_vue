@@ -1,7 +1,7 @@
 <template>
   <DemoAlert :state="alertFunc.alertState" :show="alertFunc.alertShow">{{ alertFunc.alertMsg }}</DemoAlert>
   <div class="main-container">
-    <img class="main-container-bg" src="../assets/images/genshin-symbol.png" alt="background_image" draggable="false" />
+    <img class="main-container-bg" src="@/assets/images/genshin-symbol.png" alt="background_image" draggable="false" />
     <div class="countShow float-end">
       {{ $t('term.artifacts') }}
       <span :style="{color: $artifact.AUSList.length === $artifact.maxCount ? 'red' : ''}">{{ $artifact.AUSList.length }}/{{ $artifact.maxCount }}</span>
@@ -12,10 +12,10 @@
     </Popup>
     <div class="partFilterBox">
       <div @click="userSetting.filterPart = 'default'" :class="{part_actived: userSetting.filterPart === 'default'}">
-        <img src="../assets/images/Icon_Artifacts.png" alt="default" draggable="false" />
+        <img src="@/assets/images/Icon_Artifacts.png" alt="default" draggable="false" />
       </div>
       <div v-for="part in $artiConst.val.parts" :key="part" @click="userSetting.filterPart = part" :class="{part_actived: userSetting.filterPart === part}">
-        <img :src="require(`../assets/images/Icon_${part}.png`)" :alt="part" draggable="false" />
+        <img :src="require(`@/assets/images/Icon_${part}.png`)" :alt="part" draggable="false" />
       </div>
     </div>
     <!-- 筛选提示框 -->
@@ -467,13 +467,13 @@
 </template>
 
 <script>
-  import DemoAlert from '../components/demo-alert.vue';
-  import ArtifactShow from '../components/artifact-show.vue';
-  import Popup from '../components/popup.vue';
-  import ArtifactList from '../components/artifact-list.vue';
-  import ArtifactScore from '../components/ArtifactPart/ArtifactScore.vue';
-  import ScoreSetting from '../components/score-setting.vue';
-  import About from '../components/About.vue';
+  import DemoAlert from '@/components/demo-alert.vue';
+  import ArtifactShow from '@/components/artifact-show.vue';
+  import Popup from '@/components/popup.vue';
+  import ArtifactList from '@/components/artifact-list.vue';
+  import ArtifactScore from '@/components/ArtifactPart/ArtifactScore.vue';
+  import ScoreSetting from '@/components/score-setting.vue';
+  import About from '@/components/About.vue';
   // bootstrap相关
   import 'bootstrap/js/dist/alert';
   import 'bootstrap/js/dist/modal';
@@ -1060,7 +1060,7 @@
     height: 26.875rem;
     overflow-y: scroll;
     background-color: rgba(61, 69, 86, 0.98) !important;
-    background-image: url(../assets/images/genshin-symbol.png);
+    background-image: url(~@/assets/images/genshin-symbol.png);
     background-repeat: no-repeat;
     background-size: contain;
     background-position-y: 50%;

@@ -779,7 +779,9 @@ class ArtifactsFunction_class {
     newSet.Circlet = '';
     newSet.Goblet = '';
     this.SET_LIST.push(newSet);
-    IDB.CUSTOM_SET.add(newSet);
+    IDB.CUSTOM_SET.add(newSet).catch((error)=>{
+      // 当前数据库已经存在数据时操作
+    });
     return true;
   }
 

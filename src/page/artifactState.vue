@@ -357,109 +357,109 @@
     // 属性图标
     .stat-HPPer {
       &::after {
-        background-image: url(../assets/images/stats_icon/Icon_HPPer.png);
+        background-image: url(~@/assets/images/stats_icon/Icon_HPPer.png);
       }
     }
 
     .stat-ATKPer {
       &::after {
-        background-image: url(../assets/images/stats_icon/Icon_ATKPer.png);
+        background-image: url(~@/assets/images/stats_icon/Icon_ATKPer.png);
       }
     }
 
     .stat-DEFPer {
       &::after {
-        background-image: url(../assets/images/stats_icon/Icon_DEFPer.png);
+        background-image: url(~@/assets/images/stats_icon/Icon_DEFPer.png);
       }
     }
 
     .stat-elementMastery {
       &::after {
-        background-image: url(../assets/images/stats_icon/Icon_elementMastery.png);
+        background-image: url(~@/assets/images/stats_icon/Icon_elementMastery.png);
       }
     }
 
     .stat-stamina {
       &::after {
-        background-image: url(../assets/images/stats_icon/Icon_stamina.png);
+        background-image: url(~@/assets/images/stats_icon/Icon_stamina.png);
       }
     }
 
     .stat-CRITRate {
       &::after {
-        background-image: url(../assets/images/stats_icon/Icon_CRITRate.png);
+        background-image: url(~@/assets/images/stats_icon/Icon_CRITRate.png);
       }
     }
 
     .stat-Healing {
       &::after {
-        background-image: url(../assets/images/stats_icon/Icon_Healing.png);
+        background-image: url(~@/assets/images/stats_icon/Icon_Healing.png);
       }
     }
 
     .stat-energyRecharge {
       &::after {
-        background-image: url(../assets/images/stats_icon/Icon_energyRecharge.png);
+        background-image: url(~@/assets/images/stats_icon/Icon_energyRecharge.png);
       }
     }
 
     .stat-CD {
       &::after {
-        background-image: url(../assets/images/stats_icon/Icon_CD.png);
+        background-image: url(~@/assets/images/stats_icon/Icon_CD.png);
       }
     }
 
     .stat-Shield {
       &::after {
-        background-image: url(../assets/images/stats_icon/Icon_Shield.png);
+        background-image: url(~@/assets/images/stats_icon/Icon_Shield.png);
       }
     }
 
     .stat-Pyro {
       &::after {
-        background-image: url(../assets/images/stats_icon/Icon_Pyro.png);
+        background-image: url(~@/assets/images/stats_icon/Icon_Pyro.png);
       }
     }
 
     .stat-Hydro {
       &::after {
-        background-image: url(../assets/images/stats_icon/Icon_Hydro.png);
+        background-image: url(~@/assets/images/stats_icon/Icon_Hydro.png);
       }
     }
 
     .stat-Anemo {
       &::after {
-        background-image: url(../assets/images/stats_icon/Icon_Anemo.png);
+        background-image: url(~@/assets/images/stats_icon/Icon_Anemo.png);
       }
     }
 
     .stat-Electro {
       &::after {
-        background-image: url(../assets/images/stats_icon/Icon_Electro.png);
+        background-image: url(~@/assets/images/stats_icon/Icon_Electro.png);
       }
     }
 
     .stat-Dendro {
       &::after {
-        background-image: url(../assets/images/stats_icon/Icon_Dendro.png);
+        background-image: url(~@/assets/images/stats_icon/Icon_Dendro.png);
       }
     }
 
     .stat-Cryo {
       &::after {
-        background-image: url(../assets/images/stats_icon/Icon_Cryo.png);
+        background-image: url(~@/assets/images/stats_icon/Icon_Cryo.png);
       }
     }
 
     .stat-Geo {
       &::after {
-        background-image: url(../assets/images/stats_icon/Icon_Geo.png);
+        background-image: url(~@/assets/images/stats_icon/Icon_Geo.png);
       }
     }
 
     .stat-Physical {
       &::after {
-        background-image: url(../assets/images/stats_icon/Icon_Physical.png);
+        background-image: url(~@/assets/images/stats_icon/Icon_Physical.png);
       }
     }
   }

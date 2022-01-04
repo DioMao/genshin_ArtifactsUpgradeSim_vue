@@ -204,7 +204,7 @@
       height: 8.4375rem;
       padding: 0.3125rem 1rem 0.5625rem;
       background-image: linear-gradient(to bottom right, rgba(110, 72, 72, 0.5) 15%, rgba(225, 125, 40, 0.5), rgba(255, 175, 45, 0.7) 95%),
-        url(../../assets/images/item_bg.png);
+        url(~@/assets/images/item_bg.png);
       background-size: auto 8.25rem, 100%;
       background-position-y: 0, 0;
 
@@ -300,7 +300,7 @@
             top: 0.0625rem;
             left: -0.875rem;
             color: rgb(113, 119, 130);
-            background-image: url(../../assets/svg/ban.svg);
+            background-image: url(~@/assets/svg/ban.svg);
             background-size: cover;
             height: 0.75rem;
             width: 0.75rem;
@@ -317,7 +317,7 @@
             top: 0.0625rem;
             left: -0.875rem;
             color: $genshin_green;
-            background-image: url(../../assets/svg/correct.svg);
+            background-image: url(~@/assets/svg/correct.svg);
             background-size: cover;
             height: 0.75rem;
             width: 0.75rem;
@@ -330,7 +330,7 @@
         inset: auto 0 0 0;
         height: 3.5rem;
         width: 100%;
-        background-image: url(../../assets/svg/star_2.svg);
+        background-image: url(~@/assets/svg/star_2.svg);
         background-size: 1.75rem;
       }
 

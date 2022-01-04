@@ -71,7 +71,7 @@
         <!-- 属性变更信息（更换不同圣遗物时显示） -->
         <div class="comparedBox" v-show="!(this.oldArtifact === undefined) && !isSame">
           <div class="oldName">{{ oldArtifactName }}</div>
-          <div class="newName"><img src="../assets/images/Arrow.png" alt="Arrow" draggable="false" /> {{ artifactName }}</div>
+          <div class="newName"><img src="@/assets/images/Arrow.png" alt="Arrow" draggable="false" /> {{ artifactName }}</div>
           <div class="setChange">{{ $t('msg.setChange') }}</div>
           <div class="setChangeInfo">
             <span v-if="JSON.stringify(setBonusChange) === '{}'">{{ $t('msg.noChanges') }}</span>
@@ -98,8 +98,8 @@
 
 <script>
   import ArtifactDetailCard from '@/components/ArtifactPart/ArtifactDetailCard.vue';
-  import artifactShow from '../components/artifact-show';
-  import characterList from '../components/character-list';
+  // import artifactShow from '@/components/artifact-show';
+  import characterList from '@/components/character-list';
   import '@/style/stars.css';
   import {getCurrentInstance, ref, watch} from 'vue';
   import {useRouter} from 'vue-router';
@@ -534,7 +534,7 @@
       left: -100%;
       height: 100%;
       width: 300%;
-      background-image: url(../assets/images/fog.png);
+      background-image: url(~@/assets/images/fog.png);
       background-size: 125rem 75rem;
       filter: sepia(1);
     }

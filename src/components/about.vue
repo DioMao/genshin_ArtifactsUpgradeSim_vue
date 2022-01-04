@@ -38,7 +38,7 @@
 
 <style lang="scss" scoped>
   .about-bg {
-    background-image: url(../assets/images/genshin_emoji/Icon_Emoji_024_Keqing_Good_Night.png);
+    background-image: url(~@/assets/images/genshin_emoji/Icon_Emoji_024_Keqing_Good_Night.png);
     background-repeat: no-repeat;
     background-size: 10rem;
     background-position: 90% center;

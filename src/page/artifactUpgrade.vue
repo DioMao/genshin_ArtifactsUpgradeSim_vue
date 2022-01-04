@@ -66,7 +66,7 @@
           <div class="upgradeSuccess ani-upSuccess">{{ $t('handle.upSuccess') }}</div>
           <div class="upgradeImgBox ani-ArtifactShow">
             <div class="upgradeImg">
-              <img src="../assets/images/Background_Symbol.png" alt="symbol" draggable="false" />
+              <img src="@/assets/images/Background_Symbol.png" alt="symbol" draggable="false" />
               <img :src="setUrl" :alt="Artifact.part" draggable="false" />
               <div class="islock" v-if="Artifact.lock">
                 <svg
@@ -185,14 +185,14 @@
     mounted() {
       if (this.$artifact.getIndex(this.symbol) === -1) {
         this.Artifact = this.$artifact.getArtifact(this.symbol);
-        this.setUrl = require(`../assets/images/Artifacts/${this.Artifact.set.replace(/\s+/g, '')}/${this.Artifact.part}.png`);
+        this.setUrl = require(`@/assets/images/Artifacts/${this.Artifact.set.replace(/\s+/g, '')}/${this.Artifact.part}.png`);
       } else {
         // 验证圣遗物是否存在，否则跳转回列表（防止url直接访问出错）
         if (this.$artifact.getArtifact(this.symbol) === undefined) {
           this.$router.replace('/');
         } else {
           this.Artifact = this.$artifact.getArtifact(this.symbol);
-          this.setUrl = require(`../assets/images/Artifacts/${this.Artifact.set.replace(/\s+/g, '')}/${this.Artifact.part}.png`);
+          this.setUrl = require(`@/assets/images/Artifacts/${this.Artifact.set.replace(/\s+/g, '')}/${this.Artifact.part}.png`);
         }
       }
       // 读取语言设置
@@ -360,7 +360,7 @@
       left: -100%;
       height: 100%;
       width: 300%;
-      background-image: url(../assets/images/fog.png);
+      background-image: url(~@/assets/images/fog.png);
       background-size: 125rem 75rem;
       filter: sepia(1);
     }

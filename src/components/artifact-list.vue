@@ -178,7 +178,7 @@
       imgUrl(symbol) {
         try {
           let item = this.$artifact.getArtifact(symbol),
-            src = require(`../assets/images/Artifacts/${item.set.replace(/\s+/g, '')}/${item.part}.png`);
+            src = require(`@/assets/images/Artifacts/${item.set.replace(/\s+/g, '')}/${item.part}.png`);
           return src;
         } catch (error) {
           console.log(error);
@@ -190,10 +190,10 @@
         if (equipped) {
           let src;
           try {
-            src = require(`../assets/images/avatars_side/${equipped.replace(/\s+/g, '_')}_side.png`);
+            src = require(`@/assets/images/avatars_side/${equipped.replace(/\s+/g, '_')}_side.png`);
             return src;
           } catch {
-            src = require('../assets/images/genshin_emoji/Icon_Emoji_003_Paimon_Hehe.png');
+            src = require('@/assets/images/genshin_emoji/Icon_Emoji_003_Paimon_Hehe.png');
             return src;
           }
         }
@@ -444,7 +444,7 @@
       .levelStar {
         height: 1rem;
         width: 5rem;
-        background-image: url(../assets/svg/star.svg);
+        background-image: url(~@/assets/svg/star.svg);
       }
 
       .mobileShow {

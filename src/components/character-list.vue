@@ -56,7 +56,7 @@
           @mouseleave="clickMethod($event, false)"
         >
           <div class="avatarBox" :class="{star_5: character.rarity === 5, star_4: character.rarity === 4, star_sp: character.name === 'Aloy'}">
-            <img src="../assets/images/Background_Symbol.png" alt="symbol" draggable="false" />
+            <img src="@/assets/images/Background_Symbol.png" alt="symbol" draggable="false" />
             <img :src="avatarSrc(character.name)" :alt="character.name" draggable="false" />
           </div>
           <img class="elementImg" :src="elementSrc(character.element[0])" :alt="character.element[0]" draggable="false" />
@@ -210,7 +210,7 @@
       // 人物头像链接处理
       const avatarSrc = name => {
         try {
-          let src = require(`../assets/images/character/Character_${name.replace(/\s+/g, '_')}_Thumb.png`);
+          let src = require(`@/assets/images/character/Character_${name.replace(/\s+/g, '_')}_Thumb.png`);
           return src;
         } catch (error) {
           return '';
@@ -220,17 +220,17 @@
       const avatarSideSrc = name => {
         let src;
         try {
-          src = require(`../assets/images/avatars_side/${name.replace(/\s+/g, '_')}_side.png`);
+          src = require(`@/assets/images/avatars_side/${name.replace(/\s+/g, '_')}_side.png`);
           return src;
         } catch {
-          src = require('../assets/images/genshin_emoji/Icon_Emoji_003_Paimon_Hehe.png');
+          src = require('@/assets/images/genshin_emoji/Icon_Emoji_003_Paimon_Hehe.png');
           return src;
         }
       };
       // 元素图片链接处理
       const elementSrc = name => {
         try {
-          let src = require(`../assets/images/elements/Element_${name}.png`);
+          let src = require(`@/assets/images/elements/Element_${name}.png`);
           return src;
         } catch (error) {
           return '';
