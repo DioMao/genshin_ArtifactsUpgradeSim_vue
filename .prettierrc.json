@@ -6,5 +6,6 @@
   "vueIndentScriptAndStyle": true,
   "arrowParens": "avoid",
   "quoteProps": "consistent",
-  "bracketSpacing": false
+  "bracketSpacing": false,
+  "endOfLine": "lf"
 }

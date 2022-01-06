@@ -93,5 +93,8 @@
     "last 2 versions",
     "not dead"
   ],
-  "license": "GPL-3.0"
+  "license": "GPL-3.0",
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  }
 }
