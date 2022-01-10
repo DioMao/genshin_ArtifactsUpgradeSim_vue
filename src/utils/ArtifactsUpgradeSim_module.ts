@@ -748,7 +748,7 @@ class ArtifactsFunction_class {
       this.AUS_LIST.length = 0;
       this.AUS_LIST = data;
       this.enforceUpdateCount();
-      this.asyncSetList();
+      this.syncSetList();
       IDB.ARTIFACT_LIST.clear().then(() => {
         IDB.ARTIFACT_LIST.bulkAdd(this.AUS_LIST);
       });
@@ -779,7 +779,7 @@ class ArtifactsFunction_class {
     newSet.Circlet = '';
     newSet.Goblet = '';
     this.SET_LIST.push(newSet);
-    IDB.CUSTOM_SET.add(newSet).catch((error)=>{
+    IDB.CUSTOM_SET.add(newSet).catch(error => {
       // 当前数据库已经存在数据时操作
     });
     return true;
@@ -944,7 +944,7 @@ class ArtifactsFunction_class {
   /**
    * 同步人物装备信息（防止数据冲突）
    */
-  asyncSetList() {
+  syncSetList() {
     // 遍历圣遗物列表
     for (const item of this.AUS_LIST) {
       if (item.equipped) {

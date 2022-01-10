@@ -91,6 +91,7 @@ export default {
     enhancedRank: 'Enhanced Rank',
     download: 'Download',
     upload: 'Upload',
+    syncCharacterData: 'Sync Data',
   },
   term: {
     artifacts: 'Artifacts',

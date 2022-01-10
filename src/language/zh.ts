@@ -91,6 +91,7 @@ export default {
     enhancedRank: '强化幅度',
     download: '下载',
     upload: '上传',
+    syncCharacterData: '装备更新',
   },
   term: {
     artifacts: '圣遗物',
