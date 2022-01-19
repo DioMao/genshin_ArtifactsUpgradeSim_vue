@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use strict';
 
 import {app, protocol, BrowserWindow} from 'electron';
