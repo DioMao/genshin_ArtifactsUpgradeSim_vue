@@ -1,5 +1,12 @@
 # ArtifactsUpgradeSim | 圣遗物强化模拟器
 
+![GitHub package.json version](https://img.shields.io/github/package-json/v/DioMao/genshin_ArtifactsUpgradeSim_vue)
+![GitHub top language](https://img.shields.io/github/languages/top/DioMao/genshin_ArtifactsUpgradeSim_vue)
+![GitHub last commit](https://img.shields.io/github/last-commit/DioMao/genshin_ArtifactsUpgradeSim_vue)
+![GitHub repo size](https://img.shields.io/github/repo-size/DioMao/genshin_ArtifactsUpgradeSim_vue)
+![GitHub](https://img.shields.io/github/license/DioMao/genshin_ArtifactsUpgradeSim_vue)
+![GitHub Repo stars](https://img.shields.io/github/stars/DioMao/genshin_ArtifactsUpgradeSim_vue?style=social)
+
 部分界面：
 
 ![image](https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/master/screenshot/screenshot_1.jpg)
