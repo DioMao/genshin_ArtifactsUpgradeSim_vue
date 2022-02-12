@@ -206,6 +206,7 @@ export default {
     'Qiqi': 'Qiqi',
     'Raiden Shogun': 'Raiden Shogun',
     'Sangonomiya Kokomi': 'Sangonomiya Kokomi',
+    'Shenhe': 'Shenhe',
     'Tartaglia': 'Tartaglia',
     'Aether': 'Aether',
     'Lumine': 'Lumine',
@@ -235,6 +236,7 @@ export default {
     'Xingqiu': 'Xingqiu',
     'Xinyan': 'Xinyan',
     'Yanfei': 'Yanfei',
+    'Yun Jin': 'Yunjin',
   },
   weaponType: {
     weapon: 'Weapon',

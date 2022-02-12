@@ -229,7 +229,7 @@
               {{ $t('handle.characterStateList') }}</router-link
             >
           </li>
-          <li>
+          <!-- <li>
             <a class="dropdown-item" href="javascript:void(0)" @click="syncCharacterData">
               <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
                 <path
@@ -238,7 +238,7 @@
               </svg>
               {{ $t('handle.syncCharacterData') }}
             </a>
-          </li>
+          </li> -->
           <li>
             <a class="dropdown-item" href="javascript:void(0)" @click="undoDel">
               <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">
@@ -483,7 +483,7 @@
   import ArtifactList from '@/components/artifact-list.vue';
   import ArtifactScore from '@/components/ArtifactPart/ArtifactScore.vue';
   import ScoreSetting from '@/components/score-setting.vue';
-  import About from '@/components/About.vue';
+  import About from '@/components/about.vue';
   // bootstrap相关
   import 'bootstrap/js/dist/alert';
   import 'bootstrap/js/dist/modal';

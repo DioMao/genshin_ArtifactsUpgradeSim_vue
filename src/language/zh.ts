@@ -206,6 +206,7 @@ export default {
     'Qiqi': '七七',
     'Raiden Shogun': '雷电将军',
     'Sangonomiya Kokomi': '珊瑚宫心海',
+    'Shenhe': '申鹤',
     'Tartaglia': '达达利亚',
     'Aether': '空',
     'Lumine': '荧',
@@ -235,6 +236,7 @@ export default {
     'Xingqiu': '行秋',
     'Xinyan': '辛焱',
     'Yanfei': '烟绯',
+    'Yun Jin': '云堇',
   },
   weaponType: {
     weapon: '武器',
