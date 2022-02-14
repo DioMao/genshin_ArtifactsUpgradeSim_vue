@@ -9,11 +9,16 @@
 
 部分界面：
 
-![image](https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/master/screenshot/screenshot_1.jpg)
+![screenshot_1.jpg](https://imgpp.com/s1/2022/02/14/screenshot_1.jpg)
+![screenshot_2.jpg](https://imgpp.com/s1/2022/02/14/screenshot_2.jpg)
+![screenshot_3.jpg](https://imgpp.com/s1/2022/02/14/screenshot_3.jpg)
+![screenshot_4.jpg](https://imgpp.com/s1/2022/02/14/screenshot_4.jpg)
+![screenshot_5.jpg](https://imgpp.com/s1/2022/02/14/screenshot_5.jpg)
+<!-- ![image](https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/master/screenshot/screenshot_1.jpg)
 ![image](https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/master/screenshot/screenshot_2.jpg)
 ![image](https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/master/screenshot/screenshot_3.jpg)
 ![image](https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/master/screenshot/screenshot_4.jpg)
-![image](https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/master/screenshot/screenshot_5.jpg)
+![image](https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/master/screenshot/screenshot_5.jpg) -->
 
 ## Project setup 项目初始化
 
@@ -96,7 +101,7 @@ initArtifactSim().then(() => {
 
 在 JavaScript 中使用 ArtifactsSim 调用，Vue 全局引入则使用$artifact 调用，以下文档以 JavaScript 版为例：
 
-## v0.2.3 文档
+## v0.2.5 文档
 
 ### 一、 圣遗物部分
 
