@@ -212,6 +212,7 @@ export default {
     'Lumine': '荧',
     'Venti': '温迪',
     'Xiao': '魈',
+    'Yae Miko': '八重神子',
     'Yoimiya': '宵宫',
     'Zhongli': '钟离',
     'Amber': '安柏',

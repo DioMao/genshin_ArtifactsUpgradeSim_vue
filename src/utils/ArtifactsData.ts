@@ -1,5 +1,5 @@
 /**
- * ArtifactsUpgradeSim v0.2.5 module_data
+ * ArtifactsUpgradeSim v0.2.6 module_data
  * Copyrigth 2021-2022 DioMao (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/graphs/contributors)
  * Licensed under GPL3.0 (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/master/LICENSE)
  */
@@ -775,6 +775,15 @@ export class ArtifactData {
           weapon: 'polearm',
           sex: 'male',
           nation: 'Liyue',
+        },
+        {
+          name: 'Yae Miko',
+          name_zh: '八重神子',
+          rarity: 5,
+          element: ['Electro'],
+          weapon: 'catalyst',
+          sex: 'female',
+          nation: 'Inazuma',
         },
         {
           name: 'Yoimiya',

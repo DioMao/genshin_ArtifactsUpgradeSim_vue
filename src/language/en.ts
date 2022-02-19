@@ -212,6 +212,7 @@ export default {
     'Lumine': 'Lumine',
     'Venti': 'Venti',
     'Xiao': 'Xiao',
+    'Yae Miko': 'Yae Miko',
     'Yoimiya': 'Yoimiya',
     'Zhongli': 'Zhongli',
     'Amber': 'Amber',
