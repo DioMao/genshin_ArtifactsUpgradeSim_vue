@@ -212,19 +212,20 @@ class ArtifactsFunction_class {
     }
     // 是否需要补充词条
     if (currentArtifact.entry.length < 4) {
+      currentEntry.push(currentArtifact.mainEntry);
       for (let i = 0; i < currentArtifact.entry.length; i++) {
         currentEntry.push(currentArtifact.entry[i][0]);
       }
       // 挑选可用词条（避免与其余词条重复）
       for (let i = 0; i < artiConst.val.entryList.length; i++) {
-        if (currentEntry.indexOf(artiConst.val.entryList[i]) < 0) {
+        if (!currentEntry.includes(artiConst.val.entryList[i])) {
           currentEntryList.push(artiConst.val.entryList[i]);
           currentEntryRate.push(artiConst.val.entryProbability[i]);
         }
       }
       const addEntry = this.randomRate(currentEntryList, currentEntryRate);
       let addRate = this.randomEntryValue(addEntry);
-      if (__upLevel !== -1 && typeof __upLevel === 'number' && Math.floor(__upLevel) < artiConst.val.entryValue[addEntry].length) {
+      if (__upLevel !== -1 && Math.floor(__upLevel) < artiConst.val.entryValue[addEntry].length) {
         addRate = artiConst.val.entryValue[addEntry][Math.floor(__upLevel)];
       }
       currentArtifact.entry.push([addEntry, addRate]);
