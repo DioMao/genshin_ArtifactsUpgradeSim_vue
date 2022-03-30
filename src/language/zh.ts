@@ -188,6 +188,8 @@ export default {
     '绝缘之旗印',
     '华馆梦醒形骸记',
     '海染砗磲',
+    '辰砂往生录',
+    '来歆余响',
   ],
   name: {
     'Albedo': '阿贝多',
@@ -200,6 +202,7 @@ export default {
     'Jean': '琴',
     'Kaedehara Kazuha': '枫原万叶',
     'Kamisato Ayaka': '神里绫华',
+    'Kamisato Ayato': '神里绫人',
     'Keqing': '刻晴',
     'Klee': '可莉',
     'Mona': '莫娜',

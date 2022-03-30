@@ -188,6 +188,8 @@ export default {
     'Emblem of Severed Fate',
     'Husk of Opulent Dreams',
     'Ocean-Hued Clam',
+    'Vermillion Hereafter',
+    'Echoes of an Offering',
   ],
   name: {
     'Albedo': 'Albedo',
@@ -200,6 +202,7 @@ export default {
     'Jean': 'Jean',
     'Kaedehara Kazuha': 'Kaedehara Kazuha',
     'Kamisato Ayaka': 'Kamisato Ayaka',
+    'Kamisato Ayato': 'Kamisato Ayato',
     'Keqing': 'Keqing',
     'Klee': 'Klee',
     'Mona': 'Mona',

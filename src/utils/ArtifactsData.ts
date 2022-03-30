@@ -1,5 +1,5 @@
 /**
- * ArtifactsUpgradeSim v0.2.6 module_data
+ * ArtifactsUpgradeSim v0.2.7 module_data
  * Copyrigth 2021-2022 DioMao (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/graphs/contributors)
  * Licensed under GPL3.0 (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/master/LICENSE)
  */
@@ -164,6 +164,8 @@ export class ArtifactData {
         'Emblem of Severed Fate',
         'Husk of Opulent Dreams',
         'Ocean-Hued Clam',
+        'Vermillion Hereafter',
+        'Echoes of an Offering',
       ],
       setList_zh: [
         '冰风迷途的勇士',
@@ -186,6 +188,8 @@ export class ArtifactData {
         '绝缘之旗印',
         '华馆梦醒形骸记',
         '海染砗磲',
+        '辰砂往生录',
+        '来歆余响',
       ],
       artifactSet: {
         'Bizzard Strayer': {
@@ -367,6 +371,27 @@ export class ArtifactData {
           Goblet: 'Pearl Cage',
           Set2: 'Healing Bonus +15%.',
           Set4: 'When the character equipping this artifact set heals a character in the party, a Sea-Dyed Foam will appear for 3 seconds, accumulating the amount of HP recovered from healing (including overflow healing). At the end of the duration, the Sea-Dyed Foam will explode, dealing DMG to nearby opponents based on 90% of the accumulated healing. (This DMG is calculated similarly to Reactions such as Electro-Charged, and Superconduct, but it is not affected by Elemental Mastery, Character Levels, or Reaction DMG Bonuses). Only one Sea-Dyed Foam can be produced every 3.5 seconds. Each Sea-Dyed Foam can accumulate up to 30,000 HP (including overflow healing). There can be no more than one Sea-Dyed Foam active at any given time. This effect can still be triggered even when the character who is using this artifact set is not on the field.',
+        },
+        'Vermillion Hereafter': {
+          Plume: 'Feather of Nascent Light',
+          Flower: 'Flowering Life',
+          Sands: 'Solar Relic',
+          Circlet: 'Thundering Poise',
+          Goblet: 'Moment of the Pact',
+          Set2: 'ATK +18%.',
+          Set4: "After using an Elemental Burst. this character will gain the Nascent Light effect, increasing their ATK by 8% for 16s. When the character's HP decreases, their ATK will further increase by 10%. This increase can occur this way maximum of 4 times. This effect can be triggered once every 0.8s. Nascent Light will be dispelled when the character leaves the field. If an Elemental Burst is used again during the duration of Nascent Light, the original Nascent Light will be dispelled.",
+        },
+        'Echoes of an Offering': {
+          Plume: 'Jade Leaf',
+          Flower: 'Soulscent Bloom',
+          Sands: 'Symbol of Felicitation',
+          Circlet: 'Flowing Rings',
+          Goblet: 'Chalice of the Font',
+          Set2: 'ATK +18%.',
+          Set4: `When Normal Attacks hit opponents, there is a 36% chance that it will trigger Valley Rite, which will increase Normal Attack DMG by 70% of ATK.
+          This effect will be dispelled 0.05s after a Normal Attack deals DMG.
+          If a Normal Attack fails to trigger Valley Rite, the odds of it triggering the next time will increase by 20%.
+          This trigger can occur once every 0.2s.`,
         },
       },
       artifactSet_zh: {
@@ -550,6 +575,24 @@ export class ArtifactData {
           Set2: '治疗加成提高15%。',
           Set4: '4件套:装备此圣遗物套装的角色对队伍中的角色进行治疗时，将产生持续3秒的海染泡沫，记录治疗的生命值回复量（包括溢出值）。持续时间结束时，海染泡沫将会爆炸，对周围的敌人造成90%累计回复量的伤害（该伤害结算方式同感电、超导等元素反应，但不受元素精通、等级或反应伤害加成效果影响）。每3.5秒至多产生一个海染泡沫；海染泡沫至多记录30000点回复量，含溢出部分的治疗量；自己的队伍中同时至多存在一个海染泡沫。装备此圣遗物套装的角色处于队伍后台时，依然能触发该效果。',
         },
+        辰砂往生录: {
+          死之羽: '潜光片羽',
+          生之花: '生灵之华',
+          时之沙: '阳辔之遗',
+          理之冠: '虺雷之姿',
+          空之杯: '结契之刻',
+          Set2: '攻击力提高18%。',
+          Set4: '施放元素爆发后，将产生持续16秒的「潜光」效果：攻击力提升8%；并在角色的生命值降低时，攻击力进一步提升10%，至多通过这种方式提升4次，每0.8秒至多触发一次。「潜光」效果将在角色退场时消失；持续期间再次施放元素爆发，将移除原有的「潜光」。',
+        },
+        来歆余响: {
+          死之羽: '垂玉之叶',
+          生之花: '魂香之花',
+          时之沙: '祝祀之凭',
+          理之冠: '浮溯之珏',
+          空之杯: '涌泉之盏',
+          Set2: '攻击力提高18%。',
+          Set4: '普通攻击命中敌人时，有36%概率触发「幽谷祝祀」：普通攻击造成的伤害提高，伤害提高值为攻击力的70%，该效果将在普通攻击造成伤害后的0.05秒后清除。普通攻击未触发「幽谷祝祀」时，会使下次触发概率提升20%；0.2秒内至多判定1次触发与否。',
+        },
       },
       // 圣遗物套装效果
       setBonus: {
@@ -573,6 +616,8 @@ export class ArtifactData {
         'Emblem of Severed Fate': {2: {energyRecharge: 20}, 4: null},
         'Husk of Opulent Dreams': {2: {DEFPer: 30}, 4: null},
         'Ocean-Hued Clam': {2: {Healing: 15}, 4: null},
+        'Vermillion Hereafter': {2: {ATKPer: 18}, 4: null},
+        'Echoes of an Offering': {2: {ATKPer: 18}, 4: null},
       },
       // 每级升级经验
       exp: [3000, 3725, 4425, 5150, 5900, 6675, 7500, 8350, 9225, 10125, 11050, 12025, 13025, 15150, 17600, 20375, 23500, 27050, 31050, 35575],
@@ -666,6 +711,15 @@ export class ArtifactData {
           element: ['Cryo'],
           weapon: 'sword',
           sex: 'female',
+          nation: 'Inazuma',
+        },
+        {
+          name: 'Kamisato Ayato',
+          name_zh: '神里绫人',
+          rarity: 5,
+          element: ['Hydro'],
+          weapon: 'sword',
+          sex: 'male',
           nation: 'Inazuma',
         },
         {

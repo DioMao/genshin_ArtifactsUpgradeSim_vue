@@ -1,5 +1,5 @@
 /**
- * ArtifactsUpgradeSim v0.2.6 module
+ * ArtifactsUpgradeSim v0.2.7 module
  * Copyrigth 2021-2022 DioMao (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/graphs/contributors)
  * Licensed under GPL3.0 (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/master/LICENSE)
  */
@@ -50,7 +50,7 @@ class ArtifactsFunction_class {
   readonly LIST_LIMIT: number = 2000;
   readonly SET_LIST_LIMIT: number = 100;
   readonly AUTHOR: string = 'DioMao';
-  readonly VERSION: string = '0.2.6';
+  readonly VERSION: string = '0.2.7';
 
   constructor() {}
 
