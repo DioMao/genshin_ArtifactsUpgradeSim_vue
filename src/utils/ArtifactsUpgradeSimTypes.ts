@@ -113,7 +113,7 @@ export namespace ArtifactNameSpace {
 
   export type ElementsType = 'Hydro' | 'Pyro' | 'Electro' | 'Geo' | 'Anemo' | 'Cryo' | 'Physical' | 'Dendro';
 
-  export type NationsType = 'other' | 'Mondstadt' | 'Liyue' | 'Inazuma' | 'Snezhnaya';
+  export type NationsType = 'other' | 'Mondstadt' | 'Liyue' | 'Inazuma' | 'Snezhnaya' | 'Sumeru';
 
   export type WeaponType = 'sword' | 'bow' | 'catalyst' | 'claymore' | 'polearm';
 }

@@ -1,5 +1,5 @@
 /**
- * ArtifactsUpgradeSim v0.2.7 module_data
+ * ArtifactsUpgradeSim v0.2.8 module_data
  * Copyrigth 2021-2022 DioMao (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/graphs/contributors)
  * Licensed under GPL3.0 (https://github.com/DioMao/genshin_ArtifactsUpgradeSim_vue/blob/master/LICENSE)
  */
@@ -45,7 +45,7 @@ export class ArtifactData {
       Flower: ['HP'],
       Sands: ['ATKPer', 'DEFPer', 'HPPer', 'elementMastery', 'energyRecharge'],
       Circlet: ['CRITRate', 'CRITDMG', 'ATKPer', 'DEFPer', 'HPPer', 'elementMastery', 'Healing'],
-      Goblet: ['ATKPer', 'DEFPer', 'HPPer', 'elementMastery', 'Hydro', 'Pyro', 'Electro', 'Geo', 'Anemo', 'Cryo', 'Physical'],
+      Goblet: ['ATKPer', 'DEFPer', 'HPPer', 'elementMastery', 'Hydro', 'Pyro', 'Electro', 'Geo', 'Anemo', 'Cryo', 'Dendro', 'Physical'],
       mainEntryList: [
         'ATK',
         'HP',
@@ -63,6 +63,7 @@ export class ArtifactData {
         'Geo',
         'Anemo',
         'Cryo',
+        'Dendro',
         'Physical',
       ],
       mainEntryList_en: [
@@ -82,6 +83,7 @@ export class ArtifactData {
         'Geo DMG Bonus',
         'Anemo DMG Bonus',
         'Cryo DMG Bonus',
+        'Dendro DMG Bonus',
         'Physical DMG Bonus',
       ],
       mainEntryList_zh: [
@@ -101,12 +103,13 @@ export class ArtifactData {
         '岩元素伤害加成',
         '风元素伤害加成',
         '冰元素伤害加成',
+        '草元素伤害加成',
         '物理伤害加成',
       ],
       // 部件主词条概率
       hourglassRate: [0.25, 0.25, 0.25, 0.1, 0.1],
       hatRate: [0.1, 0.1, 0.22, 0.22, 0.22, 0.04, 0.1],
-      cupRate: [0.21, 0.21, 0.21, 0.025, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05],
+      cupRate: [0.195, 0.195, 0.195, 0.025, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05],
       // 圣遗物主词条属性
       mainEntryValueList: {
         ATK: [47, 100, 152, 205, 258, 311],
@@ -125,6 +128,7 @@ export class ArtifactData {
         Geo: mainVal_1,
         Anemo: mainVal_1,
         Cryo: mainVal_1,
+        Dendro: mainVal_1,
         Physical: mainVal_2,
       },
       // 圣遗物评分选项
@@ -166,6 +170,8 @@ export class ArtifactData {
         'Ocean-Hued Clam',
         'Vermillion Hereafter',
         'Echoes of an Offering',
+        'Deepwood Memories',
+        'Gilded Dreams',
       ],
       setList_zh: [
         '冰风迷途的勇士',
@@ -190,6 +196,8 @@ export class ArtifactData {
         '海染砗磲',
         '辰砂往生录',
         '来歆余响',
+        '深林的记忆',
+        '饰金之梦',
       ],
       artifactSet: {
         'Bizzard Strayer': {
@@ -393,6 +401,24 @@ export class ArtifactData {
           If a Normal Attack fails to trigger Valley Rite, the odds of it triggering the next time will increase by 20%.
           This trigger can occur once every 0.2s.`,
         },
+        'Deepwood Memories': {
+          Plume: 'Scholar of Vines',
+          Flower: 'Labyrinth Wayfarer',
+          Sands: 'A Time of Insight',
+          Circlet: 'Laurel Coronet',
+          Goblet: 'Lamp of the Lost',
+          Set2: 'Dendro DMG Bonus +15%.',
+          Set4: `After Elemental Skills or Bursts hit opponents, the targets' Dendro RES will be decreased by 30% for 8s. This effect can be triggered even if the equipping character is not on the field.`,
+        },
+        'Gilded Dreams': {
+          Plume: 'Feather of Judgment',
+          Flower: 'Dreaming Steelbloom',
+          Sands: 'The Sunken Years',
+          Circlet: 'Shadow of the Sand King',
+          Goblet: 'Honeyed Final Feast',
+          Set2: 'Elemental Mastery +80.',
+          Set4: `Within 8s of triggering an Elemental Reaction, the character equipping this will obtain buffs based on the Elemental Type of the other party members, ATK is increased by 14% for each party member whose Elemental Type is the same as the equipping character, and Elemental Mastery is increased by 50 for every party member with a different Elemental Type. Each of the aforementioned buffs will count up to 3 characters. This effect can be triggered once every 8s. The character who equips this can still trigger its effects when not on the field.`,
+        },
       },
       artifactSet_zh: {
         冰风迷途的勇士: {
@@ -593,6 +619,24 @@ export class ArtifactData {
           Set2: '攻击力提高18%。',
           Set4: '普通攻击命中敌人时，有36%概率触发「幽谷祝祀」：普通攻击造成的伤害提高，伤害提高值为攻击力的70%，该效果将在普通攻击造成伤害后的0.05秒后清除。普通攻击未触发「幽谷祝祀」时，会使下次触发概率提升20%；0.2秒内至多判定1次触发与否。',
         },
+        深林的记忆: {
+          死之羽: '翠蔓的智者',
+          生之花: '迷宫的游人',
+          时之沙: '贤智的定期',
+          理之冠: '月桂的宝冠',
+          空之杯: '迷误者之灯',
+          Set2: '获得15%草元素伤害加成。',
+          Set4: '元素战技或元素爆发命中敌人后，使命中目标的草元素抗性降低30%，持续8秒。装备者处于队伍后台时，依然能触发该效果。',
+        },
+        饰金之梦: {
+          死之羽: '裁断的翎羽',
+          生之花: '梦中的铁花',
+          时之沙: '沉金的岁月',
+          理之冠: '沙王的投影',
+          空之杯: '如蜜的终宴',
+          Set2: '元素精通提高80点。',
+          Set4: '触发元素反应后的8秒内，会根据队伍内其他角色的元素类型，使装备者获得强化：队伍中每存在1个和装备者同类元素的角色，攻击力提升14%；每存在1个和装备者不同元素类型的角色，元素精通提升50点。上述每类效果至多计算3个角色。该效果每8秒至多触发一次。装备者处于队伍后台时，依然能触发该效果。',
+        },
       },
       // 圣遗物套装效果
       setBonus: {
@@ -618,6 +662,8 @@ export class ArtifactData {
         'Ocean-Hued Clam': {2: {Healing: 15}, 4: null},
         'Vermillion Hereafter': {2: {ATKPer: 18}, 4: null},
         'Echoes of an Offering': {2: {ATKPer: 18}, 4: null},
+        'Deepwood Memories': {2: {Dendro: 18}, 4: null},
+        'Gilded Dreams': {2: {elementMastery: 80}, 4: null},
       },
       // 每级升级经验
       exp: [3000, 3725, 4425, 5150, 5900, 6675, 7500, 8350, 9225, 10125, 11050, 12025, 13025, 15150, 17600, 20375, 23500, 27050, 31050, 35575],
@@ -795,6 +841,15 @@ export class ArtifactData {
           nation: 'Snezhnaya',
         },
         {
+          name: 'Tighnari',
+          name_zh: '提纳里',
+          rarity: 5,
+          element: ['Dendro'],
+          weapon: 'bow',
+          sex: 'male',
+          nation: 'Sumeru',
+        },
+        {
           name: 'Aether',
           name_zh: '空',
           rarity: 5,
@@ -838,6 +893,15 @@ export class ArtifactData {
           weapon: 'catalyst',
           sex: 'female',
           nation: 'Inazuma',
+        },
+        {
+          name: 'Yelan',
+          name_zh: '夜兰',
+          rarity: 5,
+          element: ['Hydro'],
+          weapon: 'bow',
+          sex: 'female',
+          nation: 'Liyue',
         },
         {
           name: 'Yoimiya',
@@ -894,6 +958,15 @@ export class ArtifactData {
           nation: 'Mondstadt',
         },
         {
+          name: 'Collei',
+          name_zh: '柯莱',
+          rarity: 4,
+          element: ['Dendro'],
+          weapon: 'bow',
+          sex: 'female',
+          nation: 'Sumeru',
+        },
+        {
           name: 'Chongyun',
           name_zh: '重云',
           rarity: 4,
@@ -937,6 +1010,15 @@ export class ArtifactData {
           weapon: 'sword',
           sex: 'male',
           nation: 'Mondstadt',
+        },
+        {
+          name: 'Kuki Shinobu',
+          name_zh: '九歧忍',
+          rarity: 4,
+          element: ['Electro'],
+          weapon: 'sword',
+          sex: 'female',
+          nation: 'Inazuma',
         },
         {
           name: 'Kujou Sara',
@@ -999,6 +1081,15 @@ export class ArtifactData {
           element: ['Anemo'],
           weapon: 'claymore',
           sex: 'female',
+          nation: 'Inazuma',
+        },
+        {
+          name: 'Shikanoin Heizou',
+          name_zh: '鹿野院平藏',
+          rarity: 4,
+          element: ['Anemo'],
+          weapon: 'catalyst',
+          sex: 'male',
           nation: 'Inazuma',
         },
         {
@@ -1070,7 +1161,7 @@ export class ArtifactData {
       // 元素类型
       elementType: ['Pyro', 'Hydro', 'Dendro', 'Electro', 'Anemo', 'Cryo', 'Geo'],
       // 地区
-      nation: ['other', 'Mondstadt', 'Liyue', 'Inazuma', 'Snezhnaya'],
+      nation: ['other', 'Mondstadt', 'Liyue', 'Inazuma', 'Snezhnaya', 'Sumeru'],
       // 其他属性
       otherStats: [
         'HydroRES',
